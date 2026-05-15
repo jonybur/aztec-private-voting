@@ -88,3 +88,16 @@ All four VON tickets complete (VON-75 through VON-78). Contract compiles cleanly
 ## Grant context
 
 This project is targeting an Aztec ecosystem grant. The grant conversation happens after the testnet demo is live. Do not rush features at the expense of the receipt UX quality — that's the differentiator.
+
+## SDD — Spec-Driven Development
+
+This repo uses OpenSpec for all new features.
+
+Location: `openspec/`
+- `openspec/ROADMAP.md` — current status and what's next
+- `openspec/specs/product-spec.md` — what Umbra is
+- `openspec/changes/<feature>/` — active specs
+- `openspec/archive/` — completed features
+
+**Before building anything new:** `/opsx:propose "what you want to build"`
+**Current priority:** See ROADMAP.md — testnet deploy is the immediate blocker.
