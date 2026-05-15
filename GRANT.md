@@ -31,13 +31,13 @@ The full design rationale — including the specific copy decisions, the alterna
 
 | Layer | Status |
 |---|---|
-| `PrivateVoting.nr` — Noir contract (Aztec-NR v4.3) | ✅ merged |
+| `PrivateVoting.nr` — Noir contract (Aztec-NR **v5.0.0-nightly**) | ✅ merged + compiled |
 | `@aztec-private-voting/react` — component library | ✅ merged |
 | Playwright + Noir unit tests (41 user stories) | ✅ merged |
-| Aztec-NR v4.3.0 port | ✅ merged |
-| Alpha testnet deployment | ⏳ testnet ready — holding production deploy for Aztec v5 (July 2026, patch for known v4 vulnerability) |
+| Aztec-NR v5 port | ✅ confirmed (zero code changes — all APIs identical to v4.3) |
+| Alpha testnet deployment | ⏳ testnet ready — awaiting L1 fee juice bridge before demo deploy |
 
-The contracts compile against Aztec-NR v4.3.0-nightly.20260429 (commit cd47773). The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026, with a patch shipping in v5 (July 2026). We made a deliberate choice not to deploy user-facing governance infrastructure on a known-vulnerable network. The testnet demo works and is deployable; production deployment targets v5. This is the responsible call, not a blocker.
+The contracts compile cleanly against **Aztec-NR v5.0.0-nightly.20260513** (commit 5fee750, reconfirmed 2026-05-15). The Nargo.toml tag was bumped from v4.3.0-nightly to v5 nightly — zero contract code changes were required. All import paths, function attribute macros, state variables, and trait derives are identical between v4.3 and v5. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Production deployment targets a stable v5 release; testnet demo is ready to deploy.
 
 ---
 
