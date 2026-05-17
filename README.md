@@ -27,7 +27,7 @@ contracts/                     Noir contracts (PrivateVoting + helpers)
   src/
     main.nr                    contract entrypoint (PrivateVoting)
     eligibility.nr             eligibility verification (open / token-gated / allowlist)
-  Nargo.toml                   uses Aztec-NR v4.3.0-nightly
+  Nargo.toml                   uses Aztec-NR v5.0.0-nightly
 packages/
   react/                       component library
     src/

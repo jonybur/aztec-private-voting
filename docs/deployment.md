@@ -7,7 +7,7 @@ End-to-end run book for getting a `PrivateVoting` contract live on Aztec Alpha t
 | Tool                | Version             | Notes                                                                 |
 | ------------------- | ------------------- | --------------------------------------------------------------------- |
 | Node                | >= 20               | Workspace requires it.                                                |
-| `nargo`             | matching `v4.3.0-nightly` | Used by `npm run build:contracts`. Install via `aztec-up`.       |
+| `nargo`             | matching `v5.0.0-nightly` | Used by `npm run build:contracts`. Install via `aztec-up`.       |
 | Aztec PXE           | matching SDK pin    | Run locally pointed at the testnet node, or use a hosted PXE.         |
 
 Funded testnet account: a Schnorr account with enough fee tokens to pay deployment + a finalize tx.
