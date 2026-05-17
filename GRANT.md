@@ -37,7 +37,7 @@ The full design rationale — including the specific copy decisions, the alterna
 | Aztec-NR v5 port | ✅ confirmed (zero code changes — all APIs identical to v4.3) |
 | Alpha testnet deployment | ⏳ testnet ready — awaiting L1 fee juice bridge before demo deploy |
 
-The contracts compile cleanly against **Aztec-NR v5.0.0-nightly.20260513** (commit 5fee750, reconfirmed 2026-05-15). The Nargo.toml tag was bumped from v4.3.0-nightly to v5 nightly — zero contract code changes were required. All import paths, function attribute macros, state variables, and trait derives are identical between v4.3 and v5. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Production deployment targets a stable v5 release; testnet demo is ready to deploy.
+The contracts compile cleanly against **Aztec-NR v5.0.0-nightly.20260517** (Nargo.toml updated 2026-05-17). The tag was bumped incrementally from v4.3.0-nightly through v5 nightly — zero contract code changes were required across any version. All import paths, function attribute macros, state variables, and trait derives are identical between v4.3 and v5. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Production deployment targets a stable v5 release; testnet demo is ready to deploy.
 
 ---
 
