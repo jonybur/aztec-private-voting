@@ -1,18 +1,22 @@
 {
-  "network": "local-devnet",
-  "note": "Deployed to local Aztec sandbox (chain 31337). Public testnet (alpha) has known sequencer instability as of 2026-05-18 — L1→L2 bridge messages not processed. Will redeploy to public testnet when stable.",
-  "contract": "PrivateVoting",
-  "address": "0x0daa55b0554c54448fae1d0611689d76776b497c30ddc379d33de16ef167e444",
-  "deployer": "0x029c4d4a886f5e9af472316bb8bd15a7b20a992feb26cf1663eb3488f57d0322",
-  "txHash": "0x0b2157b25183b3564b93ec9180e43f2a027b48f175e92cb3911d04580837a2e6",
-  "deployedAt": "2026-05-18T13:59:18Z",
-  "aztecVersion": "4.3.0-nightly.20260430",
-  "constructorArgs": {
-    "admin": "0x029c4d4a886f5e9af472316bb8bd15a7b20a992feb26cf1663eb3488f57d0322",
-    "config": {
-      "title_hash": "Umbra Vote 1",
-      "options_count": 2,
-      "eligibility_mode": 0
-    }
-  }
+  "network": "aztec-alpha-testnet",
+  "contractAddress": "0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981",
+  "deployedAt": "2026-05-18T18:03:26Z",
+  "deployTxHash": "0x095bfd5cf1fe53fd2b55f2896124ef3f8b43ffd7f70a688bb967d6998e2e1dc5",
+  "deployer": "0x065824b54ec4c5a14de7c38e7e47aa05da6604809bb4959664e737b3e42fe238",
+  "l1ChainId": 11155111,
+  "title": "Should the treasury fund this initiative? (50 ETH)",
+  "options": [
+    "For",
+    "Against",
+    "Abstain"
+  ],
+  "startTime": 1779127406000,
+  "endTime": 1779732206000,
+  "quorum": 5,
+  "eligibilityMode": "open",
+  "contractClassId": "0x0816ab64c08e7fccd0e7c07f6cb161915dcab064d1b4c36e366fb18dabe15aab",
+  "partialAddress": "0x203bb633df43170ec86825d130684adc92cacb5487ba12a1dbeb68300a1a40cd",
+  "deploymentSalt": "0x1254419bf3100596f5076e85942bc52f8762de0c3f7db87d583d3995694c9771",
+  "notes": "First live testnet deploy. Fee juice via Nethermind Aztec faucet (aztec-faucet.nethermind.io). CLI encoding.js bug patched (falsy 0 check and nested struct handling)."
 }
