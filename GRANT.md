@@ -35,9 +35,11 @@ The full design rationale — including the specific copy decisions, the alterna
 | `@aztec-private-voting/react` — component library | ✅ merged |
 | Playwright + Noir unit tests (41 user stories) | ✅ merged |
 | Aztec-NR v5 port | ✅ confirmed (zero code changes — all APIs identical to v4.3) |
-| Alpha testnet deployment | ⏳ testnet ready — awaiting L1 fee juice bridge before demo deploy |
+| Alpha testnet deployment | ✅ **LIVE** — `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (Sepolia/11155111, 2026-05-18) |
 
-The contracts compile cleanly against **Aztec-NR v5.0.0-nightly.20260517** (Nargo.toml updated 2026-05-17). The tag was bumped incrementally from v4.3.0-nightly through v5 nightly — zero contract code changes were required across any version. All import paths, function attribute macros, state variables, and trait derives are identical between v4.3 and v5. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Production deployment targets a stable v5 release; testnet demo is ready to deploy.
+The contracts compile cleanly against **Aztec-NR v5.0.0-nightly.20260518** (latest nightly as of 2026-05-18). The tag was bumped incrementally from v4.3.0-nightly through v5 nightly — zero contract code changes were required across any version. All import paths, function attribute macros, state variables, and trait derives are identical between v4.3 and v5. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Production deployment targets a stable v5 release.
+
+The contract is live on Aztec Alpha Testnet at `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (deploy tx `0x095bfd5cf1fe53fd2b55f2896124ef3f8b43ffd7f70a688bb967d6998e2e1dc5`, 2026-05-18T18:03Z, deployer `0x065824b54ec4c5a14de7c38e7e47aa05da6604809bb4959664e737b3e42fe238`).
 
 ---
 
