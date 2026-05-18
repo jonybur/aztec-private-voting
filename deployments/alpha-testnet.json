@@ -1,6 +1,18 @@
 {
-  "network": "aztec-alpha-testnet",
-  "contractAddress": null,
-  "deployedAt": null,
-  "_comment": "Run `npm run deploy:testnet` from the repo root to populate this file. The address written here is what the demo and README should pick up."
+  "network": "local-devnet",
+  "note": "Deployed to local Aztec sandbox (chain 31337). Public testnet (alpha) has known sequencer instability as of 2026-05-18 — L1→L2 bridge messages not processed. Will redeploy to public testnet when stable.",
+  "contract": "PrivateVoting",
+  "address": "0x0daa55b0554c54448fae1d0611689d76776b497c30ddc379d33de16ef167e444",
+  "deployer": "0x029c4d4a886f5e9af472316bb8bd15a7b20a992feb26cf1663eb3488f57d0322",
+  "txHash": "0x0b2157b25183b3564b93ec9180e43f2a027b48f175e92cb3911d04580837a2e6",
+  "deployedAt": "2026-05-18T13:59:18Z",
+  "aztecVersion": "4.3.0-nightly.20260430",
+  "constructorArgs": {
+    "admin": "0x029c4d4a886f5e9af472316bb8bd15a7b20a992feb26cf1663eb3488f57d0322",
+    "config": {
+      "title_hash": "Umbra Vote 1",
+      "options_count": 2,
+      "eligibility_mode": 0
+    }
+  }
 }
