@@ -16,6 +16,7 @@
     "@aztec/accounts": "0.85.0-alpha-testnet.11",
     "@aztec/aztec.js": "0.85.0-alpha-testnet.11",
     "@aztec/foundation": "0.85.0-alpha-testnet.11",
+    "@aztec/wallets": "^4.3.0-nightly.20260515",
     "next": "^14.2.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"

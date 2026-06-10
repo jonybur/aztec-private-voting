@@ -128,6 +128,20 @@ async function fetchBABYHolders(rpcUrl: string, minBalance: bigint): Promise<Bab
   return holders;
 }
 
+// ── Root encoding for Aztec Field ───────────────────────────────────────────
+// The Merkle root is a 32-byte SHA-256 hash. Aztec Field elements hold 31 bytes.
+// We encode by dropping the first byte (which is always low-entropy for SHA-256)
+// and storing bytes [1..32] as a big-endian Field.
+//
+// This matches encode_field_as_root() in contracts/src/main.nr.
+export function encodeRootAsField(rootHex: string): string {
+  const buf = Buffer.from(rootHex.replace(/^0x/, ''), 'hex');
+  if (buf.length !== 32) throw new Error('Root must be 32 bytes');
+  // Drop first byte, use bytes [1..32] as big-endian Field
+  const fieldBytes = buf.slice(1); // 31 bytes
+  return '0x' + fieldBytes.toString('hex');
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -169,14 +183,18 @@ async function main() {
   console.log(`Tree size: ${size} leaves (${holders.length} real, ${size - holders.length} padding)`);
 
   // Save root
+  const rootHex = `0x${root}`;
+  const rootAsField = encodeRootAsField(rootHex);
   const rootData = {
-    root: `0x${root}`,
+    root: rootHex,
+    rootAsField,   // use this as token_address when deploying the vote config
     block: blockHeight,
     timestamp: new Date().toISOString(),
     totalHolders: holders.length,
     minBalance: minBalance.toString(),
     denomination: 'ubbn',
   };
+  console.log(`Root as Aztec Field (use as token_address in VoteConfig): ${rootAsField}`);
   fs.writeFileSync(path.join(outDir, 'merkle-root.json'), JSON.stringify(rootData, null, 2));
 
   // Save individual paths

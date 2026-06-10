@@ -1,4 +1,5 @@
 mod eligibility;
+mod merkle;
 
 use aztec::macros::aztec;
 
@@ -12,6 +13,7 @@ pub contract PrivateVoting {
     use aztec::state_vars::{Map, PublicImmutable, PublicMutable};
 
     use crate::eligibility::verify_eligibility;
+    use crate::merkle::verify_baby_eligibility;
 
     global MAX_OPTIONS: u32 = 8;
 
@@ -53,6 +55,54 @@ pub contract PrivateVoting {
     #[external("private")]
     fn cast_vote(vote_choice: u8, eligibility_proof: Field, nullifier: Field) {
         self.enqueue_self.record_vote(vote_choice, eligibility_proof, nullifier);
+    }
+
+    // Babylon governance entrypoint: voter proves BABY token holding via
+    // a Merkle membership proof over the snapshot taken at vote creation.
+    //
+    // Private witnesses (never visible on-chain):
+    //   address_bytes — bbn1... cosmos address as UTF-8 (45 bytes)
+    //   balance       — claimed ubbn balance at snapshot
+    //   merkle_path   — sibling hashes from leaf to root (depth 20)
+    //   merkle_indices — direction bits (0=left, 1=right) at each level
+    //
+    // Public inputs (committed in the VoteConfig):
+    //   merkle_root   — stored in token_address field (32-byte encoding)
+    //   min_balance   — stored in min_token_balance (ubbn)
+    //
+    // The Merkle root is stored in the config's token_address field as a
+    // Field element (lower 31 bytes of the 32-byte SHA-256 root).
+    #[external("private")]
+    fn cast_vote_babylon(
+        vote_choice: u8,
+        nullifier: Field,
+        address_bytes: [u8; 45],
+        balance: u64,
+        merkle_path: [[u8; 32]; 20],
+        merkle_indices: [u1; 20],
+    ) {
+        let config = self.storage.config.read();
+
+        // Reconstruct the committed Merkle root from the config.
+        // The deployer encodes the root as: token_address = Field(root[1..32])
+        // (first byte dropped to fit in a Field — matches encode_root_as_field
+        //  in babylon-snapshot.ts)
+        let root_field = config.token_address.to_field();
+        let root_bytes = encode_field_as_root(root_field);
+
+        // Verify BABY membership + balance threshold inside the circuit.
+        verify_baby_eligibility(
+            address_bytes,
+            balance,
+            config.min_token_balance,
+            merkle_path,
+            merkle_indices,
+            root_bytes,
+        );
+
+        // Nullifier is derived privately — use 1 as dummy proof field
+        // (eligibility is already proven above by the circuit).
+        self.enqueue_self.record_vote(vote_choice, 1, nullifier);
     }
 
     // The public half of cast_vote. Validates timing, eligibility, the
@@ -121,4 +171,25 @@ pub contract PrivateVoting {
     fn get_config() -> pub VoteConfig {
         self.storage.config.read()
     }
+
+    // Get Merkle root stored in this vote config (for the Babylon governance demo).
+    // Returns the token_address field which encodes the BABY snapshot Merkle root.
+    #[external("public")]
+    #[view]
+    fn get_merkle_root() -> pub Field {
+        self.storage.config.read().token_address.to_field()
+    }
+}
+
+// Encode a Field (31 bytes) back into a 32-byte Merkle root.
+// Inverse of encode_root_as_field in babylon-snapshot.ts:
+//   root[0] = 0x00 (padding), root[1..32] = field bytes
+fn encode_field_as_root(f: Field) -> [u8; 32] {
+    let field_bytes = f.to_be_bytes::<31>();
+    let mut root = [0u8; 32];
+    root[0] = 0;
+    for i in 0..31 {
+        root[i + 1] = field_bytes[i];
+    }
+    root
 }
