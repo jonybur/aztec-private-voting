@@ -11,6 +11,7 @@ build/
 contracts/target/
 contracts/proofs/
 demo/public/private_voting-PrivateVoting.json
+demo/public/baby_proof.json
 **/Prover.toml.lock
 
 # Editor
@@ -20,10 +21,15 @@ demo/public/private_voting-PrivateVoting.json
 # TypeScript build cache
 *.tsbuildinfo
 
-# Full snapshot (large files)
+# Full snapshot (large files) — regenerable via scripts/synthetic-snapshot.ts
 snapshot/full-holders.json
 snapshot/merkle-tree.json
+snapshot/synthetic-holders.json
 
 # Noir build artifacts  
 baby-proof/target/
 baby-proof/out/
+
+# Playwright e2e artifacts
+demo/test-results/
+demo/playwright-report/

@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import Link from 'next/link';
 
-import '@aztec-private-voting/react/src/styles.css';
+import '@aztec-private-voting/react/styles.css';
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {

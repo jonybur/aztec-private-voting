@@ -296,9 +296,35 @@ function main() {
   const proverToml = buildProverToml(holders[sampleIndex], leaves[sampleIndex], siblingPath, indices, root, minBalance, generatedAt);
   fs.writeFileSync(path.join('baby-proof', 'Prover.toml'), proverToml);
 
+  // Dump ALL synthetic holder paths so the demo can serve `path(address)` lookups
+  // without a live fetcher. The eligibility set is synthetic; the file is safe
+  // to ship with the demo bundle.
+  const allHolders = holders.map((h, i) => {
+    const mp = getMerklePath(tree, i, TREE_SIZE);
+    return {
+      address: h.address,
+      balance: h.balance.toString(),
+      leaf: leaves[i].toString('hex'),
+      path: mp.path,
+      indices: mp.indices,
+    };
+  });
+  const allData = {
+    note: 'Synthetic eligibility set. Addresses are deterministically generated and do not correspond to real Babylon Genesis holders.',
+    root: rootHex,
+    rootAsField,
+    minBalance: minBalance.toString(),
+    treeDepth: MERKLE_DEPTH,
+    treeSize: TREE_SIZE,
+    timestamp: generatedAt,
+    holders: allHolders,
+  };
+  fs.writeFileSync(path.join(outDir, 'synthetic-holders.json'), JSON.stringify(allData));
+
   console.log(`\n✓ Synthetic snapshot saved`);
   console.log(`  ${outDir}/merkle-root.json       — synthetic root + metadata`);
   console.log(`  ${outDir}/prover-synthetic.json  — sample holder Merkle path`);
+  console.log(`  ${outDir}/synthetic-holders.json — all ${holders.length} synthetic holders + paths`);
   console.log(`  baby-proof/Prover.toml           — circuit witness (synthetic voter)`);
 }
 

@@ -12,6 +12,9 @@
  */
 
 import { useState } from 'react';
+import { connect as connectWallet, isWalletAvailable, NoWalletInstalledError, UserRejectedError } from '../lib/keplr';
+import { generateBabyProof, proofFingerprint } from '../lib/babyProof';
+import type { EligibilityResponse } from './api/eligibility';
 
 type Step = 'connect' | 'check' | 'prove' | 'vote' | 'receipt' | 'error';
 
@@ -37,65 +40,85 @@ export default function BabylonDemo() {
   const [step, setStep] = useState<Step>('connect');
   const [address, setAddress] = useState<string>('');
   const [balance, setBalance] = useState<bigint>(0n);
+  const [eligibility, setEligibility] = useState<EligibilityResponse | null>(null);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [receipt, setReceipt] = useState<string>('');
+  const [proofDurationMs, setProofDurationMs] = useState<number | null>(null);
   const [error, setError] = useState<string>('');
   const [proving, setProving] = useState(false);
 
-  const connectWallet = async () => {
+  const handleConnect = async () => {
+    setError('');
     try {
-      // In production: use Keplr or Leap wallet API
-      // For demo: simulate with a synthetic address from the generated eligibility set
-      const demoAddress = 'bbn10005vhgspfwpnf0lg7ck82z2ql0a6ac57940r0';
-      const demoBalance = 604708979n; // ~604.71 BABY (synthetic holder, not real)
-
-      setAddress(demoAddress);
-      setBalance(demoBalance);
+      const { address: addr } = await connectWallet();
+      setAddress(addr);
       setStep('check');
     } catch (e) {
-      setError('Failed to connect wallet');
+      if (e instanceof NoWalletInstalledError) {
+        const w = isWalletAvailable();
+        setError(`${e.message}${(!w.keplr && !w.leap) ? '' : ''}`);
+      } else if (e instanceof UserRejectedError) {
+        setError(e.message);
+      } else {
+        setError(e instanceof Error ? e.message : 'Failed to connect wallet');
+      }
       setStep('error');
     }
   };
 
   const checkEligibility = async () => {
-    // In production: fetch Merkle path from IPFS/server using address
-    // Check balance >= minimum (e.g. 1 BABY = 1,000,000 ubbn)
-    const MIN_BALANCE = 1_000_000n;
-    if (balance < MIN_BALANCE) {
-      setError(`Minimum ${MIN_BALANCE / 1_000_000n} BABY required to vote`);
+    setError('');
+    try {
+      const r = await fetch(`/api/eligibility?address=${encodeURIComponent(address)}`);
+      if (r.status === 404) {
+        const body = await r.json();
+        setError(`Address ${address} is not in the synthetic eligibility set. Try the sample eligible address: ${body.sampleEligibleAddress ?? '(none)'}.`);
+        setStep('error');
+        return;
+      }
+      if (!r.ok) {
+        const body = await r.json().catch(() => ({}));
+        setError(body.error ?? `Eligibility lookup failed: HTTP ${r.status}`);
+        setStep('error');
+        return;
+      }
+      const data: EligibilityResponse = await r.json();
+      const bal = BigInt(data.balance);
+      const min = BigInt(data.minBalance);
+      if (bal < min) {
+        setError(`Minimum ${(Number(min) / 1_000_000).toFixed(0)} BABY required; address holds ${(Number(bal) / 1_000_000).toFixed(2)}.`);
+        setStep('error');
+        return;
+      }
+      setBalance(bal);
+      setEligibility(data);
+      setStep('prove');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Eligibility lookup failed');
       setStep('error');
-      return;
     }
-    setStep('prove');
   };
 
   const generateProofAndVote = async () => {
-    if (selectedOption === null) return;
+    if (selectedOption === null || !eligibility) return;
     setProving(true);
+    setError('');
 
     try {
-      // In production:
-      // 1. Fetch Merkle path for this address from snapshot server
-      // 2. Load Noir circuit WASM
-      // 3. Generate proof: verify_baby_eligibility(address, balance, min_balance, path, indices, root)
-      // 4. Submit proof + encrypted vote to Ethereum contract
-
-      // Demo: simulate proof generation delay
-      await new Promise(r => setTimeout(r, 3000));
-
-      // Generate a fake receipt fingerprint for demo
-      const fingerprint = Array.from(crypto.getRandomValues(new Uint8Array(16)))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('')
-        .match(/.{4}/g)!
-        .join('-')
-        .toUpperCase();
-
+      const { proof, durationMs } = await generateBabyProof({
+        address: eligibility.address,
+        balance: BigInt(eligibility.balance),
+        minBalance: BigInt(eligibility.minBalance),
+        path: eligibility.path,
+        indices: eligibility.indices,
+        root: eligibility.root,
+      });
+      const fingerprint = await proofFingerprint(proof);
       setReceipt(fingerprint);
+      setProofDurationMs(Math.round(durationMs));
       setStep('receipt');
     } catch (e) {
-      setError('Proof generation failed');
+      setError(e instanceof Error ? e.message : 'Proof generation failed');
       setStep('error');
     } finally {
       setProving(false);
@@ -150,7 +173,7 @@ export default function BabylonDemo() {
               Connect your Babylon wallet to prove your BABY token balance.
               Your address and vote remain private.
             </p>
-            <button onClick={connectWallet} style={primaryBtn('#f97316')}>
+            <button onClick={handleConnect} style={primaryBtn('#f97316')}>
               Connect Keplr / Leap wallet
             </button>
             <div style={{ marginTop: '16px', padding: '12px', background: '#1a1a1a', borderRadius: '6px', fontSize: '12px', color: '#555' }}>
@@ -205,10 +228,10 @@ export default function BabylonDemo() {
             {proving ? (
               <div style={{ padding: '16px', background: '#1a1a1a', borderRadius: '8px', textAlign: 'center' }}>
                 <div style={{ fontSize: '13px', color: '#666', marginBottom: '8px' }}>
-                  Generating ZK proof...
+                  Generating ZK proof…
                 </div>
                 <div style={{ fontSize: '11px', color: '#444' }}>
-                  Proving BABY membership in snapshot · This takes a few seconds
+                  Proving BABY membership in snapshot · In-browser UltraHonk · 5–15s
                 </div>
               </div>
             ) : (
@@ -242,6 +265,11 @@ export default function BabylonDemo() {
                 This fingerprint proves your vote was counted without revealing your choice.
                 Save it to verify after the vote closes, and keep it private.
               </div>
+              {proofDurationMs !== null && (
+                <div style={{ fontSize: '11px', color: '#333', marginTop: '6px' }}>
+                  Proof generated in {(proofDurationMs / 1000).toFixed(1)}s
+                </div>
+              )}
             </div>
             <div style={{ fontSize: '12px', color: '#444', padding: '12px', background: '#111', borderRadius: '6px' }}>
               <strong style={{ color: '#555' }}>What this proves:</strong> You held sufficient BABY at

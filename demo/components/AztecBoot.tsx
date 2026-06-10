@@ -69,7 +69,14 @@ function ConnectedProvider({
   nodeUrl: string;
   children: ReactNode;
 }): JSX.Element {
-  const state = useBrowserAztecClient({ nodeUrl, createWallet: createDemoWallet });
+  // `useBrowserAztecClient` expects { pxeUrl, createWallet(pxe) }. Demo's
+  // `createDemoWallet` takes the node URL directly (and runs its own PXE setup
+  // through EmbeddedWallet), so we wrap it to discard the `pxe` argument.
+  const state = useBrowserAztecClient({
+    pxeUrl: nodeUrl,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    createWallet: ((_pxe: unknown) => createDemoWallet(nodeUrl)) as any,
+  });
   return (
     <AztecProvider client={state.client} loading={state.loading} error={state.error}>
       {state.loading ? (
