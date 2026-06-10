@@ -25,7 +25,9 @@ Umbra provides:
 1. **The facilitator flow** — six-step vote configuration, no ZK knowledge required
 2. **The voter flow** — browser-side proof generation, plain-language eligibility check
 3. **The receipt** — a vote fingerprint that communicates proof-of-inclusion in plain
-   language, coercion-resistant by design (last-vote-wins, wallet-private nullifier)
+   language; receipt-free by design (proves the vote was counted, never the choice).
+   Coercion resistance is explicitly out of scope — key sale and forced abstention
+   are unaddressable with token-based pseudonymous eligibility (MACI positioning)
 4. **Operations** — Umbra runs the vote as a managed service; DAOs don't operate
    cryptographic infrastructure
 
@@ -53,7 +55,11 @@ From the PSE report:
 - Enclave: strong cryptography, no facilitator UX
 - Aragon/Aztec: research prototype (same category as pre-pivot Umbra)
 
-None of these have a managed service model or a non-cryptographer facilitator experience.
+Caveat (verified against the report and project sites, June 2026): Snapshot+Shutter
+is already a toggle-managed service (temporary privacy — votes revealed post-close),
+Vocdoni operates a voting SaaS (app.vocdoni.io, aimed at off-chain organisations),
+and Privote offers hosted MACI. The defensible gap is narrower: a managed service
+for permanent-anonymity onchain DAO governance with facilitator and receipt UX.
 That is the gap Umbra now addresses.
 
 ## First customer target
