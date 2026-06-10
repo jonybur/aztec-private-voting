@@ -39,8 +39,11 @@ function sha256(data: Buffer): Buffer {
 }
 
 function hashLeaf(address: string, balance: bigint): Buffer {
-  // leaf = sha256(address_bytes || balance_bytes)
-  const addrBuf = Buffer.from(address, 'utf8');
+  // leaf = sha256(address_45bytes || balance_8bytes)
+  // MUST match compute_leaf() in contracts/src/merkle.nr:
+  //   address is padded to exactly 45 bytes (bbn1... bech32 addresses fit in 45 chars)
+  const addrBuf = Buffer.alloc(45, 0); // zero-padded to 45 bytes
+  Buffer.from(address, 'utf8').copy(addrBuf);
   const balBuf = Buffer.alloc(8);
   balBuf.writeBigUInt64BE(balance);
   return sha256(Buffer.concat([addrBuf, balBuf]));

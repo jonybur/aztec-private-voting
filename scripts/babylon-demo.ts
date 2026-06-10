@@ -45,7 +45,10 @@ function sha256(data: Buffer): Buffer {
 }
 
 function hashLeaf(address: string, balance: bigint): Buffer {
-  const addrBuf = Buffer.from(address, 'utf8');
+  // Pad address to 45 bytes — MUST match compute_leaf() in contracts/src/merkle.nr
+  // The circuit takes [u8; 45] and hashes sha256(address_45 || balance_8)
+  const addrBuf = Buffer.alloc(45, 0); // zero-padded to 45 bytes
+  Buffer.from(address, 'utf8').copy(addrBuf);
   const balBuf = Buffer.alloc(8);
   balBuf.writeBigUInt64BE(balance);
   return sha256(Buffer.concat([addrBuf, balBuf]));
