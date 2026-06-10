@@ -95,14 +95,28 @@ This is calibrated as a tooling + research grant. Wave 2 tooling grants ranged $
 
 ---
 
+## Alignment with Aztec Horizon
+
+This project implements the [Private Voting Module for DAOs PRD](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md) from the Aztec Horizon repository — Aztec's own curated library of ecosystem applications it wants built. The PRD specifies: admin flow, voter flow, eligibility proofs, encrypted ballots, receipts, quorum rules. Aztec Private Voting implements all of it.
+
+The Horizon PRD lists receipts as an open question: *"Default receipts content voters expect."* `docs/receipt-design.md` answers that question in full, including specific UX decisions, alternatives rejected, and the coercion-resistance analysis. This is the contribution the PRD needed but did not specify.
+
+---
+
 ## Competitive landscape
+
+Source: PSE/Shutter *State of Private Voting 2026* (January 2026) — evaluated 12 protocols against 26 properties.
 
 | Project | Cryptography | Product layer | Receipt UX |
 |---|---|---|---|
-| MACI (EF) | strongest | no product | no |
-| Shutter Network | 881 DAOs | simple UX | no (not truly receipt-free) |
-| NounsDAO/Aztec experiment | Aztec | proof of concept | no |
-| **Aztec Private Voting** | Aztec | DAO-usable | **yes** |
+| MACI V3 (PSE/EF) | strongest coercion resistance | library only, no product | no |
+| Shutter + Snapshot | threshold encryption, 850+ DAOs | Snapshot integration | no — votes revealed post-close |
+| DAVINCI (Vocdoni) | strongest overall, approaching mainnet | no facilitator UX | no |
+| Enclave (Gnosis Guild) | strong, mainnet Q1 2026 | no facilitator UX | no |
+| NounsDAO/Aztec experiment | Aztec | research prototype | no |
+| **Aztec Private Voting** | **Aztec** | **DAO-usable managed service** | **yes — the research contribution** |
+
+No protocol in the PSE report has a facilitator UX or a receipt artifact. That is the gap.
 
 ---
 
