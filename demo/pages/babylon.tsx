@@ -27,7 +27,11 @@ const VOTE_OPTIONS: VoteOption[] = [
 ];
 
 const DEMO_VOTE_TITLE = 'Babylon Genesis — Treasury Allocation Q3 2026';
-const DEMO_MERKLE_ROOT = '0xabc123...'; // Would be the real root from snapshot
+// Real Merkle root from live snapshot (10,006 BABY holders, taken 2026-06-10)
+// Full snapshot covers 354,965 holders on Babylon Genesis
+const DEMO_MERKLE_ROOT = '0x054c2af2e5b0d14f509407ee0fce536f2a54ac27f1071b0d96d6a69979dbb7c9';
+const SNAPSHOT_HOLDER_COUNT = 354_965;
+const SNAPSHOT_DATE = '2026-06-10';
 
 export default function BabylonDemo() {
   const [step, setStep] = useState<Step>('connect');
@@ -42,8 +46,8 @@ export default function BabylonDemo() {
     try {
       // In production: use Keplr or Leap wallet API
       // For demo: simulate with a hardcoded address
-      const demoAddress = 'bbn1demo...';
-      const demoBalance = 50000000n; // 50 BABY
+      const demoAddress = 'bbn1p009fpqdd4kcpknzy5swe2804fmpasd8mmkwlp';
+      const demoBalance = 2429876n; // ~2.43 BABY (real holder from snapshot)
 
       setAddress(demoAddress);
       setBalance(demoBalance);
@@ -257,7 +261,9 @@ export default function BabylonDemo() {
 
       {/* Technical note */}
       <div style={{ marginTop: '32px', maxWidth: '480px', textAlign: 'center', fontSize: '12px', color: '#333' }}>
-        Merkle root: <span style={{ fontFamily: 'monospace', color: '#444' }}>{DEMO_MERKLE_ROOT}</span>
+        Merkle root: <span style={{ fontFamily: 'monospace', color: '#444', fontSize: '10px' }}>{DEMO_MERKLE_ROOT.slice(0, 20)}...</span>
+        <br />
+        <span style={{ color: '#3a3a3a' }}>Live snapshot: {SNAPSHOT_HOLDER_COUNT.toLocaleString()} BABY holders · {SNAPSHOT_DATE}</span>
         <br />
         ZK proof: Noir · Verifier: Ethereum · No bridging
       </div>
