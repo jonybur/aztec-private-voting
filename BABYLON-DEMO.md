@@ -1,19 +1,18 @@
 # Umbra × Babylon — Private Governance Demo
 
 Private BABY token voting using ZK proofs. No bridging. No token movement.
-BABY holders vote privately by proving their balance was in the snapshot — their address and choice are never revealed on-chain.
+Holders vote privately by proving their balance was in the snapshot — their address and choice are never revealed on-chain.
+
+The demo runs against a **synthetic eligibility set**: deterministically generated addresses and balances. No real Babylon Genesis holder data is fetched, stored, or committed anywhere in this repo.
 
 ---
 
 ## Architecture
 
 ```
-Babylon Genesis RPC
-      │
-      ▼
-[babylon-snapshot.ts]  ←── queries /cosmos/bank/v1beta1/denom_owners/ubbn
-      │  builds Merkle tree over all BABY holders at snapshot block
-      │  outputs: merkle-root.json, merkle-tree.json, merkle-paths/<address>.json
+[synthetic-snapshot.ts]  ←── generates deterministic synthetic bbn1... holders
+      │  builds Merkle tree over the synthetic set (depth 20)
+      │  outputs: merkle-root.json, prover-synthetic.json, baby-proof/Prover.toml
       ▼
 Ethereum / IPFS
       │  Merkle root stored on-chain (in VoteConfig.token_address field)
@@ -73,13 +72,15 @@ fn cast_vote_babylon(
 
 The Merkle root is stored in `VoteConfig.token_address` (encoded as a Field). The circuit reconstructs and verifies it privately before queuing the public tally update.
 
-### 3. Snapshot script (`scripts/babylon-snapshot.ts`)
+### 3. Snapshot script (`scripts/synthetic-snapshot.ts`)
 
-Queries the Babylon Genesis Cosmos SDK bank module for all `ubbn` holders, builds the Merkle tree, and outputs:
+Generates a synthetic eligibility set (deterministic fake `bbn1...` addresses — no real holder data is fetched or used), builds the Merkle tree, and outputs:
 
 - `snapshot/merkle-root.json` — root hash + `rootAsField` for VoteConfig
-- `snapshot/merkle-tree.json` — full tree (host on IPFS)
-- `snapshot/merkle-paths/<bbn1...>.json` — individual proof for each voter
+- `snapshot/prover-synthetic.json` — sample holder Merkle path
+- `baby-proof/Prover.toml` — circuit witness for the sample holder
+
+A production deployment would build the same tree from a real holder snapshot at an announced block height; the demo deliberately does not.
 
 ### 4. Demo frontend (`demo/pages/babylon.tsx`)
 
@@ -107,19 +108,14 @@ npx ts-node scripts/babylon-demo.ts --voter bbn1demo_voter_bob_00000000000000000
 
 This runs the full TypeScript implementation of the Noir circuit logic against a 5-holder synthetic snapshot. Output includes the exact witness inputs for the Noir prover.
 
-### Generate a live snapshot
+### Generate the synthetic snapshot
 
 ```bash
-npx ts-node scripts/babylon-snapshot.ts \
-  --rpc https://rpc.nodejumper.io/babylon \
+npx tsx scripts/synthetic-snapshot.ts \
+  --holders 10000 \
   --min-balance 1000000 \
   --out ./snapshot
 ```
-
-Public Babylon Genesis RPC endpoints:
-- `https://rpc.nodejumper.io/babylon`
-- `https://babylon-rpc.polkachu.com`
-- `https://babylon.rpc.kjnodes.com`
 
 The script outputs `snapshot/merkle-root.json` with `rootAsField` — use this as `token_address` when deploying the vote contract.
 
@@ -173,7 +169,7 @@ fn encode_field_as_root(f: Field) -> [u8; 32] {
 }
 ```
 
-Both `babylon-snapshot.ts` (`encodeRootAsField`) and `contracts/src/main.nr` (`encode_field_as_root`) implement matching encode/decode.
+Both `synthetic-snapshot.ts` (`encodeRootAsField`) and `contracts/src/main.nr` (`encode_field_as_root`) implement matching encode/decode.
 
 ---
 
@@ -196,7 +192,7 @@ Both `babylon-snapshot.ts` (`encodeRootAsField`) and `contracts/src/main.nr` (`e
 | `contracts/src/main.nr` | Extended with `cast_vote_babylon` entrypoint |
 | `eligibility.nr` | Token-gated mode (non-zero proof check) replaces the placeholder |
 | `merkle.nr` | New — Cosmos snapshot Merkle membership proof |
-| `babylon-snapshot.ts` | New — Cosmos SDK bank module snapshot |
+| `synthetic-snapshot.ts` | New — synthetic eligibility set generator |
 | `demo/pages/babylon.tsx` | New — Keplr/Leap wallet UI |
 | Nullifier / double-vote logic | Unchanged |
 | Vote receipt design | Unchanged |
@@ -221,8 +217,8 @@ contracts/src/
   eligibility.nr      — open / token / allowlist eligibility modes
 
 scripts/
-  babylon-snapshot.ts — Cosmos RPC → Merkle tree
-  babylon-demo.ts     — Local demo runner (no RPC needed)
+  synthetic-snapshot.ts — Synthetic eligibility set → Merkle tree
+  babylon-demo.ts       — Local demo runner (no RPC needed)
 
 demo/pages/
   babylon.tsx         — React frontend for voters

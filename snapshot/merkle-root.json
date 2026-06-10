@@ -1,15 +1,16 @@
 {
-  "root": "0x054c2af2e5b0d14f509407ee0fce536f2a54ac27f1071b0d96d6a69979dbb7c9",
-  "rootAsField": "0x4c2af2e5b0d14f509407ee0fce536f2a54ac27f1071b0d96d6a69979dbb7c9",
-  "block": "latest",
-  "timestamp": "2026-06-10T04:46:17.910Z",
-  "totalHolders": 10006,
+  "root": "0xdaee10093b80045cbbdc2519dac7d9a9d6c858d51bcba4853e68c37badafcf63",
+  "rootAsField": "0xee10093b80045cbbdc2519dac7d9a9d6c858d51bcba4853e68c37badafcf63",
+  "timestamp": "2026-06-10T09:07:04.976Z",
+  "totalHolders": 10000,
   "minBalance": "1000000",
   "denomination": "ubbn",
-  "note": "Live snapshot from Babylon Genesis. Partial: first 10000 holders by address order. Full snapshot: 354965 holders.",
+  "treeSize": 1048576,
+  "treeDepth": 20,
+  "note": "Synthetic eligibility set. Addresses are deterministically generated and do not correspond to real Babylon Genesis holders.",
   "sample": {
-    "address": "bbn1p009fpqdd4kcpknzy5swe2804fmpasd8mmkwlp",
-    "balance": "2429876",
-    "balanceBABY": 2.429876
+    "address": "bbn10005vhgspfwpnf0lg7ck82z2ql0a6ac57940r0",
+    "balance": "604708979",
+    "balanceBABY": 604.708979
   }
 }

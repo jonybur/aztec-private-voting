@@ -176,7 +176,7 @@ function main() {
   let root: Buffer;
 
   if (snapshotDir) {
-    // Load from snapshot directory (output of babylon-snapshot.ts)
+    // Load from snapshot directory (output of synthetic-snapshot.ts)
     const address = voterArg ?? (() => { throw new Error('--voter required with --snapshot'); })();
     const pathFile = path.join(snapshotDir, 'merkle-paths', `${address}.json`);
     const rootFile = path.join(snapshotDir, 'merkle-root.json');

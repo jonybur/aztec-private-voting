@@ -12,7 +12,7 @@
  *   4. Print the witness inputs ready for the Noir prover
  *
  * For a live demo against the Aztec testnet, run with --live after generating
- * a snapshot with babylon-snapshot.ts.
+ * a snapshot with synthetic-snapshot.ts.
  *
  * Usage:
  *   npx ts-node scripts/babylon-demo.ts
@@ -353,8 +353,8 @@ async function main() {
   printWitness(witness);
 
   console.log('\n\n── Next steps ─────────────────────────────────────────────────────');
-  console.log('1. Generate a live snapshot:');
-  console.log('   npx ts-node scripts/babylon-snapshot.ts --rpc https://rpc.babylon.io');
+  console.log('1. Generate the synthetic snapshot:');
+  console.log('   npx tsx scripts/synthetic-snapshot.ts --holders 10000');
   console.log('');
   console.log('2. Deploy the vote contract with the Merkle root as token_address:');
   console.log('   export MERKLE_ROOT_FIELD=<rootAsField from snapshot/merkle-root.json>');
