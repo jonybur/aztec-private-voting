@@ -7,7 +7,7 @@ rules. Planning sessions clear these.
 
 ## 2026-06-10 11:25 UTC — openclaw / execution agent
 
-### 1. babylon.tsx UI copy still uses L0/L2 language
+### ✅ 1. babylon.tsx UI copy still uses L0/L2 language - RESOLVED by planning session 2026-06-11
 
 `demo/pages/babylon.tsx` contains strings that overstate L1 privacy. Hard rule
 3 says "never reword privacy or security claims" — flagging instead of
@@ -36,7 +36,7 @@ Vote privately. No bridging." — "Vote privately" is acceptable for L1
 I have not edited any of these. Planning session to decide replacement copy
 that matches the L1 ladder rung.
 
-### 2. Babylon demo deployment — does the contract redeploy in M1 count as a "deploy"?
+### 2. (OPEN - awaiting Jony) Babylon demo deployment — does the contract redeploy in M1 count as a "deploy"?
 
 ROADMAP M1 task 1: "Re-deploy PrivateVoting (with cast_vote_babylon) to Aztec
 testnet; update deployments/alpha-testnet.json."
@@ -57,7 +57,7 @@ v5.0.0-nightly.20260525 — not installed), and the
 need a planning-session decision before the deploy is feasible from this
 machine.
 
-### 3. demo/lib/aztec.ts wallet adapter direction
+### ✅ 3. demo/lib/aztec.ts wallet adapter direction - APPROVED by planning session 2026-06-11: raw window.keplr/window.leap is the right call, keep it
 
 M1 task: "Keplr/Leap wallet connection (currently stubbed)." Implementing
 this requires picking an adapter (`@keplr-wallet/cosmos`,
@@ -65,3 +65,18 @@ this requires picking an adapter (`@keplr-wallet/cosmos`,
 the babylon demo's UI surface. Defaulting to raw `window.keplr` + a
 `window.leap` fallback for minimum surface — flag here if planning wants a
 different direction.
+
+
+---
+
+## 2026-06-11 - planning session resolution notes
+
+- Item 1: all four flagged strings rewritten to L1 language in babylon.tsx,
+  including one more the flag missed: "your address never leaves your device"
+  became false once /api/eligibility was added (the connected address is sent
+  to the demo server). Copy now says so.
+- Item 2: stays open for Jony. Note for the deploy plan: the openclaw server
+  lacks the pinned toolchain (max v4.3.0-nightly); the planning machine has
+  v5.0.0-nightly.20260525 installed and the contract compiles there, so the
+  redeploy will likely run from the planning side once Jony provides go-ahead
+  and deployer secrets.

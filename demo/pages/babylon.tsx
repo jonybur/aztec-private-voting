@@ -146,7 +146,7 @@ export default function BabylonDemo() {
           Private Governance Vote
         </h1>
         <p style={{ color: '#555', fontSize: '14px', margin: 0, maxWidth: '400px' }}>
-          Prove your BABY holdings with a ZK proof. Vote privately. No bridging.
+          Prove your BABY holdings with a ZK proof. Vote anonymously. No bridging.
         </p>
       </div>
 
@@ -178,7 +178,8 @@ export default function BabylonDemo() {
             </button>
             <div style={{ marginTop: '16px', padding: '12px', background: '#1a1a1a', borderRadius: '6px', fontSize: '12px', color: '#555' }}>
               <strong style={{ color: '#444' }}>How it works:</strong> A ZK proof of your BABY balance is generated
-              locally in your browser. Your address never leaves your device.
+              locally in your browser. Your address is checked against the snapshot
+              for the demo and is never posted onchain.
             </div>
           </div>
         )}
@@ -262,8 +263,9 @@ export default function BabylonDemo() {
                 {receipt}
               </div>
               <div style={{ fontSize: '12px', color: '#444', marginTop: '8px' }}>
-                This fingerprint proves your vote was counted without revealing your choice.
-                Save it to verify after the vote closes, and keep it private.
+                This fingerprint proves your vote was counted. Keep it private - anyone
+                you show it to can find your ballot and see your choice. Save it to
+                verify after the vote closes.
               </div>
               {proofDurationMs !== null && (
                 <div style={{ fontSize: '11px', color: '#333', marginTop: '6px' }}>
@@ -273,8 +275,9 @@ export default function BabylonDemo() {
             </div>
             <div style={{ fontSize: '12px', color: '#444', padding: '12px', background: '#111', borderRadius: '6px' }}>
               <strong style={{ color: '#555' }}>What this proves:</strong> You held sufficient BABY at
-              snapshot block. Your address and choice are unknown to all observers.
-              Only the aggregate tally will be revealed.
+              the snapshot block, without revealing which holder you are. Ballots are
+              anonymous but recorded in plaintext onchain; an encrypted tally that
+              hides individual choices is on the roadmap (M2).
             </div>
           </div>
         )}
