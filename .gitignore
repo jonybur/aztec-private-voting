@@ -19,3 +19,11 @@ demo/public/private_voting-PrivateVoting.json
 
 # TypeScript build cache
 *.tsbuildinfo
+
+# Full snapshot (large files)
+snapshot/full-holders.json
+snapshot/merkle-tree.json
+
+# Noir build artifacts  
+baby-proof/target/
+baby-proof/out/
