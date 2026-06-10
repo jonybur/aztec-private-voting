@@ -5,7 +5,7 @@ import {
   useBrowserAztecClient,
   setPrivateVotingArtifact,
 } from '@aztec-private-voting/react';
-import type { ContractArtifact } from '@aztec/aztec.js';
+import type { ContractArtifact } from '@aztec/aztec.js/abi';
 
 import { createDemoWallet } from '../lib/aztec';
 
@@ -21,11 +21,11 @@ export function AztecBoot({ children }: AztecBootProps): JSX.Element {
     let cancelled = false;
     const load = async (): Promise<void> => {
       try {
-        const mod = (await import(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          /* webpackIgnore: true */ '../public/private_voting-PrivateVoting.json' as any
-        )) as { default: ContractArtifact } | ContractArtifact;
-        const artifact = 'default' in mod ? mod.default : mod;
+        const res = await fetch('/private_voting-PrivateVoting.json');
+        if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
+        const raw = await res.json();
+        const { loadContractArtifact } = await import('@aztec/aztec.js/abi');
+        const artifact = loadContractArtifact(raw);
         setPrivateVotingArtifact(artifact);
         if (!cancelled) setArtifactReady(true);
       } catch (err) {
@@ -33,22 +33,20 @@ export function AztecBoot({ children }: AztecBootProps): JSX.Element {
           setArtifactError(
             err instanceof Error
               ? err.message
-              : 'Could not load contract artifact. Run `nargo compile` and copy the JSON into demo/public.',
+              : 'Could not load contract artifact.',
           );
         }
       }
     };
     void load();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
-  const pxeUrl = process.env.NEXT_PUBLIC_AZTEC_PXE_URL;
-  if (!pxeUrl) {
+  const nodeUrl = process.env.NEXT_PUBLIC_AZTEC_NODE_URL;
+  if (!nodeUrl) {
     return (
       <div className="boot-error">
-        Missing NEXT_PUBLIC_AZTEC_PXE_URL - copy .env.example to .env.local.
+        Missing NEXT_PUBLIC_AZTEC_NODE_URL - copy .env.example to .env.local.
       </div>
     );
   }
@@ -61,17 +59,17 @@ export function AztecBoot({ children }: AztecBootProps): JSX.Element {
     return <div className="boot-loading">Loading contract artifact...</div>;
   }
 
-  return <ConnectedProvider pxeUrl={pxeUrl}>{children}</ConnectedProvider>;
+  return <ConnectedProvider nodeUrl={nodeUrl}>{children}</ConnectedProvider>;
 }
 
 function ConnectedProvider({
-  pxeUrl,
+  nodeUrl,
   children,
 }: {
-  pxeUrl: string;
+  nodeUrl: string;
   children: ReactNode;
 }): JSX.Element {
-  const state = useBrowserAztecClient({ pxeUrl, createWallet: createDemoWallet });
+  const state = useBrowserAztecClient({ nodeUrl, createWallet: createDemoWallet });
   return (
     <AztecProvider client={state.client} loading={state.loading} error={state.error}>
       {state.loading ? (

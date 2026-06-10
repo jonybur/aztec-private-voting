@@ -13,6 +13,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           <Link href="/">Active vote</Link>
           <Link href="/closed">Closed vote</Link>
           <Link href="/admin">Admin</Link>
+          <Link href="/babylon" style={{ color: '#f97316', fontWeight: 700 }}>Babylon Demo ✦</Link>
         </nav>
       </header>
       <main className="demo-shell__main">
