@@ -1,5 +1,37 @@
 # Aztec Private Voting — Context for Claude Code
 
+## Agent governance (read first - do not edit this section)
+
+Planning sessions (Jony + a frontier model) own roadmaps, specs, positioning,
+public claims, and architecture decisions. Execution agents (openclaw ticks)
+implement tasks already on the roadmap, fix bugs, and run jobs - nothing else.
+
+Hard rules for execution agents:
+
+1. Never edit openspec/ROADMAP.md, openspec specs, CLAUDE.md, AGENTS.md, or
+   anything under "Frozen decisions" below.
+2. Never deploy or publish anything without an explicit instruction from Jony.
+3. Never reword privacy or security claims anywhere (docs, UI copy, GRANT.md,
+   STRATEGY.md). Claims are set in planning sessions.
+4. If a task seems to require breaking rules 1-3, or you are blocked: STOP.
+   Append a note to openspec/INBOX.md (create if missing) and move on.
+5. Smaller scope beats clever scope. If unsure whether something is in scope,
+   it is not.
+
+### Frozen decisions (2026-06-10)
+
+- **Privacy ladder is L1** (anonymous plaintext ballots - see
+  openspec/ROADMAP.md). Never claim receipt-freeness, coercion resistance, or
+  encrypted/hidden tallies anywhere until the M2 design ships.
+- **No live Babylon Genesis holder data.** The eligibility set is synthetic
+  (scripts/synthetic-snapshot.ts). Never fetch, commit, or hardcode real holder
+  addresses or balances. Never re-add a live snapshot fetcher.
+- **Contract privacy mechanisms are fixed**: double-vote guard is a private
+  SingleUseClaim per wallet; the receipt id is a client-generated random field.
+  Changing either requires an approved openspec change.
+- **Toolchain pinned**: aztec v5.0.0-nightly.20260525. Do not bump.
+- Open execution work lives in ROADMAP.md milestone M1. Work those tasks only.
+
 ## What this is
 
 Private ballot infrastructure for DAOs. Four React components + Aztec Noir smart contracts. Members vote privately — only the final tally is revealed.
