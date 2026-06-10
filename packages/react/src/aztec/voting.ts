@@ -12,10 +12,10 @@ export interface VotingContract {
     cast_vote: (
       choice: number,
       eligibilityProof: bigint,
-      nullifier: bigint,
+      receiptId: bigint,
     ) => ContractMethod;
     finalize_vote: () => ContractMethod;
-    verify_vote_counted: (nullifier: bigint) => ContractMethod;
+    verify_vote_counted: (receiptId: bigint) => ContractMethod;
     get_vote_count: () => ContractMethod;
     get_final_tally: (optionIndex: number) => ContractMethod;
     is_finalized: () => ContractMethod;

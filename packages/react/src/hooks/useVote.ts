@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { useAztecClient } from '../aztec/context';
 import { translateVoteError } from '../aztec/errors';
-import { deriveNullifier, fingerprintFromNullifier } from '../aztec/nullifier';
+import { fingerprintFromReceiptId, generateReceiptId } from '../aztec/receipt-id';
 import { loadVotingContract } from '../aztec/voting';
 import type { EligibilityProof, VoteConfig, VoteReceipt } from '../types';
 
@@ -33,22 +33,19 @@ export function useVote(config: VoteConfig): UseVoteResult {
       try {
         const contract = await loadVotingContract(client.wallet, config.contractAddress);
 
-        const nullifier = await deriveNullifier({
-          voteId: config.voteId,
-          walletAddress: client.wallet.getAddress().toString(),
-        });
+        const receiptId = await generateReceiptId();
 
         const eligibilityField = BigInt(input.eligibilityProof.proof);
 
         const tx = await contract.methods
-          .cast_vote(input.choice, eligibilityField, nullifier)
+          .cast_vote(input.choice, eligibilityField, receiptId)
           .send()
           .wait();
 
         const next: VoteReceipt = {
           voteId: config.voteId,
           voteTitle: config.title,
-          nullifier: fingerprintFromNullifier(nullifier),
+          receiptId: fingerprintFromReceiptId(receiptId),
           txHash: tx.txHash.toString(),
           timestamp: Date.now(),
           contractAddress: config.contractAddress,

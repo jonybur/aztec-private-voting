@@ -21,7 +21,7 @@ packages/react/     The React component library
   src/
     components/     VoteEligibilityProof, PrivateBallot, VoteReceipt, VoteResult, VoteAdmin, VoteFacilitator
     hooks/          useVote, useEligibility, useTally, useVoteCount, useFinalizeVote, useVerifyReceipt, useDeployVote
-    aztec/          SDK wiring — context.tsx, voting.ts, nullifier.ts, errors.ts
+    aztec/          SDK wiring — context.tsx, voting.ts, receipt-id.ts, errors.ts
 
 demo/               Next.js demo app
   pages/            index.tsx (active vote), closed.tsx, admin.tsx
@@ -43,11 +43,11 @@ STORIES.md          Same file, root level for quick access
 
 **Private/public split in cast_vote** — the private function `cast_vote` is witness-only; it enqueues `record_vote` (public) which does all state reads and writes. Do not put state reads in the private half.
 
-**Nullifier = poseidon2(voteId, walletAddress)** — deterministic per voter per vote. Known privacy limitation: an observer with the wallet address can check if they voted. Documented in receipt-design.md. Production fix requires wallet-private secret derivation.
+**Double-vote guard = private single-use claim per wallet** — `vote_claims` (Owned<SingleUseClaim>) consumed inside `cast_vote`; its protocol nullifier derives from the caller's keys in the private kernel, so observers cannot link wallets to ballots. The receipt id is a separate, client-generated random field. Known limitation (L1): per-ballot choices are public args of `record_vote` (anonymous but plaintext) — a voter who shares their fingerprint reveals their choice. Encrypted tally is roadmap M2.
 
 ## SDK version
 
-Nargo: `v4.3.0-nightly.20260429`
+Nargo: aztec `v5.0.0-nightly.20260525` (aztec-nargo)
 Aztec.js: `@aztec/aztec.js` pinned in package.json
 
 **Do not upgrade SDK versions without checking the changelog.** The API changes frequently.
@@ -83,7 +83,7 @@ Note: write "onchain" not "on-chain".
 
 ## Current status
 
-All four VON tickets complete (VON-75 through VON-78). Contract compiles cleanly. Pending: testnet deployment to get a live contract address into `deployments/alpha-testnet.json`.
+Contract compiles cleanly on aztec v5.0.0-nightly.20260525 (`~/.aztec/versions/5.0.0-nightly.20260525/bin/aztec-nargo compile`). A pre-Babylon build is deployed to testnet (`deployments/alpha-testnet.json`, 2026-05-18); the current contract (Babylon entrypoint + claim-based double-vote guard) needs a fresh deploy. See openspec/ROADMAP.md for the privacy ladder and milestones.
 
 ## Grant context
 

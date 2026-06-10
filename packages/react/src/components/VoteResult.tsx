@@ -158,9 +158,9 @@ function AuditorPanel({
             ✓
           </span>
           <div>
-            <strong>No address voted twice.</strong> Each accepted ballot inserts a
-            unique nullifier; the contract rejects duplicates at submission, so the
-            on-chain count equals the number of distinct voters.
+            <strong>No wallet voted twice.</strong> Each ballot consumes a private
+            single-use claim inside the proof; the protocol rejects duplicates at
+            submission, so the onchain count equals the number of distinct voters.
           </div>
         </li>
         <li>
@@ -168,9 +168,9 @@ function AuditorPanel({
             ✓
           </span>
           <div>
-            <strong>Individual choices are not readable from chain.</strong> Only
-            the aggregated tally was revealed by{' '}
-            <code>finalize_vote</code>; the per-ballot choice never left the prover.
+            <strong>Ballots are anonymous.</strong> Per-ballot choices are visible
+            onchain but cannot be linked to any wallet. Hiding the choices
+            themselves (an encrypted tally) is on the roadmap and not yet live.
           </div>
         </li>
         <li>

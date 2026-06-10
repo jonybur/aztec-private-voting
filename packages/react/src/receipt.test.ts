@@ -7,7 +7,7 @@ describe('serializeReceipt (APV-32)', () => {
   const receipt: VoteReceipt = {
     voteId: 'vote-123',
     voteTitle: 'Should we ship?',
-    nullifier:
+    receiptId:
       '0x0000000000000000000000000000000000000000000000000000000000000abc',
     txHash: '0xdeadbeef',
     timestamp: 1714238400000,
@@ -24,7 +24,7 @@ describe('serializeReceipt (APV-32)', () => {
     const parsed = JSON.parse(serializeReceipt(receipt)) as Record<string, unknown>;
     expect(parsed.voteId).toBe(receipt.voteId);
     expect(parsed.voteTitle).toBe(receipt.voteTitle);
-    expect(parsed.nullifier).toBe(receipt.nullifier);
+    expect(parsed.receiptId).toBe(receipt.receiptId);
     expect(parsed.txHash).toBe(receipt.txHash);
     expect(parsed.timestamp).toBe(receipt.timestamp);
     expect(parsed.contractAddress).toBe(receipt.contractAddress);

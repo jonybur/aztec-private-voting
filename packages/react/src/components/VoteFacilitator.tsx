@@ -78,8 +78,8 @@ export function VoteFacilitator({
       </dl>
 
       <p className="apv-facilitator__privacy">
-        This is the count only. The tally remains encrypted until you finalize the
-        vote after the deadline.
+        This is the count of ballots received. The contract reveals the official
+        per-option tally once you finalize the vote after the deadline.
       </p>
 
       {countError ? (

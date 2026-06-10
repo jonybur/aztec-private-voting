@@ -24,7 +24,7 @@ export interface EligibilityProof {
 export interface VoteReceipt {
   voteId: string;
   voteTitle: string;
-  nullifier: string;
+  receiptId: string;
   txHash: string;
   timestamp: number;
   contractAddress: string;

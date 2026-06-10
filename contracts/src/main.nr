@@ -9,11 +9,14 @@ pub contract PrivateVoting {
         functions::{external, initializer, only_self, view},
         storage::storage,
     };
-    use aztec::protocol::{address::AztecAddress, traits::{Deserialize, Packable, Serialize}};
-    use aztec::state_vars::{Map, PublicImmutable, PublicMutable};
+    use aztec::protocol::{
+        address::AztecAddress,
+        traits::{Deserialize, Packable, Serialize, ToField},
+    };
+    use aztec::state_vars::{Map, Owned, PublicImmutable, PublicMutable, SingleUseClaim};
 
     use crate::eligibility::verify_eligibility;
-    use crate::merkle::verify_baby_eligibility;
+    use crate::merkle::{encode_field_as_root, hash_bytes_as_field, verify_baby_eligibility};
 
     global MAX_OPTIONS: u32 = 8;
 
@@ -33,7 +36,14 @@ pub contract PrivateVoting {
     struct Storage<Context> {
         admin: PublicImmutable<AztecAddress, Context>,
         config: PublicImmutable<VoteConfig, Context>,
-        nullifiers: Map<Field, PublicMutable<bool, Context>, Context>,
+        // voter => single use claim ensuring each wallet votes at most once.
+        // The claim's protocol nullifier is derived from the caller's keys in
+        // the private kernel, so it is not linkable to the wallet by observers.
+        vote_claims: Owned<SingleUseClaim<Context>, Context>,
+        // receipt_id => recorded. Receipt ids are client-generated random
+        // fields (or, in Babylon mode, derived from the snapshot leaf) and
+        // back the verify_vote_counted receipt check.
+        receipts: Map<Field, PublicMutable<bool, Context>, Context>,
         tally: Map<u8, PublicMutable<u64, Context>, Context>,
         vote_count: PublicMutable<u64, Context>,
         is_finalized: PublicMutable<bool, Context>,
@@ -49,49 +59,56 @@ pub contract PrivateVoting {
         self.storage.config.initialize(config);
     }
 
-    // Voter casts a private ballot. The choice and the eligibility proof are
-    // private witnesses; only the nullifier and the queued tally update are
-    // observable on the public side.
+    // Voter casts a private ballot. Double voting is prevented by a private
+    // single-use claim per wallet: its protocol nullifier is derived from the
+    // caller's keys inside the private kernel, so no observer can link a
+    // wallet to a ballot. The receipt_id is a client-generated random field
+    // used only for the receipt check; it must not be derived from the wallet.
+    //
+    // Known limitation (L1 privacy): vote_choice is a public argument of the
+    // enqueued record_vote call, so per-ballot choices are publicly visible
+    // (anonymous, but plaintext). A voter who shares their receipt_id reveals
+    // their choice. Hidden tallies are the M2 roadmap item.
     #[external("private")]
-    fn cast_vote(vote_choice: u8, eligibility_proof: Field, nullifier: Field) {
-        self.enqueue_self.record_vote(vote_choice, eligibility_proof, nullifier);
+    fn cast_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field) {
+        self.storage.vote_claims.at(self.msg_sender()).claim();
+        self.enqueue_self.record_vote(vote_choice, eligibility_proof, receipt_id);
     }
 
     // Babylon governance entrypoint: voter proves BABY token holding via
     // a Merkle membership proof over the snapshot taken at vote creation.
     //
     // Private witnesses (never visible on-chain):
-    //   address_bytes — bbn1... cosmos address as UTF-8 (45 bytes)
-    //   balance       — claimed ubbn balance at snapshot
-    //   merkle_path   — sibling hashes from leaf to root (depth 20)
-    //   merkle_indices — direction bits (0=left, 1=right) at each level
+    //   address_bytes - bbn1... cosmos address as UTF-8 (45 bytes)
+    //   balance       - claimed ubbn balance at snapshot
+    //   merkle_path   - sibling hashes from leaf to root (depth 20)
+    //   merkle_indices - direction bits (0=left, 1=right) at each level
     //
     // Public inputs (committed in the VoteConfig):
-    //   merkle_root   — stored in token_address field (32-byte encoding)
-    //   min_balance   — stored in min_token_balance (ubbn)
+    //   merkle_root   - stored in token_address field (32-byte encoding)
+    //   min_balance   - stored in min_token_balance (ubbn)
     //
     // The Merkle root is stored in the config's token_address field as a
     // Field element (lower 31 bytes of the 32-byte SHA-256 root).
     #[external("private")]
     fn cast_vote_babylon(
         vote_choice: u8,
-        nullifier: Field,
         address_bytes: [u8; 45],
         balance: u64,
         merkle_path: [[u8; 32]; 20],
-        merkle_indices: [u1; 20],
+        merkle_indices: [bool; 20],
     ) {
         let config = self.storage.config.read();
 
         // Reconstruct the committed Merkle root from the config.
         // The deployer encodes the root as: token_address = Field(root[1..32])
-        // (first byte dropped to fit in a Field — matches encode_root_as_field
-        //  in babylon-snapshot.ts)
+        // (first byte dropped to fit in a Field - matches encode_root_as_field
+        //  in synthetic-snapshot.ts)
         let root_field = config.token_address.to_field();
         let root_bytes = encode_field_as_root(root_field);
 
         // Verify BABY membership + balance threshold inside the circuit.
-        verify_baby_eligibility(
+        let leaf = verify_baby_eligibility(
             address_bytes,
             balance,
             config.min_token_balance,
@@ -100,16 +117,23 @@ pub contract PrivateVoting {
             root_bytes,
         );
 
-        // Nullifier is derived privately — use 1 as dummy proof field
-        // (eligibility is already proven above by the circuit).
-        self.enqueue_self.record_vote(vote_choice, 1, nullifier);
+        // Per-holder nullifier derived in-circuit from the snapshot leaf:
+        // one vote per snapshot entry. Known limitation: the leaf is computed
+        // from public snapshot data (address + balance), so an observer with
+        // the snapshot can tell WHETHER a holder voted. Fixing this requires
+        // an in-circuit ownership proof (Cosmos secp256k1 signature) with a
+        // holder-secret-derived nullifier - see ROADMAP.md M2.
+        let holder_nullifier = hash_bytes_as_field(leaf);
+
+        // Eligibility already proven above - pass 1 as the dummy proof field.
+        self.enqueue_self.record_vote(vote_choice, 1, holder_nullifier);
     }
 
     // The public half of cast_vote. Validates timing, eligibility, the
-    // double-vote guard, and increments the per-option counter.
+    // receipt uniqueness guard, and increments the per-option counter.
     #[external("public")]
     #[only_self]
-    fn record_vote(vote_choice: u8, eligibility_proof: Field, nullifier: Field) {
+    fn record_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field) {
         let config = self.storage.config.read();
         assert((vote_choice as u32) < (config.options_count as u32), "invalid choice");
 
@@ -120,9 +144,9 @@ pub contract PrivateVoting {
 
         verify_eligibility(eligibility_proof, config);
 
-        let already_used = self.storage.nullifiers.at(nullifier).read();
-        assert(already_used == false, "nullifier already used");
-        self.storage.nullifiers.at(nullifier).write(true);
+        let already_used = self.storage.receipts.at(receipt_id).read();
+        assert(already_used == false, "receipt already used");
+        self.storage.receipts.at(receipt_id).write(true);
 
         let prev = self.storage.tally.at(vote_choice).read();
         self.storage.tally.at(vote_choice).write(prev + 1);
@@ -143,8 +167,8 @@ pub contract PrivateVoting {
 
     #[external("public")]
     #[view]
-    fn verify_vote_counted(nullifier: Field) -> pub bool {
-        self.storage.nullifiers.at(nullifier).read()
+    fn verify_vote_counted(receipt_id: Field) -> pub bool {
+        self.storage.receipts.at(receipt_id).read()
     }
 
     #[external("public")]
@@ -179,17 +203,4 @@ pub contract PrivateVoting {
     fn get_merkle_root() -> pub Field {
         self.storage.config.read().token_address.to_field()
     }
-}
-
-// Encode a Field (31 bytes) back into a 32-byte Merkle root.
-// Inverse of encode_root_as_field in babylon-snapshot.ts:
-//   root[0] = 0x00 (padding), root[1..32] = field bytes
-fn encode_field_as_root(f: Field) -> [u8; 32] {
-    let field_bytes = f.to_be_bytes::<31>();
-    let mut root = [0u8; 32];
-    root[0] = 0;
-    for i in 0..31 {
-        root[i + 1] = field_bytes[i];
-    }
-    root
 }

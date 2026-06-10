@@ -1,5 +1,5 @@
 export function translateVoteError(message: string): string {
-  if (/nullifier already used/i.test(message)) {
+  if (/nullifier already used|receipt already used|claim already used/i.test(message)) {
     return 'You have already voted on this proposal.';
   }
   if (/voting ended/i.test(message)) {

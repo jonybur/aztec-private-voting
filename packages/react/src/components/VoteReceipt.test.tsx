@@ -8,7 +8,7 @@ import type { VoteReceipt as VoteReceiptData } from '../types';
 const receipt: VoteReceiptData = {
   voteId: 'vote-1',
   voteTitle: 'Should we ship?',
-  nullifier:
+  receiptId:
     '0x000000000000000000000000000000000000000000000000000000000000abcd',
   txHash: '0xdeadbeef',
   timestamp: 1714238400000,

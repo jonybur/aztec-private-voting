@@ -84,7 +84,7 @@ export function PrivateBallot({
       ) : null}
 
       <button type="submit" className="apv-ballot__submit" disabled={disabled}>
-        {submitting ? 'Submitting your encrypted ballot...' : 'Cast Private Vote'}
+        {submitting ? 'Submitting your anonymous ballot...' : 'Cast Private Vote'}
       </button>
     </form>
   );

@@ -21,7 +21,7 @@ export function VoteReceipt({
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async (): Promise<void> => {
-    await navigator.clipboard.writeText(receipt.nullifier);
+    await navigator.clipboard.writeText(receipt.receiptId);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1500);
   };
@@ -68,7 +68,7 @@ export function VoteReceipt({
         <label htmlFor="apv-fingerprint">Your vote fingerprint</label>
         <div className="apv-receipt__fingerprint-row">
           <code id="apv-fingerprint" className="apv-receipt__fingerprint-value">
-            {shortenHex(receipt.nullifier, 6, 4)}
+            {shortenHex(receipt.receiptId, 6, 4)}
           </code>
           <button
             type="button"
@@ -83,7 +83,8 @@ export function VoteReceipt({
 
       <p className="apv-receipt__explainer">
         This fingerprint proves your vote was counted without revealing how you
-        voted. Save it to verify after the vote closes.
+        voted. Save it to verify after the vote closes, and keep it private -
+        treat it like a ballot stub, not something to share.
       </p>
 
       <div className="apv-receipt__actions">

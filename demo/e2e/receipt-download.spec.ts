@@ -23,7 +23,7 @@ test.describe('Receipt download (APV-32)', () => {
 
     expect(parsed.kind).toBe('aztec-private-voting-receipt');
     expect(parsed.version).toBe(1);
-    expect(parsed.nullifier).toMatch(/^0x[0-9a-f]{64}$/);
+    expect(parsed.receiptId).toMatch(/^0x[0-9a-f]{64}$/);
     expect(parsed.txHash).toMatch(/^0x/);
     expect(typeof parsed.timestamp).toBe('number');
     expect(parsed.contractAddress).toBeTruthy();
