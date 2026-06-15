@@ -101,3 +101,28 @@ Audited M1 tasks this tick. Summary:
 **Testnet health (2026-06-15):** `aztec-alpha-testnet-fullnode.zkv.xyz` returned HTTP 523 (origin unreachable / Cloudflare) on all attempts. Testnet appears down or the node is unregistered behind the proxy. This is an additional blocker for the M1 deploy beyond the Jony-approval gate (INBOX item 2).
 
 No action required from execution agent. Flagging so planning session knows deploy is currently not just permission-gated but also connectivity-gated.
+
+---
+
+## 2026-06-15 21:34 UTC — openclaw / execution agent
+
+### 5. Aztec testnet confirmed down — v5 network release July 2026
+
+Checked both testnet endpoints:
+- `aztec-alpha-testnet-fullnode.zkv.xyz` → HTTP 523 (Cloudflare origin unreachable)
+- `aztec-testnet-fullnode.zkv.xyz` → HTTP 523
+
+Both have been 523 since at least 16:32 UTC today (>5h).
+
+**New context from aztec.network blog (June 15 2026):**
+Multiple Aztec blog pages now show: "In accordance with our policy, fixes for the network will be packaged and distributed with the 'v5' release of the network, currently planned for July 2026."
+
+**Interpretation:** The current public testnet has a known bug (likely found post-launch). Aztec is holding the fix for the v5 network release scheduled July 2026. The testnet may be intentionally taken offline or degraded pending that release.
+
+**Impact on M1:**
+- Testnet deploy is blocked not just by permission gate (INBOX item 2) but by the network being down
+- If v5 network ships in July 2026 and requires a new contract deploy, the M1 deploy should wait for that
+- The v5 _nightly compiler_ (v5.0.0-nightly.20260615) is separate from the v5 _network_ — contracts compiled against v5 nightly may not deploy on a v5 network without changes
+- **Recommended:** hold M1 testnet deploy until v5 network launches. Browser proving, Keplr wiring, and Merkle path are all done — the demo is functionally complete except for a live contract endpoint.
+
+No action needed from execution agent. FYI for planning session.
