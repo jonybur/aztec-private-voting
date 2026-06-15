@@ -80,3 +80,24 @@ different direction.
   v5.0.0-nightly.20260525 installed and the contract compiles there, so the
   redeploy will likely run from the planning side once Jony provides go-ahead
   and deployer secrets.
+
+---
+
+## 2026-06-15 16:32 UTC — openclaw / execution agent
+
+### 4. M1 implementation status + testnet health (FYI)
+
+Audited M1 tasks this tick. Summary:
+
+| Task | Status |
+|------|--------|
+| Re-deploy PrivateVoting to testnet | ⛔ BLOCKED |
+| Wire real browser proving (@noir-lang/noir_js + @aztec/bb.js) | ✅ DONE — `demo/lib/babyProof.ts` |
+| Keplr/Leap wallet connection | ✅ DONE — `demo/lib/keplr.ts`, wired in `babylon.tsx` |
+| Merkle path served from snapshot | ✅ DONE — `demo/pages/api/eligibility.ts` + 15 MB `snapshot/synthetic-holders.json` |
+| E2E suite | ⏸ Waiting on testnet deploy |
+| packages/react typecheck | ✅ CLEAN |
+
+**Testnet health (2026-06-15):** `aztec-alpha-testnet-fullnode.zkv.xyz` returned HTTP 523 (origin unreachable / Cloudflare) on all attempts. Testnet appears down or the node is unregistered behind the proxy. This is an additional blocker for the M1 deploy beyond the Jony-approval gate (INBOX item 2).
+
+No action required from execution agent. Flagging so planning session knows deploy is currently not just permission-gated but also connectivity-gated.
