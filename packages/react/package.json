@@ -30,8 +30,8 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@aztec/aztec.js": "0.85.0-alpha-testnet.11",
-    "@aztec/foundation": "0.85.0-alpha-testnet.11"
+    "@aztec/aztec.js": "5.0.0-rc.1",
+    "@aztec/foundation": "5.0.0-rc.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
