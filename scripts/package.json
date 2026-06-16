@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "deploy:testnet": "tsx deploy-testnet.ts"
+    "deploy:testnet": "tsx deploy-testnet.ts",
+    "verify:testnet": "tsx verify-deployment.ts"
   },
   "dependencies": {
     "@aztec/accounts": "5.0.0-rc.1",
