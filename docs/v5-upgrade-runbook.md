@@ -52,27 +52,42 @@ curl -s -X POST https://rpc.testnet.aztec-labs.com \
 
 Block number should be > 0 and incrementing.
 
-### 3b. Retry fee juice claim (v5 CLI)
-
-The L1→L2 bridge bug is fixed in v5. Retry the claim from `memory/umbra-claim-pending.md`:
+### 3b. Install v5 CLI
 
 ```bash
-# Install v5 CLI (update version as needed)
 export AZTEC_VERSION=5.0.0-rc.1
 curl -fsSL https://install.aztec.network | bash
-# OR: npx @aztec/aztec@latest
-
-export AZTEC_NODE_URL=https://rpc.testnet.aztec-labs.com
-
-# Claim fee juice for deployer2 (params in memory/umbra-claim-pending.md)
-aztec-cli faucet claim \
-  --secret 0x0276531fcb42a3097b3d13cc21ce65ab96cc7aae57c336f0bdb6b1328eb3f3f7 \
-  --claim-amount 100000000000000000000 \
-  --claim-secret 0x0b7a37023821edc35df3ce5bc85eaf5e24318e49f3299f0ac35e1af5d4ae9f4d \
-  --message-leaf-index 81928192
+# Adds ~/.aztec/bin to PATH; may need to restart shell
+export PATH="$HOME/.aztec/bin:$PATH"
 ```
 
-### 3c. Deploy contract
+### 3c. Check fee juice balance for deployer2
+
+The L1→L2 bridge bug is fixed in v5. The pending L1 message may have been processed automatically by the new sequencer. Check first:
+
+```bash
+export AZTEC_NODE_URL=https://rpc.testnet.aztec-labs.com
+
+aztec-wallet get-fee-juice-balance \
+  0x270bf32fab16dae45123d09cfc69882117ee0a48c9cc54e51c757fdb8ea48343 \
+  --node-url $AZTEC_NODE_URL
+```
+
+**If balance > 0:** Pending claim was processed. Skip to Step 3d.  
+**If balance = 0 (or testnet state reset):** Bridge fresh fee juice:
+
+```bash
+# Bridge 1 ETH of fee juice for deployer2 (requires Sepolia ETH in wallet)
+# Note: if testnet resets, the Nethermind faucet at aztec-faucet.nethermind.io
+# will dispense test ETH directly — no Sepolia needed.
+aztec-wallet bridge-fee-juice 1000000000000000000 \
+  0x270bf32fab16dae45123d09cfc69882117ee0a48c9cc54e51c757fdb8ea48343 \
+  --node-url $AZTEC_NODE_URL
+
+# Wait ~2-5 min for L1→L2 message to be processed, then re-check balance.
+```
+
+### 3d. Deploy contract
 
 ```bash
 aztec-wallet deploy contracts/target/private_voting-PrivateVoting.json \
@@ -109,4 +124,4 @@ If a fresh v5 deploy completes (Step 3), update the forum post contract address 
 
 ---
 
-_Created: 2026-06-16 (tick-3043)_
+_Created: 2026-06-16 (tick-3043). Corrected: tick-3044 — replaced non-existent `aztec-cli faucet claim` with `aztec-wallet get-fee-juice-balance` + `bridge-fee-juice` (correct v4/v5 CLI). Added balance-check step before fresh bridge._
