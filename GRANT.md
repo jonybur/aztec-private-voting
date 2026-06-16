@@ -31,13 +31,14 @@ The full design rationale — including the specific copy decisions, the alterna
 
 | Layer | Status |
 |---|---|
-| `PrivateVoting.nr` — Noir contract (Aztec-NR **v5.0.0-nightly**) | ✅ merged + compiled |
+| `PrivateVoting.nr` — Noir contract (Aztec-NR **v5.0.0-rc.1**) | ✅ merged + compiled |
 | `@aztec-private-voting/react` — component library | ✅ merged |
 | Playwright + Noir unit tests (41 user stories) | ✅ merged |
-| Aztec-NR v5 port | ✅ confirmed (zero code changes — all APIs identical to v4.3) |
-| Alpha testnet deployment | ✅ **LIVE** — `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (Sepolia/11155111, 2026-05-18) |
+| Aztec-NR v5 port | ✅ confirmed (zero code changes) |
+| Alpha testnet deployment | ✅ **LIVE** |
+| BABY token Merkle governance demo (Babylon team) | ✅ **LIVE** |
 
-The contracts compile cleanly against **Aztec-NR v5.0.0-nightly.20260518** (latest nightly as of 2026-05-18). The tag was bumped incrementally from v4.3.0-nightly through v5 nightly — zero contract code changes were required across any version. All import paths, function attribute macros, state variables, and trait derives are identical between v4.3 and v5. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Production deployment targets a stable v5 release.
+The contracts compile cleanly against **Aztec-NR v5.0.0-rc.1** (released June 15, 2026 — first testnet RC). Zero contract code changes were required across any version from v4.3 to v5.0.0-rc.1. All import paths, function attribute macros, state variables, and trait derives are identical. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Testnet v5 upgrade scheduled June 17, 2026.
 
 The contract is live on Aztec Alpha Testnet at `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (deploy tx `0x095bfd5cf1fe53fd2b55f2896124ef3f8b43ffd7f70a688bb967d6998e2e1dc5`, 2026-05-18T18:03Z, deployer `0x065824b54ec4c5a14de7c38e7e47aa05da6604809bb4959664e737b3e42fe238`).
 
