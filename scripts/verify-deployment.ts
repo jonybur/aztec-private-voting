@@ -52,7 +52,7 @@ async function main(): Promise<void> {
   const pxeUrl = process.env['AZTEC_PXE_URL'] ?? 'http://localhost:8080';
   const deploymentFile =
     process.env['DEPLOYMENT_FILE'] ??
-    path.join(repoRoot, 'deployments/testnet-v1.json');
+    path.join(repoRoot, 'deployments/alpha-testnet.json');
   const artifactPath = path.join(
     repoRoot,
     'contracts/target/private_voting-PrivateVoting.json',
