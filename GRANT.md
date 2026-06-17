@@ -38,7 +38,7 @@ The full design rationale — including the specific copy decisions, the alterna
 | Alpha testnet deployment | ✅ **LIVE** |
 | BABY token Merkle governance demo (Babylon team) | ✅ **LIVE** |
 
-The contracts compile cleanly against **Aztec-NR v5.0.0-rc.1** (released June 15, 2026 — first testnet RC). Zero contract code changes were required across any version from v4.3 to v5.0.0-rc.1. All import paths, function attribute macros, state variables, and trait derives are identical. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Testnet v5 upgrade scheduled June 17, 2026.
+The contracts compile cleanly against **Aztec-NR v5.0.0-rc.1** (released June 15, 2026 — first testnet RC). Zero contract code changes were required across any version from v4.3 to v5.0.0-rc.1. All import paths, function attribute macros, state variables, and trait derives are identical. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Testnet v5 upgrade began June 17 2026 at 14:07 UTC (in progress — network down during migration).
 
 The contract is live on Aztec Alpha Testnet at `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (deploy tx `0x095bfd5cf1fe53fd2b55f2896124ef3f8b43ffd7f70a688bb967d6998e2e1dc5`, 2026-05-18T18:03Z, deployer `0x065824b54ec4c5a14de7c38e7e47aa05da6604809bb4959664e737b3e42fe238`).
 
