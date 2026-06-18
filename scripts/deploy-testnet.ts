@@ -11,7 +11,7 @@
  * Prerequisites:
  *   1. `nargo compile` has produced contracts/target/private_voting-PrivateVoting.json
  *   2. A PXE is running and pointed at the testnet node
- *      (https://rpc.testnet.aztec-labs.com)
+ *      (https://v5.testnet.rpc.aztec-labs.com)
  *   3. The deployer wallet is funded with testnet fee tokens
  */
 import fs from 'node:fs/promises';
