@@ -35,12 +35,12 @@ The full design rationale — including the specific copy decisions, the alterna
 | `@aztec-private-voting/react` — component library | ✅ merged |
 | Playwright + Noir unit tests (41 user stories) | ✅ merged |
 | Aztec-NR v5 port | ✅ confirmed (zero code changes) |
-| Alpha testnet deployment | ✅ **LIVE** |
+| Alpha testnet deployment | ⚠️ **Redeploying to v5** (state reset Jun 18) |
 | BABY token Merkle governance demo (Babylon team) | ✅ **LIVE** |
 
-The contracts compile cleanly against **Aztec-NR v5.0.0-rc.1** (released June 15, 2026 — first testnet RC). Zero contract code changes were required across any version from v4.3 to v5.0.0-rc.1. All import paths, function attribute macros, state variables, and trait derives are identical. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5. Testnet v5 upgrade began June 17 2026 at 14:07 UTC (in progress — network down during migration).
+The contracts compile cleanly against **Aztec-NR v5.0.0-rc.1** (released June 15, 2026 — first testnet RC). Zero contract code changes were required across any version from v4.3 to v5.0.0-rc.1. All import paths, function attribute macros, state variables, and trait derives are identical. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5.
 
-The contract is live on Aztec Alpha Testnet at `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (deploy tx `0x095bfd5cf1fe53fd2b55f2896124ef3f8b43ffd7f70a688bb967d6998e2e1dc5`, 2026-05-18T18:03Z, deployer `0x065824b54ec4c5a14de7c38e7e47aa05da6604809bb4959664e737b3e42fe238`).
+**v5 testnet upgrade complete (Jun 18 2026):** New endpoint `https://v5.testnet.rpc.aztec-labs.com` is live. The upgrade included a testnet state reset — the v4 contract `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (deployed 2026-05-18) is no longer accessible. Redeployment to v5 is in progress; the contract address in this document will be updated before forum submission.
 
 ---
 
