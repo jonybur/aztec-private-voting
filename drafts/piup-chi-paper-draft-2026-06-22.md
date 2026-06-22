@@ -222,13 +222,123 @@ The M2 milestone added in-circuit secp256k1 ownership verification for Babylon-c
 **H3:** C < all others on Q1 ("does this prove your vote was counted?") — reversal risk from "nullified" reading.  
 **H4:** Confidence(B) > Confidence(A), B > C, B > D — confirmation code borrows perceived competence from eCommerce familiarity.
 
-_[Subsections 4.2–4.6: Study design (4-condition between-subjects, N=200 Prolific), stimuli (condition-specific HTML screenshots), measures (Q1–Q4 binary + Q5 free text + confidence Likert), analysis plan (14 pre-registered tests, 4 Holm families), results. To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT].]_
+### 4.2 Study design
+
+Between-subjects, 4 × 1 factorial experiment. The single manipulated factor was the receipt identifier label. Participants were randomly assigned to one of four conditions:
+
+| Condition | Label | Category |
+|-----------|-------|----------|
+| A | vote fingerprint | Metaphor-activating (current production) |
+| B | confirmation code | eCommerce convention |
+| C | nullifier | Cryptographically precise |
+| D | receipt ID | Generic / neutral |
+
+All other receipt elements — the status line, the protective framing copy, the download prompt, and the verification affordance — were held constant across conditions.
+
+**Participants.** Recruitment was through Prolific (online panel). Inclusion criteria: US-resident adults, age 18+, English as first language or fluent, self-reporting at least one online vote, poll, or official election in the past 12 months, no prior participation in this study. Exclusion criteria: self-reported software engineers (to prevent domain-expert contamination of the comprehension measures), participants failing both attention checks, and participants completing the study in fewer than 90 seconds (indicating non-serious completion).
+
+Target sample: n = 50 per condition (N = 200 total), preceded by an instrument-validation pilot of n = 10 per condition (N = 40).
+
+**Power.** For the primary composite-accuracy omnibus (chi-squared test of proportions, 4 conditions, largest expected pairwise difference 20 pp), α = 0.05, power = 0.80 requires n = 49 per cell (G\*Power 3.1.9.7). For the H2 primary endpoint (Q2 accuracy, A vs. B, one-tailed, expected difference 15 pp), n = 50 is marginally underpowered; if the pilot suggests the Q2 effect size is smaller than anticipated, n will be expanded to 55 per cell (N = 220) before full launch. No interim stopping rules for efficacy or futility are pre-registered; the pilot is for instrument validation only.
+
+### 4.3 Stimuli
+
+Each participant was shown a single static screenshot of the post-vote receipt screen under their assigned condition. The four stimuli (condition-a.html through condition-d.html) are identical in structure, layout, and copy except for the receipt identifier label and its ARIA label. The held-constant elements include: the submission status line (“Your vote was cast”), the protective framing sentence, the hex-formatted identifier value, the copy button, the download prompt, and the collapsed verification section. The screenshot method controls stimulus presentation across participants and eliminates variability introduced by an interactive voting flow; the primary ecological validity cost is the absence of choice-commitment context (see §6.5).
+
+Stimuli were committed to the repository at commit `fb710f5` before any participant data were collected. Any post-registration change to the stimuli HTML constitutes a pre-registered amendment and is noted in the deviations log.
+
+### 4.4 Measures
+
+**Comprehension accuracy (primary; binary correct/incorrect per item).**
+
+*Q1 (Inclusion inference):* “Does this value prove that your vote was counted?” Correct answer: Yes; foils: No, Unsure. Tests whether participants correctly infer the ballot-inclusion event from the receipt.
+
+*Q2 (Choice-blindness, H2 primary endpoint):* “Does this value prove which option you chose?” Correct answer: No; foils: Yes, Unsure. Tests whether participants understand that the identifier encodes no vote-choice information.
+
+*Q3 (Coercion-scenario privacy model):* “If a coercive employer asked you to send them a screenshot of this screen as proof of your vote, could they learn how you voted?” Correct answer: No; foils: Yes, Unsure. A clarification is displayed: “Assume they can only see what is on this screen.” Tests application of the privacy model to a concrete coercion scenario; this wording is fixed by the pre-registration and cannot be changed without amendment.
+
+*Q4 (Behavioral consequence of receipt loss):* “What would happen if you lost this value?” Correct answer: You could still verify your vote was counted, but you would not have proof the receipt is yours; foils: you would lose your vote; the system keeps a backup; your vote would be reversed. Tests understanding that the vote is durable and not rescindable via the receipt.
+
+*Composite accuracy:* Proportion correct on Q1–Q4 (range 0–1.0). This is the primary RQ1 measure.
+
+*Q5 (open-ended, scored separately):* “Why might the system choose not to show you your vote choice on this screen?” Scored 0–2: 0 = no mention of privacy or coercion protection; 1 = mentions privacy but not coercion; 2 = correctly identifies both privacy and coercion protection as motivations. Scored by two independent raters; inter-rater reliability threshold: Cohen’s κ ≥ 0.70. Q5 is excluded from composite accuracy and analysed separately (§4.5).
+
+**Confidence (secondary; 7-point Likert).** After each comprehension item Q1–Q5, participants rated their confidence (1 = not at all confident, 7 = completely confident). Confidence composite = mean across Q1–Q4.
+
+**Mental model quality (exploratory; free text).** After Q1–Q4, participants answered: “In your own words, what does this value prove about your vote?” Scored 0–2: 0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states that vote choice is hidden from the system. Two raters; κ ≥ 0.70 required.
+
+**Behavioral intent.** “If this screen appeared after a real vote, would you download this file?” (5-point: Definitely yes → Definitely no.)
+
+**Covariates (collected but not pre-specified as primary analyses):** age (categorical), prior voting experience, technology self-efficacy (3-item Hargittai scale), and two Prolific attention checks.
+
+### 4.5 Analysis plan
+
+The study pre-registers 14 confirmatory tests across four Holm families. Holm–Bonferroni sequential correction is applied within each family independently; no cross-family correction is applied.
+
+| Family | Pre-registered tests | m |
+|--------|----------------------|---|
+| H1 (fingerprint > receipt ID on privacy items) | Q2(A>D), Q3(A>D) | 2 |
+| H2 (dissociation: fingerprint vs. confirmation code) | Q2(A>B) one-tailed, Q3(A>B) one-tailed, TOST composite A≈B ±10 pp | 3 |
+| H3 (nullifier underperforms) | Q1(C<A), Q1(C<B), Q1(C<D), composite(C<each) | 6 |
+| H4 (confirmation code overconfidence) | confidence(B>A), confidence(B>C), confidence(B>D) | 3 |
+
+**H1** (m = 2). Two one-tailed chi-squared tests on Q2 and Q3 accuracy, A vs. D. Both must survive Holm correction within the family.
+
+**H2** (m = 3; primary endpoint). H2-primary: Q2 accuracy, A vs. B, one-tailed chi-squared (α = 0.05); this is the single pre-specified primary endpoint. H2-secondary: Q3 accuracy, A vs. B, one-tailed. H2-tertiary: two one-sided tests (TOST) on composite accuracy, A vs. B, equivalence bounds ±10 percentage points (α = 0.05 per one-sided test). H2 outcome classification: **supported** if H2-primary significant (A > B on Q2) AND H2-tertiary establishes equivalence; **null** if H2-primary non-significant AND equivalence established; **reversed** if a post-hoc B > A test on Q2 is significant AND equivalence established (or B > A on composite). All patterns are actionable production decisions (see §6.2).
+
+**H3** (m = 6). Three one-tailed chi-squared tests (Q1 accuracy, C vs. A, B, D) plus a composite-accuracy omnibus; pairwise extractions for C vs. each other condition. Support criterion: C significantly lower than at least 2 of the 3 other conditions on Q1 after Holm correction. An ethics clause pre-specifies that if the pilot shows < 30% Q1 accuracy in Condition C, a fifth label may substitute for C before the full launch.
+
+**H4** (m = 3). One-way ANOVA on confidence composite; if significant, Tukey HSD for B vs. A, C, D. Calibration analysis: Spearman rank correlation between per-participant accuracy score (Q1–Q4) and confidence composite, computed per condition. H4 predicts the B correlation will be smaller (lower calibration) than A.
+
+**Q5 analysis.** Kruskal–Wallis test across 4 conditions; Dunn’s pairwise post-hoc (Holm). A random sample of 25 responses per condition is included in the published write-up to illustrate the range of mental model articulation.
+
+**Confidence interval standard.** All proportions: Wilson 95% CI. All means: 95% CI from t-distribution. All odds ratios: log-scale 95% CI.
+
+### 4.6 Results
+
+_[To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT]. Pilot target: 2026-Q3; full launch conditional on instrument validation. Reporting structure: omnibus results, then per-hypothesis family in H1–H4 order, then Q5 open-text analysis, then exploratory comparisons.]_
 
 ---
 
 ## 5. Study 2: Explanation Effects and Calibration Interventions
 
-_[Section to be written after Study 1 data. Summarize the 2×2 design (L: fingerprint vs. confirmation code × E: explanation present vs. absent), the I (calibration intervention) factor, the interactive prototype platform (VoteReceipt.tsx in study mode), and the analysis plan. Primary endpoint: E main effect on absent-content accuracy (Q-AC). Conditional on H4 in Study 1: calibration intervention test (H2.3). Full design in docs/piup-study2-design-note-2026-06-22.md.]_
+Study 1 isolates the label effect while holding the receipt’s explanatory copy constant. This means Study 1 cannot answer a prior question: does the explicit absent-choice explanation (“Your vote is not shown here. This is intentional.”) actually change comprehension, or is the label doing all the work? Study 2 isolates the explanation as the independent variable.
+
+### 5.1 Research questions
+
+**RQ1 (Explanation effect).** Does an explicit absent-choice explanation in the receipt increase correct absent-content interpretation, trust, and self-reported save intention, compared to a receipt with no explanation?
+
+**RQ2 (Label × Explanation interaction).** Is the explanation effect moderated by label? Specifically: does “confirmation code” produce lower absent-content accuracy in the no-explanation condition (schema import unchecked), but close the gap to “vote fingerprint” when explanation is added?
+
+**RQ3 (Calibration intervention).** Does an accuracy-feedback intervention — a two-question comprehension check with immediate correct-answer feedback, displayed before the receipt — increase correct absent-content interpretation and reduce confidence miscalibration without reducing save intention?
+
+**RQ4 (Save behavior).** Does correct absent-content interpretation predict save intention? Is this relationship moderated by calibration?
+
+### 5.2 Design
+
+2×2 between-subjects factorial experiment.
+
+**Factor L (Label; 2 levels):** L1 = “vote fingerprint”; L2 = “confirmation code.” The full 4-condition label space from Study 1 is reduced to the theoretically central contrast. “Nullifier” is excluded (Study 1 addressed its failure mode; no production path). “Receipt ID” is excluded (characterized as a generic baseline in Study 1).
+
+**Factor E (Explanation; 2 levels):** E1 = explanation present: “Your vote choice is not shown on this receipt. This is intentional. Keeping your vote private means your receipt can be shared, checked, or subpoenaed without revealing how you voted. Your [label] is the only thing you need — matching it later proves your ballot was counted, nothing more.” E2 = explanation absent: the receipt shows the identifier, download prompt, and verification instructions, but no explicit absent-choice explanation sentence.
+
+**Factor I (Calibration intervention; 2 levels):** I1 = no intervention; participant sees the receipt directly. I2 = calibration intervention; participant answers two comprehension questions before viewing the receipt, then receives correct-answer feedback (whether their answers were right and a one-sentence explanation). I is crossed with L × E, producing 8 cells; N = 30 per cell (N = 240 total).
+
+### 5.3 Platform
+
+Study 2 uses the actual `VoteReceipt.tsx` component from the Aztec Private Voting React package, hosted on Vercel in study mode. The static screenshot method from Study 1 is insufficient for the save-behavior and absent-content measures because (a) the download affordance must be clickable and observable, and (b) the intervention (I2) requires pre-receipt interaction. Hosting the production component increases ecological validity for the trust and behavioral-intention measures. Study mode logs: download button click (no file written), expansion of the verification section, and intervention response accuracy.
+
+### 5.4 Measures
+
+The primary measure is absent-content interpretation (Q-AC): “Is your vote choice visible anywhere on this screen?” (Correct: No; foils: Yes, I’m not sure.) This item isolates the absent-choice inference directly, rather than the broader privacy model tested in Q2/Q3. Secondary measures: save intention (5-point scale, behaviorally supplemented by observed download-button click), trust in the receipt system (3-item adapted McKnight scale [CITE]), confidence composite (same 7-point Likert used in Study 1), and confidence–accuracy residual (confidence composite minus proportion correct on Q-AC and two additional accuracy items).
+
+### 5.5 Primary analysis
+
+The primary analysis axis is contingent on Study 1 outcomes (full decision table in `docs/piup-study2-design-note-2026-06-22.md`). The default primary endpoint is the E main effect on Q-AC accuracy: does explanation-present vs. absent produce different rates of correct absent-choice inference? The L × E interaction is the secondary endpoint: if “confirmation code” without explanation underperforms “vote fingerprint” without explanation on Q-AC but converges when explanation is added, this supports the schema-import / framing-override model proposed in §6.1–6.2. If Study 1’s H4 is supported (confirmation code overconfidence), the I-factor calibration analysis becomes a co-primary: does accuracy feedback reduce the confidence–accuracy residual in L2 cells without reducing save rate?
+
+### 5.6 Status
+
+Study 2 is currently at design-note stage; it will be finalised and pre-registered after Study 1 pilot data establish the instrument and provide preliminary effect-size estimates for the L × E interaction. Full design specification: `docs/piup-study2-design-note-2026-06-22.md`.
 
 ---
 
