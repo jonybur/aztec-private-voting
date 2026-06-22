@@ -22,6 +22,7 @@ pub contract PrivateVoting {
     };
     use sha256::sha256_var;
     use std::ecdsa_secp256k1;
+    use std::hash::keccak256;
     use crate::merkle::{
         derive_hash160_sha256d,
         encode_field_as_root,
@@ -340,17 +341,32 @@ pub contract PrivateVoting {
         for i in 0..32 { challenge_input[32 + i] = root_bytes[i]; }
         let challenge = sha256_var(challenge_input, 64);
 
-        // 3. Verify secp256k1 ownership: wallet signed the challenge with the
-        //    holder's Cosmos secp256k1 private key.
-        //    Rejects any voter who cannot produce a valid sig for this vote.
-        //    std::ecdsa_secp256k1 is Noir stdlib (>=0.29); gate cost ~100k.
+        // 3. EIP-191 wrapping for MetaMask / EVM wallet compatibility.
+        //    ADR-036 Path C (see docs/adr-036-m2-wallet-signing-path.md).
+        //    MetaMask personal_sign prepends "\x19Ethereum Signed Message:\n32"
+        //    before the 32-byte payload, then keccak256-hashes the 60-byte result.
+        //    The circuit replicates this so the voter can sign with MetaMask,
+        //    Ledger, or any EIP-191-compatible EVM wallet.
+        //
+        //    msg_hash = keccak256("\x19Ethereum Signed Message:\n32" || challenge)
+        //             = keccak256(eip191_prefix[28] || challenge[32])
+        //
+        //    std::ecdsa_secp256k1 gate cost: ~100k; keccak256 adds ~5k.
         //    IMPORTANT: Barretenberg requires low-S form (s <= n/2, BIP-62).
-        //    The wallet/frontend MUST normalize s: if s > n/2, set s = n - s
-        //    before passing to this circuit. Unnormalized high-S signatures
-        //    will fail even if cryptographically valid. See m2-sig-tests/ for
-        //    test vectors demonstrating this requirement.
-        let sig_valid = ecdsa_secp256k1::verify_signature(pubkey_x, pubkey_y, sig, challenge);
-        assert(sig_valid, "invalid secp256k1 signature: not the key owner");
+        //    The wallet/frontend MUST normalize s before passing to this circuit.
+        //    Ethers v6 signMessage() normalises automatically. See m2-sig-tests/.
+        let eip191_prefix: [u8; 28] = [
+            0x19, 0x45, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75,
+            0x6d, 0x20, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64,
+            0x20, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+            0x3a, 0x0a, 0x33, 0x32
+        ];
+        let mut eip191_msg: [u8; 60] = [0; 60];
+        for i in 0..28 { eip191_msg[i] = eip191_prefix[i]; }
+        for i in 0..32 { eip191_msg[28 + i] = challenge[i]; }
+        let msg_hash = keccak256(eip191_msg, 60);
+        let sig_valid = ecdsa_secp256k1::verify_signature(pubkey_x, pubkey_y, sig, msg_hash);
+        assert(sig_valid, "invalid secp256k1 signature: not the key owner (EIP-191)");
 
         // 4. Derive 20-byte address commitment from the public key.
         //    PROTOTYPE: SHA-256d fallback, not standard Cosmos hash160.

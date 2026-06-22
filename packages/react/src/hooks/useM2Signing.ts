@@ -36,17 +36,25 @@ import type { VoteConfig } from '../types';
 //      population is EVM-native rather than Cosmos-native.
 //      Requires circuit change: swap sha256(challenge) for keccak256(eip191(challenge)).
 //
-// Current implementation: mode='raw' (for testing/CLI). The keplr stub is
-// provided to document the interface but will throw until the circuit is
-// updated to handle ADR-036.
+// Current implementation:
+//   mode='eip191' — MetaMask/Ledger/WalletConnect (DEFAULT for production).
+//     Circuit was updated in ADR-036 Path C to verify keccak256(EIP-191(challenge)).
+//   mode='raw' — CLI and integration tests only. Signs the plain sha256 challenge.
+//     NOTE: raw mode signatures will FAIL proof generation with the updated circuit.
+//     Use raw mode only if you revert the circuit to plain sha256 verification.
+//   mode='keplr' — documented stub; throws until ADR-036 Path A circuit update.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type M2SignMode = 'raw' | 'keplr';
+export type M2SignMode = 'raw' | 'eip191' | 'keplr';
 
 export interface M2SigningInput {
   /**
+   * mode='eip191': sign with MetaMask/Ledger via personal_sign (EIP-191).
+   *   No extra fields required; window.ethereum must be present.
+   *   This is the production path after the ADR-036 Path C circuit update.
    * mode='raw': 64-char hex private key (for testing and CLI workflows only).
    *   Never collect this in a production UI.
+   *   WARNING: raw signatures will fail with the updated EIP-191 circuit.
    * mode='keplr': not yet supported (see ADR-036 note above).
    */
   mode: M2SignMode;
@@ -200,6 +208,101 @@ async function rawSign(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// EIP-191 mode — MetaMask / Ledger / WalletConnect (ADR-036 Path C)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sign the M2 challenge using EIP-191 personal_sign (MetaMask / WalletConnect).
+ *
+ * The circuit verifies: ecdsa(keccak256("\x19Ethereum Signed Message:\n32" || challenge))
+ * MetaMask personal_sign applies the same EIP-191 wrapping internally.
+ *
+ * Uses @noble/curves/secp256k1 for signature parsing and public key recovery.
+ * Uses @noble/hashes/sha3 for keccak256 (to reconstruct msg_hash for ecrecover).
+ * No ethers dependency — both @noble packages are available via @aztec/foundation.
+ */
+async function eip191Sign(
+  challenge: Uint8Array,
+): Promise<Pick<M2SigningOutput, 'pubkey_x' | 'pubkey_y' | 'sig_r' | 'sig_s'>> {
+  if (typeof window === 'undefined' || !(window as Record<string, unknown>).ethereum) {
+    throw new Error(
+      'EIP-191 signing requires window.ethereum (MetaMask or compatible wallet)',
+    );
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ethereum = (window as any).ethereum as {
+    request: (args: { method: string; params: unknown[] }) => Promise<unknown>;
+  };
+
+  // Request account access.
+  const accounts = (await ethereum.request({
+    method: 'eth_requestAccounts',
+    params: [],
+  })) as string[];
+  const account = accounts[0];
+
+  // personal_sign with the 32-byte challenge as a 0x-prefixed hex string.
+  // MetaMask prepends "\x19Ethereum Signed Message:\n32" internally and keccak256-hashes.
+  const hexChallenge = '0x' + Buffer.from(challenge).toString('hex');
+  const rawSigHex = (await ethereum.request({
+    method: 'personal_sign',
+    params: [hexChallenge, account],
+  })) as string;
+
+  // Parse the 65-byte signature: r (32) + s (32) + v (1).
+  const sigBytes = Uint8Array.from(Buffer.from(rawSigHex.replace(/^0x/, ''), 'hex'));
+  if (sigBytes.length !== 65) {
+    throw new Error(`personal_sign returned ${sigBytes.length} bytes; expected 65`);
+  }
+  const r = sigBytes.slice(0, 32);
+  const s = sigBytes.slice(32, 64);
+  const v = sigBytes[64];
+  // Normalise recovery bit: MetaMask returns v=27/28 (pre-EIP-155) or 0/1.
+  const recoveryBit = v >= 27 ? v - 27 : v;
+
+  // Reconstruct msg_hash to recover public key.
+  const { keccak_256 } = await import('@noble/hashes/sha3');
+  const { secp256k1 } = await import('@noble/curves/secp256k1');
+
+  const EIP191_PREFIX = new Uint8Array([
+    0x19, 0x45, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75,
+    0x6d, 0x20, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64,
+    0x20, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+    0x3a, 0x0a, 0x33, 0x32,
+  ]);
+  const wrapped = new Uint8Array(60);
+  wrapped.set(EIP191_PREFIX);
+  wrapped.set(challenge, 28);
+  const msgHash = keccak_256(wrapped);
+
+  // Recover the uncompressed public key (04 || x || y) from the signature.
+  const rBig = BigInt('0x' + Buffer.from(r).toString('hex'));
+  const sBig = BigInt('0x' + Buffer.from(s).toString('hex'));
+
+  // BIP-62 low-S check (MetaMask normalises, but assert belt-and-suspenders).
+  if (sBig > SECP256K1_N_HALF) {
+    throw new Error(
+      'personal_sign returned a high-S signature. Unexpected from MetaMask.',
+    );
+  }
+
+  const nobleSig = new secp256k1.Signature(rBig, sBig).addRecoveryBit(recoveryBit);
+  const recoveredPubkey = nobleSig.recoverPublicKey(msgHash);
+  const pubkeyBytes = recoveredPubkey.toRawBytes(false); // uncompressed: 04|x|y, 65 bytes
+
+  if (pubkeyBytes.length !== 65 || pubkeyBytes[0] !== 0x04) {
+    throw new Error('Unexpected public key format from ecrecover');
+  }
+
+  return {
+    pubkey_x: Array.from(pubkeyBytes.slice(1, 33)),
+    pubkey_y: Array.from(pubkeyBytes.slice(33, 65)),
+    sig_r: Array.from(r),
+    sig_s: Array.from(s),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Keplr stub (documents interface; incompatible with current circuit — see note)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -258,7 +361,14 @@ export function useM2Signing(_config: VoteConfig): UseM2SigningResult {
 
         let sigParts: Pick<M2SigningOutput, 'pubkey_x' | 'pubkey_y' | 'sig_r' | 'sig_s'>;
 
-        if (input.mode === 'raw') {
+        if (input.mode === 'eip191') {
+          // Production path: MetaMask / Ledger / WalletConnect.
+          // Circuit verifies keccak256(EIP-191(challenge)) after ADR-036 Path C update.
+          sigParts = await eip191Sign(challenge);
+        } else if (input.mode === 'raw') {
+          // CLI and integration tests only.
+          // WARNING: raw mode will fail with the EIP-191 circuit. Use only with
+          // the old circuit (plain sha256 verification) or for signing tests.
           if (!input.privateKeyHex) {
             throw new Error("mode='raw' requires privateKeyHex");
           }

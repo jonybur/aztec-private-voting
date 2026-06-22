@@ -70,12 +70,7 @@ M2 closes this: `cast_vote_babylon_v2` in `main.nr` adds an in-circuit `std::ecd
 
 **Status (2026-06-22):** 10/11 checklist items complete. The snapshot generator (`synthetic-snapshot.ts --version 2`), deploy-script Merkle root encoding, and `useM2Signing` React hook are all done. One item remaining: production proving-time measurement on browser hardware.
 
-**One open design decision I need input on:** Keplr's `signArbitrary` uses ADR-036 envelope wrapping. The current circuit verifies a raw secp256k1 signature over the plain SHA-256 challenge — incompatible. Three resolution paths documented in `packages/react/src/hooks/useM2Signing.ts`:
-- **Path A:** Update circuit to verify the full ADR-036 SignDoc hash (~50 additional Noir lines)
-- **Path B:** Use wallet with raw signing capability (implemented; `mode='raw'` in `useM2Signing` does this today)
-- **Path C:** Switch to EIP-191 `personal_sign` for simpler circuit replication
-
-I'd welcome Aztec team input on Path A vs. C before wiring Keplr to the live contract.
+**Signing path resolved (ADR-036 Path C):** M2 signing uses EIP-191 `personal_sign` (MetaMask/Ledger/WalletConnect) as the primary wallet path. The circuit now verifies `keccak256(EIP-191(challenge))` — ~10 additional Noir lines vs. ~100 for the Cosmos ADR-036 path, and works out of the box with any EVM wallet. Keplr/ADR-036 support is documented as a named extension (Path A) for Cosmos-native voter populations. See `docs/adr-036-m2-wallet-signing-path.md` for the full decision record.
 
 ### What I'm asking for
 
@@ -86,7 +81,7 @@ I'd welcome Aztec team input on Path A vs. C before wiring Keplr to the live con
 
 **Beyond the money — three specific asks:**
 
-1. **One async technical contact** on the protocol team — for the ADR-036 / Path A vs. C question above, and for anything that isn't answered in the v5 docs during the final deployment sprint. 2–3 exchanges.
+1. **One async technical contact** on the protocol team — for anything not answered in the v5 docs during the final deployment sprint, and for feedback on the EIP-191 vs. ADR-036 circuit trade-off if the Cosmos-native path becomes a priority. 2–3 exchanges.
 
 2. **Signal boost at launch** — a Discord mention or tweet when the component library ships publicly. Distribution is the hard problem for open source tooling.
 
@@ -127,6 +122,6 @@ Happy to demo, pair on integrations, or discuss extending the receipt-design wor
 - [ ] Deploy to v5 testnet: `AZTEC_PXE_URL=https://v5.testnet.rpc.aztec-labs.com DEPLOYER_SECRET_KEY=<key> DEPLOYER_SIGNING_KEY=<key> npx tsx scripts/deploy-testnet.ts`
 - [ ] Replace `[CONTRACT ADDRESS]` in forum post with actual deployed address
 - [ ] Confirm GitHub repo is public (or will be public at submission)
-- [ ] Decide on M2 signing path (A/B/C) — documented in `packages/react/src/hooks/useM2Signing.ts`
+- [x] Decide on M2 signing path — **Path C (EIP-191) chosen and implemented** (`docs/adr-036-m2-wallet-signing-path.md`)
 - [ ] Post to forum.aztec.network → Applications category
 - [ ] Post to Aztec Discord #grants channel with forum link

@@ -7,12 +7,15 @@
   "durationSeconds": 604800,
   "quorum": 5,
   "eligibilityMode": "babylon-v2",
+  "signingPath": "eip191",
+  "_signingNote": "ADR-036 Path C: voters sign with MetaMask/Ledger personal_sign. Circuit verifies keccak256(EIP-191(challenge)). See docs/adr-036-m2-wallet-signing-path.md.",
   "_notes": {
     "eligibilityMode": "'babylon-v2' maps to circuit TOKEN mode (1). The M2 Merkle root is loaded from snapshotRootPath and stored in VoteConfig.token_address as an encoded Aztec Field.",
     "snapshotRootPath": "Optional. Defaults to snapshot/merkle-root-v2.json. Relative to repo root.",
     "minTokenBalance": "Optional. Overrides the minBalance in the snapshot JSON (in ubbn).",
     "voter_calls": "cast_vote_babylon_v2(vote_choice, balance, merkle_path[20], merkle_indices[20], pubkey_x[32], pubkey_y[32], sig[64])",
-    "sig_requirement": "Voter must sign sha256(encode_field(title_hash) || encode_field(root_field)) with their secp256k1 key. Normalize s to low-S form (BIP-62) before passing to circuit.",
+    "sig_requirement": "Voter signs with MetaMask personal_sign (EIP-191). The circuit wraps sha256(encode_field(title_hash)||encode_field(root_field)) in EIP-191 prefix before keccak256. Ethers v6 signMessage(Uint8Array) applies the same wrapping. Low-S (BIP-62) is enforced — ethers v6 normalises automatically.",
+    "sig_requirement_raw_mode": "DEPRECATED: raw sha256 signing (mode='raw' in useM2Signing) is now incompatible with the updated circuit. Use mode='eip191' for production.",
     "generate_snapshot": "npx tsx scripts/synthetic-snapshot.ts --version 2 --holders 10000"
   }
 }
