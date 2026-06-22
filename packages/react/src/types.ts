@@ -1,4 +1,4 @@
-export type EligibilityMode = 'open' | 'token' | 'allowlist';
+export type EligibilityMode = 'open' | 'token' | 'allowlist' | 'babylon-v2';
 
 export interface VoteConfig {
   voteId: string;

@@ -283,8 +283,9 @@ negligible in practice — but worth a comment in the contract.
 - [x] Add `verify_baby_eligibility_v2` to `merkle.nr` *(tick-3605)*
 - [x] Add `cast_vote_babylon_v2` to `main.nr` *(tick-3605)* — uses `std::ecdsa_secp256k1::verify_signature`; challenge = `sha256(title_bytes || root_bytes)`; nullifier = `hash_bytes_as_field(sha256(sig))`
 - [x] Update `synthetic-snapshot.ts` to produce M2 leaves (`version: 2`) using same SHA-256d derivation *(tick-3613)* — `--version 2` flag; `deriveHash160V2`, `hashLeafV2`, `buildProverTomlV2` added; Prover-v2.toml output with sig placeholders; M1 mode unchanged; 20/20 nargo tests pass
-- [ ] Update `scripts/deploy-testnet.ts` to use M2 Merkle root encoding
-- [ ] Update React layer to call `wallet.signArbitrary(challenge)` and pass `(pubkey_x, pubkey_y, sig)` to circuit input
+- [x] Update `scripts/deploy-testnet.ts` to use M2 Merkle root encoding *(commit 2a429e6 — babylon-v2 eligibility mode + snapshotRootPath loader)*
+- [x] Update React layer: `useM2Signing` hook (EIP-191 + raw modes) in `packages/react/src/hooks/useM2Signing.ts` *(ADR-036 Path C, pre-existing)*
+- [x] Update React layer: `useVoteBabylonV2` hook in `packages/react/src/hooks/useVoteBabylonV2.ts` *(tick-3651)* — bridges `useM2Signing` output to `cast_vote_babylon_v2`; exported from `index.ts`; `VotingContractV2` interface added to `voting.ts`; `babylon-v2` added to `EligibilityMode` type
 - [x] Add Noir unit tests: valid signature + Merkle pass; invalid signature fail; wrong pubkey fail *(tick-3613, commit c3e11e6)*
   - 9 tests in `contracts/src/merkle.nr` (derive_hash160_sha256d, compute_leaf_v2, verify_baby_eligibility_v2)
   - 4 tests in `m2-sig-tests/` standalone package (secp256k1 valid/invalid/wrong-pubkey/wrong-challenge)

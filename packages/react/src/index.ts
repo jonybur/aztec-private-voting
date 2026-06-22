@@ -14,6 +14,8 @@ export { useVoteCount } from './hooks/useVoteCount';
 export { useFinalizeVote } from './hooks/useFinalizeVote';
 export { useM2Signing, buildM2Challenge, fieldToBytes32 } from './hooks/useM2Signing';
 export type { M2SignMode, M2SigningInput, M2SigningOutput, M2SignStatus, UseM2SigningResult } from './hooks/useM2Signing';
+export { useVoteBabylonV2 } from './hooks/useVoteBabylonV2';
+export type { CastVoteBabylonV2Input, BabylonV2EligibilityInputs, VoteBabylonV2Status, UseVoteBabylonV2Result } from './hooks/useVoteBabylonV2';
 
 export {
   AztecProvider,
