@@ -79,7 +79,34 @@ I was on the team that built zk.money. Aztec's programmable privacy is the right
 
 ## The live case study
 
-The rsETH/KelpDAO exploit ($71M frozen, Arbitrum governance vote in progress as of May 2026). A 49-day public vote on politically explosive loss socialization, with state-actor-adjacent threat actors watching every wallet. This is the exact context where ballot privacy is not a nice-to-have. Voters who can be identified will be pressured. The current governance tooling has no answer for this.
+**KelpDAO / rsETH ($71M exploit, Arbitrum governance)**  
+A 49-day public vote on politically explosive loss socialization, with state-actor-adjacent threat actors watching every wallet. Voters who can be identified will be pressured. The current governance tooling has no answer for this.
+
+**Babylon: BABY token private governance (live, June 2026)**  
+A full private governance demo using actual BABY token holder data. A ZK Merkle membership circuit (Noir, Barretenberg UltraHonk) proves BABY holder eligibility over a live snapshot of 108,637 Babylon Genesis holders — without revealing the voter's address or balance. The entire proof runs in the browser; no server involvement. Live: [umbra-babylon-demo.vercel.app](https://umbra-babylon-demo.vercel.app).
+
+This exercises the Merkle-allowlist eligibility mode end-to-end with real holder data at production scale. It validates the architecture for Cosmos-native governance: snapshot on the source chain, ZK proof on Aztec, no bridging, tokens never move.
+
+**Trust assumption (named — see M2 roadmap below):** The current Babylon path proves *membership* in the snapshot (a holder's (address, balance) pair is a leaf in the committed Merkle tree) but does not prove *ownership* of that Cosmos address. There is no in-circuit secp256k1 signature check binding the tx submitter to the Cosmos keys. A well-resourced attacker with the public snapshot could compute every holder's Merkle proof and submit ballots on their behalf before legitimate holders vote. The Babylon demo is a research prototype demonstrating the problem M2 solves, not a production governance tool. M2 closes this gap: an in-circuit Cosmos secp256k1 ownership proof, with a nullifier derived from a holder-held secret, makes each ballot unforwardable.
+
+---
+
+## Roadmap — M2: in-circuit ownership proof
+
+The single open problem separating M1 (complete) from a production-ready Cosmos voting integration is the in-circuit ownership proof.
+
+**What M2 requires:**
+- Voter signs a challenge (vote-specific nonce or contract address) with their Cosmos secp256k1 private key.
+- The signature is a private witness passed to `cast_vote_babylon`.
+- Noir `std::ec::secp256k1` verifies the signature in-circuit; public key derived from `address_bytes` already passed as a private witness.
+- Nullifier derived from the signature (or a holder-held secret), not from the public snapshot leaf — not pre-computable by an observer.
+
+**What this achieves:**
+- Attacker with the full snapshot cannot vote on behalf of any holder — they lack the secp256k1 private keys.
+- Per-holder nullifier is no longer computable from public data — cannot be front-run.
+- Vote direction remains hidden (no change to the existing private/public structure).
+
+**Scope:** The Noir secp256k1 gadget is a ~2-week integration sprint. Main complexity: key derivation from a bech32 Cosmos address to a compressed public key (Cosmos uses secp256k1 with SHA-256 + RIPEMD-160 hashing). Both hash gadgets are available in the Noir standard library. M2 is one focused engineering sprint, not a redesign.
 
 ---
 
