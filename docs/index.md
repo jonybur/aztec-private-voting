@@ -34,7 +34,7 @@ An important consequence of the current design: because `record_vote` is a publi
 
 - Browser proof generation is not wired in the demo. `useEligibility` returns a placeholder field (for example `0x01` in open mode) rather than a real ZK eligibility proof; the contract's `verify_eligibility` checks that field, not a proof generated in the browser.
 - The vote choice is currently visible in public execution (see above). An end-to-end private tally (encrypted or note-based) is not implemented.
-- The fingerprint is derived from `poseidon2(voteId, walletAddress)`, so anyone who knows a wallet address can check whether (not how) it voted. A wallet-private secret derivation is the planned production fix.
+- The fingerprint is a client-generated random field element (`Fr.random()`), so it is not derivable from a wallet address by an observer. The double-vote guard is a separate private single-use claim keyed to the caller's keys inside the private kernel. However, the fingerprint travels with the vote choice as a public argument to `record_vote` — so a voter who shares their fingerprint lets that third party look up the corresponding public call and read the choice. The fingerprint must be kept private by the voter until the tally is revealed (see [receipt.md](receipt.md) limitation (e)).
 - No managed service exists. Umbra today is a library and a demo, not a hosted product. The longer-term direction is a managed service for permanent-anonymity onchain DAO governance voting with facilitator and receipt UX; nothing of that service is built.
 - Aztec Alpha v4 has a known vulnerability (disclosed March 2026, patch expected with v5). The testnet deployment is for demonstration only; do not use it for production governance.
 
