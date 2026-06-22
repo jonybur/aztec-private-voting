@@ -418,6 +418,8 @@ The PIUP's three invariants were derived from the private voting context, but th
 
 ## 7. Conclusion
 
+_[Draft framing assumes H2-supported (Q2: A > B significant, composite A≈B equivalence established). If Study 1 yields H2-null or H2-reversed, revise the second paragraph per §4.5 outcome classification. The dissociation framing and §6.2 cross-reference remain correct regardless of H2 outcome; only the directional claim about fingerprint's advantage requires adjustment.]_
+
 Private voting systems face a paradox at the confirmation layer. Correct behaviour — a receipt that confirms counting without revealing content — looks like a system failure to users whose mental models were formed in eCommerce contexts, where receipts exist to confirm content. This is not a usability problem that better copy alone can solve; it is a structural mismatch between the confirmation semantics of two different domains.
 
 The PIUP formalises the design response to this mismatch. Invariant 1 anchors the receipt: the user must see confirmation that their ballot was recorded. Invariant 2 constrains the submission token: it must identify the ballot without encoding the vote choice. Invariant 3 addresses the hardest part: the receipt must explicitly name the absent content and the reason for its absence, before the user's default failure-inference can form.
