@@ -95,7 +95,7 @@ Total estimated time: 8–12 minutes.
 
   Composite accuracy = proportion correct on Q1–Q4; Q5 scored separately.
 
-- **Confidence** (mean across 5 items, 7-point Likert, 1 = not at all confident, 7 = completely confident).
+- **Confidence** (mean across Q1–Q4, 7-point Likert, 1 = not at all confident, 7 = completely confident). Q5 confidence is collected but excluded from the composite because Q5 is open-ended and scored separately. _Pre-registered composite: Q1–Q4 only (pre-registration §5.3)._
 
 **Secondary:**
 
@@ -107,12 +107,38 @@ Total estimated time: 8–12 minutes.
 
 ### Analysis
 
-- **RQ1 (accuracy):** Chi-squared test of proportions across 4 conditions; post-hoc pairwise comparisons with Holm correction.
-- **RQ1 (confidence):** One-way ANOVA; Tukey HSD post-hoc.
-- **RQ3 (mental model quality):** Chi-squared; free-text scored by 2 independent raters; Cohen's κ ≥ 0.70 required for reliability.
-- **RQ1/RQ3 correlation:** Spearman correlation between accuracy and mental model score to test whether label affects both or only one.
+This section summarises the pre-registered analysis plan. The binding specification is in `docs/piup-study1-preregistration-2026-06-22.md` §6; the pre-registration governs in any conflict.
 
-Expected primary finding: "vote fingerprint" and "confirmation code" outperform "nullifier" on accuracy (replicating Helios UX findings), with "vote fingerprint" additionally outperforming "confirmation code" on privacy mental model (RQ3) because "fingerprint" primes uniqueness-without-content rather than confirmation-of-action.
+**Omnibus (RQ1):** Chi-squared test of homogeneity across 4 conditions on composite accuracy (Q1–Q4). Effect size: Cramér's V. Proceed to pre-specified pairwise comparisons if omnibus is significant; H2-primary and H3 Q1 tests are conducted regardless of omnibus outcome.
+
+**Four confirmatory hypothesis families (14 pre-specified tests total), each family Holm-corrected independently:**
+
+| Family | Tests | # |
+|--------|-------|---|
+| H1 (vote fingerprint > receipt ID on privacy items) | Q2(A>D), Q3(A>D) one-tailed | 2 |
+| H2 (dissociation: vote fingerprint vs. confirmation code) | Q2(A>B) one-tailed [**primary endpoint**], Q3(A>B) one-tailed, TOST composite A≈B ±10pp | 3 |
+| H3 (nullifier underperforms all others) | Q1(C<A), Q1(C<B), Q1(C<D), composite(C<each of A,B,D) | 6 |
+| H4 (confirmation code overconfidence) | confidence-composite(B>A), (B>C), (B>D) one-tailed ANOVA/Tukey | 3 |
+
+**H2 outcome classification (pre-specified):**
+- *Supported:* H2-primary significant (A > B on Q2) AND H2-tertiary equivalence established.
+- *Null:* H2-primary non-significant AND equivalence established.
+- *Reversed:* post-hoc B > A on Q2 significant AND equivalence or B advantage on composite.
+- *Inconclusive:* none of the above.
+
+**H4 calibration:** Spearman ρ between per-participant composite accuracy (Q1–Q4) and per-participant confidence composite (Q1–Q4), computed per condition. H4 predicts Condition B will have the lowest calibration (high confidence, not highest accuracy).
+
+**Q5 (open-text mental model):** Kruskal-Wallis across 4 conditions; Dunn's pairwise post-hoc (Holm). Scored 0–2 by 2 raters; κ ≥ 0.70 required before analysis.
+
+**RQ3 (mental model quality, open text):** Chi-squared on 0/1/2 rubric score; Cohen's κ ≥ 0.70 required. (Distinct from Q5; see pre-registration §5.2 and §5.3.)
+
+**Confidence intervals:** Wilson 95% CI for all proportions; t-based 95% CI for all means.
+
+**Software:** R ≥ 4.3. Packages: `stats`, `PropCIs`, `TOSTER`, `multcomp`, `irr`. Pre-registered analysis script: `analysis/piup-study1-analysis.R`.
+
+_Any analysis not listed above is exploratory and will be reported as such._
+
+Expected primary finding: "vote fingerprint" and "confirmation code" both outperform "nullifier" on composite accuracy (replicating Helios UX findings). Critically, H2 predicts a *dissociation* between these two top conditions — not a global accuracy difference. "vote fingerprint" is expected to outperform "confirmation code" specifically on Q2 (does this prove which option I chose?) and Q3 (coercion scenario), while both conditions remain within 10 percentage points on composite accuracy (Q1–Q4). "confirmation code" may edge "vote fingerprint" on Q1 (vote-counted inference) because the eCommerce behavioral schema is correct even where the representational schema is not. If H2 is reversed (B > A on Q2), the finding is still actionable and arguably more novel. Full mechanism analysis: `docs/h2-analysis-fingerprint-vs-confirmation-code.md`.
 
 ---
 
