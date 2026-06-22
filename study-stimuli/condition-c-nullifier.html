@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<!--
+  PIUP Study 1 Stimulus — C — Condition C — cryptographic term
+  Do NOT modify label text; it is the independent variable for the study.
+  Generated: 2026-06-22 · aztec-private-voting/study-stimuli/
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vote Receipt — Study Stimulus C</title>
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* ── Receipt card ── */
+    .receipt {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.10);
+      max-width: 420px;
+      width: 100%;
+      padding: 2rem 1.75rem 1.75rem;
+    }
+
+    /* ── Header ── */
+    .receipt__header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.25rem;
+    }
+    .receipt__check {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      background: #16a34a;
+      color: #fff;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .receipt__title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #111;
+    }
+
+    /* ── Meta ── */
+    .receipt__meta {
+      list-style: none;
+      display: grid;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+    .receipt__meta div {
+      display: flex;
+      gap: .5rem;
+    }
+    .receipt__meta dt {
+      color: #6b7280;
+      font-size: .875rem;
+      min-width: 3.5rem;
+    }
+    .receipt__meta dd {
+      font-size: .875rem;
+      color: #111;
+      font-weight: 500;
+    }
+
+    /* ── Identifier block ── */
+    .receipt__id-block {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .receipt__id-block label {
+      display: block;
+      font-size: .8125rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: .5rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .receipt__id-row {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .receipt__id-value {
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: .9375rem;
+      color: #111;
+      flex: 1;
+      word-break: break-all;
+    }
+    .receipt__copy {
+      flex-shrink: 0;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: .3rem .75rem;
+      font-size: .8125rem;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .receipt__copy:hover { background: #374151; }
+    .receipt__copy:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    /* ── Explainer ── */
+    .receipt__explainer {
+      font-size: .875rem;
+      color: #4b5563;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      padding: .75rem 1rem;
+      background: #eff6ff;
+      border-left: 3px solid #3b82f6;
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* ── Actions ── */
+    .receipt__actions {
+      display: flex;
+      gap: .75rem;
+      margin-bottom: 1rem;
+    }
+    .receipt__primary {
+      flex: 1;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      font-size: .9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .receipt__primary:hover { background: #374151; }
+    .receipt__secondary {
+      flex: 1;
+      background: transparent;
+      color: #374151;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      font-size: .9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+    .receipt__secondary:hover {
+      border-color: #9ca3af;
+      color: #111;
+    }
+    .receipt__primary:focus-visible,
+    .receipt__secondary:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    /* ── How to verify panel ── */
+    .receipt__how-to {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: .875rem;
+      color: #374151;
+      line-height: 1.55;
+    }
+    .receipt__how-to p { margin-bottom: .75rem; }
+    .receipt__how-to ol {
+      padding-left: 1.25rem;
+      display: grid;
+      gap: .4rem;
+    }
+    .receipt__how-to[hidden] { display: none; }
+
+    /* ── Study watermark (screen-reader hidden for participants) ── */
+    .study-badge {
+      position: fixed;
+      bottom: .75rem;
+      right: .75rem;
+      background: rgba(0,0,0,.45);
+      color: #fff;
+      font-size: .7rem;
+      padding: .2rem .55rem;
+      border-radius: 999px;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="receipt" role="region" aria-label="Vote receipt">
+
+    <div class="receipt__header">
+      <span class="receipt__check" aria-hidden="true">&#10003;</span>
+      <h1 class="receipt__title">Your vote was cast</h1>
+    </div>
+
+    <dl class="receipt__meta">
+      <div>
+        <dt>Vote</dt>
+        <dd>City Council Seat 3 — 2026 Annual Election</dd>
+      </div>
+      <div>
+        <dt>Time</dt>
+        <dd>22 June 2026, 09:45 UTC</dd>
+      </div>
+    </dl>
+
+    <div class="receipt__id-block">
+      <label for="apv-id">Your nullifier</label>
+      <div class="receipt__id-row">
+        <code id="apv-id" class="receipt__id-value">0x3f7a…c9e2</code>
+        <button
+          type="button"
+          class="receipt__copy"
+          id="copy-btn"
+          aria-label="Copy nullifier"
+        >Copy</button>
+      </div>
+    </div>
+
+    <p class="receipt__explainer">
+      This receipt does not contain your vote choice. It proves your ballot was
+      counted without revealing how you voted.
+    </p>
+
+    <div class="receipt__actions">
+      <button type="button" class="receipt__primary" id="download-btn">
+        Download receipt
+      </button>
+      <button
+        type="button"
+        class="receipt__secondary"
+        id="verify-toggle"
+        aria-expanded="false"
+        aria-controls="how-to-panel"
+      >
+        How to verify
+      </button>
+    </div>
+
+    <div
+      class="receipt__how-to"
+      id="how-to-panel"
+      role="note"
+      hidden
+    >
+      <p>
+        After the vote closes, you can check that your nullifier appears in the
+        set of counted votes. This proves your vote was included without
+        revealing your choice.
+      </p>
+      <ol>
+        <li>Save the receipt now (it&#8217;s only stored on your device).</li>
+        <li>When the vote closes, open the verifier.</li>
+        <li>
+          Paste your nullifier. The verifier will tell you whether it was counted.
+        </li>
+      </ol>
+    </div>
+
+  </div>
+
+  <!-- Study condition watermark — hidden from screen readers -->
+  <div class="study-badge" aria-hidden="true">Cond.&nbsp;C</div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var FULL_ID = '0x3f7ac1d8e29a4b56f3c07de18b2a9f40c3e5d71b84a2f96e3c50d82b1e74c9e2';
+
+      // ── Copy button ──────────────────────────────────────────────────────────
+      var copyBtn = document.getElementById('copy-btn');
+      copyBtn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(FULL_ID).then(function () {
+            copyBtn.textContent = 'Copied!';
+            setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1500);
+          });
+        } else {
+          // Fallback for environments without clipboard API
+          var ta = document.createElement('textarea');
+          ta.value = FULL_ID;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1500);
+        }
+      });
+
+      // ── Download button (simulated — study mockup) ───────────────────────────
+      var dlBtn = document.getElementById('download-btn');
+      dlBtn.addEventListener('click', function () {
+        dlBtn.textContent = 'Saved ✓';
+        dlBtn.disabled = true;
+        setTimeout(function () {
+          dlBtn.textContent = 'Download receipt';
+          dlBtn.disabled = false;
+        }, 2000);
+      });
+
+      // ── How-to-verify toggle ─────────────────────────────────────────────────
+      var verifyToggle = document.getElementById('verify-toggle');
+      var howToPanel   = document.getElementById('how-to-panel');
+      verifyToggle.addEventListener('click', function () {
+        var expanded = verifyToggle.getAttribute('aria-expanded') === 'true';
+        if (expanded) {
+          verifyToggle.setAttribute('aria-expanded', 'false');
+          verifyToggle.textContent = 'How to verify';
+          howToPanel.hidden = true;
+        } else {
+          verifyToggle.setAttribute('aria-expanded', 'true');
+          verifyToggle.textContent = 'Hide';
+          howToPanel.hidden = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

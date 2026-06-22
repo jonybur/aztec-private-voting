@@ -4,11 +4,35 @@ import { shortenHex, formatTimestamp } from '../format';
 import { downloadReceipt } from '../receipt';
 import type { VoteReceipt as VoteReceiptData } from '../types';
 
+/**
+ * Controls which label is shown for the receipt identifier.
+ * Used in Study 1 of the PIUP user study (RQ1: label comprehension).
+ *
+ * - 'fingerprint'       Current implementation — "vote fingerprint"
+ * - 'confirmation-code' eCommerce convention — "confirmation code"
+ * - 'nullifier'         Cryptographic term — "nullifier"
+ * - 'receipt-id'        Neutral control — "receipt ID"
+ */
+export type ReceiptLabelVariant = 'fingerprint' | 'confirmation-code' | 'nullifier' | 'receipt-id';
+
+const LABEL_COPY: Record<ReceiptLabelVariant, { heading: string; noun: string }> = {
+  'fingerprint':       { heading: 'Your vote fingerprint',  noun: 'fingerprint'       },
+  'confirmation-code': { heading: 'Your confirmation code', noun: 'confirmation code'  },
+  'nullifier':         { heading: 'Your nullifier',         noun: 'nullifier'         },
+  'receipt-id':        { heading: 'Your receipt ID',        noun: 'receipt ID'        },
+};
+
 export interface VoteReceiptProps {
   receipt: VoteReceiptData;
   onDownload?: (receipt: VoteReceiptData) => void;
   onVerify?: (receipt: VoteReceiptData) => void;
   verifierUrl?: string;
+  /**
+   * Which label variant to display for the receipt identifier.
+   * Defaults to 'fingerprint' (production behaviour).
+   * Set a different variant when rendering Study 1 stimuli.
+   */
+  labelVariant?: ReceiptLabelVariant;
 }
 
 export function VoteReceipt({
@@ -19,6 +43,9 @@ export function VoteReceipt({
 }: VoteReceiptProps): JSX.Element {
   const [showHowToVerify, setShowHowToVerify] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const { heading: identifierHeading, noun: identifierNoun } =
+    LABEL_COPY[labelVariant ?? 'fingerprint'];
 
   const handleCopy = async (): Promise<void> => {
     await navigator.clipboard.writeText(receipt.receiptId);
@@ -65,7 +92,7 @@ export function VoteReceipt({
       </dl>
 
       <div className="apv-receipt__fingerprint">
-        <label htmlFor="apv-fingerprint">Your vote fingerprint</label>
+        <label htmlFor="apv-fingerprint">{identifierHeading}</label>
         <div className="apv-receipt__fingerprint-row">
           <code id="apv-fingerprint" className="apv-receipt__fingerprint-value">
             {shortenHex(receipt.receiptId, 6, 4)}
@@ -82,9 +109,9 @@ export function VoteReceipt({
       </div>
 
       <p className="apv-receipt__explainer">
-        This fingerprint proves your vote was counted without revealing how you
-        voted. Save it to verify after the vote closes, and keep it private -
-        treat it like a ballot stub, not something to share.
+        This {identifierNoun} proves your vote was counted without revealing how
+        you voted. Save it to verify after the vote closes, and keep it private
+        — treat it like a ballot stub, not something to share.
       </p>
 
       <div className="apv-receipt__actions">
