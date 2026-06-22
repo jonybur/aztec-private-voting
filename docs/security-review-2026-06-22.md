@@ -335,3 +335,166 @@ This amendment does not affect the F2 analysis — the atomicity properties of `
 are unchanged.
 
 **Status:** ✅ **RESOLVED** — contracts/src/main.nr, tick-3643.
+
+---
+
+## 8. Amendment: Security Review of New Eligibility Entrypoints (2026-06-22, tick-3647)
+
+**Scope extension:** Section 5 of the original review listed `cast_vote_token` and
+`cast_vote_allowlist` as unreviewed because they did not exist at the time. Both were
+shipped as the F1-HIGH resolution (tick-3610 / tick-3611). This amendment formally
+reviews their security properties.
+
+**Method:** Static circuit analysis of `contracts/src/main.nr`, `merkle.nr`, and
+`eligibility.nr`. All Babylon governance paths (`cast_vote_babylon`, `cast_vote_babylon_v2`)
+remain out of scope.
+
+---
+
+### 8.1 `cast_vote_token` Security Analysis
+
+**Entrypoint:**
+```noir
+fn cast_vote_token(vote_choice, receipt_id, token_balance, merkle_path, merkle_indices)
+```
+
+**Property-by-property audit:**
+
+| Property | Mechanism | Verdict |
+|---|---|---|
+| Mode guard | `assert(eligibility_mode == ELIGIBILITY_MODE_TOKEN)` before any work | ✅ Sound |
+| receipt_id ≠ 0 | `assert(receipt_id != 0)` at entry | ✅ Sound |
+| Balance threshold | `assert(balance >= min_balance)` inside `verify_token_eligibility` | ✅ Sound |
+| Balance commitment | Leaf = `sha256(address[32] \| balance_be[8])` — inflation fails Merkle proof | ✅ Sound |
+| Address binding | `caller_field = self.msg_sender().to_field()` used in leaf computation | ✅ Sound |
+| Double-vote prevention | `SingleUseClaim.claim()` on caller's Aztec wallet — protocol nullifier | ✅ Sound |
+| Receipt collision | `receipts` map in `record_vote` prevents reuse of the same receipt_id | ✅ Sound |
+
+**Balance inflation attack (N-F1 CONFIRMED SOUND):**
+A voter who passes `token_balance = 999999` (much higher than their actual snapshot
+balance) produces leaf `sha256(address, 999999)`. The snapshot committed the actual
+leaf `sha256(address, actual_balance)`. These differ; the Merkle proof fails at
+`verify_merkle_path`. There is no circuit path that accepts an unmatched leaf.
+
+**Cross-wallet Merkle reuse (N-F2 CONFIRMED SOUND):**
+`compute_token_leaf` uses `self.msg_sender().to_field()` as the address component.
+A voter cannot take another wallet's Merkle path (address B, balance B) and use it
+from wallet A — the leaf computed in-circuit uses `msg_sender()` (wallet A), so the
+leaf does not match address B's snapshot entry.
+
+**Observation: `token_address` field repurposed as Merkle root store (N-F3 DESIGN):**
+`config.token_address` (an `AztecAddress`) encodes the SHA-256 Merkle root via
+`encode_field_as_root`. This is a semantic mismatch (address field storing a hash root)
+but not a security flaw — the encoding is consistent between the deployer
+(`encode_root_as_field` in `synthetic-snapshot.ts`) and the circuit (`encode_field_as_root`
+in `merkle.nr`). A Field is 31 bytes, so the top byte of the 32-byte SHA-256 root
+is dropped (zero-padded back to 32 bytes). This reduces the effective commitment to
+248 bits — adequate for a Merkle root commitment. Source and docs are annotated with
+this encoding scheme.
+
+**Recommendation (N-F3):** No code change required. Add a deploy-time note in
+`docs/deployment.md` warning that `config.token_address` must be set to the encoded
+Merkle root (not a real token contract address) for TOKEN and ALLOWLIST mode votes.
+
+**Observation: zero `min_token_balance` admits any snapshot entry (N-F4 DESIGN):**
+If a deployer sets `min_token_balance = 0`, any address present in the snapshot with
+balance 0 would satisfy `balance >= 0`. In practice, zero-balance addresses are not
+included in token snapshots. There is no circuit-level guard against this edge case;
+it is a deployer invariant. The circuit's job is to enforce the threshold, not to
+constrain the threshold to a minimum.
+
+**Recommendation (N-F4):** Add a constructor-level check in a future hardening pass:
+`assert(config.min_token_balance > 0, "token mode requires positive min balance")`. This
+is low priority — the deployer controls the threshold and the grant demo uses a
+non-zero threshold.
+
+---
+
+### 8.2 `cast_vote_allowlist` Security Analysis
+
+**Entrypoint:**
+```noir
+fn cast_vote_allowlist(vote_choice, receipt_id, merkle_path, merkle_indices)
+```
+
+**Property-by-property audit:**
+
+| Property | Mechanism | Verdict |
+|---|---|---|
+| Mode guard | `assert(eligibility_mode == ELIGIBILITY_MODE_ALLOWLIST)` at entry | ✅ Sound |
+| receipt_id ≠ 0 | `assert(receipt_id != 0)` at entry | ✅ Sound |
+| Membership proof | Leaf = `sha256([0x00] \| address_field[31])` — `verify_aztec_allowlist` | ✅ Sound |
+| Address binding | `caller_field = self.msg_sender().to_field()` used in leaf computation | ✅ Sound |
+| Double-vote prevention | `SingleUseClaim.claim()` on caller's Aztec wallet — protocol nullifier | ✅ Sound |
+| Receipt collision | `receipts` map in `record_vote` prevents reuse of the same receipt_id | ✅ Sound |
+
+**Address binding (N-F5 CONFIRMED SOUND):**
+`compute_aztec_leaf` hashes the caller's Aztec address field. An attacker who somehow
+obtains another wallet's Merkle proof cannot use it from their own wallet — the leaf
+computed in-circuit uses `msg_sender()`, not a supplied address. No impersonation path
+exists at the circuit level.
+
+**Sybil via allowlist composition (N-F6 DESIGN):**
+A person controlling multiple Aztec wallets (A, B, C) can vote once per wallet if each
+address appears in the allowlist. This is a deployer concern (constructing the allowlist
+correctly to include only intended voters) rather than a circuit vulnerability. The circuit
+correctly enforces: each listed address may vote at most once. The allowlist composition
+is out of scope for this circuit review.
+
+---
+
+### 8.3 Cross-Entrypoint Security Analysis
+
+**Mode confusion between entrypoints:**
+- Calling `cast_vote_token` on an ALLOWLIST-mode contract: fails at
+  `assert(eligibility_mode == ELIGIBILITY_MODE_TOKEN)`. ✅
+- Calling `cast_vote_allowlist` on a TOKEN-mode contract: fails at
+  `assert(eligibility_mode == ELIGIBILITY_MODE_ALLOWLIST)`. ✅
+- Calling `cast_vote` on either gated contract: fails at
+  `assert(eligibility_mode == ELIGIBILITY_MODE_OPEN)` (F1-RESIDUAL fix, §7). ✅
+
+No cross-mode call succeeds. All entrypoint/mode pairs are guarded.
+
+**Nullifier scheme differs from Babylon entrypoints (N-F7 CONFIRMED SOUND):**
+`cast_vote_token` and `cast_vote_allowlist` use Aztec's `SingleUseClaim` (protocol-key
+nullifier, unlinkable). `cast_vote_babylon` uses a nullifier derived from the snapshot
+leaf hash (address + balance — publicly computable). This difference is correct and
+expected: generic Aztec-mode voters use Aztec wallets (protocol keys available);
+Babylon-mode voters are Cosmos holders (no Aztec keys, hence leaf-derived nullifier).
+The two schemes are not interchangeable and are not used on the same contract instance.
+
+**Receipt collision across entrypoints on the same contract:**
+`receipt_id` collisions are prevented by the shared `receipts` map in `record_vote`,
+guarded by `assert(already_used == false)`. This holds regardless of which entrypoint
+originated the call. No double-counting is possible through receipt_id reuse. ✅
+
+---
+
+### 8.4 New Findings Summary
+
+| ID | Severity | Description | Recommendation | Status |
+|---|---|---|---|---|
+| N-F1 | SOUND | Balance inflation attack: impossible (leaf commits address + balance) | None | ✅ CONFIRMED SOUND |
+| N-F2 | SOUND | Cross-wallet Merkle reuse: impossible (leaf uses msg_sender()) | None | ✅ CONFIRMED SOUND |
+| N-F3 | DESIGN | `token_address` field repurposed as Merkle root store (248-bit root) | Add deployment.md note | 📝 DESIGN |
+| N-F4 | DESIGN | Zero `min_token_balance` admits zero-balance snapshot entries | Add constructor guard in future hardening | 📝 DESIGN |
+| N-F5 | SOUND | Address binding in allowlist prevents impersonation | None | ✅ CONFIRMED SOUND |
+| N-F6 | DESIGN | Multi-wallet sybil in allowlist mode: deployer concern, not circuit flaw | None (deployer invariant) | 📝 DESIGN |
+| N-F7 | SOUND | Nullifier scheme difference (Aztec vs. Babylon): correct and expected | None | ✅ CONFIRMED SOUND |
+
+**Updated overall risk table (post §8):**
+
+| Severity | Count | Items |
+|---|---|---|
+| CRITICAL | 0 | — |
+| HIGH | 0 | F1 and F1-RESIDUAL both resolved (§1, §7) |
+| MEDIUM | 0 | — |
+| LOW | 0 | F2 (quorum=0) and F3 (receipt_id=0) both resolved |
+| DESIGN | 5 | F4, F5 (original); N-F3, N-F4, N-F6 (new) |
+
+No new security vulnerabilities were found in `cast_vote_token` or `cast_vote_allowlist`.
+Both entrypoints are sound for the prototype / grant demo stage. The three DESIGN
+observations (N-F3, N-F4, N-F6) are either deployer invariants or minor hardening
+opportunities for a future production pass.
+
+**Status:** ✅ **REVIEWED** — tick-3647.
