@@ -12,17 +12,23 @@
 The `PrivateVoting` contract is structurally sound for the prototype stage. The core
 privacy invariant — wallet identity is not linkable to a ballot — is correctly implemented
 via `SingleUseClaim`, whose nullifier is derived from the caller's keys inside the private
-kernel. Five findings are documented below: one **HIGH** severity (placeholder eligibility —
-**fully resolved 2026-06-22**), two **LOW** (quorum boundary — resolved; zero receipt_id —
-resolved), and two **DESIGN** (no emergency stop, protocol trust boundary). No critical
-privacy breaks were found in the generic paths.
+kernel. Five original findings (F1–F5) are documented below: one **HIGH** severity
+(placeholder eligibility — **fully resolved**), two **LOW** (quorum boundary — resolved;
+zero receipt_id — resolved), and two **DESIGN** (no emergency stop, protocol trust
+boundary). A §8 extended review of `cast_vote_token` and `cast_vote_allowlist` added
+seven additional observations (N-F1–N-F7): four confirmed sound, three DESIGN items
+(**all addressed in documentation**). No critical privacy breaks were found in any
+generic paths.
 
-**Resolution summary (2026-06-22):**
+**Resolution summary:**
 - **F1-HIGH ALLOWLIST** resolved (tick-3610, commit 1d55025): `cast_vote_allowlist` with real in-circuit SHA-256 Merkle membership proof.
 - **F1-HIGH TOKEN** resolved (tick-3611): `cast_vote_token` with real in-circuit SHA-256 Merkle balance proof. New leaf: `sha256(address_bytes[32] || balance_be[8])`.
 - **F2 LOW** resolved (commit b3c7ac1): `assert(config.quorum > 0)` in constructor.
 - **F3 LOW** resolved (commit b3c7ac1): `assert(receipt_id != 0)` in `cast_vote`.
 - **F1-RESIDUAL HIGH** resolved (tick-3643): `cast_vote` now asserts `eligibility_mode == OPEN`; gated contracts cannot be called via the generic entrypoint. See §7 amendment below.
+- **N-F3 DESIGN** addressed (tick-3648, commit 3884195): `docs/deployment.md` — deploy-time warning, `tokenAddress` encodes 248-bit SHA-256 Merkle root via `encode_root_as_field`, top-byte-drop encoding documented.
+- **N-F4 DESIGN** addressed (tick-3648, commit 3884195): constructor `assert(min_token_balance > 0)` added for TOKEN mode contracts.
+- **N-F6 DESIGN** addressed (tick-3649, commit 0252056): `docs/deployment.md` — explicit ⚠️ deployer warning on multi-wallet sybil in allowlist mode; three mitigation strategies documented.
 
 ---
 
@@ -282,11 +288,13 @@ of Babylon-gated votes.
 | HIGH | 0 | F1 and F1-RESIDUAL both resolved (see §1 and §7) |
 | MEDIUM | 0 | — |
 | LOW | 0 | F2 (quorum=0) and F3 (receipt_id=0) both resolved |
-| DESIGN | 2 | F4 (no emergency stop), F5 (protocol trust) |
+| DESIGN | 2 | F4 (no emergency stop), F5 (protocol trust) — architectural constraints, no fix needed |
 
 All severity findings in scope are resolved. The two DESIGN findings (F4, F5) are
-known architectural constraints, not bugs. The contract is in a sound state for the
-prototype / grant demo stage.
+known architectural constraints, not bugs. All seven §8 observations (N-F1–N-F7)
+are either confirmed sound or addressed in documentation (N-F3 tick-3648,
+N-F4 tick-3648, N-F6 tick-3649). The contract is in a sound state for the
+prototype / grant demo stage. See §9 for final close-out summary.
 
 ---
 
@@ -499,3 +507,97 @@ N-F3 (deployment.md Merkle root encoding warning), N-F4 (constructor balance gua
 N-F6 (allowlist sybil deployer guidance) were all addressed in ticks 3648–3649.
 
 **Status:** ✅ **REVIEWED** — tick-3647. N-F3/N-F4 hardening tick-3648. N-F6 deployer guidance tick-3649.
+
+---
+
+## 9. Audit Close-Out (2026-06-22, tick-3650)
+
+**Status: COMPLETE — ready for grant submission**
+
+This section closes the audit record for the `PrivateVoting` Noir circuit (generic
+paths). All actionable findings from the original review (§1–§6) and the extended §8
+review of `cast_vote_token` / `cast_vote_allowlist` have been either resolved in code
+or addressed in documentation.
+
+### 9.1 Full Finding Disposition
+
+| ID | Type | Description | Disposition |
+|---|---|---|---|
+| F1-HIGH | Critical | Placeholder eligibility (TOKEN + ALLOWLIST) | ✅ Resolved in code (tick-3610/3611) |
+| F1-RESIDUAL | Critical | Generic `cast_vote` callable on gated contracts | ✅ Resolved in code (tick-3643) |
+| F2-LOW | Bug | `quorum = 0` allows vacuous finalization | ✅ Resolved in code (b3c7ac1) |
+| F3-LOW | Bug | `receipt_id = 0` accepted, risks silent vote loss | ✅ Resolved in code (b3c7ac1) |
+| F4-DESIGN | Architecture | No emergency stop mechanism | ✅ Accepted — intentional trustlessness. Documented in `docs/deployment.md`. V2 recommendation noted (admin_cancel pre-start). |
+| F5-DESIGN | Architecture | `SingleUseClaim` soundness is protocol trust | ✅ Accepted — trust boundary explicit. Comment in `cast_vote`. |
+| N-F1 | Sound | Balance inflation attack impossible | ✅ Confirmed sound (§8.1) |
+| N-F2 | Sound | Cross-wallet Merkle reuse impossible | ✅ Confirmed sound (§8.1) |
+| N-F3-DESIGN | Documentation | `tokenAddress` repurposed as Merkle root store | ✅ Documented in `deployment.md` (tick-3648) |
+| N-F4-DESIGN | Hardening | Zero `min_token_balance` admits any snapshot entry | ✅ Constructor assert added (tick-3648) |
+| N-F5 | Sound | Address binding prevents impersonation in allowlist | ✅ Confirmed sound (§8.2) |
+| N-F6-DESIGN | Documentation | Multi-wallet sybil in allowlist mode | ✅ Deployer guidance added to `deployment.md` (tick-3649) |
+| N-F7 | Sound | Nullifier scheme divergence (Aztec vs. Babylon) is correct | ✅ Confirmed sound (§8.3) |
+
+**Total: 13 findings. 5 resolved in code. 4 confirmed sound (no action). 4 addressed in documentation.**
+
+### 9.2 What the Audit Covers
+
+The audit covers all **generic Aztec voting paths**:
+- `cast_vote` (OPEN mode only, post F1-RESIDUAL fix)
+- `cast_vote_token` (TOKEN mode)
+- `cast_vote_allowlist` (ALLOWLIST mode)
+- `record_vote`, `finalize_vote`, `get_final_tally`
+- `eligibility.nr`, `merkle.nr` (the `verify_merkle_path` primitive)
+- Constructor validation
+
+### 9.3 What the Audit Does NOT Cover
+
+The following remain out of scope and require a separate review before any
+production deployment of those paths:
+- **Babylon governance paths**: `cast_vote_babylon`, `cast_vote_babylon_v2`
+- **TypeScript scripts**: `scripts/synthetic-snapshot.ts`, deployment tooling
+- **Aztec private kernel internals**: `SingleUseClaim` implementation (audited by Aztec)
+- **Frontend / wallet integration**: receipt_id generation, client-side validation
+
+### 9.4 Privacy Guarantee Summary
+
+The core privacy claim — that a voter's wallet address is not linkable to their ballot
+choice — holds under the following explicitly-stated trust model:
+
+1. **Aztec private kernel correctness**: `SingleUseClaim` nullifiers are derived from
+   and committed to the caller's spending keys inside the private kernel. A bug in the
+   kernel nullifier derivation would break double-vote prevention. This is Aztec
+   protocol risk, not contract risk.
+
+2. **SHA-256 collision resistance**: The Merkle leaf computation
+   (`sha256(address || balance)` or `sha256([0x00] || address)`) relies on SHA-256
+   preimage resistance. Under standard cryptographic assumptions this is sound.
+
+3. **Deployer allowlist/snapshot integrity**: For gated votes, the deployer is solely
+   responsible for the correctness of the committed Merkle root. The circuit cannot
+   verify that the root correctly represents the intended eligible set.
+
+### 9.5 Grant Submission Statement
+
+This security review, together with the `GRANT.md` application, the PIUP Study 1
+pre-registration, and the forum post draft in `docs/forum-post-grant-application.md`,
+constitutes the submitted evidence of research-quality methodology for the Aztec
+Privacy Fund application.
+
+**For grant reviewers:** All HIGH-severity vulnerabilities found by static analysis
+have been resolved in the committed code. The two remaining DESIGN observations (F4,
+F5) are standard trade-offs in on-chain voting system design, documented deliberately.
+The circuit has been reviewed across three audit passes: original five-finding review,
+F1-RESIDUAL cross-entrypoint analysis, and full §8 review of the token and allowlist
+entrypoints. No critical or medium findings remain open.
+
+**Commit trail:**
+- `1d55025` — `cast_vote_allowlist` with in-circuit Merkle proof
+- `b3c7ac1` — F2 quorum guard + F3 receipt_id guard
+- `39ca9a3` — §8 extended review committed to docs
+- `1d55025`, `tick-3611` — `cast_vote_token` with in-circuit balance proof
+- `tick-3643` — F1-RESIDUAL mode restriction
+- `3884195` — N-F3 deployment note + N-F4 constructor guard
+- `0252056` — N-F6 deployer guidance (multi-wallet sybil)
+
+**Review closed:** 2026-06-22, tick-3650.
+**Reviewer:** Jony Burshtyn / OpenClaw agent working on `aztec-private-voting`.
