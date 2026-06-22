@@ -23,6 +23,7 @@ pub contract PrivateVoting {
         derive_hash160_sha256d,
         encode_field_as_root,
         hash_bytes_as_field,
+        verify_aztec_allowlist,
         verify_baby_eligibility,
         verify_baby_eligibility_v2,
     };
@@ -84,6 +85,67 @@ pub contract PrivateVoting {
         assert(receipt_id != 0, "receipt_id must be non-zero");
         self.storage.vote_claims.at(self.msg_sender()).claim();
         self.enqueue_self.record_vote(vote_choice, eligibility_proof, receipt_id);
+    }
+
+    // Allowlist governance entrypoint: voter proves their AztecAddress is a
+    // member of the committed allowlist Merkle tree.
+    //
+    // This replaces the F1-HIGH stub in verify_eligibility (proof != 0) with
+    // a real in-circuit ZK membership proof for ALLOWLIST mode votes.
+    //
+    // Private witnesses (never visible on-chain):
+    //   merkle_path    - sibling hashes from leaf to root (depth 20)
+    //   merkle_indices - direction bits (0=left, 1=right) at each level
+    //
+    // Public inputs (committed in VoteConfig):
+    //   merkle_root    - stored in token_address field (31 bytes encoded as Field)
+    //   vote_choice    - public (same L1 privacy note as cast_vote)
+    //   receipt_id     - client-generated random; non-zero; backs verify_vote_counted
+    //
+    // Leaf format:  sha256( address_field_bytes[32] )
+    //   where address_field_bytes = [0x00] || address.to_field().to_be_bytes()[0..31]
+    //
+    // Off-chain allowlist generator MUST use the same leaf scheme; see
+    // merkle.nr compute_aztec_leaf and docs/allowlist-generator.md.
+    //
+    // Double-voting is prevented by the protocol's SingleUseClaim nullifier,
+    // which is derived from the caller's protocol keys inside the private
+    // kernel (not from the Merkle leaf), so it is not linkable to the address.
+    //
+    // Known limitation: vote_choice is a public argument of the enqueued
+    // record_vote call (same L1 privacy gap as cast_vote). See cast_vote
+    // comment for full context.
+    #[external("private")]
+    fn cast_vote_allowlist(
+        vote_choice: u8,
+        receipt_id: Field,
+        merkle_path: [[u8; 32]; 20],
+        merkle_indices: [bool; 20],
+    ) {
+        use crate::eligibility::ELIGIBILITY_MODE_ALLOWLIST;
+        assert(receipt_id != 0, "receipt_id must be non-zero");
+
+        let config = self.storage.config.read();
+        assert(
+            config.eligibility_mode == ELIGIBILITY_MODE_ALLOWLIST,
+            "cast_vote_allowlist: contract not in allowlist mode",
+        );
+
+        // Verify that the caller's AztecAddress is in the committed allowlist.
+        // The Merkle root is encoded in config.token_address (same 31-byte
+        // Field encoding used for the Babylon Merkle root; see encode_field_as_root).
+        let caller_field = self.msg_sender().to_field();
+        let root_field = config.token_address.to_field();
+        let _ = verify_aztec_allowlist(caller_field, merkle_path, merkle_indices, root_field);
+
+        // Use the protocol's single-use claim to prevent double-voting.
+        // The claim's nullifier is derived from the caller's private keys
+        // in the private kernel — not from the Merkle leaf — so observers
+        // cannot link the nullifier to the allowlist entry.
+        self.storage.vote_claims.at(self.msg_sender()).claim();
+
+        // Eligibility proven above; pass 1 as the dummy proof field.
+        self.enqueue_self.record_vote(vote_choice, 1, receipt_id);
     }
 
     // Babylon governance entrypoint: voter proves BABY token holding via

@@ -1,12 +1,17 @@
 // merkle.nr
 //
-// Merkle membership proof for BABY token holder eligibility.
+// Merkle membership proofs for two use cases:
 //
-// Proves: "I know an address+balance such that hash(address, balance) is
-// a leaf in the Merkle tree committed to by `root`, and balance >= min_balance."
+// 1. Generic AztecAddress allowlist (ALLOWLIST eligibility mode)
+//    Proves: "I know an AztecAddress that is a leaf in the committed allowlist
+//    Merkle tree." Used with cast_vote_allowlist. No external chain required.
+//    Leaf format: sha256(address_field_bytes[32])
 //
-// Used in the Babylon governance demo to prove BABY holdings from a
-// Cosmos-side snapshot without bridging tokens.
+// 2. Babylon BABY token snapshot eligibility
+//    Proves: "I know an address+balance such that hash(address, balance) is
+//    a leaf in the Merkle tree committed to by `root`, and balance >= min_balance."
+//    Used in the Babylon governance demo to prove BABY holdings from a
+//    Cosmos-side snapshot without bridging tokens.
 
 use sha256::sha256_var;
 
@@ -156,6 +161,61 @@ pub fn derive_hash160_sha256d(pubkey_x: [u8; 32], pubkey_y: [u8; 32]) -> [u8; 20
     hash160
 }
 
+// ---------------------------------------------------------------------------
+// Generic AztecAddress allowlist Merkle membership
+// ---------------------------------------------------------------------------
+
+// Compute a Merkle leaf from an AztecAddress field.
+//
+// The AztecAddress is serialised as 32 bytes (zero-padded big-endian,
+// matching the encoding used for Merkle roots throughout this module).
+// Leaf = sha256( address_bytes[32] )
+//
+// The off-chain allowlist generator MUST use the same scheme:
+//   const addrBytes = Buffer.alloc(32);
+//   addrBytes.writeUInt8(0, 0);
+//   Buffer.from(address.toBuffer()).copy(addrBytes, 1);
+//   leaf = sha256(addrBytes);
+//
+// Changing this function breaks existing deployed allowlists; treat as
+// a versioned commitment.
+pub fn compute_aztec_leaf(address_field: Field) -> [u8; 32] {
+    // Encode the 31-byte field as 32 bytes (zero-pad at index 0), matching
+    // encode_field_as_root so the off-chain and in-circuit encodings agree.
+    let field_bytes: [u8; 31] = address_field.to_be_bytes();
+    let mut addr_bytes = [0u8; 32];
+    addr_bytes[0] = 0;
+    for i in 0..31 { addr_bytes[i + 1] = field_bytes[i]; }
+    sha256_var(addr_bytes, 32)
+}
+
+// Verify that `address_field` is a member of the committed allowlist Merkle
+// tree whose root is stored as `root_field` (encoded via encode_field_as_root).
+//
+// Returns the leaf hash so the caller can bind it to downstream commitments.
+//
+// Usage in cast_vote_allowlist:
+//   let root_field = config.token_address.to_field();
+//   let _ = verify_aztec_allowlist(
+//       self.msg_sender().to_field(),
+//       merkle_path, merkle_indices, root_field,
+//   );
+pub fn verify_aztec_allowlist(
+    address_field: Field,
+    path: [[u8; 32]; 20],
+    indices: [bool; 20],
+    root_field: Field,
+) -> [u8; 32] {
+    let root = encode_field_as_root(root_field);
+    let leaf = compute_aztec_leaf(address_field);
+    verify_merkle_path(leaf, path, indices, root);
+    leaf
+}
+
+// ---------------------------------------------------------------------------
+// Field / bytes encoding helpers
+// ---------------------------------------------------------------------------
+
 // Encode a Field (31 bytes) back into a 32-byte hash.
 // Inverse of encode_root_as_field in synthetic-snapshot.ts:
 //   out[0] = 0x00 (padding), out[1..32] = field bytes
@@ -177,4 +237,49 @@ pub fn hash_bytes_as_field(h: [u8; 32]) -> Field {
         f = f * 256 + (h[i + 1] as Field);
     }
     f
+}
+
+// ---------------------------------------------------------------------------
+// Unit tests — allowlist leaf computation
+// ---------------------------------------------------------------------------
+
+// compute_aztec_leaf produces the same output for the same input (determinism).
+#[test]
+fn compute_aztec_leaf_deterministic() {
+    let addr: Field = 0xdeadbeefcafe;
+    let leaf_a = compute_aztec_leaf(addr);
+    let leaf_b = compute_aztec_leaf(addr);
+    assert(leaf_a == leaf_b, "leaf not deterministic");
+}
+
+// Different addresses produce different leaves (collision resistance test).
+#[test]
+fn compute_aztec_leaf_differs_by_address() {
+    let addr_a: Field = 0x1111111111111111;
+    let addr_b: Field = 0x2222222222222222;
+    let leaf_a = compute_aztec_leaf(addr_a);
+    let leaf_b = compute_aztec_leaf(addr_b);
+    // The two SHA-256 outputs must differ (with overwhelming probability).
+    assert(leaf_a != leaf_b, "distinct addresses produced the same leaf");
+}
+
+// compute_aztec_leaf output is non-zero (sha256 of non-zero input is non-zero).
+#[test]
+fn compute_aztec_leaf_nonzero() {
+    let zero_leaf = compute_aztec_leaf(0);
+    let nonzero_leaf = compute_aztec_leaf(42);
+    // SHA-256 of any fixed-length input is non-zero; both should differ from
+    // an array of 32 zeros.
+    let empty: [u8; 32] = [0; 32];
+    assert(zero_leaf != empty, "sha256 output was unexpectedly all-zero");
+    assert(nonzero_leaf != empty, "sha256 output was unexpectedly all-zero");
+}
+
+// encode_field_as_root round-trips through hash_bytes_as_field.
+#[test]
+fn encode_decode_field_round_trips() {
+    let original: Field = 0xabcdef1234567890;
+    let encoded = encode_field_as_root(original);
+    let decoded = hash_bytes_as_field(encoded);
+    assert(decoded == original, "encode/decode round-trip failed");
 }
