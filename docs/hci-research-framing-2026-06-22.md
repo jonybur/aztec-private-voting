@@ -95,23 +95,41 @@ No prior work in HCI has studied this problem class in the abstract. The PIUP is
 
 ## Evaluation agenda
 
-The following user study program would establish whether the PIUP design decisions produce the claimed behaviors:
+The following user study program would establish whether the PIUP design decisions produce the claimed behaviors. The three studies form a sequential arc: isolate the label effect first, then test the explanation effect and calibration interventions, then measure real-world verification behavior.
 
-### Study 1: Mental model elicitation
+| Study | Central question | Method | Status |
+|-------|-----------------|--------|--------|
+| 1 | Does identifier label affect privacy mental model? | 4-condition between-subjects screenshot study (Prolific, N=200) | Pre-registered; OSF upload + pilot pending |
+| 2 | Does absent-choice explanation affect trust and save behavior? Can calibration reduce over-confidence? | 2×2 L×E between-subjects interactive prototype study + calibration factor I (Prolific, N=240) | Design note written; finalise after Study 1 pilot |
+| 3 | Do users actually return to verify? What predicts verification? | Longitudinal field study in live DAO deployment | Deferred until Study 2 complete |
 
-**Question:** What mental model does a voter form about the receipt after seeing it? Do they believe the system knows their choice? Do they believe showing the fingerprint to a third party would reveal their choice?
+### Study 1: Receipt label and privacy mental model
 
-**Method:** Think-aloud protocol with 20–30 non-technical participants. Show the receipt UI after a simulated vote. Ask: "What does this fingerprint prove? If you showed it to your employer, what would they know?" Code for correct vs. incorrect mental model formation.
+**Question:** Does the identifier label on a private voting receipt — fingerprint, confirmation code, nullifier, or receipt ID — affect the user's mental model of what that receipt proves?
 
-**Success criterion:** >70% of participants correctly model that the fingerprint does not reveal their vote choice.
+**Method:** 4-condition between-subjects screenshot study on Prolific (N=200, 50 per condition). Participants see a static receipt image after a simulated vote. Four comprehension questions (Q1–Q4) test whether they believe: the system knows their choice, showing the receipt would reveal their vote, the identifier proves how they voted, and the receipt's absence of their choice is a failure or a feature. One open-text probe (Q5). Primary endpoint: Q2 ("does this prove how I voted?") for conditions A vs B (fingerprint vs. confirmation code).
 
-### Study 2: Absent-content interpretation
+**Pre-registered hypotheses (4 families, 14 tests, Holm correction):** H1 — fingerprint/confirmation code outperform nullifier on Q2/Q3. H2 — fingerprint and confirmation code are accuracy-equivalent overall (±10pp TOST composite), but diverge on Q2/Q3 specifically. H3 — control condition scores lower than all labelled conditions on Q1. H4 — confirmation code produces highest confidence with moderate accuracy (calibration failure).
 
-**Question:** Do users interpret the absence of vote choice in the receipt as a failure (the system didn't record it) or a design decision (the system intentionally omitted it)?
+**Status:** Pre-registered. OSF artifacts committed to repo (pre-reg, R analysis script, survey instrument, Qualtrics setup guide). Pilot: N=40, 10 per condition, before full launch. See [`docs/piup-study1-preregistration-2026-06-22.md`](piup-study1-preregistration-2026-06-22.md) and [`analysis/piup-study1-analysis.R`](../analysis/piup-study1-analysis.R).
 
-**Method:** 2×2 between-subjects design. Factor 1: receipt with vs. without explicit absent-choice explanation. Factor 2: receipt with "fingerprint" label vs. "confirmation code" label. Dependent variable: trust score (custom scale, adapted from McKnight et al.) and willingness to save the receipt.
+### Study 2: Absent-content interpretation and trust calibration
 
-**Hypothesis:** Explicit absent-choice explanation + fingerprint label produces higher trust and higher save rate than omission + generic label. (This is currently untested.)
+**Question:** Do users interpret the absence of vote choice in the receipt as a failure (the system didn't record it) or a design decision (the system intentionally omitted it)? And can an accuracy-feedback calibration intervention close the gap for over-confident users?
+
+**Method:** 2×2 L×E between-subjects factorial experiment on Prolific (N=240, 8 cells × 30), with an additional calibration factor I crossing L × E.
+
+- **Factor L (Label):** vote fingerprint vs. confirmation code
+- **Factor E (Explanation):** explicit absent-choice explanation present vs. absent
+- **Factor I (Intervention):** accuracy-feedback calibration before receipt display vs. no calibration
+
+Unlike Study 1 (static screenshots), Study 2 uses an **interactive prototype** — participants interact with a simulated voting flow and receive a receipt. This enables behavioral intention measures (download-click proxy for save intention) and within-session calibration.
+
+**Primary measures:** M1 — absent-content accuracy on Q-AC ("is your vote shown in this receipt?"); M2 — trust score (McKnight M2 scale, 4-item); M3 — save intention (self-report + download affordance click proxy); M4 — confidence miscalibration (confidence − accuracy residual).
+
+**Pre-specified hypotheses (H2.1–H2.4):** H2.1 — E factor main effect on Q-AC accuracy. H2.2 — L × E interaction (confirmation code closes gap to fingerprint when explanation present). H2.3 — I factor reduces confidence miscalibration without reducing save intention. H2.4 — correct absent-content interpretation predicts save intention, moderated by calibration.
+
+**Status:** Design note written. Not yet pre-registered — finalise after Study 1 pilot data, using H4 outcome to calibrate Study 2 primary endpoint selection (contingency table specified in design note). See [`docs/piup-study2-design-note-2026-06-22.md`](piup-study2-design-note-2026-06-22.md).
 
 ### Study 3: Deferred verification behavior
 
