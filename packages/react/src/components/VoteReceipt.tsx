@@ -40,12 +40,12 @@ export function VoteReceipt({
   onDownload,
   onVerify,
   verifierUrl,
+  labelVariant = 'fingerprint',
 }: VoteReceiptProps): JSX.Element {
   const [showHowToVerify, setShowHowToVerify] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const { heading: identifierHeading, noun: identifierNoun } =
-    LABEL_COPY[labelVariant ?? 'fingerprint'];
+  const { heading: identifierHeading, noun: identifierNoun } = LABEL_COPY[labelVariant];
 
   const handleCopy = async (): Promise<void> => {
     await navigator.clipboard.writeText(receipt.receiptId);
@@ -101,7 +101,7 @@ export function VoteReceipt({
             type="button"
             className="apv-receipt__copy"
             onClick={handleCopy}
-            aria-label="Copy vote fingerprint"
+            aria-label={`Copy ${identifierNoun}`}
           >
             {copied ? 'Copied' : 'Copy'}
           </button>
