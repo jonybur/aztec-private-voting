@@ -23,6 +23,8 @@ After a voter casts a private ballot, they get a `<VoteReceipt />` component bui
 
 The full design rationale — including the specific copy decisions, the alternatives we rejected, and the open problems we did not solve — is in [`docs/receipt-design.md`](docs/receipt-design.md). This is the research contribution nobody else has made. The Noir contract and React components are table stakes for the category; the receipt design is what makes private voting legible to non-technical DAO participants.
 
+This receipt pattern has been formalised as the **Proof-of-Inclusion UX Pattern (PIUP)** in [`docs/proof-of-inclusion-ux-pattern-2026-06-22.md`](docs/proof-of-inclusion-ux-pattern-2026-06-22.md) — the first documented design class combining verifiability and content-blindness in a single receipt artifact. The pattern generalises beyond voting to sealed-bid auctions, whistleblower systems, and blind peer review. Three formal invariants are stated; the current L1 privacy gap (vote choice visible in `record_vote` public calldata) is documented as a named limitation, not glossed over.
+
 ---
 
 ## Technical state
@@ -35,6 +37,9 @@ The full design rationale — including the specific copy decisions, the alterna
 | `@aztec-private-voting/react` — component library | ✅ merged |
 | Playwright + Noir unit tests (41 user stories) | ✅ merged |
 | Aztec-NR v5 port | ✅ confirmed (zero code changes) |
+| Static security review (`main.nr` + `eligibility.nr`) | ✅ done — F2 (quorum) + F3 (receipt_id) fixed; 8 sound properties confirmed |
+| M2 — secp256k1 ownership proof circuit | 🔄 circuit implemented (`cast_vote_babylon_v2`), 6/11 checklist items done |
+| Tally privacy architecture — M3 decision gate | ✅ A/B/C spike done; Architecture A recommended |
 | Alpha testnet deployment | ⚠️ **Redeploying to v5** (state reset Jun 18) |
 | BABY token Merkle governance demo (Babylon team) | ✅ **LIVE** |
 
@@ -106,7 +111,15 @@ The single open problem separating M1 (complete) from a production-ready Cosmos 
 - Per-holder nullifier is no longer computable from public data — cannot be front-run.
 - Vote direction remains hidden (no change to the existing private/public structure).
 
-**Scope:** The Noir secp256k1 gadget is a ~2-week integration sprint. Main complexity: key derivation from a bech32 Cosmos address to a compressed public key (Cosmos uses secp256k1 with SHA-256 + RIPEMD-160 hashing). Both hash gadgets are available in the Noir standard library. M2 is one focused engineering sprint, not a redesign.
+**Status (2026-06-22):** M2 circuit is implemented. `cast_vote_babylon_v2` in `main.nr` delivers the full ownership proof:
+- In-circuit `std::ecdsa_secp256k1::verify_signature` — any witness without a valid secp256k1 key is rejected
+- Vote-specific challenge `sha256(title_bytes || root_bytes)` — no cross-vote replay
+- Nullifier `hash_bytes_as_field(sha256(sig))` — not computable from the public snapshot (closes the M1 front-running gap)
+- Key derivation via `SHA-256d` fallback (RIPEMD-160 swap pending `noir-ripemd160` for `nargo >= 0.30`)
+
+Checklist: **6/11 items complete.** Remaining sprint: synthetic snapshot M2 leaf generator, deploy script M2 Merkle root encoding, React `wallet.signArbitrary(challenge)` layer, secp256k1 Noir unit tests with standard test vectors, `nargo check`, and forum post.
+
+The M2 sprint scope has narrowed from the original estimate — the core Noir circuit is done; remaining work is the TypeScript scaffolding and test vectors (not Noir complexity). The original "~2-week integration sprint" has been compressed to a focused frontend + test sprint.
 
 ---
 
@@ -115,7 +128,7 @@ The single open problem separating M1 (complete) from a production-ready Cosmos 
 | Line | Amount |
 |---|---|
 | Development — Noir contract + 4 React components + test suite (~3 months part-time at fair market rate) | $15,000 |
-| Security review / Noir contract audit before v5 production deployment | $8,000 |
+| Security review / Noir contract audit before v5 production deployment (self-review complete; professional audit pre-mainnet) | $8,000 |
 | Documentation, demos, ecosystem tooling | $2,000 |
 | **Total** | **$25,000** |
 
