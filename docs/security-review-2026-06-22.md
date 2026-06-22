@@ -476,8 +476,8 @@ originated the call. No double-counting is possible through receipt_id reuse. �
 |---|---|---|---|---|
 | N-F1 | SOUND | Balance inflation attack: impossible (leaf commits address + balance) | None | ✅ CONFIRMED SOUND |
 | N-F2 | SOUND | Cross-wallet Merkle reuse: impossible (leaf uses msg_sender()) | None | ✅ CONFIRMED SOUND |
-| N-F3 | DESIGN | `token_address` field repurposed as Merkle root store (248-bit root) | Add deployment.md note | 📝 DESIGN |
-| N-F4 | DESIGN | Zero `min_token_balance` admits zero-balance snapshot entries | Add constructor guard in future hardening | 📝 DESIGN |
+| N-F3 | DESIGN | `token_address` field repurposed as Merkle root store (248-bit root) | Add deployment.md note | ✅ ADDRESSED (tick-3648) |
+| N-F4 | DESIGN | Zero `min_token_balance` admits zero-balance snapshot entries | Add constructor guard in future hardening | ✅ ADDRESSED (tick-3648) |
 | N-F5 | SOUND | Address binding in allowlist prevents impersonation | None | ✅ CONFIRMED SOUND |
 | N-F6 | DESIGN | Multi-wallet sybil in allowlist mode: deployer concern, not circuit flaw | None (deployer invariant) | 📝 DESIGN |
 | N-F7 | SOUND | Nullifier scheme difference (Aztec vs. Babylon): correct and expected | None | ✅ CONFIRMED SOUND |
@@ -490,11 +490,11 @@ originated the call. No double-counting is possible through receipt_id reuse. �
 | HIGH | 0 | F1 and F1-RESIDUAL both resolved (§1, §7) |
 | MEDIUM | 0 | — |
 | LOW | 0 | F2 (quorum=0) and F3 (receipt_id=0) both resolved |
-| DESIGN | 5 | F4, F5 (original); N-F3, N-F4, N-F6 (new) |
+| DESIGN | 3 | F4, F5 (original); N-F6 (new) — N-F3/N-F4 addressed tick-3648 |
 
 No new security vulnerabilities were found in `cast_vote_token` or `cast_vote_allowlist`.
 Both entrypoints are sound for the prototype / grant demo stage. The three DESIGN
-observations (N-F3, N-F4, N-F6) are either deployer invariants or minor hardening
-opportunities for a future production pass.
+observations (N-F6) are deployer invariants with no circuit fix required. N-F3
+(deployment.md warning) and N-F4 (constructor guard) were both addressed in tick-3648.
 
-**Status:** ✅ **REVIEWED** — tick-3647.
+**Status:** ✅ **REVIEWED** — tick-3647. N-F3/N-F4 hardening applied tick-3648.

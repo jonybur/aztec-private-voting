@@ -72,6 +72,16 @@ pub contract PrivateVoting {
         assert(config.options_count as u32 <= MAX_OPTIONS, "too many options");
         assert(config.end_time > config.start_time, "end before start");
         assert(config.quorum > 0, "quorum must be at least 1");
+        // Security hardening (N-F4): in TOKEN mode a zero min_token_balance would
+        // admit every address in the snapshot (balance >= 0 is always true).
+        // Enforce a positive threshold at deploy time so the deployer cannot
+        // accidentally create an open vote while intending token gating.
+        if config.eligibility_mode == ELIGIBILITY_MODE_TOKEN {
+            assert(
+                config.min_token_balance > 0,
+                "token mode: min_token_balance must be > 0",
+            );
+        }
         self.storage.admin.initialize(admin);
         self.storage.config.initialize(config);
     }

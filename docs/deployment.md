@@ -54,6 +54,19 @@ For token gating:
 }
 ```
 
+> **⚠️ TOKEN MODE — `tokenAddress` encodes the Merkle root, not a contract address (N-F3)**
+>
+> In token-gated mode, `tokenAddress` does **not** hold a real token contract address.
+> It holds the 248-bit encoded Merkle root of the token-balance snapshot, produced by
+> `encode_root_as_field` in `scripts/synthetic-snapshot.ts`. The circuit reads it back
+> via `encode_field_as_root` in `contracts/src/merkle.nr` — the top byte of the 32-byte
+> SHA-256 root is dropped (zero-padded), which is sufficient for a Merkle commitment.
+> Always generate this value with the snapshot helper; never paste a real contract address here.
+>
+> Also: **`minTokenBalance` must be ≥ 1** — setting it to `0` would admit any address
+> present in the snapshot regardless of balance. The constructor enforces this at deploy
+> time: a `minTokenBalance` of `0` will revert with `"token mode: min_token_balance must be > 0"`.
+
 For an allowlist:
 ```json
 {
@@ -62,6 +75,13 @@ For an allowlist:
   "allowlistRoot": "0x..."
 }
 ```
+
+> **⚠️ ALLOWLIST MODE — `allowlistRoot` encodes the Merkle root, not a contract address (N-F3)**
+>
+> Same encoding as token mode: `allowlistRoot` is the 248-bit field encoding of the
+> SHA-256 Merkle root of the eligibility set. It is stored internally in `config.token_address`
+> by the deploy script. Generate it with the allowlist snapshot helper; do not substitute
+> a real contract address.
 
 ## 4. Run the deploy script
 
