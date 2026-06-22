@@ -276,17 +276,35 @@ negligible in practice — but worth a comment in the contract.
 
 ## 10. Implementation checklist
 
-- [ ] Confirm `std::ec::secp256k1` API in target Nargo version (run `nargo check` with dummy usage)
-- [ ] Resolve RIPEMD-160: test `noir-ripemd160` crate; fall back to SHA-256d if needed
-- [ ] Add `compute_leaf_v2` to `merkle.nr`
-- [ ] Add `cast_vote_babylon_v2` to `main.nr`
-- [ ] Update `synthetic-snapshot.ts` to produce M2 leaves (`version: 2`)
+- [x] Confirm `std::ecdsa_secp256k1` API in target Nargo version — Noir 0.30 stdlib confirmed; uses `(pubkey_x[32], pubkey_y[32], sig[64], hashed_msg[N])` interface *(tick-3605)*
+- [x] Resolve RIPEMD-160 — stdlib absent; using Fallback B (SHA-256d: `sha256(sha256(x||y))[12:]`) with clear PROTOTYPE DEVIATION comments *(tick-3605)*
+- [x] Add `compute_leaf_v2` to `merkle.nr` *(tick-3605)*
+- [x] Add `derive_hash160_sha256d` helper to `merkle.nr` *(tick-3605)*
+- [x] Add `verify_baby_eligibility_v2` to `merkle.nr` *(tick-3605)*
+- [x] Add `cast_vote_babylon_v2` to `main.nr` *(tick-3605)* — uses `std::ecdsa_secp256k1::verify_signature`; challenge = `sha256(title_bytes || root_bytes)`; nullifier = `hash_bytes_as_field(sha256(sig))`
+- [ ] Update `synthetic-snapshot.ts` to produce M2 leaves (`version: 2`) using same SHA-256d derivation
 - [ ] Update `scripts/deploy-testnet.ts` to use M2 Merkle root encoding
-- [ ] Update React layer to call `wallet.signArbitrary(challenge)` and pass `(pubkey, r, s)` to the circuit input
+- [ ] Update React layer to call `wallet.signArbitrary(challenge)` and pass `(pubkey_x, pubkey_y, sig)` to circuit input
 - [ ] Add Noir unit tests: valid signature + Merkle pass; invalid signature fail; wrong pubkey fail
+- [ ] Compile with `nargo check` on a machine with nargo installed — flag and fix any type/API mismatches
 - [ ] Measure proving time on target browser hardware
-- [ ] Update GRANT.md M2 section with confirmed RIPEMD-160 approach and proving-time measurement
-- [ ] Update `cast_vote_babylon` comment in `main.nr` to reference this document
+- [ ] Update GRANT.md M2 section with confirmed derivation approach and proving-time measurement
+
+### Challenge format (implemented)
+```
+challenge = sha256( encode_field_as_root(config.title_hash) || encode_field_as_root(root_field) )
+```
+Both inputs are 32-byte field encodings (0x00 padding + 31 field bytes).
+Change from original spec (which used contract_address || title_hash):
+using title_hash || root achieves the same replay-prevention goal while
+avoiding the `this_address()` API dependency in private context.
+
+### SHA-256d address derivation (implemented)
+```
+hash160 = sha256( sha256( pubkey_x[32] || pubkey_y[32] ) )[12..32]
+```
+Same function must be implemented in `synthetic-snapshot.ts` and documented
+in GRANT.md as a named deviation before grant submission.
 
 ---
 

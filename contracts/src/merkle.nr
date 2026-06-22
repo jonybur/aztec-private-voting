@@ -88,6 +88,74 @@ pub fn verify_baby_eligibility(
     leaf
 }
 
+// M2 leaf format: sha256(hash160[20] || balance_be[8]).
+//
+// hash160 is the 20-byte address commitment derived from the holder's
+// secp256k1 public key. In production this is ripemd160(sha256(pubkey))
+// (standard Cosmos derivation). For the M2 prototype we use the SHA-256d
+// fallback; see derive_hash160_sha256d below.
+//
+// The snapshot generator (scripts/synthetic-snapshot.ts) MUST use the
+// same leaf format and derivation to produce matching Merkle roots.
+pub fn compute_leaf_v2(hash160: [u8; 20], balance: u64) -> [u8; 32] {
+    let mut input = [0u8; 28];
+    for i in 0..20 { input[i] = hash160[i]; }
+    input[20] = ((balance >> 56) & 0xff) as u8;
+    input[21] = ((balance >> 48) & 0xff) as u8;
+    input[22] = ((balance >> 40) & 0xff) as u8;
+    input[23] = ((balance >> 32) & 0xff) as u8;
+    input[24] = ((balance >> 24) & 0xff) as u8;
+    input[25] = ((balance >> 16) & 0xff) as u8;
+    input[26] = ((balance >>  8) & 0xff) as u8;
+    input[27] = ((balance      ) & 0xff) as u8;
+    sha256_var(input, 28)
+}
+
+// M2 eligibility check: Merkle membership + balance threshold using the v2 leaf.
+// Returns the leaf bytes so the caller can derive the nullifier.
+pub fn verify_baby_eligibility_v2(
+    hash160: [u8; 20],
+    balance: u64,
+    min_balance: u64,
+    path: [[u8; 32]; 20],
+    indices: [bool; 20],
+    root: [u8; 32],
+) -> [u8; 32] {
+    assert(balance >= min_balance, "Insufficient BABY balance for this vote");
+    let leaf = compute_leaf_v2(hash160, balance);
+    verify_merkle_path(leaf, path, indices, root);
+    leaf
+}
+
+// Derive a 20-byte address commitment from a secp256k1 public key using
+// the SHA-256d fallback (Fallback B from design spec §9 Risk 1).
+//
+// Standard Cosmos: hash160 = ripemd160( sha256( compressed_pubkey[33] ) )
+// This fallback:   hash160 = sha256( sha256( pubkey_x[32] || pubkey_y[32] ) )[12..32]
+//
+// PROTOTYPE DEVIATION: this produces different addresses from real Cosmos
+// bbn1… addresses. Both the snapshot generator (synthetic-snapshot.ts)
+// and this circuit MUST use the same scheme. Replace with ripemd160 once
+// noir-ripemd160 crate compatibility is confirmed for nargo >=0.30.
+// See docs/m2-secp256k1-ownership-proof-design.md §9 Risk 1.
+pub fn derive_hash160_sha256d(pubkey_x: [u8; 32], pubkey_y: [u8; 32]) -> [u8; 20] {
+    // Concatenate x || y (64 bytes, no 04 prefix).
+    let mut pk_bytes = [0u8; 64];
+    for i in 0..32 { pk_bytes[i] = pubkey_x[i]; }
+    for i in 0..32 { pk_bytes[32 + i] = pubkey_y[i]; }
+
+    // Double-hash: sha256(sha256(pk_bytes)).
+    let inner = sha256_var(pk_bytes, 64);
+    let outer = sha256_var(inner, 32);
+
+    // Take last 20 bytes as the address commitment (matches Bitcoin-style
+    // hash160 output width; last-20 rather than first-20 is arbitrary —
+    // consistency with synthetic-snapshot.ts matters, not the direction).
+    let mut hash160 = [0u8; 20];
+    for i in 0..20 { hash160[i] = outer[12 + i]; }
+    hash160
+}
+
 // Encode a Field (31 bytes) back into a 32-byte hash.
 // Inverse of encode_root_as_field in synthetic-snapshot.ts:
 //   out[0] = 0x00 (padding), out[1..32] = field bytes

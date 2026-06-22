@@ -1,6 +1,7 @@
 mod eligibility;
 mod merkle;
 
+use sha256::sha256_var;
 use aztec::macros::aztec;
 
 #[aztec]
@@ -16,7 +17,15 @@ pub contract PrivateVoting {
     use aztec::state_vars::{Map, Owned, PublicImmutable, PublicMutable, SingleUseClaim};
 
     use crate::eligibility::verify_eligibility;
-    use crate::merkle::{encode_field_as_root, hash_bytes_as_field, verify_baby_eligibility};
+    use std::ecdsa_secp256k1;
+    use crate::merkle::{
+        compute_leaf_v2,
+        derive_hash160_sha256d,
+        encode_field_as_root,
+        hash_bytes_as_field,
+        verify_baby_eligibility,
+        verify_baby_eligibility_v2,
+    };
 
     global MAX_OPTIONS: u32 = 8;
 
@@ -128,6 +137,101 @@ pub contract PrivateVoting {
         let holder_nullifier = hash_bytes_as_field(leaf);
 
         // Eligibility already proven above - pass 1 as the dummy proof field.
+        self.enqueue_self.record_vote(vote_choice, 1, holder_nullifier);
+    }
+
+    // M2 Babylon governance entrypoint: proves BABY token holding with an
+    // in-circuit secp256k1 ownership proof.
+    //
+    // This closes the snapshot-forwarding attack present in cast_vote_babylon:
+    // M1 nullifiers are computable by any observer who has the public snapshot
+    // (published for audit), because the nullifier is derived from the leaf
+    // hash of (address, balance) — both public. M2 requires a valid secp256k1
+    // signature over a vote-specific challenge to produce a proof, so an
+    // attacker without the holder's Cosmos private key cannot vote on their
+    // behalf, regardless of snapshot access.
+    //
+    // Private witnesses (never visible on-chain):
+    //   balance        - claimed ubbn balance at snapshot
+    //   merkle_path    - sibling hashes from leaf to root (depth 20)
+    //   merkle_indices - direction bits (0=left, 1=right) at each level
+    //   pubkey_x       - secp256k1 public key x-coordinate (32 bytes BE)
+    //   pubkey_y       - secp256k1 public key y-coordinate (32 bytes BE)
+    //   sig            - ECDSA signature r||s (64 bytes) over vote challenge
+    //
+    // Address derivation: SHA-256d fallback (Fallback B from design spec §9
+    // Risk 1). The snapshot Merkle tree MUST be generated with the same scheme.
+    // Production path: replace derive_hash160_sha256d with ripemd160(sha256(pk))
+    // once noir-ripemd160 crate compatibility is confirmed.
+    //
+    // Challenge = sha256( title_hash_encoded[32] || merkle_root_encoded[32] )
+    // Both values are committed in VoteConfig; unique per deployed vote.
+    // The wallet signs this 32-byte digest using the holder's secp256k1 key.
+    //
+    // WARNING (§9 Risk 2): secp256k1 ECDSA in-circuit uses non-native field
+    // arithmetic (~80k-120k Barretenberg gates). Proving time ~2-4s browser
+    // (M2 hardware); measure before launch. Acceptable for governance votes.
+    //
+    // Related: docs/m2-secp256k1-ownership-proof-design.md
+    #[external("private")]
+    fn cast_vote_babylon_v2(
+        vote_choice: u8,
+        balance: u64,
+        merkle_path: [[u8; 32]; 20],
+        merkle_indices: [bool; 20],
+        pubkey_x: [u8; 32],
+        pubkey_y: [u8; 32],
+        sig: [u8; 64],
+    ) {
+        let config = self.storage.config.read();
+
+        // 1. Reconstruct committed Merkle root from config.
+        //    Root is encoded in token_address field (lower 31 bytes of SHA-256).
+        let root_field = config.token_address.to_field();
+        let root_bytes = encode_field_as_root(root_field);
+
+        // 2. Compute vote-specific challenge to prevent signature replay
+        //    across different votes. Both title_hash and the Merkle root are
+        //    committed in the immutable VoteConfig, so this challenge is
+        //    unique per vote and cannot be forged by an attacker.
+        //    challenge = sha256( title_hash_encoded[32] || root_bytes[32] )
+        let title_bytes = encode_field_as_root(config.title_hash);
+        let mut challenge_input = [0u8; 64];
+        for i in 0..32 { challenge_input[i] = title_bytes[i]; }
+        for i in 0..32 { challenge_input[32 + i] = root_bytes[i]; }
+        let challenge = sha256_var(challenge_input, 64);
+
+        // 3. Verify secp256k1 ownership: wallet signed the challenge with the
+        //    holder's Cosmos secp256k1 private key.
+        //    Rejects any voter who cannot produce a valid sig for this vote.
+        //    std::ecdsa_secp256k1 is Noir stdlib (>=0.29); gate cost ~100k.
+        let sig_valid = ecdsa_secp256k1::verify_signature(pubkey_x, pubkey_y, sig, challenge);
+        assert(sig_valid, "invalid secp256k1 signature: not the key owner");
+
+        // 4. Derive 20-byte address commitment from the public key.
+        //    PROTOTYPE: SHA-256d fallback, not standard Cosmos hash160.
+        //    Replace with ripemd160(sha256(compressed_pubkey)) for production.
+        let hash160 = derive_hash160_sha256d(pubkey_x, pubkey_y);
+
+        // 5. Verify Merkle membership with the M2 leaf format.
+        //    Proves (hash160, balance) is in the committed snapshot.
+        let _ = verify_baby_eligibility_v2(
+            hash160,
+            balance,
+            config.min_token_balance,
+            merkle_path,
+            merkle_indices,
+            root_bytes,
+        );
+
+        // 6. Derive holder nullifier from signature material.
+        //    Under RFC 6979, (r, s) is deterministic given (privkey, challenge).
+        //    An attacker without privkey cannot compute the correct sig, so
+        //    they cannot pre-compute or steal this nullifier.
+        //    Including both r and s prevents second-preimage on s alone.
+        let holder_nullifier = hash_bytes_as_field(sha256_var(sig, 64));
+
+        // 7. Enqueue the public vote record.
         self.enqueue_self.record_vote(vote_choice, 1, holder_nullifier);
     }
 
