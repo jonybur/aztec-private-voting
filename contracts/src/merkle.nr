@@ -213,6 +213,71 @@ pub fn verify_aztec_allowlist(
 }
 
 // ---------------------------------------------------------------------------
+// Generic AztecAddress token-balance Merkle membership
+// ---------------------------------------------------------------------------
+
+// Compute a Merkle leaf from an AztecAddress field and a token balance.
+//
+// Leaf = sha256( address_bytes[32] || balance_be[8] )  (40 bytes total)
+// where address_bytes = [0x00] || address_field.to_be_bytes()[0..31]
+//
+// The off-chain token snapshot generator MUST use the same scheme:
+//   const addrBytes = Buffer.alloc(32);
+//   Buffer.from(address.toBuffer()).copy(addrBytes, 1);  // zero-pad byte 0
+//   const balBytes = Buffer.alloc(8);
+//   balBytes.writeBigUInt64BE(BigInt(balance));
+//   leaf = sha256(Buffer.concat([addrBytes, balBytes]));
+//
+// Changing this function breaks existing deployed token votes; treat as a
+// versioned commitment.
+pub fn compute_token_leaf(address_field: Field, balance: u64) -> [u8; 32] {
+    let field_bytes: [u8; 31] = address_field.to_be_bytes();
+    let mut input = [0u8; 40];
+    // address: [0x00] || field_bytes[0..31]
+    input[0] = 0;
+    for i in 0..31 { input[i + 1] = field_bytes[i]; }
+    // balance: big-endian u64
+    input[32] = ((balance >> 56) & 0xff) as u8;
+    input[33] = ((balance >> 48) & 0xff) as u8;
+    input[34] = ((balance >> 40) & 0xff) as u8;
+    input[35] = ((balance >> 32) & 0xff) as u8;
+    input[36] = ((balance >> 24) & 0xff) as u8;
+    input[37] = ((balance >> 16) & 0xff) as u8;
+    input[38] = ((balance >>  8) & 0xff) as u8;
+    input[39] = ((balance      ) & 0xff) as u8;
+    sha256_var(input, 40)
+}
+
+// Verify that `address_field` holds >= min_balance tokens at the snapshot
+// committed by `root_field`, and that (address, balance) is a leaf in the
+// Merkle tree.
+//
+// Returns the leaf hash so the caller can derive downstream commitments.
+//
+// Usage in cast_vote_token:
+//   let root_field = config.token_address.to_field();
+//   let _ = verify_token_eligibility(
+//       self.msg_sender().to_field(),
+//       token_balance,
+//       config.min_token_balance,
+//       merkle_path, merkle_indices, root_field,
+//   );
+pub fn verify_token_eligibility(
+    address_field: Field,
+    balance: u64,
+    min_balance: u64,
+    path: [[u8; 32]; 20],
+    indices: [bool; 20],
+    root_field: Field,
+) -> [u8; 32] {
+    assert(balance >= min_balance, "Insufficient token balance for this vote");
+    let root = encode_field_as_root(root_field);
+    let leaf = compute_token_leaf(address_field, balance);
+    verify_merkle_path(leaf, path, indices, root);
+    leaf
+}
+
+// ---------------------------------------------------------------------------
 // Field / bytes encoding helpers
 // ---------------------------------------------------------------------------
 
@@ -282,4 +347,62 @@ fn encode_decode_field_round_trips() {
     let encoded = encode_field_as_root(original);
     let decoded = hash_bytes_as_field(encoded);
     assert(decoded == original, "encode/decode round-trip failed");
+}
+
+// ---------------------------------------------------------------------------
+// Unit tests — token leaf computation
+// ---------------------------------------------------------------------------
+
+// compute_token_leaf produces the same output for the same inputs.
+#[test]
+fn compute_token_leaf_deterministic() {
+    let addr: Field = 0xdeadbeefcafe;
+    let balance: u64 = 1_000_000;
+    let leaf_a = compute_token_leaf(addr, balance);
+    let leaf_b = compute_token_leaf(addr, balance);
+    assert(leaf_a == leaf_b, "token leaf not deterministic");
+}
+
+// Different addresses produce different leaves.
+#[test]
+fn compute_token_leaf_differs_by_address() {
+    let balance: u64 = 1_000_000;
+    let leaf_a = compute_token_leaf(0x1111111111111111, balance);
+    let leaf_b = compute_token_leaf(0x2222222222222222, balance);
+    assert(leaf_a != leaf_b, "distinct addresses produced the same token leaf");
+}
+
+// Different balances for the same address produce different leaves.
+#[test]
+fn compute_token_leaf_differs_by_balance() {
+    let addr: Field = 0xabc123;
+    let leaf_a = compute_token_leaf(addr, 100);
+    let leaf_b = compute_token_leaf(addr, 200);
+    assert(leaf_a != leaf_b, "distinct balances produced the same token leaf");
+}
+
+// verify_token_eligibility fails when balance is below threshold.
+// The balance check runs before the Merkle proof so we can test it in
+// isolation with a dummy root.
+#[test(should_fail_with = "Insufficient token balance for this vote")]
+fn token_eligibility_rejects_insufficient_balance() {
+    let _ = verify_token_eligibility(
+        0x1234_5678,        // address
+        50,                 // claimed balance (below min)
+        100,                // min_balance
+        [[0u8; 32]; 20],    // dummy path
+        [false; 20],        // dummy indices
+        0xdeadbeef,         // dummy root
+    );
+}
+
+// verify_token_eligibility fails when balance is zero.
+#[test(should_fail_with = "Insufficient token balance for this vote")]
+fn token_eligibility_rejects_zero_balance() {
+    let _ = verify_token_eligibility(
+        0xabcd, 0, 1,
+        [[0u8; 32]; 20],
+        [false; 20],
+        0xdeadbeef,
+    );
 }

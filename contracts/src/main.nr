@@ -1,7 +1,6 @@
 mod eligibility;
 mod merkle;
 
-use sha256::sha256_var;
 use aztec::macros::aztec;
 
 #[aztec]
@@ -16,16 +15,21 @@ pub contract PrivateVoting {
     };
     use aztec::state_vars::{Map, Owned, PublicImmutable, PublicMutable, SingleUseClaim};
 
-    use crate::eligibility::verify_eligibility;
+    use crate::eligibility::{
+        verify_eligibility,
+        ELIGIBILITY_MODE_TOKEN,
+        ELIGIBILITY_MODE_ALLOWLIST,
+    };
+    use sha256::sha256_var;
     use std::ecdsa_secp256k1;
     use crate::merkle::{
-        compute_leaf_v2,
         derive_hash160_sha256d,
         encode_field_as_root,
         hash_bytes_as_field,
         verify_aztec_allowlist,
         verify_baby_eligibility,
         verify_baby_eligibility_v2,
+        verify_token_eligibility,
     };
 
     global MAX_OPTIONS: u32 = 8;
@@ -87,6 +91,80 @@ pub contract PrivateVoting {
         self.enqueue_self.record_vote(vote_choice, eligibility_proof, receipt_id);
     }
 
+    // Token-gated governance entrypoint: voter proves their AztecAddress holds
+    // >= min_token_balance tokens at the snapshot committed in VoteConfig.
+    //
+    // This replaces the F1-HIGH stub in verify_eligibility (proof != 0) for
+    // TOKEN mode with a real in-circuit ZK Merkle balance proof.
+    //
+    // Snapshot model: the deployer takes a snapshot of token holders at vote
+    // creation time and commits the Merkle root in config.token_address. This
+    // avoids real-time token contract integration while preserving the full
+    // privacy guarantee: the circuit never touches on-chain token state.
+    //
+    // Private witnesses (never visible on-chain):
+    //   token_balance  - claimed balance at snapshot
+    //   merkle_path    - sibling hashes from leaf to root (depth 20)
+    //   merkle_indices - direction bits (0=left, 1=right) at each level
+    //
+    // Public inputs (committed in VoteConfig):
+    //   merkle_root    - stored in token_address field (31-byte Field encoding)
+    //   min_token_balance - minimum required balance
+    //   vote_choice    - public (same L1 privacy note as cast_vote)
+    //   receipt_id     - client-generated random; non-zero; backs verify_vote_counted
+    //
+    // Leaf format:  sha256( address_bytes[32] || balance_be[8] )  (40 bytes)
+    //   where address_bytes = [0x00] || caller_field.to_be_bytes()[0..31]
+    //
+    // Off-chain snapshot generator MUST use the same leaf scheme; see
+    // merkle.nr compute_token_leaf.
+    //
+    // Double-voting is prevented by the protocol's SingleUseClaim nullifier,
+    // derived from the caller's protocol keys inside the private kernel
+    // (not from the Merkle leaf), so it is not linkable to the address.
+    //
+    // Known limitation: vote_choice is a public argument of the enqueued
+    // record_vote call (same L1 privacy gap as cast_vote). See cast_vote.
+    #[external("private")]
+    fn cast_vote_token(
+        vote_choice: u8,
+        receipt_id: Field,
+        token_balance: u64,
+        merkle_path: [[u8; 32]; 20],
+        merkle_indices: [bool; 20],
+    ) {
+        assert(receipt_id != 0, "receipt_id must be non-zero");
+
+        let config = self.storage.config.read();
+        assert(
+            config.eligibility_mode == ELIGIBILITY_MODE_TOKEN,
+            "cast_vote_token: contract not in token mode",
+        );
+
+        // Verify the caller's AztecAddress holds >= min_token_balance at the
+        // committed snapshot. The Merkle root is encoded in config.token_address
+        // (same 31-byte Field encoding as the allowlist root).
+        let caller_field = self.msg_sender().to_field();
+        let root_field = config.token_address.to_field();
+        let _ = verify_token_eligibility(
+            caller_field,
+            token_balance,
+            config.min_token_balance,
+            merkle_path,
+            merkle_indices,
+            root_field,
+        );
+
+        // Use the protocol's single-use claim to prevent double-voting.
+        // The nullifier is derived from the caller's private keys in the
+        // private kernel — not from the Merkle leaf — so observers cannot
+        // link the nullifier back to the token holder entry.
+        self.storage.vote_claims.at(self.msg_sender()).claim();
+
+        // Eligibility proven above; pass 1 as the dummy proof field.
+        self.enqueue_self.record_vote(vote_choice, 1, receipt_id);
+    }
+
     // Allowlist governance entrypoint: voter proves their AztecAddress is a
     // member of the committed allowlist Merkle tree.
     //
@@ -122,7 +200,6 @@ pub contract PrivateVoting {
         merkle_path: [[u8; 32]; 20],
         merkle_indices: [bool; 20],
     ) {
-        use crate::eligibility::ELIGIBILITY_MODE_ALLOWLIST;
         assert(receipt_id != 0, "receipt_id must be non-zero");
 
         let config = self.storage.config.read();

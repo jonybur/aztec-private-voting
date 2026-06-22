@@ -12,9 +12,16 @@
 The `PrivateVoting` contract is structurally sound for the prototype stage. The core
 privacy invariant — wallet identity is not linkable to a ballot — is correctly implemented
 via `SingleUseClaim`, whose nullifier is derived from the caller's keys inside the private
-kernel. Five findings are documented below: one **HIGH** severity (placeholder eligibility),
-two **LOW** (quorum boundary, zero receipt_id), and two **DESIGN** (no emergency stop,
-protocol trust boundary). No critical privacy breaks were found in the generic paths.
+kernel. Five findings are documented below: one **HIGH** severity (placeholder eligibility —
+**fully resolved 2026-06-22**), two **LOW** (quorum boundary — resolved; zero receipt_id —
+resolved), and two **DESIGN** (no emergency stop, protocol trust boundary). No critical
+privacy breaks were found in the generic paths.
+
+**Resolution summary (2026-06-22):**
+- **F1-HIGH ALLOWLIST** resolved (tick-3610, commit 1d55025): `cast_vote_allowlist` with real in-circuit SHA-256 Merkle membership proof.
+- **F1-HIGH TOKEN** resolved (tick-3611): `cast_vote_token` with real in-circuit SHA-256 Merkle balance proof. New leaf: `sha256(address_bytes[32] || balance_be[8])`.
+- **F2 LOW** resolved (commit b3c7ac1): `assert(config.quorum > 0)` in constructor.
+- **F3 LOW** resolved (commit b3c7ac1): `assert(receipt_id != 0)` in `cast_vote`.
 
 ---
 
@@ -47,7 +54,12 @@ against the committed eligibility commitment (e.g., a Merkle root of eligible ad
 or a token balance commitment). For token-gated votes, this is the primary M2 target.
 Add a `TODO(M2-eligibility)` marker in the source so the open work is visible.
 
-**Status:** Known, explicitly deferred to M2. No untracked risk.
+**Status:** ✅ **RESOLVED** — 2026-06-22
+
+- **ALLOWLIST** (tick-3610, commit 1d55025): `cast_vote_allowlist` — in-circuit SHA-256 Merkle membership proof against committed allowlist root. Leaf = `sha256([0x00] || address_field_bytes[31])`. Depth-20 tree. 4 unit tests.
+- **TOKEN** (tick-3611): `cast_vote_token` — in-circuit SHA-256 Merkle balance proof against committed token snapshot root. Leaf = `sha256(address_bytes[32] || balance_be[8])`. Balance threshold enforced inside circuit (`balance >= min_token_balance`) before Merkle verification. 5 unit tests.
+
+Both entrypoints use the same `verify_merkle_path` primitive and `encode_field_as_root` encoding. `eligibility.nr` stubs now serve only as a guard on the generic `cast_vote` path; the domain-specific entrypoints are the canonical paths for gated votes.
 
 ---
 
