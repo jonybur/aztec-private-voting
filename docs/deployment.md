@@ -83,6 +83,27 @@ For an allowlist:
 > by the deploy script. Generate it with the allowlist snapshot helper; do not substitute
 > a real contract address.
 
+> **⚠️ ALLOWLIST MODE — Multi-wallet sybil is a deployer invariant, not a circuit guarantee (N-F6)**
+>
+> The circuit enforces **one vote per listed Aztec address**. It does NOT enforce one vote
+> per real-world person. A participant controlling multiple Aztec wallet addresses (A, B, C)
+> can cast one ballot from each address — if all three appear in the allowlist.
+>
+> **The deployer is solely responsible for the 1-person → 1-address invariant.**
+>
+> Strategies to uphold it:
+> - **Identity-linked allowlists**: derive the set from an on-chain identity registry
+>   (e.g. Proof of Humanity, WorldID, ENS + proof of uniqueness) where each verified
+>   human maps to exactly one address.
+> - **Curated sets**: for small-committee or DAO-treasury votes, publish the allowlist
+>   publicly before the vote opens so participants can challenge duplicates.
+> - **Social/governance commitment**: include in the vote description a statement that
+>   each participant agreed to bind one address; sybil attempts become attributable.
+>
+> If the deployer cannot enforce 1-person → 1-address, they should use TOKEN mode with
+> a snapshot that caps each address at a known balance, or OPEN mode with a quorum
+> threshold high enough that sybil inflation is detectable from the tally.
+
 ## 4. Run the deploy script
 
 ```sh
