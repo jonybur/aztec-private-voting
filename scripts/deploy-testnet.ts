@@ -29,10 +29,32 @@ interface DeployConfig {
   startTimeOffsetSeconds: number;
   durationSeconds: number;
   quorum: number;
-  eligibilityMode: 'open' | 'token' | 'allowlist';
+  /**
+   * Eligibility modes:
+   *   'open'       — no eligibility check (anyone can vote)
+   *   'token'      — AztecAddress holds >= minTokenBalance of tokenAddress ERC-20
+   *   'allowlist'  — AztecAddress is in committed SHA-256 Merkle allowlist tree
+   *   'babylon-v2' — secp256k1 key owner committed in M2 SHA-256d hash160 Merkle tree
+   *                  Auto-reads snapshot/merkle-root-v2.json (or snapshotRootPath)
+   */
+  eligibilityMode: 'open' | 'token' | 'allowlist' | 'babylon-v2';
   tokenAddress?: string;
   minTokenBalance?: string;
   allowlistRoot?: string;
+  /**
+   * babylon-v2 only: path to merkle-root-v2.json produced by
+   * `synthetic-snapshot.ts --version 2`.  Defaults to snapshot/merkle-root-v2.json.
+   */
+  snapshotRootPath?: string;
+}
+
+interface SnapshotRootV2 {
+  version: number;
+  root: string;
+  rootAsField: string;
+  minBalance: string;
+  treeDepth: number;
+  treeSize: number;
 }
 
 async function main(): Promise<void> {
@@ -77,10 +99,50 @@ async function main(): Promise<void> {
   );
   const endTime = startTime + BigInt(config.durationSeconds);
 
-  const tokenAddress = config.tokenAddress
-    ? AztecAddress.fromString(config.tokenAddress)
+  // ── babylon-v2: load M2 snapshot root and encode as token_address ──────────
+  let resolvedTokenAddress = config.tokenAddress;
+  let resolvedMinTokenBalance = config.minTokenBalance;
+
+  if (config.eligibilityMode === 'babylon-v2') {
+    const rootPath = config.snapshotRootPath
+      ? path.resolve(repoRoot, config.snapshotRootPath)
+      : path.join(repoRoot, 'snapshot/merkle-root-v2.json');
+
+    let snapshotRaw: string;
+    try {
+      snapshotRaw = await fs.readFile(rootPath, 'utf8');
+    } catch {
+      console.error(
+        `babylon-v2 requires snapshot/merkle-root-v2.json. Generate it with:\n` +
+        `  npx tsx scripts/synthetic-snapshot.ts --version 2\n` +
+        `or set snapshotRootPath in deploy.config.json.`,
+      );
+      process.exit(1);
+    }
+    const snap = JSON.parse(snapshotRaw) as SnapshotRootV2;
+
+    if (snap.version !== 2) {
+      console.error(`Expected snapshot version 2, got ${snap.version}. Run synthetic-snapshot.ts --version 2.`);
+      process.exit(1);
+    }
+
+    // rootAsField is the lower 31 bytes of the SHA-256 root, encoded as a hex
+    // field element. It is stored in VoteConfig.token_address so that
+    // cast_vote_babylon_v2 can recover root_bytes via encode_field_as_root().
+    resolvedTokenAddress = snap.rootAsField;
+    resolvedMinTokenBalance = resolvedMinTokenBalance ?? snap.minBalance;
+
+    console.log('babylon-v2 snapshot root loaded:');
+    console.log(`  root (SHA-256):     ${snap.root}`);
+    console.log(`  root (Field/addr):  ${snap.rootAsField}`);
+    console.log(`  min balance:        ${resolvedMinTokenBalance} ubbn`);
+    console.log(`  tree size:          ${snap.treeSize} leaves (depth ${snap.treeDepth})`);
+  }
+
+  const tokenAddress = resolvedTokenAddress
+    ? AztecAddress.fromString(resolvedTokenAddress)
     : AztecAddress.ZERO;
-  const minTokenBalance = config.minTokenBalance ? BigInt(config.minTokenBalance) : 0n;
+  const minTokenBalance = resolvedMinTokenBalance ? BigInt(resolvedMinTokenBalance) : 0n;
 
   const voteConfig = {
     title_hash: new Fr(titleHash),
@@ -126,9 +188,15 @@ async function main(): Promise<void> {
     endTime: Number(endTime) * 1000,
     quorum: config.quorum,
     eligibilityMode: config.eligibilityMode,
-    ...(config.tokenAddress ? { tokenAddress: config.tokenAddress } : {}),
-    ...(config.minTokenBalance ? { minTokenBalance: config.minTokenBalance } : {}),
+    // token / babylon-v2
+    ...(resolvedTokenAddress ? { tokenAddress: resolvedTokenAddress } : {}),
+    ...(resolvedMinTokenBalance ? { minTokenBalance: resolvedMinTokenBalance } : {}),
+    // allowlist
     ...(config.allowlistRoot ? { allowlistRoot: config.allowlistRoot } : {}),
+    // babylon-v2 snapshot provenance
+    ...(config.eligibilityMode === 'babylon-v2'
+      ? { snapshotRootPath: config.snapshotRootPath ?? 'snapshot/merkle-root-v2.json' }
+      : {}),
   };
 
   const outPath = path.join(repoRoot, 'deployments/alpha-testnet.json');
@@ -157,6 +225,10 @@ function eligibilityModeToCode(mode: DeployConfig['eligibilityMode']): number {
       return 1;
     case 'allowlist':
       return 2;
+    case 'babylon-v2':
+      // Circuit uses TOKEN mode (1); root is stored in token_address.
+      // Callers use cast_vote_babylon_v2() rather than cast_vote_token().
+      return 1;
   }
 }
 

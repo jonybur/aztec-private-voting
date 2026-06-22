@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "snapshotFormat": "SHA-256d hash160 (PROTOTYPE DEVIATION from standard Cosmos RIPEMD-160)",
+  "root": "0x7fa2b8d8e197eb6222582bc58907c5cac382ea5a17c5d2a14153b7beff61bd1a",
+  "rootAsField": "0xa2b8d8e197eb6222582bc58907c5cac382ea5a17c5d2a14153b7beff61bd1a",
+  "timestamp": "2026-06-22T05:59:51.928Z",
+  "totalHolders": 100,
+  "minBalance": "1000000",
+  "denomination": "ubbn",
+  "treeSize": 1048576,
+  "treeDepth": 20,
+  "note": "Synthetic M2 eligibility set. Public key bytes are deterministic seeds — not real secp256k1 points. For production, regenerate from real holder keypairs.",
+  "sample": {
+    "pubkeyX": "b553de32c9b2d2c1876d3900186b9ad374be079a3d3d8d86871ecd484006dca0",
+    "hash160": "00413441f3148ed64cde29d4f4df5c78d22be67f",
+    "balance": "523382169",
+    "balanceBABY": 523.382169
+  }
+}

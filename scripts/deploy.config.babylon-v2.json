@@ -1,0 +1,18 @@
+{
+  "_comment": "Example config for a babylon-v2 vote: secp256k1 key ownership + M2 hash160 Merkle eligibility.",
+  "title": "Should the treasury fund this initiative? (50 ETH)",
+  "description": "Demo vote requiring M2 secp256k1 key ownership proof (hash160 Merkle tree).",
+  "options": ["For", "Against", "Abstain"],
+  "startTimeOffsetSeconds": 0,
+  "durationSeconds": 604800,
+  "quorum": 5,
+  "eligibilityMode": "babylon-v2",
+  "_notes": {
+    "eligibilityMode": "'babylon-v2' maps to circuit TOKEN mode (1). The M2 Merkle root is loaded from snapshotRootPath and stored in VoteConfig.token_address as an encoded Aztec Field.",
+    "snapshotRootPath": "Optional. Defaults to snapshot/merkle-root-v2.json. Relative to repo root.",
+    "minTokenBalance": "Optional. Overrides the minBalance in the snapshot JSON (in ubbn).",
+    "voter_calls": "cast_vote_babylon_v2(vote_choice, balance, merkle_path[20], merkle_indices[20], pubkey_x[32], pubkey_y[32], sig[64])",
+    "sig_requirement": "Voter must sign sha256(encode_field(title_hash) || encode_field(root_field)) with their secp256k1 key. Normalize s to low-S form (BIP-62) before passing to circuit.",
+    "generate_snapshot": "npx tsx scripts/synthetic-snapshot.ts --version 2 --holders 10000"
+  }
+}
