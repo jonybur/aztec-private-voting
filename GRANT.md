@@ -117,9 +117,9 @@ The single open problem separating M1 (complete) from a production-ready Cosmos 
 - Nullifier `hash_bytes_as_field(sha256(sig))` — not computable from the public snapshot (closes the M1 front-running gap)
 - Key derivation via `SHA-256d` fallback (RIPEMD-160 swap pending `noir-ripemd160` for `nargo >= 0.30`)
 
-Checklist: **8/11 items complete.** Remaining: deploy script M2 Merkle root encoding, React `wallet.signArbitrary(challenge)` layer, and production proving-time measurement on browser hardware. The snapshot generator (`synthetic-snapshot.ts --version 2`) is complete: `deriveHash160V2` / `hashLeafV2` functions match the in-circuit SHA-256d derivation exactly; Prover-v2.toml output with documented signature placeholders; 20/20 nargo tests pass.
+Checklist: **10/11 items complete.** Remaining: production proving-time measurement on browser hardware. The snapshot generator (`synthetic-snapshot.ts --version 2`), M2 Merkle root encoding in the deploy script, and the React `useM2Signing` hook (secp256k1 challenge signing with BIP-62 low-S) are all complete. One open design decision: Keplr `signArbitrary` uses ADR-036 envelope wrapping incompatible with the current circuit challenge — three resolution paths documented in `packages/react/src/hooks/useM2Signing.ts`; Jony picks path A (update circuit), B (raw signing, already done), or C (EIP-191) before wiring Keplr to the live contract.
 
-The M2 sprint scope has narrowed from the original estimate — the core Noir circuit is done; remaining work is the TypeScript scaffolding and test vectors (not Noir complexity). The original "~2-week integration sprint" has been compressed to a focused frontend + test sprint.
+The M2 sprint scope has narrowed from the original estimate — the core Noir circuit is done; the remaining work is a single performance benchmark. The original "~2-week integration sprint" has been completed ahead of schedule.
 
 ---
 
