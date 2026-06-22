@@ -15,8 +15,12 @@ pub fn verify_eligibility(proof: Field, config: VoteConfig) {
     if config.eligibility_mode == ELIGIBILITY_MODE_OPEN {
         // any proof accepted
     } else if config.eligibility_mode == ELIGIBILITY_MODE_TOKEN {
+        // TODO(M2-eligibility): replace with a ZK membership proof against
+        // a committed token-balance root. Currently only checks non-zero.
         assert(proof != 0, "missing token proof");
     } else if config.eligibility_mode == ELIGIBILITY_MODE_ALLOWLIST {
+        // TODO(M2-eligibility): replace with a ZK Merkle membership proof
+        // against a committed allowlist root. Currently only checks non-zero.
         assert(proof != 0, "missing allowlist proof");
     } else {
         assert(false, "unknown eligibility mode");

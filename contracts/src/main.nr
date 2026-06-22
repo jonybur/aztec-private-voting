@@ -55,6 +55,7 @@ pub contract PrivateVoting {
         assert(config.options_count > 1, "need at least 2 options");
         assert(config.options_count as u32 <= MAX_OPTIONS, "too many options");
         assert(config.end_time > config.start_time, "end before start");
+        assert(config.quorum > 0, "quorum must be at least 1");
         self.storage.admin.initialize(admin);
         self.storage.config.initialize(config);
     }
@@ -71,6 +72,7 @@ pub contract PrivateVoting {
     // their choice. Hidden tallies are the M2 roadmap item.
     #[external("private")]
     fn cast_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field) {
+        assert(receipt_id != 0, "receipt_id must be non-zero");
         self.storage.vote_claims.at(self.msg_sender()).claim();
         self.enqueue_self.record_vote(vote_choice, eligibility_proof, receipt_id);
     }
