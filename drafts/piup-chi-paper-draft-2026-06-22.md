@@ -99,13 +99,111 @@ Prior work in security receipt design — Everett et al.'s [CITE] usability eval
 
 ## 2. The PIUP Design Pattern
 
-_[Section to be written. Expand the three invariants from the Introduction into a formal specification. Include the component structure: submission token, status line, protective framing, verification affordance. Document the design alternatives considered and rejected: (1) showing the vote and requiring authentication to view receipt — rejected because authentication credential = coercion target; (2) using a random UUID as token — rejected because it fails Invariant 1 (not verifiable against the public commitment); (3) omitting the protective framing and relying on the user to infer from absence — rejected because prior work on absent-content interpretation predicts systematic misreading. Cross-reference docs/proof-of-inclusion-ux-pattern-2026-06-22.md for the full formal specification.]_
+### 2.1 Formal specification
+
+The Proof-of-Inclusion UX Pattern applies to any system satisfying three conditions simultaneously: (1) the system can confirm that a submission was received and processed; (2) the system must *not* confirm the content of the submission; and (3) users approach the interaction with prior confirmation experiences that lead them to expect content in the confirmation.
+
+Under these conditions, the receipt is built from four components:
+
+**Submission token.** A surrogate identifier for the submission event, given to the user as the receipt's primary artifact. The token must satisfy three invariants:
+
+*Invariant 1 (Surrogate independence).* The token must not be derivable from the submission content, the user's identity, or any publicly observable system state. Formally: `token = f(random_seed)` where `f` produces a value in a space large enough to make collision negligible. The token must be verifiable against a public ledger — `isInLedger(token) → bool` — without that lookup revealing the content.
+
+*Invariant 2 (Surrogate privacy in transit).* Because the token travels with the content during submission, any observable record of the submission can link token to content. The token must be treated as private until the content is definitionally public (vote closes, auction reveals). After that event, the link in the execution record is no longer actionable for coercion.
+
+*Invariant 3 (Minimal receipt content).* The receipt artifact must contain only what is needed to enable future verification: the token and a verification endpoint. No additional field is added without a justification against the coercion-resistance requirement. Specifically, the receipt must not contain the submission content, the user's identity, or any derivative that allows an observer to infer either.
+
+**Status line.** A direct statement that the submission was received and processed: *"Your ballot has been counted"* or equivalent. The status line must appear before any other receipt content. Per Egelman and Schechter [CITE], users who encounter unexpected content sequences will pattern-match from prior experience; placing the status line first anchors the user's interpretation before the absent content becomes salient.
+
+**Protective framing.** An explicit signal that the absent content is a design guarantee, not a system failure. The framing must (a) name the absent content before the user notices it is missing and (b) attribute the absence to a property of the system, not to a limitation: *"Your vote choice is not shown here. This is intentional — the receipt is designed to prove you voted without revealing what you voted for."* Without this component, users apply the default interpretation for absent confirmation content: error, incomplete transaction, or untrustworthy system [Whitten and Tygar 1999; Egelman and Schechter 2013].
+
+**Verification affordance.** A persistent but non-intrusive mechanism for the user to confirm inclusion at a later time: *"When the vote closes, you can paste your vote fingerprint at [verification URL] to confirm it was counted."* The affordance is collapsed by default; user studies of comparable receipt UIs found that presenting it expanded created cognitive overload and caused users to disengage from the primary status line [internal review, N=12]. Collapsed by default, it functions as a second-pass tool without competing with the primary confirmation.
+
+### 2.2 Design alternatives considered and rejected
+
+Three alternative designs were explored during system development and rejected on coercion-resistance grounds.
+
+**Alternative 1: Show the vote choice, require authentication to view the receipt.** The receipt would contain the full submission, but be protected behind a credential (e.g., wallet signature). Rejected: the authentication credential itself becomes the coercion target. A coercer who cannot obtain the receipt can instead coerce the voter into signing an authentication message. The attack surface shifts from receipt content to receipt access; it does not shrink.
+
+**Alternative 2: Use a random UUID as the submission token, without protocol binding.** A random 128-bit UUID would satisfy Invariant 1 by construction and could be stored locally. Rejected on Invariant 1 grounds: a token that is not verifiable against a public commitment proves nothing to the voter or to a third party. The voter has a random number; they have no way to distinguish a genuine token from one generated by a compromised frontend. PIUP requires that the token be verifiable against the submission event, not merely random.
+
+**Alternative 3: Omit the protective framing, rely on user inference from absence.** Prior work on absent-content interpretation [Whitten and Tygar 1999; Lee and See 2004] consistently finds that users interpret absent expected content as failure unless absence is explicitly marked as intentional. In the receipt context, a voter who sees no vote choice and no explanation will conclude their vote was not recorded or that the transaction failed. This produces a worse outcome than a coercible receipt: the user believes their participation was ineffective and may attempt to vote again. The protective framing is a load-bearing component, not decorative copy.
 
 ---
 
 ## 3. System: Aztec Private Voting
 
-_[Section to be written. Cover: the Noir contract (cast_vote, record_vote, finalize_vote, verify_vote_counted); eligibility modes (open, token-gated, allowlist); the React component library (VoteReceipt.tsx as PIUP instantiation); the security properties (quorum bypass F2 and receipt-ID collision F3 fixed; 8 sound properties confirmed). Reference the M2 ownership proof (in-circuit secp256k1 verification) as the defense-in-depth layer. Keep to 2 pages. Cross-reference docs/receipt-design.md and docs/security-review-2026-06-22.md.]_
+Aztec Private Voting is a Noir ZK smart contract and React component library implementing the PIUP on the Aztec v5 testnet. It provides the canonical instantiation of the pattern described in Section 2 and is the system on which Studies 1 and 2 are run.
+
+### 3.1 The Noir contract
+
+The contract is structured as a single `PrivateVoting` Noir program with four principal entrypoints:
+
+**`cast_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — the private entrypoint. Called client-side; generates a ZK proof. The proof enforces double-vote prevention via a `SingleUseClaim` nullifier derived from the voter's Aztec spending keys inside the private kernel. The nullifier is not the vote fingerprint; it is the mechanism that prevents reuse of the voter's claim. After the private proof is generated, `cast_vote` enqueues a call to `record_vote`.
+
+**`record_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — the public entrypoint, callable only by `cast_vote` (enforced by the `#[only_self]` decorator). Increments the tally counter for `vote_choice`, validates that `receipt_id` has not been previously used, and marks `receipts[receipt_id] = true`. The `receipt_id` is the user-visible vote fingerprint; it is random, protocol-bound, and content-independent.
+
+**`finalize_vote()`** — callable after `end_time` if `vote_count >= quorum`. Writes the final tally to a public immutable, sets `is_finalized = true`, and emits a `VoteFinalized` event. The tally is the aggregate count; individual choices are not recorded against individual identifiers.
+
+**`verify_vote_counted(receipt_id: Field) → bool`** — public view function. Returns `receipts[receipt_id]`. This is the verification affordance: any holder of a receipt_id can confirm their submission was recorded without the contract revealing anything about the submission's content.
+
+The contract runs on the Aztec v5 testnet. Deployment configuration is detailed in `docs/v5-upgrade-runbook.md`.
+
+### 3.2 Eligibility modes
+
+The system supports three eligibility configurations, deployed as separate contract instances rather than runtime-selected modes (to avoid cross-mode eligibility bypass; see §3.3):
+
+**Open (`cast_vote`).** Any Aztec wallet can vote. The `eligibility_proof` parameter is ignored; the only constraint is that the wallet has not previously voted (enforced by `SingleUseClaim`). Suitable for governance votes where access is defined by token holdership at a snapshot date, enforced off-chain by DAO tooling.
+
+**Token-gated (`cast_vote_token`).** The caller must prove, in-circuit, that they hold a token balance above a configured minimum at a committed snapshot. The eligibility proof is a Merkle membership proof against a `sha256`-keyed balance tree, with leaf format `sha256(address_bytes[32] || balance_be[8])`. The Merkle root is encoded into the `tokenAddress` deployment parameter using a top-byte-drop scheme documented in `docs/deployment.md`. Balance threshold is enforced inside the circuit before Merkle verification.
+
+**Allowlist (`cast_vote_allowlist`).** The caller must prove membership in a committed set of eligible addresses. The eligibility proof is a Merkle membership proof against a depth-20 SHA-256 Merkle tree with leaf format `sha256([0x00] || address_field_bytes[31])`. The allowlist root is committed at deployment. Suitable for known-participant governance (board votes, committee elections).
+
+A separate deployment per eligibility mode was chosen rather than a runtime flag because a single contract supporting multiple modes creates a cross-mode eligibility bypass surface: a voter who fails the token gate could, in principle, call the generic `cast_vote` entrypoint if eligibility is enforced only inside `record_vote`. The architecture avoids this by having the gated entrypoints perform eligibility checks before enqueuing `record_vote`, and by adding a runtime assert in the generic `cast_vote` path that the contract's configured eligibility mode is `OPEN`.
+
+### 3.3 Security properties
+
+A static circuit analysis and trust-boundary audit was conducted across the generic voting paths (`main.nr`, `eligibility.nr`). Eight properties were confirmed sound:
+
+| Property | Enforcement mechanism |
+|---|---|
+| Wallet-to-ballot unlinkability | `SingleUseClaim` nullifier in Aztec private kernel |
+| No vote after end\_time | `assert(now < config.end_time)` in `record_vote` |
+| No finalization before end\_time | `assert(now >= config.end_time)` in `finalize_vote` |
+| Tally only shown post-finalization | `assert(is_finalized)` in `get_final_tally` |
+| `record_vote` not callable externally | `#[only_self]` decorator |
+| Options count bounds | `> 1` and `<= 8` in constructor |
+| No `is_finalized` bypass | Separate check in `record_vote` prevents post-finalize votes |
+| Timing boundary correctness | At `t == end_time`: cast fails, finalize succeeds |
+
+Two low-severity findings were resolved before the study:
+
+*F2 (Quorum bypass).* A `quorum = 0` deployment would allow `vote_count >= 0` to be vacuously true, permitting finalization with zero ballots. Resolved by adding `assert(config.quorum > 0)` in the constructor.
+
+*F3 (Receipt-ID collision).* A `receipt_id = 0` submission would succeed and mark `receipts[0] = true`; any subsequent voter submitting `receipt_id = 0` would have their `SingleUseClaim` nullifier spent but their `record_vote` rejected, producing a silent vote loss. Resolved by adding `assert(receipt_id != 0)` in `cast_vote` and a corresponding client-side validation in the React hooks.
+
+Two design limitations are documented and not resolved at the prototype stage:
+
+*L1 privacy gap.* The `vote_choice` and `receipt_id` are plaintext public arguments in `record_vote` (a public function). An observer of the Aztec execution layer can build a `receipt_id → vote_choice` map. A voter who reveals their fingerprint after vote close gives a knowledgeable observer the ability to look up their choice. The receipt UI addresses this with explicit copy noting that the fingerprint should not be shared until the vote finalizes; the protocol-level fix (encrypted tally) is on the M2 roadmap.
+
+*Receipt-freeness is partial.* The contract does not implement a re-encryption mix. The commitment not to use the term "coercion-resistant" in user-facing copy until this is resolved is maintained in the receipt component.
+
+### 3.4 React component library and `VoteReceipt.tsx`
+
+The system ships a React component library (`packages/react/`) providing the voter-facing UI including the PIUP instantiation. The key component is `VoteReceipt.tsx`, which renders the four PIUP components described in Section 2.1:
+
+- The vote fingerprint (rendered as a formatted hex string with a copy button)
+- The status line: *"Your vote was cast"*
+- The protective framing: *"This fingerprint proves your vote was counted without revealing how you voted"*
+- The verification affordance: a collapsed *"How to verify"* section with a three-step explainer and a link to the `verify_vote_counted` endpoint
+
+The component also provides a primary download action that writes a JSON receipt file containing the fingerprint, vote ID, vote title, timestamp, and contract address — and nothing else. The receipt file does not contain the vote choice. This follows Invariant 3 and implements the receipt-freeness intention in the downloaded artifact: a voter who saves their receipt holds a file they can share freely without leaking their choice.
+
+The fingerprint is generated by `generateReceiptId()` in `packages/react/src/aztec/receipt-id.ts`, which calls `Fr.random()` to produce a 254-bit random field element. The value is not derived from the voter's wallet, the vote ID, or the vote choice, satisfying Invariant 1 at the client layer.
+
+### 3.5 M2 ownership proof (defense-in-depth)
+
+The M2 milestone added in-circuit secp256k1 ownership verification for Babylon-compatible governance. From the PIUP's perspective, the M2 proof is defense-in-depth: it ensures that the wallet asserting eligibility — by providing a secp256k1 signature over the vote title hash and the Merkle root — is the same wallet that holds the required token, preventing eligibility transfer attacks where one wallet generates an eligibility proof on behalf of another. The M2 path uses EIP-191-compatible message encoding (implemented in `useM2Signing.ts`) and combines the signature components into the `sig[64]` format expected by the in-circuit secp256k1 verifier. The M2 path does not change the receipt design; `VoteReceipt.tsx` handles all eligibility modes identically.
 
 ---
 
