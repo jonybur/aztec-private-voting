@@ -218,8 +218,8 @@ The M2 milestone added in-circuit secp256k1 ownership verification for Babylon-c
 **RQ3.** Does the familiar eCommerce label ("confirmation code") produce higher confidence ratings despite comparable or lower accuracy — a calibration failure — compared to the less familiar "vote fingerprint"?
 
 **H1:** A > D on Q2 and Q3 (fingerprint > neutral baseline on the privacy-model questions).  
-**H2 (dissociation):** A ≈ B on overall accuracy composite; A > B on Q2 and Q3 specifically. H2 is the primary endpoint.  
-**H3:** C < all others on Q1 ("does this prove your vote was counted?") — reversal risk from "nullified" reading.  
+**H2 (dissociation):** A ≈ B on overall accuracy composite (TOST, ±10 pp); A > B on Q2 (primary endpoint) and Q3 (secondary). Q2(A>B) is the single pre-specified primary endpoint for the study.  
+**H3:** C < all others on Q1 ("does this prove your vote was counted?") and on overall accuracy composite — reversal risk from "nullified" reading; 6 pre-registered tests (Q1(C<A), Q1(C<B), Q1(C<D), composite C<each).  
 **H4:** Confidence(B) > Confidence(A), B > C, B > D — confirmation code borrows perceived competence from eCommerce familiarity.
 
 ### 4.2 Study design
