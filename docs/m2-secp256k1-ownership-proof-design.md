@@ -282,7 +282,7 @@ negligible in practice — but worth a comment in the contract.
 - [x] Add `derive_hash160_sha256d` helper to `merkle.nr` *(tick-3605)*
 - [x] Add `verify_baby_eligibility_v2` to `merkle.nr` *(tick-3605)*
 - [x] Add `cast_vote_babylon_v2` to `main.nr` *(tick-3605)* — uses `std::ecdsa_secp256k1::verify_signature`; challenge = `sha256(title_bytes || root_bytes)`; nullifier = `hash_bytes_as_field(sha256(sig))`
-- [ ] Update `synthetic-snapshot.ts` to produce M2 leaves (`version: 2`) using same SHA-256d derivation
+- [x] Update `synthetic-snapshot.ts` to produce M2 leaves (`version: 2`) using same SHA-256d derivation *(tick-3613)* — `--version 2` flag; `deriveHash160V2`, `hashLeafV2`, `buildProverTomlV2` added; Prover-v2.toml output with sig placeholders; M1 mode unchanged; 20/20 nargo tests pass
 - [ ] Update `scripts/deploy-testnet.ts` to use M2 Merkle root encoding
 - [ ] Update React layer to call `wallet.signArbitrary(challenge)` and pass `(pubkey_x, pubkey_y, sig)` to circuit input
 - [x] Add Noir unit tests: valid signature + Merkle pass; invalid signature fail; wrong pubkey fail *(tick-3613, commit c3e11e6)*

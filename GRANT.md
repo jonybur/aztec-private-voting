@@ -38,7 +38,7 @@ This receipt pattern has been formalised as the **Proof-of-Inclusion UX Pattern 
 | Playwright + Noir unit tests (41 user stories) | ✅ merged |
 | Aztec-NR v5 port | ✅ confirmed (zero code changes) |
 | Static security review (`main.nr` + `eligibility.nr`) | ✅ done — F2 (quorum) + F3 (receipt_id) fixed; 8 sound properties confirmed |
-| M2 — secp256k1 ownership proof circuit | 🔄 circuit implemented (`cast_vote_babylon_v2`), 6/11 checklist items done |
+| M2 — secp256k1 ownership proof circuit | 🔄 circuit + TypeScript snapshot generator implemented, 8/11 checklist items done |
 | Tally privacy architecture — M3 decision gate | ✅ A/B/C spike done; Architecture A recommended |
 | Alpha testnet deployment | ⚠️ **Redeploying to v5** (state reset Jun 18) |
 | BABY token Merkle governance demo (Babylon team) | ✅ **LIVE** |
@@ -117,7 +117,7 @@ The single open problem separating M1 (complete) from a production-ready Cosmos 
 - Nullifier `hash_bytes_as_field(sha256(sig))` — not computable from the public snapshot (closes the M1 front-running gap)
 - Key derivation via `SHA-256d` fallback (RIPEMD-160 swap pending `noir-ripemd160` for `nargo >= 0.30`)
 
-Checklist: **6/11 items complete.** Remaining sprint: synthetic snapshot M2 leaf generator, deploy script M2 Merkle root encoding, React `wallet.signArbitrary(challenge)` layer, secp256k1 Noir unit tests with standard test vectors, `nargo check`, and forum post.
+Checklist: **8/11 items complete.** Remaining: deploy script M2 Merkle root encoding, React `wallet.signArbitrary(challenge)` layer, and production proving-time measurement on browser hardware. The snapshot generator (`synthetic-snapshot.ts --version 2`) is complete: `deriveHash160V2` / `hashLeafV2` functions match the in-circuit SHA-256d derivation exactly; Prover-v2.toml output with documented signature placeholders; 20/20 nargo tests pass.
 
 The M2 sprint scope has narrowed from the original estimate — the core Noir circuit is done; remaining work is the TypeScript scaffolding and test vectors (not Noir complexity). The original "~2-week integration sprint" has been compressed to a focused frontend + test sprint.
 
