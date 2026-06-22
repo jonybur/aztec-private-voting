@@ -344,6 +344,11 @@ pub contract PrivateVoting {
         //    holder's Cosmos secp256k1 private key.
         //    Rejects any voter who cannot produce a valid sig for this vote.
         //    std::ecdsa_secp256k1 is Noir stdlib (>=0.29); gate cost ~100k.
+        //    IMPORTANT: Barretenberg requires low-S form (s <= n/2, BIP-62).
+        //    The wallet/frontend MUST normalize s: if s > n/2, set s = n - s
+        //    before passing to this circuit. Unnormalized high-S signatures
+        //    will fail even if cryptographically valid. See m2-sig-tests/ for
+        //    test vectors demonstrating this requirement.
         let sig_valid = ecdsa_secp256k1::verify_signature(pubkey_x, pubkey_y, sig, challenge);
         assert(sig_valid, "invalid secp256k1 signature: not the key owner");
 

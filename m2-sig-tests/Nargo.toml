@@ -1,0 +1,8 @@
+[package]
+name = "m2_sig_tests"
+type = "bin"
+authors = ["jonybur-oc"]
+compiler_version = ">=0.30.0"
+
+[dependencies]
+sha256 = { tag = "v0.3.0", git = "https://github.com/noir-lang/sha256" }
