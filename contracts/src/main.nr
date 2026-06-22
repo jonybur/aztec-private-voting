@@ -17,6 +17,7 @@ pub contract PrivateVoting {
 
     use crate::eligibility::{
         verify_eligibility,
+        ELIGIBILITY_MODE_OPEN,
         ELIGIBILITY_MODE_TOKEN,
         ELIGIBILITY_MODE_ALLOWLIST,
     };
@@ -81,6 +82,15 @@ pub contract PrivateVoting {
     // wallet to a ballot. The receipt_id is a client-generated random field
     // used only for the receipt check; it must not be derived from the wallet.
     //
+    // Eligibility restriction (F1-RESIDUAL fix, 2026-06-22): this entrypoint
+    // is only callable on OPEN mode contracts. TOKEN-gated and ALLOWLIST-gated
+    // votes must use cast_vote_token or cast_vote_allowlist respectively, which
+    // perform in-circuit Merkle membership proofs before enqueuing record_vote.
+    // Without this guard, any caller could bypass gating by calling
+    // cast_vote(choice, 1, receipt_id) — proof=1 satisfies the eligibility.nr
+    // stub, so the mode-specific entrypoints are bypass-able from cast_vote.
+    // See: docs/security-review-2026-06-22.md, F1-RESIDUAL amendment.
+    //
     // Known limitation (L1 privacy): vote_choice is a public argument of the
     // enqueued record_vote call, so per-ballot choices are publicly visible
     // (anonymous, but plaintext). A voter who shares their receipt_id reveals
@@ -88,6 +98,16 @@ pub contract PrivateVoting {
     #[external("private")]
     fn cast_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field) {
         assert(receipt_id != 0, "receipt_id must be non-zero");
+        // Security (F1-RESIDUAL): block cast_vote on gated contracts.
+        // TOKEN and ALLOWLIST mode votes must use cast_vote_token /
+        // cast_vote_allowlist — those paths perform the actual in-circuit
+        // Merkle proof. This assertion is redundant for correctly-deployed
+        // open votes but is a critical guard against misuse on gated contracts.
+        let config = self.storage.config.read();
+        assert(
+            config.eligibility_mode == ELIGIBILITY_MODE_OPEN,
+            "cast_vote: gated votes require cast_vote_token or cast_vote_allowlist",
+        );
         self.storage.vote_claims.at(self.msg_sender()).claim();
         self.enqueue_self.record_vote(vote_choice, eligibility_proof, receipt_id);
     }

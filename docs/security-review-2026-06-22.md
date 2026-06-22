@@ -22,6 +22,7 @@ privacy breaks were found in the generic paths.
 - **F1-HIGH TOKEN** resolved (tick-3611): `cast_vote_token` with real in-circuit SHA-256 Merkle balance proof. New leaf: `sha256(address_bytes[32] || balance_be[8])`.
 - **F2 LOW** resolved (commit b3c7ac1): `assert(config.quorum > 0)` in constructor.
 - **F3 LOW** resolved (commit b3c7ac1): `assert(receipt_id != 0)` in `cast_vote`.
+- **F1-RESIDUAL HIGH** resolved (tick-3643): `cast_vote` now asserts `eligibility_mode == OPEN`; gated contracts cannot be called via the generic entrypoint. See §7 amendment below.
 
 ---
 
@@ -278,14 +279,59 @@ of Babylon-gated votes.
 | Severity | Count | Items |
 |---|---|---|
 | CRITICAL | 0 | — |
-| HIGH | 1 | F1 (eligibility placeholder — known, deferred) |
+| HIGH | 0 | F1 and F1-RESIDUAL both resolved (see §1 and §7) |
 | MEDIUM | 0 | — |
-| LOW | 2 | F2 (quorum=0), F3 (receipt_id=0) |
+| LOW | 0 | F2 (quorum=0) and F3 (receipt_id=0) both resolved |
 | DESIGN | 2 | F4 (no emergency stop), F5 (protocol trust) |
 
-The two LOW findings (F2, F3) are each one-line fixes. They should be addressed before
-the grant forum post to show the project is production-aware, not just prototype-quality.
+All severity findings in scope are resolved. The two DESIGN findings (F4, F5) are
+known architectural constraints, not bugs. The contract is in a sound state for the
+prototype / grant demo stage.
 
-The HIGH finding (F1) is correctly deferred to M2 and clearly documented — this is an
-acceptable research prototype posture if the grant submission frames the token/allowlist
-paths as "future work" rather than "current capability."
+---
+
+## 7. Amendment: F1-RESIDUAL — `cast_vote` mode restriction (2026-06-22, tick-3643)
+
+**Finding:** After F1-HIGH was resolved by adding `cast_vote_token` and
+`cast_vote_allowlist`, the generic `cast_vote` entrypoint remained callable on TOKEN and
+ALLOWLIST mode contracts. The `verify_eligibility` stub in `eligibility.nr` only checks
+`proof != 0`; an attacker could bypass all gating by calling
+`cast_vote(choice, 1, receipt_id)` directly, supplying `proof = 1`.
+
+**Attack path:**
+1. A TOKEN-gated or ALLOWLIST-gated `PrivateVoting` contract is deployed.
+2. An ineligible voter calls `cast_vote(vote_choice, 1, receipt_id)` — the generic
+   entrypoint that has no Merkle proof requirement.
+3. `record_vote` calls `verify_eligibility(1, config)`. For TOKEN or ALLOWLIST mode,
+   the stub asserts `proof != 0` — `proof = 1` passes.
+4. The vote is counted without any eligibility verification. All token-gating and
+   allowlist restrictions are bypassed.
+
+**Impact:** HIGH. Any ineligible address can cast valid ballots on any gated vote.
+
+**Fix (tick-3643):** `cast_vote` now reads the contract's `eligibility_mode` from
+`config` before consuming the single-use claim and asserts:
+
+```noir
+assert(
+    config.eligibility_mode == ELIGIBILITY_MODE_OPEN,
+    "cast_vote: gated votes require cast_vote_token or cast_vote_allowlist",
+);
+```
+
+This assertion fires before the `SingleUseClaim` is consumed, so the gas cost of a
+rejected attempt is minimal. The `ELIGIBILITY_MODE_OPEN` constant is now imported
+alongside `ELIGIBILITY_MODE_TOKEN` and `ELIGIBILITY_MODE_ALLOWLIST` in `main.nr`.
+
+**Why this was missed in the original F1 resolution:** The original fix correctly
+identified that the generic `cast_vote` path had stub eligibility, and added mode-specific
+entrypoints with real in-circuit proofs. The assumption was that callers would use the
+correct entrypoint. This is a protocol-layer assumption without a contract-layer
+enforcement. The amendment adds the enforcement.
+
+**Relationship to F2-atomicity analysis:** The F2 analysis (`docs/f2-atomicity-analysis-
+2026-06-22.md`) analysed receipt-collision blocking on `cast_vote` and `cast_vote_babylon`.
+This amendment does not affect the F2 analysis — the atomicity properties of `record_vote`
+are unchanged.
+
+**Status:** ✅ **RESOLVED** — contracts/src/main.nr, tick-3643.
