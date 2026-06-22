@@ -38,7 +38,7 @@ This receipt pattern has been formalised as the **Proof-of-Inclusion UX Pattern 
 | Playwright + Noir unit tests (41 user stories) | ✅ merged |
 | Aztec-NR v5 port | ✅ confirmed (zero code changes) |
 | Static security review (`main.nr` + `eligibility.nr`) | ✅ done — F2 (quorum) + F3 (receipt_id) fixed; 8 sound properties confirmed |
-| M2 — secp256k1 ownership proof circuit | 🔄 circuit + TypeScript snapshot generator implemented, 8/11 checklist items done |
+| M2 — secp256k1 ownership proof circuit | 🔄 circuit + TypeScript snapshot + deploy script + React signing hook done, 10/11 checklist items done |
 | Tally privacy architecture — M3 decision gate | ✅ A/B/C spike done; Architecture A recommended |
 | Alpha testnet deployment | ⚠️ **Redeploying to v5** (state reset Jun 18) |
 | BABY token Merkle governance demo (Babylon team) | ✅ **LIVE** |
