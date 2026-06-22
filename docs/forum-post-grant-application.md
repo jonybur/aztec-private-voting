@@ -1,7 +1,8 @@
 # Aztec Grants Wave 3 Application: Private Voting + Receipt Design for DAOs
 
-**Status:** READY TO POST — insert contract address before submitting  
-**Contract address placeholder:** `[CONTRACT ADDRESS — deploy to v5 testnet first: cd aztec-private-voting && AZTEC_PXE_URL=https://v5.testnet.rpc.aztec-labs.com DEPLOYER_SECRET_KEY=<key> DEPLOYER_SIGNING_KEY=<key> npx tsx scripts/deploy-testnet.ts]`
+**Status:** READY TO POST — two placeholders must be filled before submitting  
+**Contract address placeholder:** `[CONTRACT ADDRESS — deploy to v5 testnet first: cd aztec-private-voting && AZTEC_PXE_URL=https://v5.testnet.rpc.aztec-labs.com DEPLOYER_SECRET_KEY=<key> DEPLOYER_SIGNING_KEY=<key> npx tsx scripts/deploy-testnet.ts]`  
+**OSF DOI placeholder:** `[OSF DOI — upload docs/piup-study1-preregistration-2026-06-22.md, analysis/piup-study1-analysis.R, and docs/piup-study1-survey-instrument-2026-06-22.md to OSF, then insert the DOI here]`
 
 ---
 
@@ -58,7 +59,7 @@ The full rationale — including design alternatives rejected and open problems 
 
 This is the answer to the open question in the [Horizon PRD for Private Voting](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md): *"Default receipts content voters expect."*
 
-### Why the KelpDAO/rsETH case matters
+### Real-world threat model: KelpDAO/rsETH
 
 KelpDAO ran a 49-day public vote on loss socialisation from the $71M rsETH exploit on Arbitrum. Every voter's wallet was visible on-chain. Voters who could be identified were subject to pressure. The existing governance tooling had no answer.
 
@@ -121,6 +122,8 @@ Happy to demo, pair on integrations, or discuss extending the receipt-design wor
 
 ## Post-submission checklist (for Jony)
 
+- [ ] Upload OSF pre-registration files: `docs/piup-study1-preregistration-2026-06-22.md`, `analysis/piup-study1-analysis.R`, `docs/piup-study1-survey-instrument-2026-06-22.md` → get DOI
+- [ ] Replace `[OSF DOI]` in forum post (in PIUP Study 1 paragraph) with actual DOI
 - [ ] Deploy to v5 testnet: `AZTEC_PXE_URL=https://v5.testnet.rpc.aztec-labs.com DEPLOYER_SECRET_KEY=<key> DEPLOYER_SIGNING_KEY=<key> npx tsx scripts/deploy-testnet.ts`
 - [ ] Replace `[CONTRACT ADDRESS]` in forum post with actual deployed address
 - [ ] Confirm GitHub repo is public (or will be public at submission)
