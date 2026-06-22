@@ -12,6 +12,8 @@ export { useVerifyReceipt } from './hooks/useVerifyReceipt';
 export { useDeployVote } from './hooks/useDeployVote';
 export { useVoteCount } from './hooks/useVoteCount';
 export { useFinalizeVote } from './hooks/useFinalizeVote';
+export { useM2Signing, buildM2Challenge, fieldToBytes32 } from './hooks/useM2Signing';
+export type { M2SignMode, M2SigningInput, M2SigningOutput, M2SignStatus, UseM2SigningResult } from './hooks/useM2Signing';
 
 export {
   AztecProvider,
