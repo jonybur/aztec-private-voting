@@ -38,7 +38,7 @@ Between-subjects, 4 × 1 factorial experiment. Single manipulated factor: receip
 | C | nullifier | Cryptographically correct |
 | D | receipt ID | Generic / neutral |
 
-The remainder of the receipt UI (privacy copy, layout, download prompt, verification instructions) is held constant across all conditions. See `study-stimuli/condition-{a,b,c,d}.html` for the exact stimuli used.
+The remainder of the receipt UI (privacy copy, layout, download prompt, verification instructions) is held constant across all conditions. See `study-stimuli/condition-a-fingerprint.html`, `condition-b-confirmation-code.html`, `condition-c-nullifier.html`, `condition-d-receipt-id.html` for the exact stimuli used.
 
 ### 2.3 Platform
 
@@ -140,7 +140,7 @@ H2 is considered **reversed** if H2-primary favours B (B > A on Q2 at α = 0.05,
 
 ### 5.1 Stimuli
 
-Four HTML mockups (condition-a.html through condition-d.html), identical except for the receipt identifier label and associated ARIA label. Commit `fb710f5` contains the exact stimuli as pre-registered. Any change to stimuli after this pre-registration constitutes an amendment; amended stimuli are not covered by this pre-registration.
+Four HTML mockups (condition-a-fingerprint.html, condition-b-confirmation-code.html, condition-c-nullifier.html, condition-d-receipt-id.html), identical except for the receipt identifier label, its ARIA label, and two label-name references in the collapsed verification panel. Commit `fb710f5` contains the exact stimuli as pre-registered. Any change to stimuli after this pre-registration constitutes an amendment; amended stimuli are not covered by this pre-registration.
 
 ### 5.2 Primary measures
 
