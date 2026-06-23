@@ -829,3 +829,75 @@ The protective framing text (`apv-receipt__explainer`) correctly uses `{identifi
 | G*Power "dependent" vs between-subjects design | ⚠️ Pre-reg note | No fix — pre-reg locked; flag for Jony before CHI submission |
 | H2 'marginally underpowered' language | ✅ Clean | None |
 | Exclusion criteria (SW eng / both ACs / <90s) | ✅ Clean | None |
+
+---
+
+## §4.3 Second-pass Audit (tick-3701)
+
+Audit checks: (a) stimuli diff claim matches actual HTML diff at commit fb710f5; (b) protective framing exact quote matches stimuli; (c) 'This is intentional' signal absence note matches Study 2 design note.
+
+---
+
+### Check (a): Stimuli diff claim — CLEAN ✅
+
+**Paper §4.3 claims:** "identical in structure, layout, and copy except for the receipt identifier label, its ARIA label, and two label-name references within the collapsed verification panel ('check that your [label] appears'; 'Paste your [label]')."
+
+**Actual HTML diff (fb710f5) across all 4 conditions:**
+
+| Change point | Condition A | Condition B | Condition C | Condition D |
+|---|---|---|---|---|
+| `<label>` text | "Your vote fingerprint" | "Your confirmation code" | "Your nullifier" | "Your receipt ID" |
+| Copy button `aria-label` | "Copy vote fingerprint" | "Copy confirmation code" | "Copy nullifier" | "Copy receipt ID" |
+| How-to panel ref 1 | "check that your fingerprint appears" | "check that your confirmation code appears" | "check that your nullifier appears" | "check that your receipt ID appears" |
+| How-to panel ref 2 | "Paste your fingerprint." | "Paste your confirmation code." | "Paste your nullifier." | "Paste your receipt ID." |
+
+**Verdict:** Exactly 4 change points (1 label + 1 ARIA label + 2 how-to panel refs). All other content — CSS, layout, status line, protective framing, hex value, copy button text, download prompt — identical across all four files. Paper claim is accurate. ✅
+
+---
+
+### Check (b): Protective framing exact quote — CLEAN ✅
+
+**Paper §4.3 states held-constant framing is:** `"This receipt does not contain your vote choice. It proves your ballot was counted without revealing how you voted."`
+
+**Actual HTML (condition-a-fingerprint.html, lines 248-250, fb710f5):**
+```
+This receipt does not contain your vote choice. It proves your ballot was
+counted without revealing how you voted.
+```
+
+**Verified across all 4 conditions:** same text unchanged. Quote matches exactly, including word order and phrasing. ✅
+
+---
+
+### Check (c): 'This is intentional' absence + Study 2 cross-reference — CLEAN ✅ (⚠️ design note internal inconsistency flagged)
+
+**Paper §4.3 claims:** stimuli use a simplified framing without "This is intentional"; Study 2 isolates the explanation as an independent variable (§5).
+
+**Verification 1 — 'This is intentional' absent from all 4 stimuli:**
+- Searched all 4 HTML files at fb710f5 for "intentional"
+- Result: NOT FOUND in any condition ✅
+
+**Verification 2 — Study 2 design note confirms Factor E:**
+- piup-study2-design-note-2026-06-22.md §Factor E (line 104): "Factor E (Explanation): 2 levels — E1: Explanation present / E2: Explanation absent"
+- Line 44: "Study 2 isolates the explanation as the variable."
+- Paper §5 E1 text matches design note line 149 verbatim ✅
+
+**Verdict:** Paper §4.3 cross-reference is accurate. ✅
+
+⚠️ **Design note internal inconsistency (not a paper error — flagged for Jony):**
+The design note has two conflicting versions of the E1 explanation text:
+- Line 105 (Factor E definition): short version — "Your vote is not shown here. This is intentional — your privacy is protected by design. The [fingerprint/code] is all you need to verify your ballot was counted."
+- Line 149 (stimulus text block): long version — "Your vote choice is not shown on this receipt. This is intentional. Keeping your vote private means your receipt can be shared, checked, or subpoenaed without revealing how you voted. Your [vote fingerprint / confirmation code] is the only thing you need — matching it later proves your ballot was counted, nothing more."
+
+The paper §5 uses the long version (line 149), which is the expanded, final stimulus text. The Factor E definition at line 105 should be updated to match line 149 before the Study 2 pre-analysis plan is filed with OSF. **Jony-action: Update piup-study2-design-note-2026-06-22.md line 105 Factor E1 text to match the line-149 version before OSF preregistration of Study 2.**
+
+---
+
+## §4.3 Second-pass Summary (tick-3701)
+
+| Check | Status | Action |
+|---|---|---|
+| Stimuli diff (label + ARIA + 2 panel refs) | ✅ Clean | None |
+| Protective framing exact quote | ✅ Clean | None |
+| 'This is intentional' absence + Study 2 IV cross-ref | ✅ Clean | None |
+| Design note E1 text inconsistency (line 105 vs 149) | ⚠️ Design note issue | Jony-action: fix before Study 2 OSF pre-reg |
