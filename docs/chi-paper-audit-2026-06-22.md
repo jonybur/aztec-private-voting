@@ -1696,3 +1696,94 @@ tick-3737 (commit 349602f) added "If H2 is supported" and "If H4 is also support
 | §6.5 Study 2 demand characteristics: conditional on design note §11.1 | ✅ Clean | None |
 | §6.5 Study 1 ecological validity: Q4 caveat after tick-3729 Q5 fix | ✅ Clean | None |
 | §7 "'Confirmation code' undermines…" unconditional directional claim | ❌ Missing conditional | FIXED: "In that scenario, 'confirmation code' undermines…" |
+
+---
+
+## §3.1–§3.2 + §2.1–§2.2 Third-pass + Second read-through (tick-3739)
+
+### §3.1 Entrypoint signatures — ✅ CLEAN
+
+All four entrypoints verified against `contracts/src/main.nr`:
+
+| Entrypoint | Signature in paper | Code match |
+|---|---|---|
+| `cast_vote` | `(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)` | ✅ |
+| `record_vote` | `(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`, `#[only_self]` | ✅ |
+| `finalize_vote` | `()`, callable after `end_time` if `vote_count >= quorum` | ✅ |
+| `verify_vote_counted` | `(receipt_id: Field) → bool`, public view | ✅ |
+
+`SingleUseClaim` call in `cast_vote`: `self.storage.vote_claims.at(self.msg_sender()).claim()` ✅
+
+All `cast_vote*` entrypoints enqueue via `self.enqueue_self.record_vote(...)` ✅
+
+`finalize_vote` sets `is_finalized = true`; tally already written incrementally by `record_vote`; no event emitted ✅
+
+`get_final_tally` has `assert(self.storage.is_finalized.read(), "not finalized")` ✅
+
+### §3.1 Surrogate-independence (Invariant 1) — ✅ CLEAN
+
+**Paper (§3.4):** `generateReceiptId()` in `receipt-id.ts` calls `Fr.random()` to produce a 254-bit random field element; value not derived from wallet, vote ID, or choice; satisfies Invariant 1.
+
+**Code confirms:** `Fr.random().toBigInt()`. Comment: 
+"It must never be derived from the wallet: double voting is prevented by the contract's private single-use claim." ✅
+
+VoteReceipt.tsx rendering order verified against source — status line → fingerprint → protective framing → collapsed "How to verify" ✅
+
+receipt.ts `serializeReceipt` verified — spreads VoteReceipt containing: `voteId`, `voteTitle`, `receiptId`, `txHash`, `timestamp`, `contractAddress`; no vote_choice field → Invariant 3 at content layer ✅
+
+### §3.2 Leaf formats — ✅ CLEAN
+
+**Token-gated leaf format paper claim:** `sha256([0x00] || address_field_bytes[31] || balance_be[8])`
+
+**Code (`compute_token_leaf`):**
+```
+input[0] = 0;
+for i in 0..31 { input[i + 1] = field_bytes[i]; }  // 31 field bytes
+// balance: 8 bytes big-endian (total: 40 bytes)
+```
+Match: ✅
+
+**Allowlist leaf format paper claim:** `sha256([0x00] || address_field_bytes[31])`
+
+**Code (`compute_aztec_leaf`):**
+```
+addr_bytes[0] = 0;
+for i in 0..31 { addr_bytes[i + 1] = field_bytes[i]; }  // total 32 bytes
+```
+Match: ✅
+
+**Balance threshold before Merkle check** (paper: "Balance threshold is enforced inside the circuit before Merkle verification"): `verify_token_eligibility` asserts `balance >= min_balance` before calling `verify_merkle_path` ✅
+
+**N=280 in abstract** (tick-3722 fix): abstract reads "N=280" ✅
+
+**Mode guards (F1-RESIDUAL)**:
+- `cast_vote`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_OPEN)` ✅
+- `cast_vote_token`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_TOKEN)` ✅
+- `cast_vote_allowlist`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_ALLOWLIST)` ✅
+
+### §2.1–§2.2 Second read-through — ✅ CLEAN
+
+**Invariant definitions:** §1.1 and §2.1 invariant wording cross-checked — consistent, no drift. ✅
+
+**§2.2 Alternative 3 caveat** (tick-3696 fix): "This comparison is a design inference not directly tested by the cited absent-content literature… the direct coercible-vs.-absent comparison remains a design claim" — text present and intact ✅
+
+**Unconditional claim scan:** No new unconditional empirical claims found in §2.1 or §2.2. Verification affordance N=12 pilot correctly hedged as "(unpublished pilot study, N=12)" ✅
+
+---
+
+### §3.1–§3.2 + §2.1–§2.2 Summary (tick-3739)
+
+| Check | Status | Action |
+|---|---|---|
+| §3.1 entrypoint signatures (all 4) | ✅ Clean | None |
+| §3.1 Invariant 1 — Fr.random() receipt-id.ts | ✅ Clean | None |
+| §3.1 VoteReceipt.tsx rendering order | ✅ Clean | None |
+| §3.1 receipt.ts Invariant 3 content layer | ✅ Clean | None |
+| §3.2 token-gated leaf format | ✅ Clean | None |
+| §3.2 allowlist leaf format | ✅ Clean | None |
+| §3.2 balance threshold enforcement order | ✅ Clean | None |
+| §3.2 N=280 in abstract (tick-3722 fix) | ✅ Clean | None |
+| §3.2 mode guards F1-RESIDUAL | ✅ Clean | None |
+| §2.1 invariant definitions vs §1.1 | ✅ Clean | None |
+| §2.2 Alternative 3 caveat (tick-3696 fix) | ✅ Clean | None |
+| §2.1–§2.2 unconditional claim scan | ✅ Clean | None |
