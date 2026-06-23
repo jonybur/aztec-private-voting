@@ -978,3 +978,44 @@ Paper correctly captures: E main effect as default, L×E as secondary, H4→I as
 | Factor L/I/N | ✅ Clean | None |
 | §5.5 H4/H2 contingency cross-ref | ✅ Clean | None |
 
+
+---
+
+## §6.3 Second-pass Audit (tick-3709)
+
+### Check (a): Feedback-inversion framing uses conditional/predictive language (not indicative) — CLEAN ✅
+
+§6.3 is a theoretical/design-rationale section arguing that PIUP structurally inverts Norman's feedback principle. It does not make empirical predictions about study outcomes. The indicative language ("PIUP inverts this", "Invariant 3 is the design response") is appropriate for design-argument sections — these describe what the design IS structurally, not what it will causally produce in a study. No indicative-vs-conditional issue identified.
+
+---
+
+### Check (b): Any 'produces' or 'results in' causal claims are hedged appropriately — CLEAN ✅
+
+One instance of "produces" found:
+
+> "which, under Norman's own model, **produces error-prone behavior**: the user's conceptual model diverges from the system model, and the gap is not visible to the user."
+
+This is explicitly hedged: "under Norman's own model" makes the causal claim a theoretical implication derived from Norman's framework, not an empirical assertion about PIUP or the study. Appropriately attributed.
+
+No "results in" found in §6.3.
+
+No bare, unhedged causal claims. CLEAN ✅
+
+---
+
+### Check (c): Study 2 L×E interaction cross-refs are accurate — CLEAN ✅ (no cross-refs)
+
+§6.3 contains no references to Study 2, the L×E interaction, or §5 of any kind. The L×E cross-refs in the paper are in §6.1 ("Study 2's L × E test addresses directly (§5.5)") and §5.3, which are outside §6.3's scope.
+
+Vacuously satisfied — nothing to verify.
+
+---
+
+## §6.3 Second-pass Summary (tick-3709)
+
+| Check | Status | Action |
+|---|---|---|
+| (a) Feedback-inversion framing — conditional/predictive vs. indicative | ✅ Clean | None — design-argument section, no empirical predictions |
+| (b) 'produces' / 'results in' causal claims | ✅ Clean | "under Norman's own model, produces error-prone behavior" correctly hedged |
+| (c) Study 2 L×E interaction cross-refs | ✅ Clean | No cross-refs in §6.3 to verify |
+
