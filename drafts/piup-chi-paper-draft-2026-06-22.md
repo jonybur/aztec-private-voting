@@ -186,7 +186,7 @@ Three findings were resolved before the study - one HIGH severity and two LOW:
 
 Two design limitations are documented and not resolved at the prototype stage:
 
-*L1 privacy gap.* The `vote_choice` and `receipt_id` are plaintext public arguments in `record_vote` (a public function). An observer of the Aztec execution layer can build a `receipt_id → vote_choice` map. A voter who reveals their fingerprint after vote close gives a knowledgeable observer the ability to look up their choice. The receipt UI addresses this with explicit copy noting that the fingerprint should not be shared until the vote finalizes; the protocol-level fix (encrypted tally) is on the M2 roadmap.
+*L1 privacy gap.* The `vote_choice` and `receipt_id` are plaintext public arguments in `record_vote` (a public function). An observer of the Aztec execution layer can build a `receipt_id → vote_choice` map. A voter who reveals their fingerprint, or shares the downloaded receipt file (which also contains the on-chain transaction hash — a direct `record_vote` lookup path; see §3.4), gives a knowledgeable observer the ability to recover their choice. The receipt UI addresses this with explicit copy noting that the receipt should not be shared until the vote finalizes; the protocol-level fix (encrypted tally) is on the M2 roadmap.
 
 *Receipt-freeness is partial.* The contract does not implement a re-encryption mix. The commitment not to use the term "coercion-resistant" in user-facing copy until this is resolved is maintained in the receipt component.
 
