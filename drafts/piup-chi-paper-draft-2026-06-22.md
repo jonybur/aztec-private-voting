@@ -308,13 +308,13 @@ Study 1 isolates the label effect while holding the receipt's explanatory copy c
 
 ### 5.1 Research questions
 
-**RQ1 (Explanation effect).** Does an explicit absent-choice explanation in the receipt increase correct absent-content interpretation, trust, and self-reported save intention, compared to a receipt with no explanation?
+**RQ1 (Explanation effect).** Does an explicit absent-choice explanation in the receipt increase correct absent-content interpretation, trust, and self-reported save intention, compared to a receipt with no explanation? (See §6.1, §6.3.)
 
-**RQ2 (Label × Explanation interaction).** Is the explanation effect moderated by label? Specifically: does "confirmation code" produce lower absent-content accuracy in the no-explanation condition (schema import unchecked), but close the gap to "vote fingerprint" when explanation is added?
+**RQ2 (Label × Explanation interaction).** Is the explanation effect moderated by label? Specifically: does "confirmation code" produce lower absent-content accuracy in the no-explanation condition (schema import unchecked), but close the gap to "vote fingerprint" when explanation is added? (See §6.1, §6.2.)
 
-**RQ3 (Calibration intervention).** Does an accuracy-feedback intervention - a two-question comprehension check with immediate correct-answer feedback, displayed before the receipt - increase correct absent-content interpretation and reduce confidence miscalibration without reducing save intention?
+**RQ3 (Calibration intervention).** Does an accuracy-feedback intervention - a two-question comprehension check with immediate correct-answer feedback, displayed before the receipt - increase correct absent-content interpretation and reduce confidence miscalibration without reducing save intention? (See §6.2, §6.3.)
 
-**RQ4 (Save behavior).** Does correct absent-content interpretation predict save intention? Is this relationship moderated by calibration?
+**RQ4 (Save behavior).** Does correct absent-content interpretation predict save intention? Is this relationship moderated by calibration? (See §6.1.)
 
 ### 5.2 Design
 
@@ -322,7 +322,7 @@ Study 1 isolates the label effect while holding the receipt's explanatory copy c
 
 **Factor L (Label; 2 levels):** L1 = "vote fingerprint"; L2 = "confirmation code." The full 4-condition label space from Study 1 is reduced to the theoretically central contrast. "Nullifier" is excluded (Study 1 addressed its failure mode; no production path). "Receipt ID" is excluded (characterized as a generic baseline in Study 1).
 
-**Factor E (Explanation; 2 levels):** E1 = explanation present: "Your vote choice is not shown on this receipt. This is intentional. Keeping your vote private means your receipt can be shared, checked, or subpoenaed without revealing how you voted. Your [label] is the only thing you need - matching it later proves your ballot was counted, nothing more." E2 = explanation absent: the receipt shows the identifier, the counting-confirmation statement ("Your ballot was counted"), the download prompt, and the verification instructions, but no explicit absent-choice explanation sentence. A minimal privacy note ("Your vote is private and verifiable") is retained in E2 to avoid a privacy-awareness confound; only the absent-choice explanation is omitted (design note §6.1).
+**Factor E (Explanation; 2 levels):** E1 = explanation present: "Your vote choice is not shown on this receipt. This is intentional. Keeping your vote private means your receipt can be shared, checked, or subpoenaed without revealing how you voted. Your [label] is the only thing you need — matching it later proves your ballot was counted, nothing more." E2 = explanation absent: the receipt shows the identifier, the counting-confirmation statement ("Your ballot was counted"), the download prompt, and the verification instructions, but no explicit absent-choice explanation sentence. A minimal privacy note ("Your vote is private and verifiable") is retained in E2 to avoid a privacy-awareness confound; only the absent-choice explanation is omitted (design note §6.1).
 
 **Factor I (Calibration intervention; 2 levels):** I1 = no intervention; participant sees the receipt directly. I2 = calibration intervention; participant answers two comprehension questions before viewing the receipt, then receives correct-answer feedback (whether their answers were right, with a one-sentence explanation for each question). I is crossed with L × E, producing 8 cells; N = 30 per cell (N = 240 total).
 
