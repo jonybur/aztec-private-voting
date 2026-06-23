@@ -190,6 +190,95 @@ Next: §4 Study 1 design audit (§4.1 hypotheses, §4.2–46 stimuli, §4.4 part
 
 ---
 
+## §6.1–6.2 Discussion audit — TWO INACCURACIES FIXED (tick-3691)
+
+**Cross-check sources:** `docs/piup-study2-design-note-2026-06-22.md`, `docs/piup-study1-preregistration-2026-06-22.md`
+
+Four checks from nextRotation:
+1. L×E interaction claim — primary vs exploratory?
+2. §6.1–6.2 theoretical framing vs. what Study 2 actually measures
+3. Unsupported causal language
+4. Study 1 H2 in discussion — framed as predictions not results?
+
+---
+
+### Check 1: L×E interaction labeling — CLEAN ✅
+
+**Claim in §5.5:**
+> “The L × E interaction is the secondary endpoint: if ‘confirmation code’ without explanation underperforms ‘vote fingerprint’ without explanation on Q-AC but converges when explanation is added, this supports the schema-import / framing-override model proposed in §6.1-6.2.”
+
+**Assessment:**
+- Correctly described as **secondary**, not primary endpoint.
+- Conditional framing (“if… this supports”) is appropriate — no claim of validation.
+- Model is described as “proposed in §6.1-6.2” — theoretical, not empirically established.
+- §5.6 explicitly states Study 2 is “at design-note stage” and not yet pre-registered.
+- The L×E is therefore a pre-analysis plan endpoint (design note), not a formally pre-registered hypothesis. The paper is clear about this.
+
+**Verdict:** CLEAN. No fix needed. ✅
+
+---
+
+### Check 2: §6.1–6.2 framing vs. Study 2 measures — CLEAN ✅
+
+**Study 2 primary endpoint:** E main effect on Q-AC accuracy (explanation present/absent).
+**Study 2 secondary endpoint:** L×E interaction (does explanation close fingerprint vs. confirmation code gap?).
+
+**§6.1 proposes:** The label must not import a schema the framing cannot override. The framing and label must both be correct simultaneously.
+**§6.2 proposes:** H2 (label dissociation on privacy items) and H4 (confidence miscalibration from familiar label).
+
+**Assessment:** The theoretical framing in §6.1–6.2 maps cleanly to Study 2’s L×E secondary endpoint. §6.1’s proposition (“framing alone may not override schema”) is exactly what the L×E test operationalizes. No mismatch. ✅
+
+---
+
+### Check 3: Unsupported causal language — TWO FIXES ❌
+
+#### Inaccuracy 1: §6.1 “does not, and cannot, fully override” ❌ FIXED
+
+**Paper claimed:**
+> “The protective framing copy tells the user that the choice is not shown; **it does not, and cannot, fully override** the representational schema that ‘confirmation’ activates at the label level.”
+
+**Problem:** “Cannot” is an absolute empirical claim with no support. Study 2’s L×E test is specifically designed to evaluate whether explanation can override the schema. Claiming “cannot” pre-judges Study 2’s outcome and contradicts the stated purpose of the L×E test in §5.5.
+
+**Fix applied:** Changed to: “**it may not, by itself, fully override** the representational schema that ‘confirmation’ activates at the label level — a question Study 2’s L × E test addresses directly (§5.5).”
+
+This leaves the empirical question open (as it should be) and cross-references the test that will resolve it.
+
+#### Inaccuracy 2: §6.2 H4 indicative framing ❌ FIXED
+
+**Paper claimed:**
+> “H4 (confidence miscalibration) operationalizes a second consequence: ‘confirmation code’ **produces** higher self-reported confidence than ‘vote fingerprint’ despite the accuracy deficit on Q2 and Q3. **Confidence is high** because the eCommerce schema is well-practiced; **accuracy on the privacy-specific items is lower** because the schema contradicts the correct answer. **The label does** the designer’s work of reducing onboarding friction while simultaneously doing the coercer’s work of producing a wrong mental model.”
+
+**Problem:** H2 is correctly framed as a **prediction** (“H2 predicts that…” / “are predicted to”). H4 incorrectly shifts to **indicative** mode (“produces”, “Confidence is high”, “accuracy is lower”, “The label does”) as if Study 1 has been run and H4 is confirmed. Study 1 has not yet been run.
+
+**Fix applied:** Changed to conditional/predictive framing matching H2:
+> “H4 (confidence miscalibration) operationalizes a second consequence: under H4, ‘confirmation code’ **is predicted to produce** higher self-reported confidence than ‘vote fingerprint’ despite the accuracy deficit on Q2 and Q3. Confidence **would be** high because the eCommerce schema is well-practiced; accuracy on the privacy-specific items lower because the schema contradicts the correct answer. **If H4 is supported**, the label simultaneously does the designer’s work of reducing onboarding friction and the coercer’s work of producing a wrong mental model.”
+
+---
+
+### Check 4: Study 1 H2 framed as predictions not results — CLEAN ✅
+
+**In §6.2:**
+> “H2 (dissociation; see §4.5) **predicts** that the accuracy difference is confined to the privacy-model questions… ‘confirmation code’ and ‘vote fingerprint’ **are predicted** to perform comparably…”
+
+**Assessment:** H2 uses “predicts” / “are predicted” throughout — correctly framed as pre-registered prediction, not result. ✅
+
+**In §7 Conclusion:**
+Body text treats H2 as supported (votes for H2-supported framing), but an explicit editorial note states: “*[Draft framing assumes H2-supported… If Study 1 yields H2-null or H2-reversed, revise per §4.5 outcome classification.]*” This is acceptable for a draft in progress. No fix needed.
+
+---
+
+### Summary (tick-3691)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| L×E interaction — secondary not primary | ✅ Clean | None |
+| §6.1–6.2 framing vs. Study 2 measures | ✅ Clean | None |
+| §6.1 “cannot fully override” | ❌ Causal absolutism | FIXED: “may not, by itself, fully override” + Study 2 cross-ref |
+| §6.2 H4 indicative framing | ❌ Pre-empirical fact claims | FIXED: conditional framing matching H2 predicate style |
+| Study 1 H2 in discussion | ✅ Correctly predicted | None |
+
+---
+
 ## §5 Study 2 pre-analysis plan audit — THREE INACCURACIES FIXED (tick-3690)
 
 **Cross-check source:** `docs/piup-study2-design-note-2026-06-22.md`
