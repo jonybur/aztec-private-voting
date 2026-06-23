@@ -1432,3 +1432,65 @@ Design note §9.1: E main effect on Q-AC → primary. L × E → secondary. Cond
 | RQ1–RQ4 vs. design note §4 | ✅ Clean | None |
 | M4 cross-reference (§5.4): §7.1 → §7.2 | ❌ Wrong section ref | FIXED (tick-3730) |
 | §5.5 primary analysis contingency paths | ✅ Clean | None |
+
+---
+
+## §5.2 Third-pass Audit (tick-3731)
+
+**Checks performed:**
+1. Factor L levels — paper vs. design note §5.1
+2. Factor E levels — E1 text vs. design note §6.1; E2 element list vs. design note §6.1
+3. Factor I levels — I2 intervention description vs. design note §6.2
+4. Cell count / N vs. design note §5.1
+
+---
+
+### Check (1): Factor L levels — CLEAN ✅
+
+Paper L1 = "vote fingerprint", L2 = "confirmation code". Design note §5.1 identical. Rationale text ("Nullifier excluded…", "Receipt ID excluded…") consistent with design note §5.1. ✅
+
+---
+
+### Check (2): E1 text — CLEAN ✅
+
+Paper E1 copy: "Your vote choice is not shown on this receipt. This is intentional. Keeping your vote private means your receipt can be shared, checked, or subpoenaed without revealing how you voted. Your [label] is the only thing you need - matching it later proves your ballot was counted, nothing more."
+
+Design note §6.1 E1 copy: identical (paper uses `[label]` as a token placeholder; design note uses `[vote fingerprint / confirmation code]` — equivalent). ✅
+
+### Check (2b): E2 element list — OMISSION ❌ FIXED
+
+**Paper before fix:** "E2 = explanation absent: the receipt shows the identifier, download prompt, and verification instructions, but no explicit absent-choice explanation sentence."
+
+**Design note §6.1:** "The receipt shows the identifier value, the statement 'Your ballot was counted,' the download prompt, and the verification instructions."
+
+The paper's E2 list omitted the counting-confirmation statement ("Your ballot was counted"). This is a substantive element of the E2 stimulus — its omission makes the paper's description incomplete and potentially misleading (the receipt is not purely identifier + navigation; it also includes a positive counting confirmation).
+
+**Fix applied (tick-3731):** E2 description now reads: "the receipt shows the identifier, the counting-confirmation statement ('Your ballot was counted'), the download prompt, and the verification instructions."
+
+---
+
+### Check (3): I2 intervention description vs. design note §6.2 — IMPRECISION ❌ FIXED
+
+**Paper before fix:** "receives correct-answer feedback (whether their answers were right and **a one-sentence explanation**)."
+
+**Design note §6.2:** The feedback consists of **two separate feedback sentences** — one for Q1 ("The correct answer is No — the receipt does not include your vote choice. This is intentional: showing your vote would create a coercion risk.") and one for Q2 ("The correct answer is To let you verify later that your ballot was counted — it proves your ballot was included in the tally, not what you voted."). One sentence per question; not a single one-sentence explanation for the entire feedback block.
+
+**Fix applied (tick-3731):** Changed "a one-sentence explanation" → "a one-sentence explanation for each question."
+
+---
+
+### Check (4): Cell count / N — CLEAN ✅
+
+Paper: "8 cells; N = 30 per cell (N = 240 total)." Design note §5.1: "8-condition space: L × E × I. With N = 30 per cell, total N = 240." ✅
+
+---
+
+### §5.2 Third-pass Summary (tick-3731)
+
+| Check | Status | Action |
+|---|---|---|
+| Factor L levels vs. design note §5.1 | ✅ Clean | None |
+| E1 text vs. design note §6.1 | ✅ Clean | None |
+| E2 element list vs. design note §6.1 | ❌ Omission | FIXED (tick-3731): added "Your ballot was counted" |
+| I2 feedback description vs. design note §6.2 | ❌ Imprecision | FIXED (tick-3731): "a one-sentence explanation" → "per question" |
+| Cell count / N vs. design note §5.1 | ✅ Clean | None |
