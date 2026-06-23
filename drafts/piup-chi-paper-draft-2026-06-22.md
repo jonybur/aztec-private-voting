@@ -12,7 +12,7 @@ Every submission confirmation in computing encodes an implicit claim: "the syste
 
 We present the **Proof-of-Inclusion UX Pattern (PIUP)**, a design class for submission systems that must confirm participation without confirming content. The pattern centers on *protective absence*: the deliberate omission of the confirmed choice, paired with an explicit design-intent signal that distinguishes purposeful omission from system failure. Where Norman's feedback principle states that good feedback confirms what was done, PIUP inverts this: correct feedback proves that the action is *protected from display*.
 
-We describe the pattern's instantiation in Aztec Private Voting - a Noir ZK contract + React component library for private DAO governance - and report two empirical studies validating its core design hypotheses. **Study 1** (N=280, Prolific, pre-registered) is a 4-condition between-subjects experiment comparing identifier labels ("vote fingerprint," "confirmation code," "nullifier," "receipt ID") on privacy mental model quality. **Study 2** (N=240, planned) is a 2×2 factorial testing whether absent-choice explanation is the load-bearing receipt element, and whether a calibration intervention can reduce confidence miscalibration produced by familiar eCommerce labels. We report Study 1 results and the Study 2 pre-analysis plan.
+We describe the pattern's instantiation in Aztec Private Voting - a Noir ZK contract + React component library for private DAO governance - and report two empirical studies validating its core design hypotheses. **Study 1** (N=280, Prolific, pre-registered) is a 4-condition between-subjects experiment comparing identifier labels ("vote fingerprint," "confirmation code," "nullifier," "receipt ID") on privacy mental model quality. **Study 2** (N=240, planned) is a 2×2×2 factorial (Label × Explanation × Calibration Intervention) testing whether absent-choice explanation is the load-bearing receipt element, and whether a calibration intervention can reduce confidence miscalibration produced by familiar eCommerce labels. We report Study 1 results and the Study 2 pre-analysis plan.
 
 PIUP formalises three invariants - surrogate independence, surrogate privacy in transit, and minimal receipt content - and identifies one named limitation: vote choice remains visible in public calldata at the protocol layer, a constraint not resolvable through UI design.
 
@@ -85,7 +85,7 @@ This paper makes three contributions:
 
 **System instantiation.** Aztec Private Voting - a Noir ZK smart contract and React component library implementing PIUP on the Aztec v5 testnet. The system provides a working implementation of all three invariants and the receipt UI described in this paper. The `VoteReceipt` component is the canonical PIUP instantiation. Section 3.
 
-**Empirical validation.** Study 1 (N=280, pre-registered): a 4-condition between-subjects experiment establishing which identifier label produces the most accurate privacy mental model. Study 2 (N=240, planned): a 2×2 factorial testing explanation effects and calibration interventions for the label × mental model relationship. Section 4 (Study 1), Section 5 (Study 2 pre-analysis plan).
+**Empirical validation.** Study 1 (N=280, pre-registered): a 4-condition between-subjects experiment establishing which identifier label produces the most accurate privacy mental model. Study 2 (N=240, planned): a 2×2×2 factorial (L × E × I; 8 cells, n=30/cell) testing explanation effects and calibration interventions for the label × mental model relationship. Section 4 (Study 1), Section 5 (Study 2 pre-analysis plan).
 
 ### 1.4 Scope and relation to prior work
 
@@ -298,7 +298,7 @@ The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bo
 
 ### 4.6 Results
 
-_[To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT]. Pilot target: 2026-Q3; full launch conditional on instrument validation. Reporting structure: omnibus results, then per-hypothesis family in H1-H4 order, then Q5 open-text analysis, then exploratory comparisons.]_
+_[To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT]. Pilot target: 2026-Q3; full launch conditional on instrument validation. Reporting structure: (1) Participant flow table — 4 conditions (A: fingerprint, B: confirmation code, C: nullifier, D: receipt ID), final N=280 (n=70/cell), demographics DM1 (age), DM2 (technology background), DM3 (prior voting experience), pre-specified exclusion protocol applied (software engineers, both attention checks failed, response time < 90 s); (2) omnibus chi-squared result; (3) per-hypothesis family in H1-H4 order; (4) Q5 open-text analysis; (5) exploratory comparisons.]_
 
 ---
 
@@ -318,7 +318,7 @@ Study 1 isolates the label effect while holding the receipt's explanatory copy c
 
 ### 5.2 Design
 
-2×2 between-subjects factorial experiment.
+2×2×2 between-subjects factorial experiment.
 
 **Factor L (Label; 2 levels):** L1 = "vote fingerprint"; L2 = "confirmation code." The full 4-condition label space from Study 1 is reduced to the theoretically central contrast. "Nullifier" is excluded (Study 1 addressed its failure mode; no production path). "Receipt ID" is excluded (characterized as a generic baseline in Study 1).
 
@@ -336,7 +336,7 @@ The primary confirmatory endpoint is absent-content interpretation (Q-AC): "Look
 
 ### 5.5 Primary analysis
 
-The primary analysis axis is contingent on Study 1 outcomes (full decision table in `docs/piup-study2-design-note-2026-06-22.md`). The default primary endpoint is the E main effect on Q-AC accuracy: does explanation-present vs. absent produce different rates of correct absent-choice inference? The L × E interaction is the secondary endpoint (H2.2; pre-registered on M2 trust composite, §9.1 of the design note): the explanation effect on trust is predicted to be larger for the "confirmation code" label than for the "vote fingerprint" label, because the eCommerce schema that the code imports requires framing copy to do corrective work that the fingerprint metaphor partially handles by itself. A corresponding ordinal pattern is predicted on Q-AC — "confirmation code" without explanation is expected to underperform "vote fingerprint" without explanation, with the gap closing when explanation is added — but H2.2 is pre-registered on M2, not Q-AC; this framing supports the schema-import / framing-override model proposed in §6.1-6.2. If Study 1's H4 is supported (confirmation code overconfidence), the I-factor calibration analysis becomes a co-primary: does accuracy feedback reduce the confidence-accuracy residual in L2 cells without reducing save rate?
+The primary analysis axis is contingent on Study 1 outcomes (full decision table in `docs/piup-study2-design-note-2026-06-22.md`). The default primary endpoint is the E main effect on Q-AC accuracy: does explanation-present vs. absent produce different rates of correct absent-choice inference? The L × E interaction is the secondary endpoint (H2.2; pre-registered on M2 trust composite, §9.1 of the design note): the explanation effect on trust is predicted to be larger for the "confirmation code" label than for the "vote fingerprint" label, because the eCommerce schema that the code imports requires framing copy to do corrective work that the fingerprint metaphor partially handles by itself. A corresponding ordinal pattern is predicted on Q-AC — "confirmation code" without explanation is expected to underperform "vote fingerprint" without explanation, with the gap closing when explanation is added — but H2.2 is pre-registered on M2, not Q-AC; this framing supports the schema-import / framing-override model proposed in §6.1-6.2. If Study 1's H4 is supported (confirmation code overconfidence; §4.5), the I-factor calibration analysis becomes a co-primary: does accuracy feedback reduce the confidence-accuracy residual in L2 cells without reducing save rate?
 
 ### 5.6 Status
 
