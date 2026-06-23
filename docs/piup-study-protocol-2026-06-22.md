@@ -63,7 +63,7 @@ The mockup is self-contained JavaScript; no server required. A working prototype
 
 ### Participants
 
-Target: **n = 50 per condition** (N = 200 total), recruited via Prolific. Inclusion criteria: US-resident adults, age 18+, English-speaking, completed at least one online vote or poll in the past 12 months. Exclusion: self-reported software engineering professionals (to avoid domain-expert contamination).
+Target: **n = 70 per condition** (N = 280 total), recruited via Prolific. *(Corrected from n = 50 before OSF upload — see pre-registration §4.2 power analysis note.)* Inclusion criteria: US-resident adults, age 18+, English-speaking, completed at least one online vote or poll in the past 12 months. Exclusion: self-reported software engineering professionals (to avoid domain-expert contamination).
 
 **Power analysis:** For the primary RQ1 measure (comprehension accuracy, binary), assuming a 20-percentage-point difference between the best and worst conditions (70% vs. 50%), and using a chi-squared test of proportions, α = 0.05, power = 0.80: required n = 49 per cell (G*Power 3.1). n = 50 gives adequate power with a small margin.
 

@@ -451,9 +451,9 @@ In Prolific URL parameters section, add:
 
 > **Condition assignment via Prolific URL parameters:** Prolific does not natively support custom URL parameter variables per participant. Two options:
 >
-> **Option A (recommended):** Create **four separate Prolific studies** (one per condition). Each study has a different survey URL with `?condition=A`, `?condition=B`, etc. hard-coded. Run them simultaneously; set target n=50 per study.
+> **Option A (recommended):** Create **four separate Prolific studies** (one per condition). Each study has a different survey URL with `?condition=A`, `?condition=B`, etc. hard-coded. Run them simultaneously; set target n=70 per study.
 >
-> **Option B:** Use **Qualtrics Randomizer** instead of URL parameter assignment. In Survey Flow, replace the Branch logic above with a **Randomizer** element (Even Distribution across 4 branches, each setting `condition` and `condition_label` via Embedded Data). Use Qualtrics **Quotas** (see Step 13) to enforce n=50 per condition.
+> **Option B:** Use **Qualtrics Randomizer** instead of URL parameter assignment. In Survey Flow, replace the Branch logic above with a **Randomizer** element (Even Distribution across 4 branches, each setting `condition` and `condition_label` via Embedded Data). Use Qualtrics **Quotas** (see Step 13) to enforce n=70 per condition.
 >
 > Option A is simpler to audit. Use it unless your Prolific account type doesn't allow multiple simultaneous studies.
 
@@ -516,13 +516,13 @@ After the test export, update the `COL_*` constants at the top of `analysis/piup
 - [ ] Download one pilot preview export. Confirm all column names match the R script COL_* constants (or update the R script).
 - [ ] Confirm Prolific completion redirect URL works (check the `cc=` code matches your Prolific study).
 - [ ] Confirm study stimuli are publicly accessible (open `condition-A.html` on a mobile device).
-- [ ] If using four separate Prolific studies: confirm quota is set to n=50 per condition.
+- [ ] If using four separate Prolific studies: confirm quota is set to n=70 per condition.
 
 ---
 
 ## Step 16 — Pilot Run (N=40)
 
-Before full launch (N=200), run a pilot on N=40 (10 per condition). Use `PILOT=TRUE` in the R script:
+Before full launch (N=280), run a pilot on N=40 (10 per condition). Use `PILOT=TRUE` in the R script:
 
 ```r
 source("analysis/piup-study1-analysis.R")
