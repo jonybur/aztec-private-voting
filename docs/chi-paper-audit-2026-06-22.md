@@ -1019,3 +1019,79 @@ Vacuously satisfied — nothing to verify.
 | (b) 'produces' / 'results in' causal claims | ✅ Clean | "under Norman's own model, produces error-prone behavior" correctly hedged |
 | (c) Study 2 L×E interaction cross-refs | ✅ Clean | No cross-refs in §6.3 to verify |
 
+---
+
+## §2.2 Second-pass Audit (tick-3715)
+
+**Three pre-registered checks; check (a) CLEAN; checks (b)+(c) ONE INACCURACY + ONE OVERCLAIM — FIXED.**
+
+---
+
+### Check (a): Alternative 3 rejection rationale — properly hedged — ✅ CLEAN
+
+**Pre-registered check:** Confirm the coercible-vs.-absent comparison is marked as a design claim, not tested by the cited absent-content literature.
+
+**Paper §2.2 (Alt 3) text:**
+> "This comparison is a design inference not directly tested by the cited absent-content literature [...] the direct coercible-vs.-absent comparison remains a design claim."
+
+Both hedges are present and unambiguous. The hedge appears in the same sentence as the comparison claim and is not qualified away elsewhere in the paragraph. ✅
+
+---
+
+### Check (b): Study 1 Q1 cross-reference accuracy — ❌ TWO INACCURACIES FIXED
+
+**Paper claimed (§2.2, Alt 3):**
+> `Study 1's Q1 measure ("your vote was successfully cast") provides empirical evidence on one leg of it - whether the protective framing reduces failure inference`
+
+**Inaccuracy 1 — wrong Q1 description:**
+
+The paper uses `"your vote was successfully cast"` in quotes as if describing Q1's content.
+
+Actual Q1 (pre-registration §6.1, line 147): `"Does this value prove that your vote was **counted**?"`
+
+"Cast" (submitted) ≠ "counted" (included in the tally). The distinction is load-bearing in the PIUP framework: the receipt proves the vote was *counted* (via `verify_vote_counted`), not merely *cast*. Using "cast" misrepresents what Q1 measures.
+
+**Inaccuracy 2 — overstated framing-effect claim:**
+
+"provides empirical evidence... whether the protective framing **reduces** failure inference" states that Study 1 tests the framing effect. But Study 1 has **no without-framing condition** — all four conditions (A/B/C/D) include the same protective framing; only the label term varies. Q1 tests label-driven comprehension of "vote was counted," not the framing effect itself. A framing-effect test would require a framing-omitted baseline.
+
+Additionally, "provides" is present-tense, but Study 1 results are TBD (§4.6 flagged as TBD placeholder). Should be "is designed to test."
+
+**Fix applied:**
+
+Old:
+```
+Study 1's Q1 measure ("your vote was successfully cast") provides empirical evidence on one leg of it - whether the protective framing reduces failure inference - but the direct coercible-vs.-absent comparison remains a design claim.
+```
+
+New:
+```
+Study 1's Q1 measure ("vote was counted") is designed to test one leg of this — whether users with protective framing correctly identify that their vote was counted — but cannot isolate the framing contribution (Study 1 includes no without-framing baseline), and the direct coercible-vs.-absent comparison remains a design claim.
+```
+
+Changes:
+- `"your vote was successfully cast"` → `"vote was counted"` — matches actual Q1 question
+- `provides empirical evidence on one leg of it` → `is designed to test one leg of this` — correct tense + hedged claim
+- `whether the protective framing reduces failure inference` → `whether users with protective framing correctly identify that their vote was counted` — accurate description of what Q1 measures
+- Added: `but cannot isolate the framing contribution (Study 1 includes no without-framing baseline)` — makes the limitation explicit
+
+---
+
+### Check (c): No claims about protective framing effectiveness as established findings — ✅ CLEAN (after fix)
+
+After the fix in (b), no remaining claims in §2.2 treat the protective framing's effectiveness as an established empirical finding. The only empirical basis cited is Whitten/Tygar 1999 + Lee/See 2004 (for absent-content failure inference generally), which are correctly cited literature — not claims arising from Study 1.
+
+"The protective framing is a load-bearing component, not decorative copy" — design assertion, appropriate register. ✅
+
+---
+
+## §2.2 Second-pass Summary (tick-3715)
+
+| Check | Status | Action |
+|---|---|---|
+| (a) Alt 3 coercible-vs.-absent comparison — properly hedged | ✅ Clean | None — both hedges present and unambiguous |
+| (b) Q1 cross-reference — label accuracy | ❌ Inaccuracy | FIXED — "your vote was successfully cast" → "vote was counted" |
+| (b) Q1 cross-reference — framing-effect claim | ❌ Overclaim | FIXED — "provides empirical evidence...reduces failure inference" → "is designed to test...cannot isolate the framing contribution" |
+| (c) Protective framing effectiveness as established finding | ✅ Clean (after b fix) | None after fix |
+
+
