@@ -1260,3 +1260,66 @@ Pre-reg §6.7: "For each condition, compute Spearman rank correlation between pe
 | H4 calibration Spearman spec (per-participant, per condition) | ✅ Clean | None |
 | Q5 analysis — missing "if significant" qualifier | ❌ Inaccuracy | FIXED (tick-3726) — pre-reg §6.8 + R script both gate Dunn's on KW significance |
 
+
+---
+
+## §4.2 Third-pass Audit (tick-3727)
+
+**Checks performed:**
+1. n=70/cell corrected (N=280 total) — paper vs. pre-reg vs. remaining N=200 refs
+2. Pilot exclusion criteria — paper vs. pre-reg §4.3
+3. Between-subjects design spec — paper vs. pre-reg §1
+
+---
+
+### Check (1): n=70/cell corrected throughout — 2 STALE N=200 REFERENCES ❌ FIXED
+
+**§4.2 main text (line 242):** "Target sample: n = 70 per condition (N = 280 total), preceded by an instrument-validation pilot of n = 10 per condition (N = 40)." ✅ Correct.
+
+**Stale N=200 ref 1 (§1.3 Empirical validation line):** "Study 1 (N=200, pre-registered)" — predates the G*Power correction. Fixed to N=280.
+
+**Stale N=200 ref 2 (§8 required-before-submission list, item 1):** "Study 1 data (N=200; depends on OSF upload + Prolific launch)" — same stale value. Fixed to N=280.
+
+**Fix applied (tick-3727):** Both stale N=200 references corrected to N=280. §4.2 body was already correct.
+
+---
+
+### Check (2): Pilot exclusion criteria — ✅ CLEAN
+
+**Paper §4.2 exclusion criteria:**
+- Self-reported software engineers ✅ matches pre-reg §4.3
+- Participants failing *both* attention checks ✅ matches pre-reg §4.3 ("Failing both attention checks — not just one")
+- Response time < 90 seconds ✅ matches pre-reg §4.3
+
+All three exclusion criteria are verbatim-consistent with the pre-reg.
+
+---
+
+### Check (3): Between-subjects design spec — ✅ CLEAN
+
+Paper §4.2: "Between-subjects, 4 × 1 factorial experiment." Pre-reg §1: "between-subjects experiment". ✅ Consistent.
+
+No within-subjects language survives in §4.2 (the McNemar error was in the power note, already corrected in prior passes).
+
+---
+
+### Secondary note: Pre-reg amendment clause n=55 vs. n=75 inconsistency
+
+The pre-reg has two conflicting figures for post-pilot sample expansion:
+- **Pre-reg §4.2 main text:** "n will be expanded to n = 75/cell (N = 300) before full launch"
+- **Pre-reg §7.3 amendments clause:** "Adjusting n/cell to 55 based on pilot effect size estimates"
+
+The paper (§4.2 power note) follows the main text (n=75). The n=55 figure in the amendments clause was likely written before the G*Power correction (when target was n=49; 55 was a minor buffer above 49). It was not updated when the target was raised to n=70. **Jony-action (new, not in prior list):** Correct pre-reg §7.3 amendments clause to read "n=75" before OSF upload.
+
+---
+
+### §4.2 Third-pass Summary (tick-3727)
+
+| Check | Status | Action |
+|---|---|---|
+| n=70/cell in §4.2 body | ✅ Clean | None |
+| N=200 stale ref in §1.3 | ❌ Stale | FIXED (tick-3727) |
+| N=200 stale ref in §8 submission checklist | ❌ Stale | FIXED (tick-3727) |
+| Pilot exclusion criteria (both ACs, <90s, SE exclusion) | ✅ Clean | None |
+| Between-subjects design spec | ✅ Clean | None |
+| Pre-reg §7.3 amendment clause n=55 vs n=75 | ⚠️ Pre-reg internal inconsistency | New Jony-action: fix pre-reg §7.3 before OSF upload |

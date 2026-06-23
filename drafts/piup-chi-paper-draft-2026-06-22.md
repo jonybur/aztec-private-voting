@@ -85,7 +85,7 @@ This paper makes three contributions:
 
 **System instantiation.** Aztec Private Voting - a Noir ZK smart contract and React component library implementing PIUP on the Aztec v5 testnet. The system provides a working implementation of all three invariants and the receipt UI described in this paper. The `VoteReceipt` component is the canonical PIUP instantiation. Section 3.
 
-**Empirical validation.** Study 1 (N=200, pre-registered): a 4-condition between-subjects experiment establishing which identifier label produces the most accurate privacy mental model. Study 2 (N=240, planned): a 2×2 factorial testing explanation effects and calibration interventions for the label × mental model relationship. Section 4 (Study 1), Section 5 (Study 2 pre-analysis plan).
+**Empirical validation.** Study 1 (N=280, pre-registered): a 4-condition between-subjects experiment establishing which identifier label produces the most accurate privacy mental model. Study 2 (N=240, planned): a 2×2 factorial testing explanation effects and calibration interventions for the label × mental model relationship. Section 4 (Study 1), Section 5 (Study 2 pre-analysis plan).
 
 ### 1.4 Scope and relation to prior work
 
@@ -468,7 +468,7 @@ The practical prescription follows from the boundary conditions. When designing 
 **Alternatively:** USENIX SOUPS 2027 (security + usability, more directly on-topic for the empirical studies). CHI is higher prestige and better for HCI PhD applications.
 
 **Required before submission:**
-1. Study 1 data (N=200; depends on OSF upload + Prolific launch)
+1. Study 1 data (N=280; depends on OSF upload + Prolific launch)
 2. Sections 4.2-4.6 filled with actual results
 3. Section 5 updated with Study 2 pre-registration DOI (conditional on H4 in Study 1)
 4. Section 6 written from Study 1 data
