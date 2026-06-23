@@ -2030,3 +2030,64 @@ r||s concatenation. Length guard asserts exactly 64. ✅
 
 **0 fixes needed. No commit required.**
 
+---
+
+## §4.3 Fourth-pass Audit (tick-3752)
+
+**Checks performed:**
+1. Stimulus filenames in paper vs. actual study-stimuli/ directory
+2. Held-constant elements list (status line, protective framing, hex value, copy button, download prompt)
+3. Simplified-framing note — no "This is intentional" signal in any stimulus
+4. "committed at fb710f5" claim vs. git log
+
+### Check (1): Stimulus filenames — CLEAN ✅
+
+Actual files in `study-stimuli/`:
+- condition-a-fingerprint.html ✅
+- condition-b-confirmation-code.html ✅
+- condition-c-nullifier.html ✅
+- condition-d-receipt-id.html ✅
+
+All four names exactly match those listed in §4.3.
+
+### Check (2): Held-constant elements — CLEAN ✅
+
+All verified against the four HTML files:
+
+| Element | Paper claim | A | B | C | D |
+|---|---|---|---|---|---|
+| Status line | "Your vote was cast" | ✅ | ✅ | ✅ | ✅ |
+| Protective framing | "This receipt does not contain your vote choice. It proves your ballot was counted without revealing how you voted." | ✅ | ✅ | ✅ | ✅ |
+| Hex identifier value | Same hex-formatted value | ✅ (`0x3f7ac1d8e2…c9e2`) | ✅ (identical) | ✅ (identical) | ✅ (identical) |
+| Copy button | Present | ✅ | ✅ | ✅ | ✅ |
+| Download prompt | "Download receipt" | ✅ | ✅ | ✅ | ✅ |
+
+All held-constant elements confirmed identical across all four conditions.
+
+### Check (3): Simplified-framing note — CLEAN ✅
+
+"This is intentional" is absent from all four stimulus HTML files. Confirmed: stimuli use the simplified protective framing only. Paper's note that Study 2 isolates the explanation as an independent variable is accurate.
+
+### Check (4): "committed at fb710f5" claim — CLEAN ✅
+
+Git log confirms: `fb710f5 study: add PIUP Study 1 stimuli + VoteReceipt labelVariant prop`
+
+Commit `fb710f5` exists and contains the four stimulus files. Claim is accurate.
+
+---
+
+### §4.3 Fourth-pass Summary (tick-3752)
+
+| Check | Status | Action |
+|---|---|---|
+| 4 stimulus filenames | ✅ Clean | None |
+| Status line held-constant | ✅ Clean | None |
+| Protective framing verbatim | ✅ Clean | None |
+| Hex value held-constant | ✅ Clean | None |
+| Copy button held-constant | ✅ Clean | None |
+| Download prompt held-constant | ✅ Clean | None |
+| Simplified framing (no "This is intentional") | ✅ Clean | None |
+| fb710f5 commit claim | ✅ Clean | None |
+
+**0 fixes needed. No commit required.**
+
