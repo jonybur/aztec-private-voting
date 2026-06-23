@@ -49,7 +49,7 @@ PIUP's resolution is *protective absence*: the receipt omits the content but exp
 
 Three formal invariants characterize the pattern:
 
-**Invariant 1 (Surrogate independence).** The submission token (the identifier on the receipt) must be computable from the user's private inputs and a public commitment, without reference to the choice. It must be verifiable against a public ledger. It must not allow anyone with only the token to determine the submitted choice. Formally: `token = f(private_inputs, public_commitment)` where `f` is collision-resistant and `token` is computationally independent of `choice`.
+**Invariant 1 (Surrogate independence).** The submission token (the identifier on the receipt) must not be derivable from the submission content, the user's identity, or any publicly observable system state. It must be verifiable against a public ledger. It must not allow anyone with only the token to determine the submitted choice. Formally: `token = f(random_seed)` where `f` produces a value in a space large enough to make collision negligible and `token` is computationally independent of `choice` (§2.1).
 
 **Invariant 2 (Surrogate privacy in transit).** The receipt must not transmit the token through any channel that reveals its association with the choice. In practice: the token must not be accompanied by the choice in any network request, local storage write, or rendered HTML element that could be captured by a coercing party.
 
@@ -103,7 +103,9 @@ Prior work in security receipt design - Everett et al.'s [CITE] usability evalua
 
 The Proof-of-Inclusion UX Pattern applies to any system satisfying three conditions simultaneously: (1) the system can confirm that a submission was received and processed; (2) the system must *not* confirm the content of the submission; and (3) users approach the interaction with prior confirmation experiences that lead them to expect content in the confirmation.
 
-Under these conditions, the receipt is built from four components:
+Under these conditions, the receipt is built from four components, listed in the order they appear in the rendered receipt:
+
+**Status line.** A direct statement that the submission was received and processed: *"Your ballot has been counted"* or equivalent. The status line must appear before any other receipt content. Per Egelman and Schechter [CITE], users who encounter unexpected content sequences will pattern-match from prior experience; placing the status line first anchors the user's interpretation before the absent content becomes salient.
 
 **Submission token.** A surrogate identifier for the submission event, given to the user as the receipt's primary artifact. The token must satisfy three invariants:
 
@@ -113,9 +115,7 @@ Under these conditions, the receipt is built from four components:
 
 *Invariant 3 (Minimal receipt content).* The receipt artifact must contain only what is needed to enable future verification: the token and a verification endpoint. No additional field is added without a justification against the coercion-resistance requirement. Specifically, the receipt must not contain the submission content, the user's identity, or any derivative that allows an observer to infer either.
 
-**Status line.** A direct statement that the submission was received and processed: *"Your ballot has been counted"* or equivalent. The status line must appear before any other receipt content. Per Egelman and Schechter [CITE], users who encounter unexpected content sequences will pattern-match from prior experience; placing the status line first anchors the user's interpretation before the absent content becomes salient.
-
-**Protective framing.** An explicit signal that the absent content is a design guarantee, not a system failure. The framing must (a) name the absent content before the user notices it is missing and (b) attribute the absence to a property of the system, not to a limitation: *"Your vote choice is not shown here. This is intentional - the receipt is designed to prove you voted without revealing what you voted for."* Without this component, users apply the default interpretation for absent confirmation content: error, incomplete transaction, or untrustworthy system [Whitten and Tygar 1999; Egelman and Schechter 2013].
+**Protective framing.** An explicit signal that the absent content is a design guarantee, not a system failure. The framing must (a) name the absent content before the user notices it is missing — before the failure-inference can form — and (b) attribute the absence to a property of the system, not to a limitation: *"Your vote choice is not shown here. This is intentional - the receipt is designed to prove you voted without revealing what you voted for."* Without this component, users apply the default interpretation for absent confirmation content: error, incomplete transaction, or untrustworthy system [Whitten and Tygar 1999; Egelman and Schechter 2013].
 
 **Verification affordance.** A persistent but non-intrusive mechanism for the user to confirm inclusion at a later time: *"When the vote closes, you can paste your vote fingerprint at [verification URL] to confirm it was counted."* The affordance is collapsed by default; user studies of comparable receipt UIs found that presenting it expanded created cognitive overload and caused users to disengage from the primary status line [internal review, N=12]. Collapsed by default, it functions as a second-pass tool without competing with the primary confirmation.
 
