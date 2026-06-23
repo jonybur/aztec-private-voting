@@ -447,3 +447,59 @@ The stimuli lack "This is intentional" — the signal §2.1 and §3.4 identify a
 | Protective framing quoted | ❌ Omission | FIXED — exact text added + note re simplified framing |
 | N=200 + Prolific screener | ✅ Clean | None |
 
+
+---
+
+## §6.3 Audit (tick-3692)
+
+### §6.3 "users routinely misread 'secure channel' as 'trustworthy site'" — MINOR CONCERN → FIXED
+
+**Citation:** Felt et al. 2016 "Rethinking Connection Security Indicators" USENIX SOUPS 2016 — CORRECT paper.
+
+**Issue:** "routinely" overstates the finding. Felt et al. 2016 found significant proportions of users misunderstood HTTPS indicators but did not characterise the error as "routine" (default/expected) behaviour. "Commonly" is more conservative and consistent with the paper's framing.
+
+**Fix applied:** "routinely" → "commonly" (line 389).
+
+---
+
+### §6.3 "DNT indicators achieved near-zero comprehension" — INACCURACY ❌ FIXED
+
+**Citation:** Leon et al. 2012 "Why Johnny Can't Opt Out: A Usability Evaluation of Tools to Limit Online Behavioral Advertising." CHI 2012.
+
+**Two issues:**
+
+1. **"DNT indicators"** — Leon et al. 2012 studied behavioural advertising opt-out tools (NAI opt-out, OPT-OUT Browser Button, Adblock Plus, Ghostery, etc.), NOT specifically the Do Not Track browser header indicator. Attributing a DNT-specific claim to this paper is a citation mismatch.
+
+2. **"near-zero comprehension"** — The paper found widespread misunderstanding (participants confused "opt out of behavioural targeting" with "block ads entirely"), but "near-zero comprehension" overstates the finding. The causal explanation ("not because the concept is opaque, but because the concept requires users to form a mental model of a system refraining...") is the author's design inference, not a finding from the paper.
+
+**Fix applied:**
+- "Do-not-track indicators face the same inversion..." → "Behavioral advertising opt-out mechanisms face the same inversion..."
+- "DNT indicators achieved near-zero comprehension among users who activated them (Leon et al., 2012), not because the concept is opaque, but because the concept requires..." → "opt-out tools showed widespread misunderstanding among users who activated them (Leon et al., 2012): participants consistently confused opting out of behavioral targeting with blocking ads entirely. The pattern matches the structural inversion: the concept requires..."
+- Author's causal interpretation moved out of the citation clause and into a separate sentence.
+
+---
+
+### §6.3 Causal language (PIUP vs. predecessors comparison) — CLEAN ✅
+
+The comparative claims ("What distinguishes PIUP from both predecessors is the severity of the counterintuitive demand") are design arguments, not empirical causal claims. No citations are made for these comparisons. No overreach identified.
+
+---
+
+### §7 Conclusion "patent risk" → "latent risk" — TYPO ❌ FIXED
+
+**Text:** "The patent risk is not the user who understands that privacy requires absence..."
+
+"patent" should be "latent" — the sentence identifies the hidden underlying design hazard (the user who has only seen confirming receipts). "Patent" as adjective (obvious/evident) does not fit the context; "patent" as noun (intellectual property) is completely out of place in an HCI design paper. "Latent risk" = the underlying/hidden design hazard.
+
+**Fix applied:** "patent risk" → "latent risk" (§7 Conclusion).
+
+---
+
+## §6.3 Audit Summary
+
+| Check | Status | Action |
+|---|---|---|
+| Felt et al. 2016 citation (HTTPS lock) | ⚠️ Minor | FIXED — "routinely" → "commonly" |
+| Leon et al. 2012 citation (DNT) | ❌ Inaccuracy | FIXED — "DNT indicators" → "behavioral advertising opt-out mechanisms"; "near-zero comprehension" → "widespread misunderstanding"; causal explanation moved to author-voice sentence |
+| Causal language in PIUP vs. predecessors comparison | ✅ Clean | None |
+| §7 "patent risk" | ❌ Typo | FIXED — "patent risk" → "latent risk" |
