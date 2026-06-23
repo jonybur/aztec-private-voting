@@ -22,7 +22,7 @@ PIUP formalises three invariants - surrogate independence, surrogate privacy in 
 
 When KelpDAO put the loss-socialisation decision from a $71M protocol exploit to a governance vote in 2023, every voter's wallet address was public on-chain. This is not an edge case - it is the default condition for blockchain governance: all participation is pseudonymous at best, traceable by design, and indexable by anyone running a node. In high-stakes organisational votes, pseudonymity under observation is coercive. Voters who can be identified can be pressured.
 
-Zero-knowledge proof systems offer a technical resolution. Aztec's ZK rollup allows a voter to prove eligibility and submit a ballot without revealing the ballot's contents in public calldata. The cryptographic part - hiding the choice - is solved. The system publishes a nullifier (a unique commitment derived from the ballot) and the tally, but not the individual vote directions. From the protocol's perspective, the vote is private.
+Zero-knowledge proof systems offer a partial technical resolution. Aztec's ZK rollup makes it possible in principle for a voter to prove eligibility and submit a ballot without revealing the ballot's contents in public calldata. At the private state layer, the cryptographic part - hiding the choice - is solved: the system publishes a nullifier (a unique commitment derived from the ballot) and the tally, but not the individual vote directions. The current implementation retains a named limitation at the calldata layer (§1.1); from the state-layer perspective, the vote is private.
 
 From the user interface's perspective, a problem persists.
 
@@ -55,7 +55,7 @@ Three formal invariants characterize the pattern:
 
 **Invariant 3 (Minimal receipt content).** The receipt must show the minimum content required to enable future verification - the token and a verification endpoint - and no more. Any additional content must be justified against the coercion-resistance requirement.
 
-**Named limitation.** In the Aztec Private Voting instantiation, the vote choice appears in the public calldata of the `record_vote` function, which is called after the private `cast_vote`. This is an Aztec protocol constraint: public functions cannot receive private inputs. A sufficiently motivated attacker with access to the full transaction graph can, in principle, correlate a voter's nullifier with their choice by indexing `record_vote` calls. PIUP's receipt design does not resolve this; it narrows the coercion surface by making the receipt itself non-coercive. The protocol-layer limitation is documented in the receipt's verification explainer.
+**Named limitation.** In the Aztec Private Voting instantiation, the vote choice appears in the public calldata of the `record_vote` function, which is called after the private `cast_vote`. This is a constraint of the current Aztec v5 contract architecture: public functions cannot receive private inputs as calldata arguments. A sufficiently motivated attacker with access to the full transaction graph can, in principle, correlate a voter's nullifier with their choice by indexing `record_vote` calls. PIUP's receipt design does not resolve this; it narrows the coercion surface by making the receipt itself non-coercive. The protocol-layer limitation is documented in the receipt's verification explainer and discussed in §3.3 (L1 privacy gap) and §6.5.
 
 ### 1.2 Naming the absent thing
 
