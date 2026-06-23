@@ -190,6 +190,100 @@ Next: §4 Study 1 design audit (§4.1 hypotheses, §4.2–46 stimuli, §4.4 part
 
 ---
 
+## §5 Study 2 pre-analysis plan audit — THREE INACCURACIES FIXED (tick-3690)
+
+**Cross-check source:** `docs/piup-study2-design-note-2026-06-22.md`
+
+All four checks listed in `heartbeat-state.json` nextRotation:
+1. Factor names and levels ✅ CLEAN
+2. Primary endpoint definition ❌ Q-AC wording FIXED
+3. Calibration intervention (I-factor) description ✅ CLEAN
+4. Cross-refs to Study 1 outcomes ✅ CLEAN
+
+---
+
+### Check 1: Factor names and levels — CLEAN ✅
+
+| Factor | Paper §5.2 | Design note §5.1 | Match |
+|--------|-----------|-----------------|-------|
+| L (Label) | L1 = "vote fingerprint"; L2 = "confirmation code" | Same | ✅ |
+| E (Explanation) | E1 = present (full canonical text); E2 = absent | Same | ✅ |
+| I (Calibration) | I1 = no intervention; I2 = two-question pre-receipt prompt + feedback | Same | ✅ |
+| Cells × N | 8 cells × 30 = N 240 | 8 cells × 30 = N 240 | ✅ |
+
+E1 explanation copy quoted in paper matches design note §6.1 verbatim. ✅
+
+Note on "2×2" label: both the paper abstract and the design note §5.1 describe the design as "2×2" while listing three factors (L × E × I = 8 cells). This is a pre-existing convention in the source document; the paper faithfully follows it. A full 2×2×2 label would be technically more accurate but fixing it requires changing the design note first — outside scope for this audit.
+
+---
+
+### Check 2: Primary endpoint Q-AC wording — INACCURACY ❌ FIXED
+
+**Paper claimed:**
+> "absent-content interpretation (Q-AC): 'Is your vote choice visible anywhere on this screen?' (Correct: No; foils: Yes, I'm not sure.)"
+
+**Design note §7.1 (M1):**
+> "Q-AC: 'Looking at this receipt: does it show which candidate you voted for?'  
+> ○ Yes, my vote choice is shown  
+> ○ No, my vote choice is not shown  
+> ○ It's not clear from what I see"
+
+Two sub-discrepancies:
+- **Question stem:** Paper used a paraphrase ("visible anywhere on this screen") not matching the canonical wording ("does it show which candidate you voted for?").
+- **Option text:** Paper abbreviated to bare "No" / "I'm not sure" rather than the full option labels from the design note.
+
+**Fix applied (§5.4):** Updated Q-AC to exact design-note wording for both stem and options.
+
+---
+
+### Check 3: Calibration intervention (I-factor) — TWO ADDITIONAL INACCURACIES IN §5.4 ❌ FIXED
+
+While checking §5.4 secondary measures against the design note, two further discrepancies found:
+
+**3a — McKnight scale item count:**
+
+| Source | Item count |
+|--------|----------|
+| Paper §5.4 | "3-item adapted McKnight scale" |
+| Design note §7.1 M2 | 4 items: TI1, TI2 (integrity), TC1, TC2 (competence) |
+
+**Fix applied:** Changed "3-item" to "4-item" and expanded to name the four items (TI1, TI2, TC1, TC2) with required α ≥ 0.70.
+
+**3b — Save intention scale:**
+
+| Source | Scale |
+|--------|------|
+| Paper §5.4 | "5-point scale" |
+| Design note §7.1 M3 | "1 (Definitely not) to 7 (Definitely will)" = 7-point |
+
+**Fix applied:** Changed "5-point scale" to "7-point scale: 1 = Definitely not, 7 = Definitely will."
+
+---
+
+### Check 4: Cross-refs to Study 1 outcomes in §5 text — CLEAN ✅
+
+| Cross-reference | Paper | Design note | Match |
+|----------------|-------|------------|-------|
+| "Nullifier excluded — Study 1 addressed its failure mode; no production path" | ✅ | ✅ | ✅ |
+| "Receipt ID excluded — generic baseline characterized in Study 1" | ✅ | ✅ | ✅ |
+| H4 Study 1 outcome triggers I-factor calibration as co-primary | ✅ | §3 contingency table, §9.1 conditional test | ✅ |
+| Study 1 H2 null → Study 2 emphasis shifts to E main effect | ✅ (via §5.5 contingency reference) | ✅ | ✅ |
+
+---
+
+## §5 Summary (tick-3690)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| Factor names and levels | ✅ Clean | None |
+| Q-AC question wording | ❌ Inaccuracy | FIXED — exact design-note stem + options |
+| McKnight scale item count | ❌ Inaccuracy | FIXED — 3→4 items, named TI1/TI2/TC1/TC2 |
+| Save intention scale | ❌ Inaccuracy | FIXED — 5-point→7-point |
+| I-factor description | ✅ Clean | None |
+| Study 1 cross-refs | ✅ Clean | None |
+
+---
+
 ## §4.1–4.3 Audit (tick-3688)
 
 ### §4.1 Hypothesis family sizes — CLEAN ✅
