@@ -102,7 +102,7 @@ In all cases, Study 2 runs the same 2×2 design. The contingency affects which p
 The 4-condition label space from Study 1 is reduced to the theoretically central contrast (L1 vs. L2). "Nullifier" is excluded (Study 1 addressed its failure; no production path). "Receipt ID" is excluded (generic baseline; Study 1 will have characterized it).
 
 **Factor E (Explanation):** 2 levels
-- E1: Explanation present — "Your vote is not shown here. This is intentional — your privacy is protected by design. The [fingerprint/code] is all you need to verify your ballot was counted."
+- E1: Explanation present — "Your vote choice is not shown on this receipt. This is intentional. Keeping your vote private means your receipt can be shared, checked, or subpoenaed without revealing how you voted. Your [vote fingerprint / confirmation code] is the only thing you need — matching it later proves your ballot was counted, nothing more." (Full copy in §6.1; label token inserted dynamically per Factor L.)
 - E2: Explanation absent — receipt shows the identifier, download prompt, and verification instructions, but no explicit absent-choice explanation sentence
 
 **Factor I (Intervention):** 2 levels, crossed with L × E
