@@ -241,7 +241,7 @@ All other receipt elements - the status line, the protective framing copy, the d
 
 Target sample: n = 50 per condition (N = 200 total), preceded by an instrument-validation pilot of n = 10 per condition (N = 40).
 
-**Power.** For the primary composite-accuracy omnibus (chi-squared test of proportions, 4 conditions, largest expected pairwise difference 20 pp), α = 0.05, power = 0.80 requires n = 49 per cell (G\*Power 3.1.9.7). For the H2 primary endpoint (Q2 accuracy, A vs. B, one-tailed, expected difference 15 pp), n = 50 is marginally underpowered; if the pilot suggests the Q2 effect size is smaller than anticipated, n will be expanded to 55 per cell (N = 220) before full launch. No interim stopping rules for efficacy or futility are pre-registered; the pilot is for instrument validation only.
+**Power.** For the primary composite-accuracy omnibus (chi-squared test of proportions, 4 conditions, largest expected pairwise difference 20 pp), α = 0.05, power = 0.80 requires n = 49 per cell (G\*Power 3.1.9.7, test: "Proportion: Inequality of two dependent proportions"). For the H2 primary endpoint (Q2 accuracy, A vs. B, one-tailed, expected difference 15 pp), n = 50 is marginally underpowered; if the pilot suggests the Q2 effect size is smaller than anticipated, n will be expanded to 55 per cell (N = 220) before full launch. No interim stopping rules for efficacy or futility are pre-registered; the pilot is for instrument validation only.
 
 ### 4.3 Stimuli
 

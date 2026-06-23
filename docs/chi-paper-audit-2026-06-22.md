@@ -783,3 +783,49 @@ The protective framing text (`apv-receipt__explainer`) correctly uses `{identifi
 | sig_r/sig_s separate 32-byte components | ✅ Clean | None |
 | sig[64] r\|\|s combination in useVoteBabylonV2.ts | ✅ Clean | None |
 | VoteReceipt.tsx how-to panel hardcoded "fingerprint" | ❌ Component bug | FIXED — replaced with {identifierNoun} (tick-3698) |
+
+---
+
+## §4.2 Second-pass Audit (tick-3700)
+
+### Check (a): n=49/cell G*Power spec — OMISSION ❌ FIXED
+
+**Pre-reg §4.2:** "required n = 49 per cell (G*Power 3.1.9.7, test: 'Proportion: Inequality of two dependent proportions')"
+
+**Paper before fix:** "required n = 49 per cell (G\*Power 3.1.9.7)" — test name absent.
+
+**Fix applied:** Added G*Power test name to paper §4.2: "G\*Power 3.1.9.7, test: 'Proportion: Inequality of two dependent proportions'".
+
+**Reviewer note (no fix required — pre-reg locked):** The pre-reg specifies "Inequality of two *dependent* proportions" (McNemar-type test, for paired/within-subjects data). Study 1 is between-subjects. The correct G*Power test for independent proportions would be "Proportion: Inequality of two independent proportions", which yields a larger required n (≈72/cell two-tailed for 20 pp difference, vs. 49 from dependent test). This is a methodological note about the pre-reg's test selection — the pre-reg is locked so the paper cannot change the n; the note is for Jony's awareness before CHI submission. A reviewer may question why n=49 is lower than expected for a between-subjects design.
+
+---
+
+### Check (b): H2 primary endpoint 'marginally underpowered' — CLEAN ✅
+
+| Item | Paper | Pre-reg | Match |
+|---|---|---|---|
+| H2 test: Q2 accuracy A vs. B, one-tailed | ✅ | ✅ | ✅ |
+| Expected difference 15 pp | ✅ | ✅ | ✅ |
+| n = 50 marginally underpowered | ✅ | ✅ | ✅ |
+| Expand to n = 55/cell (N = 220) if pilot suggests smaller effect | ✅ | ✅ | ✅ |
+
+---
+
+### Check (c): Exclusion criteria — CLEAN ✅
+
+| Criterion | Paper | Pre-reg | Match |
+|---|---|---|---|
+| Self-reported software engineers | ✅ | ✅ | ✅ |
+| Fail both attention checks | ✅ | ✅ | ✅ |
+| Completion time < 90 seconds | ✅ | ✅ | ✅ |
+
+---
+
+## §4.2 Second-pass Summary (tick-3700)
+
+| Check | Status | Action |
+|---|---|---|
+| n=49/cell power calc G*Power test name | ❌ Omission | FIXED — test name added to paper |
+| G*Power "dependent" vs between-subjects design | ⚠️ Pre-reg note | No fix — pre-reg locked; flag for Jony before CHI submission |
+| H2 'marginally underpowered' language | ✅ Clean | None |
+| Exclusion criteria (SW eng / both ACs / <90s) | ✅ Clean | None |
