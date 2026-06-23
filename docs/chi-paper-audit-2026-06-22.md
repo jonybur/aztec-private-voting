@@ -714,3 +714,72 @@ VoteReceipt.tsx renders in order: `apv-receipt__header` (status: "Your vote was 
 | §2.1 Component list rendering order | ❌ Ordering conflict | FIXED — reordered to Status line → Token → Framing → Verification; added "listed in the order they appear in the rendered receipt" |
 
 Next: §2.2 design alternatives audit — check (a) Alt 2 rejection reasoning conflict ("would satisfy Invariant 1 by construction" vs. "rejected on Invariant 1 grounds"); (b) Alt 1 coercion-surface shift claim accuracy; (c) Alt 3 "worse outcome than a coercible receipt" — design inference vs. cited evidence.
+
+---
+
+## §3.5 M2 Ownership Proof — Second-pass Audit (tick-3698)
+
+**Three pre-registered checks; all CLEAN. One component bug found and fixed.**
+
+---
+
+### Check 1: 'EIP-191-compatible message encoding' claim vs `useM2Signing.ts` — ✅ CLEAN
+
+**Paper claims:** "The M2 path uses EIP-191-compatible message encoding (implemented in `useM2Signing.ts`)"
+
+**Reality:**
+`useM2Signing.ts` `eip191Sign()` function: calls `personal_sign` via MetaMask, constructs the EIP-191 prefix (`"\x19Ethereum Signed Message:\n32"`), hashes the wrapped message with keccak256, and recovers the public key. Fully EIP-191 compatible. Production default (`mode='eip191'`). ✅
+
+---
+
+### Check 2: 'sig_r and sig_s as separate 32-byte components' vs `M2SigningOutput` return type — ✅ CLEAN
+
+**Paper claims:** "which produces `sig_r` and `sig_s` as separate 32-byte components"
+
+**Reality:**
+`M2SigningOutput` interface in `useM2Signing.ts`:
+```ts
+sig_r: number[];  // ECDSA signature R, 32 bytes big-endian (low-S normalised)
+sig_s: number[];  // ECDSA signature S, 32 bytes big-endian (low-S normalised)
+```
+Both fields are separate `number[]` arrays (32 bytes each), not combined. ✅
+
+---
+
+### Check 3: 'combines into sig[64] format (r||s, 64 bytes)' vs `useVoteBabylonV2.ts` — ✅ CLEAN
+
+**Paper claims:** "The caller hook (`useVoteBabylonV2.ts`) combines these into the `sig[64]` format (`r||s`, 64 bytes) expected by the in-circuit secp256k1 verifier."
+
+**Reality:**
+`useVoteBabylonV2.ts` line 91:
+```ts
+const sig: number[] = [...input.m2Signing.sig_r, ...input.m2Signing.sig_s];
+if (sig.length !== 64) { throw new Error(`sig must be 64 bytes (r||s)...`); }
+```
+Combination is in `useVoteBabylonV2.ts`, not in `useM2Signing.ts`. Attribution correct after tick-3689 fix. ✅
+
+---
+
+### Component bug found and fixed — `VoteReceipt.tsx` how-to panel hardcoded "fingerprint"
+
+**Issue:**
+The collapsed "How to verify" panel in `VoteReceipt.tsx` had two hardcoded references to "fingerprint" that did not use `{identifierNoun}`:
+- "you can check that your fingerprint appears in the set of counted votes"
+- "Paste your fingerprint."
+
+This means when `labelVariant='confirmation-code'` (or 'nullifier', 'receipt-id'), the main heading says "Your confirmation code" but the expanded panel says "your fingerprint appears" — internal inconsistency.
+
+The protective framing text (`apv-receipt__explainer`) correctly uses `{identifierNoun}`. Only the how-to panel was affected.
+
+**Fix (tick-3698):** Both occurrences replaced with `{identifierNoun}`. No paper change needed — §3.4 describes the how-to panel as "a three-step explainer" without quoting label-dependent text, so no paper inaccuracy. The production component is now internally consistent for all labelVariant values.
+
+---
+
+## §3.5 Second-pass Summary (tick-3698)
+
+| Check | Status | Action |
+|---|---|---|
+| EIP-191 message encoding claim | ✅ Clean | None |
+| sig_r/sig_s separate 32-byte components | ✅ Clean | None |
+| sig[64] r\|\|s combination in useVoteBabylonV2.ts | ✅ Clean | None |
+| VoteReceipt.tsx how-to panel hardcoded "fingerprint" | ❌ Component bug | FIXED — replaced with {identifierNoun} (tick-3698) |

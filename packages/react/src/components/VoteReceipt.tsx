@@ -132,14 +132,14 @@ export function VoteReceipt({
       {showHowToVerify ? (
         <div className="apv-receipt__how-to" role="note">
           <p>
-            After the vote closes, you can check that your fingerprint appears
+            After the vote closes, you can check that your {identifierNoun} appears
             in the set of counted votes. This proves your vote was included
             without revealing your choice.
           </p>
           <ol>
             <li>Save the receipt now (it&apos;s only stored on your device).</li>
             <li>When the vote closes, open the verifier.</li>
-            <li>Paste your fingerprint. The verifier will tell you whether it was counted.</li>
+            <li>Paste your {identifierNoun}. The verifier will tell you whether it was counted.</li>
           </ol>
           {verifierUrl ? (
             <button type="button" className="apv-receipt__link" onClick={handleVerify}>
