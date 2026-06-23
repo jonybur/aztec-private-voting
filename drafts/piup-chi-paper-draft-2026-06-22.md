@@ -232,7 +232,7 @@ Between-subjects, 4 × 1 factorial experiment. The single manipulated factor was
 |-----------|-------|----------|
 | A | vote fingerprint | Metaphor-activating (current production) |
 | B | confirmation code | eCommerce convention |
-| C | nullifier | Cryptographically precise |
+| C | nullifier | Cryptographically correct |
 | D | receipt ID | Generic / neutral |
 
 All other receipt elements - the status line, the protective framing copy, the hex-formatted identifier value, the copy button, and the download prompt - were held constant across conditions. The verification panel structure (toggle button and instructions framework) was also held constant; the panel text references the label name in two instructions, as detailed in §4.3.
