@@ -164,7 +164,7 @@ Four HTML mockups (condition-a.html through condition-d.html), identical except 
 
 ### 5.3 Secondary measures
 
-**Confidence:** After each comprehension question (Q1–Q5), participants rate their confidence on a 7-point Likert scale (1 = not at all confident, 7 = completely confident). Mean across Q1–Q4 = confidence composite.
+**Confidence:** After each comprehension question (Q1–Q4), participants rate their confidence on a 7-point Likert scale (1 = not at all confident, 7 = completely confident). Mean across Q1–Q4 = confidence composite. Q5 is open-ended and receives no confidence rating.
 
 **Mental model quality (RQ3, open text):** After Q1–Q4, participants answer: "In your own words, what does this value prove about your vote?" Free text, scored 0–2 (0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states choice is hidden from system). Two raters; κ ≥ 0.70 required.
 
