@@ -2091,3 +2091,74 @@ Commit `fb710f5` exists and contains the four stimulus files. Claim is accurate.
 
 **0 fixes needed. No commit required.**
 
+
+---
+
+## §4.2 Fourth-pass Audit (tick-3755)
+
+**Checklist:** G*Power test name, n=67→70 rounding, N=280, omnibus df=3 power (~0.67), pilot N=40 (n=10/cell), n=75/cell expansion trigger.
+
+### Check (1): G*Power test name — CLEAN ✅
+
+**Paper §4.2:** "G\*Power 3.1.9.7, test: 'Proportion: Inequality of two independent proportions', Cohen's h = 0.30"
+
+**Pre-reg §4.2:** "G\*Power 3.1.9.7, test: 'Proportion: Inequality of two independent proportions', Cohen's h = 0.30, one-tailed, α = 0.05, power = 0.80"
+
+Exact match. Test name corrected in tick-3719 (from 'dependent proportions' McNemar) holds through fourth-pass.
+
+### Check (2): n=67→70 per cell rounding — CLEAN ✅
+
+**Paper §4.2:** "power = 0.80 requires n = 67 per cell... The target sample is n = 70 per cell (N = 280), providing approximately 82% power"
+
+**Pre-reg §4.2:** "required n = 67 per cell. Target n = 70 per cell (N = 280) provides approximately 82% power."
+
+Consistent: n=67 minimum → n=70 target for margin. 82% power note consistent.
+
+### Check (3): N=280 total — CLEAN ✅
+
+**Paper §4.2 line 242:** "n = 70 per condition (N = 280 total)" — 4 × 70 = 280 ✅
+
+**Pre-reg line 111:** "n = 70 per condition (N = 280 total)" ✅
+
+### Check (4): Omnibus 4-condition df=3 power note (~0.67) — CLEAN ✅
+
+**Paper §4.2:** "For the omnibus 4-condition chi-squared test (df = 3, effect size w ≈ 0.18 based on expected condition proportions), 80% power requires approximately n = 82 per cell; at n = 70 the omnibus power is approximately 0.67."
+
+**Pre-reg §4.2:** "Chi-squared test of proportions, 4 conditions (df = 3, effect size w ≈ 0.18). At n = 70 per cell the omnibus power is approximately 0.67"
+
+Exact match on df=3, w≈0.18, power≈0.67. n=82 for 80% omnibus power stated in paper only (omitted from pre-reg), internally consistent.
+
+### Check (5): Pilot N=40 (n=10/cell) — CLEAN ✅
+
+**Paper §4.2 line 242:** "preceded by an instrument-validation pilot of n = 10 per condition (N = 40)"
+
+**Paper §4.2 power note:** "the pilot (N = 40) is for instrument validation only"
+
+**Pre-reg §4.2 line 112:** "Pilot: n = 10 per condition (N = 40 total)"
+
+**Pre-reg §7.1:** "The pilot (n = 10/cell, N = 40) is for instrument validation only."
+
+All consistent. Pilot is instrument-only, not hypothesis-testing.
+
+### Check (6): n=75/cell expansion trigger — CLEAN ✅
+
+**Paper §4.2:** "If pilot results suggest the Q2 effect is substantially smaller than 15 pp, n will be expanded to n = 75/cell (N = 300) before full launch."
+
+**Pre-reg §4.2:** "If pilot data suggests the Q2 effect is substantially smaller than 15 pp, n will be expanded to n = 75/cell (N = 300) before full launch."
+
+Exact match on trigger condition (Q2 effect < 15 pp) and expansion target (n=75/cell, N=300).
+
+---
+
+### §4.2 Fourth-pass Summary (tick-3755)
+
+| Check | Status | Action |
+|---|---|---|
+| G*Power test name 'two independent proportions' | ✅ Clean | None |
+| n=67→70 rounding, ~82% power | ✅ Clean | None |
+| N=280 total (4 × 70) | ✅ Clean | None |
+| Omnibus df=3 power ≈ 0.67 at n=70 | ✅ Clean | None |
+| Pilot N=40 (n=10/cell, instrument validation) | ✅ Clean | None |
+| n=75/cell expansion trigger (Q2 effect < 15pp) | ✅ Clean | None |
+
+**0 fixes needed. Paper §4.2 matches pre-reg §4.2 on all 6 checklist items.**
