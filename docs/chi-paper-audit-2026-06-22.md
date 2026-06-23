@@ -63,4 +63,70 @@ Paper §3.5 says:
 | §6.5 Limitations (calldata vs state layer) | ✅ Accurate | None |
 | §3.5 M2 ownership proof | ⚠️ sig[64] attribution wrong | Jony to fix — 1 sentence |
 
-Next paper section to audit: §3.1–3.3 (contract structure, eligibility modes, security properties) — these are on the generic Aztec/Noir path and safe to audit/edit.
+Next paper section to audit: §3.4–3.5 (React component library, M2 ownership proof) — §3.4 is generic path and safe; §3.5 is Babylon path, audit only (no edits per standing direction).
+
+---
+
+## §3.1 Contract structure — THREE INACCURACIES FIXED (tick-3686)
+
+### Inaccuracy 1: `record_vote` callable only by `cast_vote` ❌ FIXED
+
+**Paper claimed:** `record_vote` is "callable only by `cast_vote` (enforced by the `#[only_self]` decorator)"
+
+**Reality:** `#[only_self]` means the contract's own private entrypoints can enqueue it. All `cast_vote*` functions (`cast_vote`, `cast_vote_token`, `cast_vote_allowlist`, `cast_vote_babylon`, `cast_vote_babylon_v2`) call `self.enqueue_self.record_vote(...)`. Not just `cast_vote`.
+
+**Fix applied:** Changed to "callable only by the contract's own private entrypoints (enforced by the `#[only_self]` decorator; all `cast_vote*` functions enqueue it via `self.enqueue_self`)".
+
+### Inaccuracy 2: `finalize_vote` "writes the final tally to a public immutable" ❌ FIXED
+
+**Paper claimed:** `finalize_vote` "Writes the final tally to a public immutable, sets `is_finalized = true`, and emits a `VoteFinalized` event."
+
+**Reality:** `finalize_vote` ONLY sets `is_finalized = true`. The tally is written incrementally in `record_vote` (via `self.storage.tally.at(vote_choice).write(prev + 1)`) and stored in `PublicMutable`, not `PublicImmutable`. No event is emitted anywhere in the contract.
+
+**Fix applied:** Corrected `finalize_vote` description to reflect that it only gates tally visibility (via `get_final_tally`'s `assert(is_finalized)`), and noted no event emission.
+
+### Inaccuracy 3: `finalize_vote` emits a `VoteFinalized` event ❌ FIXED
+
+Covered by fix above. No `emit` call exists anywhere in the contract.
+
+---
+
+## §3.2 Eligibility modes — CLEAN (minor framing note)
+
+**Claim: "deployed as separate contract instances rather than runtime-selected modes"**
+
+**Reality:** The contract binary contains all three eligibility entrypoints. The eligibility mode is fixed at deploy time via `PublicImmutable<VoteConfig>` and runtime-checked via mode assertions in each entrypoint. The paper's framing ("separate contract instances") is defensible — each vote is a separate deployed contract, and within that deployment the mode is immutable. The point about cross-mode bypass avoidance is architecturally accurate. No change needed.
+
+---
+
+## §3.3 Security properties table — ONE OMISSION FIXED (tick-3686)
+
+**Table rows:** All 8 verified ✅ against actual contract code.
+
+| Property | Code location | Status |
+|---|---|---|
+| Wallet-to-ballot unlinkability | `SingleUseClaim` in `cast_vote` | ✅ |
+| No vote after end_time | `assert(now < config.end_time)` in `record_vote` | ✅ |
+| No finalization before end_time | `assert(now >= config.end_time)` in `finalize_vote` | ✅ |
+| Tally only shown post-finalization | `assert(is_finalized)` in `get_final_tally` | ✅ |
+| `record_vote` not callable externally | `#[only_self]` | ✅ |
+| Options count bounds | `> 1` and `<= MAX_OPTIONS (8)` in constructor | ✅ |
+| No `is_finalized` bypass | separate check in `record_vote` | ✅ |
+| Timing boundary correctness | `< end_time` cast; `>= end_time` finalize | ✅ |
+
+**Omission fixed:** Paper only listed F2 and F3 as resolved findings. Added F1-RESIDUAL (HIGH — the gated vote bypass via generic `cast_vote`, resolved tick-3643) as the first resolved finding. Security-review §7 confirms this is the highest-severity finding resolved before the study.
+
+---
+
+## Summary (tick-3686)
+
+| Section | Status | Action taken |
+|---|---|---|
+| §3.1 `record_vote` callsite | ❌ Inaccurate | Fixed: "all cast_vote* entrypoints" |
+| §3.1 `finalize_vote` tally write | ❌ Inaccurate | Fixed: removed false "public immutable" claim |
+| §3.1 `finalize_vote` event | ❌ Inaccurate | Fixed: removed false "VoteFinalized event" claim |
+| §3.2 Eligibility mode framing | ⚠️ Minor | Noted; no change (defensible as-is) |
+| §3.3 Security table | ✅ Clean | No change |
+| §3.3 Resolved findings | ⚠️ Omission | Fixed: added F1-RESIDUAL (HIGH) |
+
+Next: §3.4 React component library audit (generic path, safe to edit).

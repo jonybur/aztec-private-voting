@@ -141,9 +141,9 @@ The contract is structured as a single `PrivateVoting` Noir program with four pr
 
 **`cast_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — the private entrypoint. Called client-side; generates a ZK proof. The proof enforces double-vote prevention via a `SingleUseClaim` nullifier derived from the voter's Aztec spending keys inside the private kernel. The nullifier is not the vote fingerprint; it is the mechanism that prevents reuse of the voter's claim. After the private proof is generated, `cast_vote` enqueues a call to `record_vote`.
 
-**`record_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — the public entrypoint, callable only by `cast_vote` (enforced by the `#[only_self]` decorator). Increments the tally counter for `vote_choice`, validates that `receipt_id` has not been previously used, and marks `receipts[receipt_id] = true`. The `receipt_id` is the user-visible vote fingerprint; it is random, protocol-bound, and content-independent.
+**`record_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — the public entrypoint, callable only by the contract's own private entrypoints (enforced by the `#[only_self]` decorator; all `cast_vote*` functions enqueue it via `self.enqueue_self`). Increments the tally counter for `vote_choice`, validates that `receipt_id` has not been previously used, and marks `receipts[receipt_id] = true`. The `receipt_id` is the user-visible vote fingerprint; it is random, protocol-bound, and content-independent.
 
-**`finalize_vote()`** — callable after `end_time` if `vote_count >= quorum`. Writes the final tally to a public immutable, sets `is_finalized = true`, and emits a `VoteFinalized` event. The tally is the aggregate count; individual choices are not recorded against individual identifiers.
+**`finalize_vote()`** — callable after `end_time` if `vote_count >= quorum`. Sets `is_finalized = true`. The tally is the aggregate count, already written incrementally by `record_vote` — `finalize_vote` does not write the tally, it only gates its public visibility via `get_final_tally`'s `assert(is_finalized)`. No event is emitted; callers poll `is_finalized()` or `verify_vote_counted()` to check vote state. Individual choices are not recorded against individual identifiers.
 
 **`verify_vote_counted(receipt_id: Field) → bool`** — public view function. Returns `receipts[receipt_id]`. This is the verification affordance: any holder of a receipt_id can confirm their submission was recorded without the contract revealing anything about the submission's content.
 
@@ -176,7 +176,9 @@ A static circuit analysis and trust-boundary audit was conducted across the gene
 | No `is_finalized` bypass | Separate check in `record_vote` prevents post-finalize votes |
 | Timing boundary correctness | At `t == end_time`: cast fails, finalize succeeds |
 
-Two low-severity findings were resolved before the study:
+Three findings were resolved before the study — one HIGH severity and two LOW:
+
+*F1-RESIDUAL (HIGH — gated vote bypass).* After `cast_vote_token` and `cast_vote_allowlist` were added as the F1-HIGH resolution, the generic `cast_vote` entrypoint remained callable on TOKEN and ALLOWLIST mode contracts. A voter who failed the token gate could still call `cast_vote(choice, 1, receipt_id)` — passing `eligibility_proof = 1` satisfies the `verify_eligibility` stub (`proof != 0`), bypassing the Merkle gate entirely. Resolved by adding a mode guard in `cast_vote`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_OPEN, ...)`. Token and allowlist votes must use their respective dedicated entrypoints, which perform the in-circuit Merkle proof before enqueuing `record_vote`.
 
 *F2 (Quorum bypass).* A `quorum = 0` deployment would allow `vote_count >= 0` to be vacuously true, permitting finalization with zero ballots. Resolved by adding `assert(config.quorum > 0)` in the constructor.
 
