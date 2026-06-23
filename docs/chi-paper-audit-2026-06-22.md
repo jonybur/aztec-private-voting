@@ -1863,3 +1863,170 @@ L1 privacy description: `record_vote` is `#[external("public")]` with `vote_choi
 | §3.3 F1-RESIDUAL 3-guard description | ✅ Clean | None |
 | §3.3 bypass path proof=1 description | ✅ Clean | None |
 | §3.3 L2/receipt-freeness no "coercion-resistant" | ✅ Clean | None |
+
+---
+
+## §3.4 + §3.5 Fourth-pass (tick-3750)
+
+**Scope:**
+- §3.4: receipt component description — status line, protective framing verbatim, three-step explainer, verify_vote_counted link, serializeReceipt spreads, txHash field.
+- §3.5: sig[64] = r||s in useVoteBabylonV2.ts.
+
+**Source files checked:** `packages/react/src/components/VoteReceipt.tsx`, `packages/react/src/receipt.ts`, `packages/react/src/types.ts`, `packages/react/src/hooks/useVoteBabylonV2.ts`
+
+---
+
+### §3.4 — Status line ✅ CLEAN
+
+Paper: `"Your vote was cast"`
+
+VoteReceipt.tsx: `<h2 className="apv-receipt__title">Your vote was cast</h2>`
+
+✅ Exact match.
+
+---
+
+### §3.4 — Vote fingerprint display ✅ CLEAN
+
+Paper: "The vote fingerprint (rendered as a formatted hex string with a copy button)"
+
+VoteReceipt.tsx:
+```tsx
+<code id="apv-fingerprint">{shortenHex(receipt.receiptId, 6, 4)}</code>
+<button type="button" className="apv-receipt__copy" onClick={handleCopy}>
+  {copied ? 'Copied' : 'Copy'}
+</button>
+```
+
+`shortenHex(receipt.receiptId, 6, 4)` formats the raw hex field as a shortened hex display. Copy button present. ✅
+
+---
+
+### §3.4 — Protective framing text verbatim ✅ CLEAN
+
+Paper: *"Your vote choice is not shown on this receipt. This is intentional — this fingerprint proves your ballot was counted without revealing what you voted for. Save it to verify after the vote closes, and keep it private until then."*
+
+VoteReceipt.tsx (actual JSX):
+```tsx
+<p className="apv-receipt__explainer">
+  Your vote choice is not shown on this receipt. This is intentional —
+  this {identifierNoun} proves your ballot was counted without revealing
+  what you voted for. Save it to verify after the vote closes, and keep
+  it private until then.
+</p>
+```
+
+`identifierNoun` defaults to `'fingerprint'` (production behaviour). Rendered text in production = paper text exactly. ✅
+
+---
+
+### §3.4 — Three-step explainer ✅ CLEAN
+
+Paper: "a collapsed *'How to verify'* section with a three-step explainer"
+
+VoteReceipt.tsx:
+- Toggle button labelled `'How to verify'` (collapsed by default via `useState(false)`)
+- When expanded, renders `<ol>` with exactly 3 `<li>` items:
+  1. "Save the receipt now (it's only stored on your device)."
+  2. "When the vote closes, open the verifier."
+  3. "Paste your {identifierNoun}. The verifier will tell you whether it was counted."
+
+Three steps. Collapsed by default. ✅
+
+---
+
+### §3.4 — verify_vote_counted link ✅ CLEAN
+
+Paper: "a link to the `verify_vote_counted` endpoint"
+
+VoteReceipt.tsx:
+```tsx
+{verifierUrl ? (
+  <button type="button" className="apv-receipt__link" onClick={handleVerify}>
+    Open verifier
+  </button>
+) : null}
+```
+`handleVerify` → `window.open(verifierUrl, '_blank', 'noopener,noreferrer')` when `verifierUrl` is set; falls back to `onVerify(receipt)` callback when provided. The "Open verifier" button navigates to the `verify_vote_counted` web endpoint. ✅
+
+Note: the button is conditional on `verifierUrl` being provided. The paper describes the design intent (a link to the endpoint), which is accurately instantiated when the prop is present. No inaccuracy.
+
+---
+
+### §3.4 — serializeReceipt spreads VoteReceipt after envelope fields ✅ CLEAN
+
+Paper: "The file is produced by `serializeReceipt()` in `receipt.ts`, which spreads the `VoteReceipt` object — containing the fingerprint (`receiptId`), vote ID, vote title, transaction hash (`txHash`), timestamp, and contract address — after two format envelope fields (`version: 1`, `kind: "aztec-private-voting-receipt"`)."
+
+receipt.ts:
+```ts
+export function serializeReceipt(receipt: VoteReceipt): string {
+  return JSON.stringify(
+    {
+      version: 1,
+      kind: 'aztec-private-voting-receipt',
+      ...receipt,
+    },
+    null,
+    2,
+  );
+}
+```
+
+Two envelope fields (`version: 1`, `kind: 'aztec-private-voting-receipt'`) come first; VoteReceipt is spread after. ✅
+
+---
+
+### §3.4 — VoteReceipt type fields (txHash present) ✅ CLEAN
+
+Paper: "containing the fingerprint (`receiptId`), vote ID, vote title, transaction hash (`txHash`), timestamp, and contract address"
+
+types.ts `VoteReceipt` interface:
+```ts
+export interface VoteReceipt {
+  voteId: string;       // ✅ vote ID
+  voteTitle: string;    // ✅ vote title
+  receiptId: string;    // ✅ fingerprint
+  txHash: string;       // ✅ transaction hash
+  timestamp: number;    // ✅ timestamp
+  contractAddress: string; // ✅ contract address
+}
+```
+
+All 6 fields verified. No vote choice field. ✅
+
+---
+
+### §3.5 — sig[64] = r||s in useVoteBabylonV2.ts ✅ CLEAN
+
+Paper: "The caller hook (`useVoteBabylonV2.ts`) combines these into the `sig[64]` format (`r||s`, 64 bytes) expected by the in-circuit secp256k1 verifier."
+
+useVoteBabylonV2.ts:
+```ts
+// Combine sig_r (32 bytes) + sig_s (32 bytes) → sig[64] as the circuit expects.
+const sig: number[] = [...input.m2Signing.sig_r, ...input.m2Signing.sig_s];
+if (sig.length !== 64) {
+  throw new Error(
+    `sig must be 64 bytes (r||s); got ${sig.length}. Check M2SigningOutput.`,
+  );
+}
+```
+
+r||s concatenation. Length guard asserts exactly 64. ✅
+
+---
+
+### §3.4 + §3.5 Summary (tick-3750)
+
+| Check | Status | Action |
+|---|---|---|
+| §3.4 status line "Your vote was cast" | ✅ Clean | None |
+| §3.4 fingerprint: formatted hex + copy button | ✅ Clean | None |
+| §3.4 protective framing text verbatim | ✅ Clean | None |
+| §3.4 three-step explainer in collapsed "How to verify" | ✅ Clean | None |
+| §3.4 verify_vote_counted link (conditional verifierUrl) | ✅ Clean | None |
+| §3.4 serializeReceipt spreads VoteReceipt after 2 envelope fields | ✅ Clean | None |
+| §3.4 VoteReceipt has txHash + all 6 fields, no vote choice | ✅ Clean | None |
+| §3.5 sig[64] = r||s (32+32 concat) in useVoteBabylonV2.ts | ✅ Clean | None |
+
+**0 fixes needed. No commit required.**
+
