@@ -259,13 +259,13 @@ Stimuli were committed to the repository at commit `fb710f5` before any particip
 
 *Q3 (Coercion-scenario privacy model):* "If a coercive employer asked you to send them a screenshot of this screen as proof of your vote, could they learn how you voted?" Correct answer: No; foils: Yes, Unsure. A clarification is displayed: "Assume they can only see what is on this screen." Tests application of the privacy model to a concrete coercion scenario; this wording is fixed by the pre-registration and cannot be changed without amendment.
 
-*Q4 (Behavioral consequence of receipt loss):* "What would happen if you lost this value?" Correct answer: You could still verify your vote was counted, but you would not have proof the receipt is yours; foils: you would lose your vote; the system keeps a backup; your vote would be reversed. Tests understanding that the vote is durable and not rescindable via the receipt.
+*Q4 (Behavioral consequence of receipt loss):* "What would happen if you lost this value?" Correct answer: You could still verify that your vote was counted, but you would not have proof that the receipt is yours; foils: you would lose your vote; the system keeps a backup; your vote would be reversed. Tests understanding that the vote is durable and not rescindable via the receipt.
 
 *Composite accuracy:* Proportion correct on Q1-Q4 (range 0-1.0). This is the primary RQ1 measure.
 
 *Q5 (open-ended, scored separately):* "Why might the system choose not to show you your vote choice on this screen?" Scored 0-2: 0 = no mention of privacy or coercion protection; 1 = mentions privacy but not coercion; 2 = correctly identifies both privacy and coercion protection as motivations. Scored by two independent raters; inter-rater reliability threshold: Cohen's κ ≥ 0.70. Q5 is excluded from composite accuracy and analysed separately (§4.5).
 
-**Confidence (secondary; 7-point Likert).** After each comprehension item Q1-Q5, participants rated their confidence (1 = not at all confident, 7 = completely confident). Confidence composite = mean across Q1-Q4.
+**Confidence (secondary; 7-point Likert).** After each comprehension item Q1-Q4, participants rated their confidence (1 = not at all confident, 7 = completely confident). Q5 is open-ended and receives no confidence rating. Confidence composite = mean across Q1-Q4.
 
 **Mental model quality (exploratory; free text).** After Q1-Q4, participants answered: "In your own words, what does this value prove about your vote?" Scored 0-2: 0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states that vote choice is hidden from the system. Two raters; κ ≥ 0.70 required.
 
