@@ -187,3 +187,80 @@ The updated text meets both §2.1 criteria: (a) “Your vote choice is not shown
 | §6.5 Limitations calldata vs state | ✅ Accurate | — |
 
 Next: §4 Study 1 design audit (§4.1 hypotheses, §4.2–46 stimuli, §4.4 participants, §4.5 H2 outcome classification table).
+
+---
+
+## §4.1–4.3 Audit (tick-3688)
+
+### §4.1 Hypothesis family sizes — CLEAN ✅
+
+**Paper §4.5 table vs. pre-registration §6.3 table:**
+
+| Family | m (paper) | m (pre-reg) | Match |
+|---|---|---|---|
+| H1 | 2 | 2 | ✅ |
+| H2 | 3 | 3 | ✅ |
+| H3 | 6 | 6 | ✅ |
+| H4 | 3 | 3 | ✅ |
+
+Both documents list: H1 {Q2(A>D), Q3(A>D)}; H2 {Q2(A>B) one-tailed, Q3(A>B) one-tailed, TOST composite A≈B ±10pp}; H3 {Q1(C<A), Q1(C<B), Q1(C<D), composite(C<each)}; H4 {confidence(B>A), confidence(B>C), confidence(B>D)}.
+
+---
+
+### §4.3 "identical except for the receipt identifier label and its ARIA label" — INACCURACY ❌ FIXED
+
+**Paper claimed:** "The four stimuli (condition-a.html through condition-d.html) are identical in structure, layout, and copy except for the receipt identifier label and its ARIA label."
+
+**Reality (confirmed by diff of all 4 HTML files):**
+
+Beyond the label and ARIA label, the collapsed verification panel also varies — it uses the label name in 2 places:
+- "After the vote closes, you can check that your **[fingerprint/confirmation code/nullifier/receipt ID]** appears in the set of counted votes."
+- "Paste your **[fingerprint/confirmation code/nullifier/receipt ID]**. The verifier will tell you whether it was counted."
+
+The panel is collapsed/hidden by default (HTML `hidden` attribute), so this does not confound the primary measurements. But the paper's claim of exclusivity to "label and ARIA label" was factually wrong.
+
+**Fix applied:** Changed to "identical... except for the receipt identifier label, its ARIA label, and two label-name references within the collapsed verification panel." Confirmed via `diff condition-a-fingerprint.html condition-{b,c,d}.html`.
+
+---
+
+### §4.3 Protective framing sentence not quoted — OMISSION ❌ FIXED
+
+**Paper claimed:** "The held-constant elements include: the submission status line ("Your vote was cast"), the protective framing sentence, ..."
+
+**Reality:** The paper didn't quote the actual protective framing text. The stimuli use:
+> "This receipt does not contain your vote choice. It proves your ballot was counted without revealing how you voted."
+
+This differs materially from:
+- Production VoteReceipt.tsx (§3.4, after tick-3687 fix): "Your vote choice is not shown on this receipt. This is intentional — this fingerprint proves your ballot was counted without revealing what you voted for."
+- §2.1 canonical PIUP framing: "Your vote choice is not shown. This is intentional - it protects your privacy."
+
+The stimuli lack "This is intentional" — the signal §2.1 and §3.4 identify as load-bearing for preventing the failure-reading. The pre-registration §5.1 doesn't quote the framing either; the stimuli at commit `fb710f5` are the ground truth.
+
+**Fix applied:** Added exact quote of the stimuli's protective framing to §4.3. Added a note: "Study 1 tests the label effect under this constant simplified framing, while Study 2 isolates the explanation itself as an independent variable (§5)."
+
+---
+
+### §4.2 N=200, Prolific screener — CLEAN ✅
+
+| Item | Paper §4.2 | Pre-reg §4.1 | Match |
+|---|---|---|---|
+| N per cell | 50 | 50 | ✅ |
+| N total | 200 | 200 | ✅ |
+| US resident, age 18+ | ✅ | ✅ | ✅ |
+| English fluent | ✅ | ✅ | ✅ |
+| Online vote past 12 months | ✅ | ✅ | ✅ |
+| Exclude software engineers | ✅ | ✅ | ✅ |
+| Exclude fail both ACs | ✅ | ✅ | ✅ |
+| Exclude < 90s completion | ✅ | ✅ | ✅ |
+
+---
+
+## §4.3 Audit Summary
+
+| Check | Status | Action |
+|---|---|---|
+| H1–H4 family sizes | ✅ Clean | None |
+| Stimuli vary only in label + ARIA | ❌ Inaccuracy | FIXED — how-to panel also varies (2 references, hidden) |
+| Protective framing quoted | ❌ Omission | FIXED — exact text added + note re simplified framing |
+| N=200 + Prolific screener | ✅ Clean | None |
+
