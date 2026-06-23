@@ -91,7 +91,7 @@ This paper makes three contributions:
 
 PIUP is generalizable beyond voting. Any system where a submission receipt must be coercion-resistant - sealed-bid auctions, whistleblower submissions, secure drop systems, anonymous peer review - faces the same design constraint: confirmation must not confirm content. PIUP names the constraint and provides a tested design response.
 
-Prior work in e-voting usability has focused on voter *verification* - can voters correctly check that their ballot was included? - rather than on voter *comprehension* of what the inclusion proof proves. STAR-Vote (Bell et al. 2013) and Helios (Adida et al. 2009) provide cryptographically verifiable receipts; neither evaluates how users interpret what the receipt does not show. Kulyk et al. (2017) study comprehension in code voting (the voter comparison scheme), but focus on the verification ceremony rather than the receipt's representational semantics.
+Prior work in e-voting usability has focused on voter *verification* - can voters correctly check that their ballot was included? - rather than on voter *comprehension* of what the inclusion proof proves. STAR-Vote (Bell et al. 2013) and Helios (Adida et al. 2009) provide cryptographically verifiable receipts; neither evaluates how users interpret what the receipt does not show. Kulyk et al. (2015) extend Helios to provide private eligibility verifiability (hiding voter participation via dummy ballots); their work addresses cryptographic transparency, not receipt representational semantics. [JONY-ACTION F: The in-text claim about 'comprehension in code voting (the voter comparison scheme)' does not match this cryptographic paper — find a correct citation for voter comprehension in code-voting schemes, or revise to accurately describe Kulyk et al. 2015's actual contribution.]
 
 Prior work in security receipt design - Everett et al.'s (2008) usability evaluation of verification codes in real elections - evaluates whether voters *use* the verification affordance, not whether they correctly understand the privacy property that makes the receipt safe to use. This paper addresses the prior gap: does the receipt's label and copy cause users to correctly model the one thing the receipt is designed not to prove?
 
@@ -446,7 +446,7 @@ The practical prescription follows from the boundary conditions. When designing 
 - Felt, A.P., Ha, E., Egelman, S., Haney, A., Chin, E., and Wagner, D. (2012). "Android Permissions: User Attention, Comprehension, and Behavior." _SOUPS 2012._
 - Felt, A.P., Reeder, R.W., Ha, E., and Ainslie, A. (2016). "Rethinking Connection Security Indicators." _USENIX SOUPS 2016._
 - Leon, P., Ur, B., Shay, R., Wang, Y., Balebako, R., and Cranor, L. (2012). "Why Johnny Can't Opt Out: A Usability Evaluation of Tools to Limit Online Behavioral Advertising." _CHI 2012._
-- Kulyk, O., Teague, V., and Volkamer, M. (2017). "Extending Helios Towards Private Eligibility Verifiability." _USENIX VoteID 2017._
+- Kulyk, O., Teague, V., and Volkamer, M. (2015). "Extending Helios Towards Private Eligibility Verifiability." _VoteID 2015_, LNCS vol. 9269, pp. 57–73. Springer. [VERIFIED tick-3765: year corrected 2017→2015; venue corrected USENIX VoteID→VoteID 2015/LNCS Springer; see also JONY-ACTION F on in-text description mismatch]
 - Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses." _Social Psychological and Personality Science 8(4):355-362._
 - Lee, J.D., and See, K.A. (2004). "Trust in Automation: Designing for Appropriate Reliance." _Human Factors 46(1):50-80._
 - McKnight, D.H., Choudhury, V., and Kacmar, C. (2002). "Developing and Validating Trust Measures for E-Commerce: An Integrative Typology." _Information Systems Research 13(3):334-359._
@@ -472,7 +472,7 @@ The practical prescription follows from the boundary conditions. When designing 
 2. Sections 4.2-4.6 filled with actual results
 3. Section 5 updated with Study 2 pre-registration DOI (conditional on H4 in Study 1)
 4. Section 6 written from Study 1 data
-5. Verify all citations: check Kulyk et al. 2017 venue (may be IFIP VoteID, not USENIX)
+5. ✅ Kulyk et al. citation FIXED (tick-3765): year 2017→2015; venue USENIX VoteID→VoteID 2015 LNCS Springer. REMAINING: JONY-ACTION F — in-text description ('comprehension in code voting') does NOT match the paper's actual contribution (cryptographic private eligibility verifiability). Fix in-text claim or replace citation before submission.
 6. CHI 2027 call for papers - confirm word limit and formatting requirements
 
 **Submission-ready target date:** January 2027 (aligns with Study 1 full run completion; Study 2 data not required for initial submission - present as pre-analysis plan)
