@@ -901,3 +901,80 @@ The paper §5 uses the long version (line 149), which is the expanded, final sti
 | Protective framing exact quote | ✅ Clean | None |
 | 'This is intentional' absence + Study 2 IV cross-ref | ✅ Clean | None |
 | Design note E1 text inconsistency (line 105 vs 149) | ⚠️ Design note issue | Jony-action: fix before Study 2 OSF pre-reg |
+
+---
+
+## §4.6/§5.2 Second-pass Audit (tick-3704)
+
+CI: working-notes/main → success (Deploy to GitHub Pages 2026-06-23T04:17Z) ✅
+
+Three checks from nextRotation:
+(a) §4.6 [TBD] placeholder is clearly flagged and not claiming results
+(b) §5.1/§5.2 condition grid/factor-level table matches piup-study2-design-note-2026-06-22.md
+(c) §5 cross-reference to Study 1 H4/H2 outcome table is accurate
+
+---
+
+### Check (a): §4.6 Results placeholder — ✅ CLEAN
+
+**Paper §4.6:**
+> _[To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT]. Pilot target: 2026-Q3; full launch conditional on instrument validation. Reporting structure: omnibus results, then per-hypothesis family in H1-H4 order, then Q5 open-text analysis, then exploratory comparisons.]_
+
+Clearly flagged as TBD. No premature result claims anywhere in §4.1–4.5 (those sections describe design and analysis plan, not outcomes). ✅
+
+**Abstract note (pre-existing):** Abstract says "We report Study 1 results and the Study 2 pre-analysis plan" — written prospectively for a complete-paper draft. Acceptable for a pre-data draft; this line must be verified against actual content before submission.
+
+---
+
+### Check (b): §5.2 factor-level table vs. design note — ONE OMISSION ❌ FIXED
+
+| Factor | Paper §5.2 | Design note §5.1 | Design note §6.1 (stimulus) | Match |
+|--------|-----------|-----------------|----------------------------|-------|
+| L: L1 | "vote fingerprint" | Same | Same | ✅ |
+| L: L2 | "confirmation code" | Same | Same | ✅ |
+| E: E1 text | Long version (22 words + label token) | Short version (line 105) | Long version (matches paper) | Paper ✅ vs §6.1; design note §5.1 internal inconsistency is existing Jony-action |
+| E: E2 description | "receipt shows the identifier, download prompt, and verification instructions, but no explicit absent-choice explanation sentence" | Absent | "The privacy copy section is retained (to avoid a confound with privacy-awareness), but limited to: 'Your vote is private and verifiable'" | ❌ Omission |
+| I: I1/I2 | No intervention / calibration intervention (2 questions + feedback) | Same | Same | ✅ |
+| N | 8 cells × 30 = 240 | 8 cells × 30 = 240 | 8 cells × 30 = 240 | ✅ |
+
+**Inaccuracy (E2 missing retained privacy copy):**
+
+Paper §5.2 E2 said: "the receipt shows the identifier, download prompt, and verification instructions, but no explicit absent-choice explanation sentence."
+
+Design note §6.1 specifies that E2 retains a minimal privacy note ("Your vote is private and verifiable") to avoid a privacy-awareness confound — i.e., the E2 condition is not entirely privacy-copy-free, it simply lacks the absent-choice explanation. A CHI reviewer evaluating the experimental design would need to know that E2 still has some privacy framing to understand the confound-control strategy.
+
+**Fix applied:** Added to E2 description: "A minimal privacy note ('Your vote is private and verifiable') is retained in E2 to avoid a privacy-awareness confound; only the absent-choice explanation is omitted (design note §6.1)."
+
+RQ1–RQ4 (§5.1): all four research questions match design note §4 verbatim. ✅
+
+---
+
+### Check (c): §5.5 cross-reference to Study 1 H4/H2 contingency table — ✅ CLEAN
+
+**Paper §5.5:**
+> "The primary analysis axis is contingent on Study 1 outcomes (full decision table in `docs/piup-study2-design-note-2026-06-22.md`). The default primary endpoint is the E main effect on Q-AC accuracy... The L × E interaction is the secondary endpoint... If Study 1's H4 is supported (confirmation code overconfidence), the I-factor calibration analysis becomes a co-primary..."
+
+**Design note §3 contingency table:**
+| Study 1 outcome | Primary endpoint |
+|---|---|
+| H2 supported (A > B on Q2/Q3) | E factor × save rate |
+| H2 null | I factor × calibration (exploratory) |
+| H2 reversed (B > A) | L factor main effect on Q2 |
+| H4 supported | I factor × confidence−accuracy residual |
+| No significant differences | E factor main effect |
+
+Paper correctly captures: E main effect as default, L×E as secondary, H4→I as co-primary. ✅ The paper does not reproduce all 5 cases (appropriate for a paper; the design note has the full table). Cross-reference file path is accurate. ✅
+
+---
+
+## §4.6/§5.2 Second-pass Summary (tick-3704)
+
+| Check | Status | Action |
+|---|---|---|
+| §4.6 Results — clearly flagged TBD | ✅ Clean | None |
+| RQ1–RQ4 (§5.1) vs. design note | ✅ Clean | None |
+| E2 retained privacy copy omission | ❌ Omission | FIXED — added confound-control note (design note §6.1) |
+| E1 text (§5.2) vs. design note §6.1 | ✅ Clean | None (design note §5.1 vs §6.1 inconsistency is Jony-action, not a paper error) |
+| Factor L/I/N | ✅ Clean | None |
+| §5.5 H4/H2 contingency cross-ref | ✅ Clean | None |
+
