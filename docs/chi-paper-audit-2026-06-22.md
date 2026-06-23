@@ -1787,3 +1787,79 @@ Match: ✅
 | §2.1 invariant definitions vs §1.1 | ✅ Clean | None |
 | §2.2 Alternative 3 caveat (tick-3696 fix) | ✅ Clean | None |
 | §2.1–§2.2 unconditional claim scan | ✅ Clean | None |
+
+---
+
+## §3.2 + §3.3 Fourth-pass (tick-3748)
+
+**Scope:** (1) Open/token/allowlist eligibility mode descriptions vs `main.nr` + `eligibility.nr`; (2) Leaf-format descriptions for token and allowlist modes vs `merkle.nr`; (3) §3.3 F1-RESIDUAL resolution description accuracy; (4) §3.3 L2/receipt-freeness note.
+
+### §3.2 Open mode — ✅ CLEAN
+
+Paper: "Any Aztec wallet can vote. The `eligibility_proof` parameter is ignored; the only constraint is that the wallet has not previously voted (enforced by `SingleUseClaim`)."
+
+Code (`main.nr`, `cast_vote`): asserts `config.eligibility_mode == ELIGIBILITY_MODE_OPEN`, calls `self.storage.vote_claims.at(self.msg_sender()).claim()`, then passes `eligibility_proof` to `record_vote` → `verify_eligibility`. In `eligibility.nr` OPEN branch: any proof value accepted (including 0). 
+
+"Ignored" is a slight simplification — the proof is passed through but any value is accepted. Prior passes confirmed this framing as defensible; no change needed. ✅
+
+### §3.2 Token-gated leaf format — ✅ CLEAN
+
+Paper: `sha256([0x00] || address_field_bytes[31] || balance_be[8])`
+
+Code (`compute_token_leaf` in `merkle.nr`):
+```
+input[0] = 0;
+for i in 0..31 { input[i + 1] = field_bytes[i]; }  // [0x00] + 31 field bytes = 32
+// balance: 8 bytes big-endian
+sha256_var(input, 40)
+```
+
+Total: 1 + 31 + 8 = 40 bytes hashed. Matches `[0x00] || field_bytes[31] || balance_be[8]`. ✅
+
+`main.nr` cast_vote_token comment: "Leaf format: sha256( address_bytes[32] || balance_be[8] ) (40 bytes) where address_bytes = [0x00] || caller_field.to_be_bytes()[0..31]" — consistent alternative expression. ✅
+
+Balance threshold assertion: `verify_token_eligibility` calls `assert(balance >= min_balance, ...)` **before** `compute_token_leaf` and `verify_merkle_path`. Paper claim "Balance threshold is enforced inside the circuit before Merkle verification" ✅.
+
+### §3.2 Allowlist leaf format — ✅ CLEAN
+
+Paper: `sha256([0x00] || address_field_bytes[31])`
+
+Code (`compute_aztec_leaf` in `merkle.nr`):
+```
+addr_bytes[0] = 0;
+for i in 0..31 { addr_bytes[i + 1] = field_bytes[i]; }  // 32 bytes total
+sha256_var(addr_bytes, 32)
+```
+
+32 bytes = `[0x00] || field_bytes[31]`. ✅
+
+### §3.3 F1-RESIDUAL resolution description — ✅ CLEAN
+
+Paper: "Resolved by adding a mode guard in `cast_vote`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_OPEN, ...)`. Token and allowlist votes must use their respective dedicated entrypoints… The gated entrypoints additionally assert their own expected mode before performing the Merkle check."
+
+Code confirms three guards:
+- `cast_vote`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_OPEN, "cast_vote: gated votes require cast_vote_token or cast_vote_allowlist")` ✅
+- `cast_vote_token`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_TOKEN, "cast_vote_token: contract not in token mode")` ✅
+- `cast_vote_allowlist`: `assert(config.eligibility_mode == ELIGIBILITY_MODE_ALLOWLIST, "cast_vote_allowlist: contract not in allowlist mode")` ✅
+
+Paper's bypass path claim: "passing `eligibility_proof = 1` satisfies the `verify_eligibility` stub (`proof != 0`)." Confirmed in `eligibility.nr`: TOKEN/ALLOWLIST branches assert `proof != 0` only. The mode guard on `cast_vote` blocks this path before `verify_eligibility` is reached. ✅
+
+### §3.3 L2/receipt-freeness note — ✅ CLEAN
+
+Paper: "The contract does not implement a re-encryption mix. The commitment not to use the term 'coercion-resistant' in user-facing copy until this is resolved is maintained in the receipt component."
+
+Grep of `packages/react/src/` for "coercion-resistant" / "coercion resistant": **no matches**. Commitment upheld. ✅
+
+L1 privacy description: `record_vote` is `#[external("public")]` with `vote_choice: u8` and `receipt_id: Field` as public arguments. Observer can build `receipt_id → vote_choice` map. Description accurate. ✅
+
+### §3.2 + §3.3 Summary (tick-3748)
+
+| Check | Status | Action |
+|---|---|---|
+| §3.2 open mode description vs code | ✅ Clean | None |
+| §3.2 token leaf format `sha256([0x00]\|\|field[31]\|\|bal[8])` | ✅ Clean | None |
+| §3.2 allowlist leaf format `sha256([0x00]\|\|field[31])` | ✅ Clean | None |
+| §3.2 balance threshold before Merkle | ✅ Clean | None |
+| §3.3 F1-RESIDUAL 3-guard description | ✅ Clean | None |
+| §3.3 bypass path proof=1 description | ✅ Clean | None |
+| §3.3 L2/receipt-freeness no "coercion-resistant" | ✅ Clean | None |
