@@ -1095,3 +1095,97 @@ After the fix in (b), no remaining claims in §2.2 treat the protective framing'
 | (c) Protective framing effectiveness as established finding | ✅ Clean (after b fix) | None after fix |
 
 
+
+---
+
+## §2.2 Third-pass Audit — Alt-1 / Alt-2 / [CITE] resolution (tick-3721)
+
+**Three checks: Alt-1 CLEAN, Alt-2 CLEAN, [CITE] placeholders ALL FIXED (8 occurrences).**
+
+---
+
+### Check 1: Alt-1 coercion-target shift claim — ✅ CLEAN
+
+**Pre-registered check:** Cross-check Alt-1 claim "The attack surface shifts from receipt content to receipt access; it does not shrink."
+
+**Paper §2.2 (Alt 1) text:**
+> "Rejected: the authentication credential itself becomes the coercion target. A coercer who cannot obtain the receipt can instead coerce the voter into signing an authentication message. The attack surface shifts from receipt content to receipt access; it does not shrink."
+
+**Cross-check:**
+
+The claim is that authentication-gating the receipt shifts — not eliminates — the coercion surface. The logic is:
+- OLD coercion path: coercer demands to see receipt (which shows vote choice)
+- NEW coercion path: coercer demands voter sign an auth message (which grants receipt access)
+
+The voter remains coercible under both paths; the mechanism changes form but the attack class persists.
+
+**Verdict:** Logically sound. In receipt-freeness theory (c.f. coercion-resistance literature), any scheme where a voter can prove their choice to a third party on demand — including through a proxy mechanism like forced authentication — preserves the coercion vector. The claim "it does not shrink" is a strong assertion but appropriate for the design-alternatives register.
+
+**Citation observation (not a required fix):** No receipt-freeness literature is cited to support the claim. A CHI reviewer would not expect a formal cryptographic citation here, as §2.2 is a design argument section, not a security proof. The claim is stated in a register appropriate to that section. No action required.
+
+**Verdict: ✅ CLEAN** — no inaccuracy, no overclaim.
+
+---
+
+### Check 2: Alt-2 UUID verifiability claim — ✅ CLEAN
+
+**Pre-registered check:** Cross-check Alt-2 claim that a random UUID "would satisfy the independence sub-condition of Invariant 1" but is "rejected on Invariant 1 grounds."
+
+**Paper §2.2 (Alt 2) text:**
+> "A random 128-bit UUID would satisfy the independence sub-condition of Invariant 1 - it is not derivable from content, identity, or observable state - and could be stored locally. Rejected on Invariant 1 grounds: Invariant 1 requires not only independence but verifiability against a public ledger (`isInLedger(token) → bool`). A token that is not verifiable against a public commitment proves nothing to the voter or to a third party."
+
+**Cross-check against §2.1 Invariant 1:**
+> "The token must not be derivable from the submission content, the user's identity, or any publicly observable system state... The token must be verifiable against a public ledger — `isInLedger(token) → bool` — without that lookup revealing the content."
+
+**Breakdown:**
+
+| Claim | Status |
+|---|---|
+| UUID satisfies independence sub-condition (not derivable from content/identity/state) | ✅ Accurate — UUID v4 is not derived from any submission input |
+| "Rejected on Invariant 1 grounds" | ✅ Accurate — Invariant 1 requires BOTH independence AND verifiability |
+| "A token not verifiable against a public ledger proves nothing" | ✅ Accurate — without ledger binding, voter cannot distinguish genuine token from frontend-generated fake |
+| "PIUP requires verifiability against the submission event, not merely randomness" | ✅ Accurate — this is exactly what `isInLedger(token) → bool` implements |
+
+The Alt-2 rejection reasoning is internally consistent with the Invariant 1 definition in §2.1. No discrepancy.
+
+**Verdict: ✅ CLEAN** — no inaccuracy.
+
+---
+
+### Check 3: [CITE] placeholder resolution — ❌ 8 PLACEHOLDERS FIXED
+
+**Pre-registered check:** Verify Egelman & Schechter [CITE] in §2.1 status line; resolve if citation is in bibliography.
+
+**Finding:** All 8 `[CITE]` occurrences in the paper had corresponding bibliography entries and were replaced with inline author/year citations.
+
+**Fixes applied:**
+
+| Location | Old | New |
+|---|---|---|
+| §1 para 2 (Norman) | `[CITE]` | `(1988)` |
+| §1 para 3 (Whitten & Tygar) | `[CITE]` | `(1999)` |
+| §1 para 3 (Felt et al.) | `[CITE]` | `(2012)` |
+| §1 para 3 (Egelman & Schechter) | `[CITE]` | `(2013)` |
+| §3 related work (STAR-Vote) | `[CITE]` | `(Bell et al. 2013)` |
+| §3 related work (Helios) | `[CITE]` | `(Adida et al. 2009)` |
+| §3 related work (Kulyk et al.) | `[CITE]` | `(2017)` |
+| §3 related work (Everett et al.) | `[CITE]` | `(2008)` |
+| §5 Study 2 measures (McKnight scale) | `[CITE]` | `(McKnight et al. 2002)` |
+
+**Secondary note on §2.1 Egelman & Schechter attribution (line 108):**
+The §2.1 Status Line rationale reads: "Per Egelman and Schechter (2013), users who encounter unexpected content sequences will pattern-match from prior experience."
+
+Egelman & Schechter (2013) is specifically about security warning habituation (SSL/malware warnings). The claim "unexpected content sequences → pattern-match from prior experience" is a broader generalization than what their paper specifically tests. Their more precise finding is captured correctly in §6.2 (line 357): "even security-aware users, when confronted with feedback that violates expected conventions, tend toward behavioral normalization."
+
+The §2.1 attribution is an acceptable extrapolation in the CHI design-rationale register, but it is a slight overreach vs. what Egelman & Schechter specifically test. A conservative fix would be to credit Norman (1988) for the pattern-matching principle and cite Egelman & Schechter (2013) for the security-context confirmation. **Jony-action (optional):** Consider revising §2.1 Status Line to: "Per Norman (1988), users pattern-match from prior experience when encountering unexpected content; Egelman and Schechter (2013) confirm this pattern persists in security-interface contexts."
+
+---
+
+## §2.2 Third-pass Summary (tick-3721)
+
+| Check | Status | Action |
+|---|---|---|
+| Alt-1 coercion-target shift — "it does not shrink" | ✅ Clean | None — logically sound design assertion |
+| Alt-2 UUID verifiability — rejection on Invariant 1 grounds | ✅ Clean | None — internally consistent with §2.1 definition |
+| [CITE] placeholders (all 8 occurrences) | ❌ Placeholders | FIXED — all replaced with inline author/year |
+| §2.1 Egelman & Schechter attribution fit | ⚠️ Minor overclaim | FLAG for Jony — attribution slightly broader than paper establishes; optional fix in note above |
