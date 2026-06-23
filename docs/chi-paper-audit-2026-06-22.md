@@ -130,3 +130,60 @@ Covered by fix above. No `emit` call exists anywhere in the contract.
 | §3.3 Resolved findings | ⚠️ Omission | Fixed: added F1-RESIDUAL (HIGH) |
 
 Next: §3.4 React component library audit (generic path, safe to edit).
+
+---
+
+## §3.4 React component library — TWO INACCURACIES FIXED (tick-3687)
+
+### Inaccuracy 1: Receipt file missing `txHash` ❌ FIXED
+
+**Paper claimed:**
+> “containing the fingerprint, vote ID, vote title, timestamp, and contract address — and nothing else”
+
+**Reality:** `downloadReceipt()` calls `serializeReceipt()` which spreads `...receipt` (type `VoteReceipt`). `VoteReceipt` has six fields: `voteId`, `voteTitle`, `receiptId`, `txHash`, `timestamp`, `contractAddress`. The `txHash` field was omitted from the paper’s enumeration.
+
+**Privacy implication:** Per the L1 privacy gap (§3.3), the `record_vote` call puts `vote_choice` in public calldata of the same transaction. An observer who receives the downloaded receipt file can use the `txHash` to look up that transaction and recover the choice. The “can share freely” framing therefore overstated the safe-sharing guarantee.
+
+**Fix applied:**
+- Added `txHash` (“transaction hash”) to the receipt field list
+- Replaced “a voter who saves their receipt holds a file they can share freely without leaking their choice” with a note that the file does not encode the choice directly but that `txHash` enables on-chain lookup; voters should treat the receipt as private until vote close.
+
+### Inaccuracy 2: Protective framing text didn’t meet §2.1 specification ❌ FIXED
+
+**Paper claimed (before fix):**
+> The protective framing: *“This fingerprint proves your vote was counted without revealing how you voted”*
+
+And that the component “renders the four PIUP components described in Section 2.1.”
+
+**Reality:** §2.1 specifies that the protective framing must:
+- **(a)** name the absent content before the user notices it is missing
+- **(b)** attribute the absence to a design guarantee (“This is intentional”)
+
+The old component text (“without revealing how you voted”) implicitly signals privacy but does **not** explicitly name the absent choice or say “This is intentional.” The study stimuli (condition-a-fingerprint.html) already used a stronger text: “This receipt does not contain your vote choice. It proves your ballot was counted without revealing how you voted.” The component diverged from the stimuli and from the §2.1 specification.
+
+**Fix applied:**
+1. Updated `VoteReceipt.tsx` `apv-receipt__explainer` to:
+   > “Your vote choice is not shown on this receipt. This is intentional — this {identifierNoun} proves your ballot was counted without revealing what you voted for. Save it to verify after the vote closes, and keep it private until then.”
+2. Updated §3.4 bullet to quote the new component text.
+
+The updated text meets both §2.1 criteria: (a) “Your vote choice is not shown on this receipt” names the absent content; (b) “This is intentional” attributes it to a design guarantee.
+
+---
+
+## Updated summary (tick-3687)
+
+| Section | Status | Action taken |
+|---|---|---|
+| §3.1 `record_vote` callsite | ❌ Inaccurate | Fixed (tick-3686) |
+| §3.1 `finalize_vote` tally write | ❌ Inaccurate | Fixed (tick-3686) |
+| §3.1 `finalize_vote` event | ❌ Inaccurate | Fixed (tick-3686) |
+| §3.2 Eligibility mode framing | ⚠️ Minor | Noted; no change |
+| §3.3 Security table | ✅ Clean | — |
+| §3.3 Resolved findings | ⚠️ Omission | Fixed F1-RESIDUAL (tick-3686) |
+| §3.4 Receipt file fields | ❌ Missing `txHash` | Fixed: added transaction hash (tick-3687) |
+| §3.4 Protective framing | ❌ Didn’t name absent content | Fixed: component + paper quote (tick-3687) |
+| §3.5 M2 `sig[64]` attribution | ⚠️ Inaccurate | Flagged for Jony (Babylon path, no agent edit) |
+| §6.4 Generalisation | ✅ Clean | — |
+| §6.5 Limitations calldata vs state | ✅ Accurate | — |
+
+Next: §4 Study 1 design audit (§4.1 hypotheses, §4.2–46 stimuli, §4.4 participants, §4.5 H2 outcome classification table).

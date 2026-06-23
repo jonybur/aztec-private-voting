@@ -109,9 +109,10 @@ export function VoteReceipt({
       </div>
 
       <p className="apv-receipt__explainer">
-        This {identifierNoun} proves your vote was counted without revealing how
-        you voted. Save it to verify after the vote closes, and keep it private
-        — treat it like a ballot stub, not something to share.
+        Your vote choice is not shown on this receipt. This is intentional —
+        this {identifierNoun} proves your ballot was counted without revealing
+        what you voted for. Save it to verify after the vote closes, and keep
+        it private until then.
       </p>
 
       <div className="apv-receipt__actions">
