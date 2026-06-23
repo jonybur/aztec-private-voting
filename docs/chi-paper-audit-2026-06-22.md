@@ -22,6 +22,93 @@ The claim that "public functions cannot receive private inputs" is the correct A
 
 ---
 
+## §6.5 Limitations — Full audit (tick-3694)
+
+### Check 1: Calldata claim — ✅ CLEAN
+
+**Paper §6.5:** "A sufficiently motivated observer monitoring on-chain calldata can recover the vote choice regardless of what the receipt shows or withholds."
+
+**Cross-check:** security-review-2026-06-22.md §3: "`vote_choice` and `receipt_id` are plaintext public arguments in `record_vote`. Choices are anonymous but not secret."
+
+**Verdict:** Accurate for Aztec v5. The `record_vote` public function takes `vote_choice` as a plaintext argument. The claim correctly distinguishes state-layer privacy (nullifier + tally, hidden) from calldata-layer exposure (choice plaintext in public function args). ✅
+
+**Additional observation (not a §6.5 fix — flagged for Jony):** §1 para 2 says "Aztec's ZK rollup allows a voter to prove eligibility and submit a ballot **without revealing the ballot's contents in public calldata**" and "The cryptographic part - hiding the choice - is solved." This introduces tension with the Named limitation §1.1 that immediately contradicts it. The §1 framing describes what Aztec ZK makes possible in principle; the Named limitation documents where the current implementation falls short. But the text does not hedge "allows" as "can in principle allow." A CHI reviewer may flag this as self-contradictory. **Jony-action:** Consider hedging §1 para 2: "makes it possible to prove eligibility and submit a ballot without revealing ballot contents in public calldata — though the named limitation below documents where the current implementation falls short."
+
+---
+
+### Check 2: Study 1 ecological validity — "confidence items (Q4)" — ❌ INACCURACY FIXED
+
+**Paper claimed:** "The ecological validity gap is most likely to affect the confidence items **(Q4)** and behavioral-intention items: in a live voting flow, the question 'do you feel confident your vote was counted?' follows actual vote submission."
+
+**Reality:** Q4 as defined in §4.4 and the pre-registration §5.2 is:
+> "What would happen if you lost this value?" — a **behavioral-consequence knowledge question**, not a confidence question.
+
+The confidence items are the **secondary per-question Likert ratings**: "After each comprehension question Q1–Q5, participants rated their confidence (1 = not at all confident, 7 = completely confident)." These are not labelled Q4.
+
+The quoted example ("do you feel confident your vote was counted?") does not correspond to any of Q1–Q5. It describes the *theme* of the confidence Likert that follows Q1, not a survey item.
+
+Further: Q4 (behavioral consequence) is a **knowledge question** equally answerable from a screenshot; it is LESS susceptible to the ecological validity gap than the confidence ratings, which are felt-experience items anchored to whether the participant actually made a choice.
+
+**Fix applied:**
+- "confidence items (Q4)" → "confidence ratings (secondary per-question Likert items, §4.4)"
+- Replaced example question with accurate framing of why confidence ratings are affected (anchored to real vs. fictional choice)
+- Added note that Q4 is a knowledge question less susceptible to this gap
+
+---
+
+### Check 3: Study 2 demand characteristics — "two attention checks and open-ended explanation request to detect and exclude demand-characteristic responses" — ❌ INACCURACY FIXED
+
+**Paper claimed:** "The study includes two attention checks and an open-ended explanation request to detect and exclude demand-characteristic responses, but the checks do not provide full protection against hypothesis-aware responding."
+
+**Reality:**
+
+| Claimed mechanism | What it actually does |
+|---|---|
+| Attention checks | Detect **inattentive participants** for exclusion (failed both ACs = excluded). Not demand-characteristic detection. |
+| Open-ended explanation (Q-OE) | Scored 0–2 for **comprehension quality** (design note §9.4). Not used for demand-characteristic exclusion. |
+
+**Actual demand-characteristic mitigations** (Study 2 pre-analysis plan §11.1):
+1. Task instructions do not draw attention to download affordance: "You have just voted in a simulated election. Take a moment to review your receipt. Then answer the questions below." — no mention of the button.
+2. Download button styled identically across I1 and I2 conditions — prevents button-presence demand.
+
+Neither ACs nor Q-OE directly detects hypothesis-aware responding. No Study 2 mechanism excludes participants on the basis of hypothesis awareness.
+
+**Fix applied:** Replaced false description with accurate characterisation:
+- Named actual mitigations (task instructions + button styling, referencing §11.1)
+- Correctly described ACs as inattentive-participant exclusion
+- Correctly described Q-OE as comprehension scoring
+- Retained honest acknowledgement that mitigations do not provide full protection against hypothesis-aware responding
+
+---
+
+### Check 4: Ranked-choice / quadratic voting — "richer and more individually identifying" — ✅ CLEAN
+
+**Paper claimed:** Ranked-choice, quadratic voting, and cumulative voting receipts have absent content that is "richer and more individually identifying."
+
+**Assessment:**
+- Ranked-choice: preference ordering (e.g. A > B > C > D) — more information bits than a single binary choice. More individually identifying because distinctive orderings are rarer. ✅
+- Quadratic voting: credit allocation across options — combinatorial space of allocations; more individually identifying. ✅
+- Cumulative voting: same logic as QV. ✅
+
+"Richer" (more information encoded) and "more individually identifying" (higher entropy / fewer matching voters) are both accurate characterizations. ✅
+
+The claim that the receipt must confirm "that the full preference ordering was recorded" (not merely that a ballot was submitted) is also accurate — in ranked-choice, a voter needs to verify the ordering was captured correctly, not just that a ballot exists. ✅
+
+---
+
+## §6.5 Summary (tick-3694)
+
+| Check | Status | Action |
+|---|---|---|
+| Calldata claim accuracy for Aztec v5 | ✅ Clean | None (§1 para 2 ambiguity flagged for Jony separately) |
+| Ecological validity "confidence items (Q4)" | ❌ Inaccuracy | FIXED — Q4 is behavioral-consequence question; confidence items are secondary Likert ratings |
+| Demand characteristics mitigations | ❌ Inaccuracy | FIXED — replaced false AC/Q-OE description with actual mitigations (task instructions + button styling, §11.1) |
+| Ranked-choice/QV scope claim | ✅ Clean | None |
+
+Next: §2 PIUP design rationale audit — check (1) Invariant 1 formal specification accuracy; (2) Invariant 2 "surrogate privacy in transit" — does the paper correctly describe what this invariant prohibits (all channels, not just UI rendering)?; (3) §2.1 protective framing requirement — does the paper correctly specify that naming the absent content must come BEFORE the failure-inference forms (sequence requirement)?
+
+---
+
 ## §6.4 Generalisation beyond voting ✅ CLEAN
 
 **Scan:** Full section reviewed for "outperforms", "underperforms", or any directional comparison language that should be reserved for H2/H3 hypothesis framing.
