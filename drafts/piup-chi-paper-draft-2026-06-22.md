@@ -109,7 +109,7 @@ Under these conditions, the receipt is built from four components, listed in the
 
 **Submission token.** A surrogate identifier for the submission event, given to the user as the receipt's primary artifact. The token must satisfy three invariants:
 
-*Invariant 1 (Surrogate independence).* The token must not be derivable from the submission content, the user's identity, or any publicly observable system state. Formally: `token = f(random_seed)` where `f` produces a value in a space large enough to make collision negligible. The token must be verifiable against a public ledger - `isInLedger(token) → bool` - without that lookup revealing the content.
+*Invariant 1 (Surrogate independence).* The token must not be derivable from the submission content, the user's identity, or any publicly observable system state; it must not allow anyone holding only the token to determine the submitted choice. Formally: `token = f(random_seed)` where `f` produces a value in a space large enough to make collision negligible and `token` is computationally independent of `choice`. The token must be verifiable against a public ledger - `isInLedger(token) → bool` - without that lookup revealing the content.
 
 *Invariant 2 (Surrogate privacy in transit).* Because the token travels with the content during submission, any observable record of the submission can link token to content. The token must be treated as private until the content is definitionally public (vote closes, auction reveals). After that event, the link in the execution record is no longer actionable for coercion.
 
