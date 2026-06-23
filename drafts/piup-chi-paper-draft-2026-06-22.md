@@ -235,7 +235,7 @@ Between-subjects, 4 × 1 factorial experiment. The single manipulated factor was
 | C | nullifier | Cryptographically precise |
 | D | receipt ID | Generic / neutral |
 
-All other receipt elements - the status line, the protective framing copy, the download prompt, and the verification affordance - were held constant across conditions.
+All other receipt elements - the status line, the protective framing copy, the hex-formatted identifier value, the copy button, and the download prompt - were held constant across conditions. The verification panel structure (toggle button and instructions framework) was also held constant; the panel text references the label name in two instructions, as detailed in §4.3.
 
 **Participants.** Recruitment was through Prolific (online panel). Inclusion criteria: US-resident adults, age 18+, English as first language or fluent, self-reporting at least one online vote, poll, or official election in the past 12 months, no prior participation in this study. Exclusion criteria: self-reported software engineers (to prevent domain-expert contamination of the comprehension measures), participants failing both attention checks, and participants completing the study in fewer than 90 seconds (indicating non-serious completion).
 
