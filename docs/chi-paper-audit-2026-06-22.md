@@ -1634,3 +1634,65 @@ No quantitative comprehension claims made (prior "near-zero" was removed in tick
 | DNT analogy accuracy | ✅ Clean | None |
 | Causal language in PIUP vs. predecessors | ✅ Clean | None |
 
+
+---
+
+## §6.5 Third-pass Audit (tick-3738)
+
+**Checks performed:**
+1. Study 2 demand characteristics framing — verify conditional on design note §11.1 language
+2. Study 1 ecological validity Q4 caveat — verify still accurate after §4.4 Q4 rubric fix (tick-3729)
+3. Full-paper scan — any remaining unconditional directional claims that should be H2/H4-conditional
+
+---
+
+### Check (1): Study 2 demand characteristics — conditional on design note §11.1 ✅
+
+Compared §6.5 demand-characteristics paragraph against design note §11.1:
+
+- "You have just voted in a simulated election. Take a moment to review your receipt. Then answer the questions below." — exact match to design note §11.1 task instruction ✅
+- "identical button styling across all conditions" — design note §11.1 says "styled identically in I1 and I2 conditions"; paper's broader "all conditions" is the correct interpretation (L and E don't alter button styling) ✅
+- "Two attention checks are used for inattentive-participant exclusion" — design note §9.3 exclusion criterion: "Failed both attention checks" ✅ (two checks confirmed)
+- "Q-OE is scored for comprehension quality" — design note §9.4 ✅
+- "Neither specifically detects hypothesis-aware responding; no direct measure of participant hypothesis awareness is included" — design note §11.1 has no hypothesis-awareness measure ✅
+- "The mitigations do not provide full protection against demand-characteristic effects" — already hedged ✅
+
+**CLEAN ✅** No fix needed.
+
+---
+
+### Check (2): Study 1 ecological validity — Q4 caveat after tick-3729 fix ✅
+
+tick-3729 commit b0ecf72: "CHI §4.4 third-pass — Q5 rubric aligned to instrument §11"
+Q5 rubric was changed from "0 = no mention of privacy/coercion; 1 = mentions privacy but not coercion; 2 = correctly identifies both" to the mechanism-explanation scale.
+**Q4 was not touched in tick-3729.**
+
+§6.5 says: "Q4 as defined in §4.4 is a behavioral-consequence knowledge question ('what would happen if you lost this value?')"
+§4.4 says: "*Q4 (Behavioral consequence of receipt loss):* 'What would happen if you lost this value?'"
+
+Exact match. Q4 ecological validity caveat is still accurate. **CLEAN ✅** No fix needed.
+
+---
+
+### Check (3): Full-paper scan for unconditional directional claims — INACCURACY ❌ FIXED
+
+**Location:** §7 Conclusion, paragraph 3.
+
+**Paper before fix:**
+> If H4 is also supported, "confirmation code" produces higher self-reported confidence alongside this accuracy deficit: the familiar label simultaneously reduces onboarding friction and degrades the privacy mental model without the deficit being apparent to the user. **"Confirmation code" undermines the framing on exactly those questions**, not because it fails to signal that something was confirmed, but because it imports a precision that private voting cannot support: confirmation of content.
+
+**Problem:** The sentence "'Confirmation code' undermines the framing on exactly those questions" is stated as an unconditional declarative. It is structurally inside the "If H4 is also supported" block, but the sentence drops the conditional form and reads as a concluded fact. This is inconsistent with the H2+H4-conditional framing established by the preceding two sentences.
+
+tick-3737 (commit 349602f) added "If H2 is supported" and "If H4 is also supported" before the two main claims but did not add the conditional to this follow-on sentence.
+
+**Fix applied:** Added "In that scenario," before "confirmation code' undermines the framing..." — makes the conditional explicit within the H2+H4 block.
+
+---
+
+### §6.5 + Full-paper Third-pass Summary (tick-3738)
+
+| Check | Status | Action |
+|---|---|---|
+| §6.5 Study 2 demand characteristics: conditional on design note §11.1 | ✅ Clean | None |
+| §6.5 Study 1 ecological validity: Q4 caveat after tick-3729 Q5 fix | ✅ Clean | None |
+| §7 "'Confirmation code' undermines…" unconditional directional claim | ❌ Missing conditional | FIXED: "In that scenario, 'confirmation code' undermines…" |
