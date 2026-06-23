@@ -81,7 +81,7 @@ H2 is the most theoretically interesting hypothesis in Study 1 (pre-registered t
 
 This paper makes three contributions:
 
-**Design artifact (PIUP).** The Proof-of-Inclusion UX Pattern: a named, formally-characterized design class for coercion-resistant confirmation in privacy-preserving submission systems. Three invariants define the pattern; one named limitation bounds its scope. Section 2.
+**Design artifact (PIUP).** The Proof-of-Inclusion UX Pattern: a named, formally-characterized design class for coercion-resistant confirmation in privacy-preserving submission systems. Three invariants define the pattern; one named limitation bounds its scope. Invariants: §2.1. Named limitation: §1.1, §3.3.
 
 **System instantiation.** Aztec Private Voting - a Noir ZK smart contract and React component library implementing PIUP on the Aztec v5 testnet. The system provides a working implementation of all three invariants and the receipt UI described in this paper. The `VoteReceipt` component is the canonical PIUP instantiation. Section 3.
 
