@@ -503,3 +503,61 @@ The comparative claims ("What distinguishes PIUP from both predecessors is the s
 | Leon et al. 2012 citation (DNT) | ❌ Inaccuracy | FIXED — "DNT indicators" → "behavioral advertising opt-out mechanisms"; "near-zero comprehension" → "widespread misunderstanding"; causal explanation moved to author-voice sentence |
 | Causal language in PIUP vs. predecessors comparison | ✅ Clean | None |
 | §7 "patent risk" | ❌ Typo | FIXED — "patent risk" → "latent risk" |
+
+---
+
+## §6.4 Audit (tick-3693)
+
+### §6.4 Sealed-bid auction — Invariant 2 misattribution + "hash of the bid" — INACCURACY ❌ FIXED
+
+**Location:** §6.4 sealed-bid auction paragraph.
+
+**Issue 1 — "hash of the bid" violates Invariant 1.**
+The original text offered "a hash of the bid" as a valid submission token. But Invariant 1 (§2.1) explicitly specifies `token = f(random_seed)` — the token must NOT be derivable from submission content. A hash of the bid is derivable from the bid, so it violates Invariant 1's formal constraint.
+
+**Issue 2 — Invariant 2 misattribution.**
+The original text said "Invariant 2 identifies the bid via a submission token." Invariant 2 (§2.1) is *Surrogate privacy in transit* — about when the token must be kept private, not about what the token is. The identification/issuance of the token is governed by Invariant 1.
+
+**Fix applied:**
+- "Invariant 1 confirms that the bid was recorded and assigned to the bidder; Invariant 2 identifies the bid via a submission token that carries no amount information - a hash of the bid, or an opaque identifier assigned at receipt" → "Invariant 1 confirms that the bid was recorded and issues an opaque identifier - assigned at receipt, with no relationship to the bid amount - that serves as the submission token; Invariant 2 requires that the token be kept private until the auction reveal event, at which point the link between token and bid in the execution record is no longer actionable for coercion"
+
+---
+
+### §6.4 Whistleblower — "adversary may already know what the submitter submitted" — SPECULATIVE AS STATED → FIXED
+
+**Issue:** Stated as a general domain fact without qualification or citation. In many whistleblowing contexts the adversary does NOT already know the content; the employer-facing variant is a specific subset. Asserting it as a universal domain feature overstates the claim.
+
+**Fix applied:**
+- "the adversary may already know what the submitter submitted, and the coercion question is whether the receipt confirms receipt to a third party" → "in some contexts — for instance, employer-facing disclosures, where the organisation may already possess the disclosed information — the adversary's primary goal is not to learn the content but to confirm that a specific person submitted it. In this threat model, the coercion question shifts: the receipt must not confirm receipt to a third party, even when that party already knows the content"
+
+---
+
+### §6.4 Anonymous peer review — "Most current systems" + "incomplete PIUP implementation" — INACCURACY + UNSUPPORTED ❌ FIXED
+
+**Issue 1 — "Most current systems"** — uncited empirical sweep across conference management systems. No citation provided. A reviewer will flag this immediately.
+
+**Issue 2 — "incomplete PIUP implementation that satisfies Invariant 1"** — a standard confirmation email is not a PIUP implementation (partial or otherwise). It is an unrelated notification that happens to perform the notification function Invariant 1 describes. Calling it an "incomplete PIUP implementation" misrepresents the relationship.
+
+**Fix applied:**
+- "Most current systems provide a 'your review has been submitted' confirmation email with no token - an incomplete PIUP implementation that satisfies Invariant 1 but not Invariants 2 or 3" → "Many conference management systems provide a 'your review has been submitted' confirmation email with no submission token. This fulfils the notification function that Invariant 1 requires — the reviewer knows their submission was recorded — but omits the token constraint of Invariant 2 and the protective framing of Invariant 3"
+
+---
+
+### §6.4/§7 Terminology drift — "coercion-surface receipt" without italics in §7 — MINOR → FIXED
+
+**Issue:** The term *coercion-surface receipt* is coined with italics in §6.4 Common structure paragraph. In §7 Conclusion the same term appears without italics, inconsistently applying the coinage convention.
+
+**Fix applied:** §7 "the coercion-surface receipt" → "the *coercion-surface receipt*"
+
+---
+
+## §6.4 Audit Summary
+
+| Check | Status | Action |
+|---|---|---|
+| Sealed-bid auction Invariant 2 attribution | ❌ Inaccuracy | FIXED — Invariant 2 role corrected to privacy-in-transit; "hash of the bid" removed (violates Invariant 1) |
+| Whistleblower "adversary may already know" | ⚠️ Speculative | FIXED — reframed as specific threat-model scenario (employer-facing disclosures) |
+| Peer review "most current systems" | ⚠️ Unsupported | FIXED — "most" → "many conference management systems" |
+| Peer review "incomplete PIUP implementation" | ❌ Inaccuracy | FIXED — reframed as "fulfils notification function of Invariant 1 but omits Invariants 2 and 3" |
+| "coercion-surface receipt" italics in §7 | ⚠️ Minor | FIXED — italics added |
+| Causal claims in anonymous peer review paragraph | ✅ Clean | None — verifiability gap claim is design analysis, not causal empirical claim |
