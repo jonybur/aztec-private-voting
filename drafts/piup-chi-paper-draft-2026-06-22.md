@@ -55,7 +55,7 @@ Three formal invariants characterize the pattern:
 
 **Invariant 3 (Minimal receipt content).** The receipt must show the minimum content required to enable future verification - the token and a verification endpoint - and no more. Any additional content must be justified against the coercion-resistance requirement.
 
-**Named limitation.** In the Aztec Private Voting instantiation, the vote choice appears in the public calldata of the `record_vote` function, which is called after the private `cast_vote`. This is a constraint of the current Aztec v5 contract architecture: public functions cannot receive private inputs as calldata arguments. A sufficiently motivated attacker with access to the full transaction graph can, in principle, correlate a voter's nullifier with their choice by indexing `record_vote` calls. PIUP's receipt design does not resolve this; it narrows the coercion surface by making the receipt itself non-coercive. The protocol-layer limitation is documented in the receipt's verification explainer and discussed in §3.3 (L1 privacy gap) and §6.5.
+**Named limitation.** In the Aztec Private Voting instantiation, the vote choice appears in the public calldata of the `record_vote` function, which is called after the private `cast_vote`. This is a constraint of the current Aztec v5 contract architecture: public functions cannot receive private inputs as calldata arguments. A sufficiently motivated attacker with access to the full transaction graph can, in principle, correlate a voter's receipt identifier (fingerprint) with their choice by indexing `record_vote` calls — because `record_vote` takes both `receipt_id` and `vote_choice` as plaintext calldata arguments (the nullifier, the double-vote-prevention mechanism, is a separate value in the private kernel output and is distinct from the fingerprint; see §3.1). PIUP's receipt design does not resolve this; it narrows the coercion surface by making the receipt itself non-coercive. The protocol-layer limitation is documented in the receipt's verification explainer and discussed in §3.3 (L1 privacy gap) and §6.5.
 
 ### 1.2 Naming the absent thing
 
@@ -75,7 +75,7 @@ The choice between "vote fingerprint" and "confirmation code" is not merely aest
 
 This framing produces the H2 *dissociation* prediction: "confirmation code" and "vote fingerprint" are predicted to perform similarly on overall accuracy (both produce correct behavioural schema: save it, verify later) but to diverge specifically on the privacy-model questions (Q2: "does this prove which option you voted for?"; Q3: "could someone learn how you voted from a screenshot of this receipt?"). Confirmation code is predicted to produce higher rates of incorrect answers on Q2 and Q3, because the representational schema it activates - "the confirmation contains what I confirmed" - directly contradicts the correct answer.
 
-H2 is the most theoretically interesting hypothesis in Study 1, and the most uncertain. If confirmation code outperforms fingerprint on the privacy questions, the production default should change.
+H2 is the most theoretically interesting hypothesis in Study 1 (pre-registered test specifications: §4.5), and the most uncertain. The schema-import mechanism that motivates H2 — why "confirmation code" activates a representational schema that contradicts the correct privacy model — is discussed in §6.2. If confirmation code outperforms fingerprint on the privacy questions, the production default should change.
 
 ### 1.3 Contributions
 
