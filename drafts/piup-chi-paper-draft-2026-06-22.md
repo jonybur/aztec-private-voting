@@ -328,7 +328,7 @@ Study 1 isolates the label effect while holding the receipt's explanatory copy c
 
 ### 5.3 Platform
 
-Study 2 uses the actual `VoteReceipt.tsx` component from the Aztec Private Voting React package, hosted on Vercel in study mode. The static screenshot method from Study 1 is insufficient for the save-behavior and absent-content measures because (a) the download affordance must be clickable and observable, and (b) the intervention (I2) requires pre-receipt interaction. Hosting the production component increases ecological validity for the trust and behavioral-intention measures. Study mode logs: download button click (no file written), expansion of the verification section, and intervention response accuracy.
+Study 2 uses the actual `VoteReceipt.tsx` component from the Aztec Private Voting React package, hosted on Vercel in study mode. The static screenshot method from Study 1 is insufficient for the save-behavior measure and I2 conditions because (a) the download affordance must be clickable and observable, and (b) the intervention (I2) requires pre-receipt interaction. Hosting the production component increases ecological validity for the trust and behavioral-intention measures. Study mode logs: download button click (no file written), expansion of the verification section, and intervention response accuracy.
 
 ### 5.4 Measures
 
