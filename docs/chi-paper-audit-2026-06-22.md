@@ -1494,3 +1494,143 @@ Paper: "8 cells; N = 30 per cell (N = 240 total)." Design note §5.1: "8-conditi
 | E2 element list vs. design note §6.1 | ❌ Omission | FIXED (tick-3731): added "Your ballot was counted" |
 | I2 feedback description vs. design note §6.2 | ❌ Imprecision | FIXED (tick-3731): "a one-sentence explanation" → "per question" |
 | Cell count / N vs. design note §5.1 | ✅ Clean | None |
+
+---
+
+## §6.2 Third-pass Audit (tick-3736)
+
+**Checks performed:**
+1. Opening paragraph: citation accuracy for McKnight et al. 2002 + Lee and See 2004
+2. Trusting beliefs/trusting intentions attribution to McKnight
+3. Lee and See (2004) characterization of cross-domain schema transfer
+4. H2/H4 conditionality language throughout §6.2
+5. "Appears to be" hedging on schema-import claim
+
+---
+
+### Check (1): Opening paragraph — INACCURACY ❌ FIXED
+
+**Paper before fix:** "Users who encounter interface patterns they recognise extend more trust, complete tasks more quickly, and report higher satisfaction than users navigating unfamiliar conventions (McKnight et al., 2002; Lee and See, 2004)."
+
+**Problem:**
+- McKnight et al. 2002 ("Developing and Validating Trust Measures for E-Commerce") develops trust measurement scales (trusting beliefs, trusting intentions, trust-related behaviors) for eCommerce. It does NOT study task completion time or user satisfaction with interface patterns.
+- Lee and See 2004 ("Trust in Automation: Designing for Appropriate Reliance") is about trust calibration in automation contexts (appropriate reliance). It does NOT study "interface pattern" familiarity effects on task time or satisfaction.
+
+"Complete tasks more quickly" and "report higher satisfaction" are classic usability findings (Nielsen, Shneiderman) not supported by either citation.
+
+**Fix applied:** Narrowed to the trust claim both papers actually support: "Users who encounter interface patterns they recognise tend to extend more trust to them than to unfamiliar conventions (McKnight et al., 2002; Lee and See, 2004)."
+
+---
+
+### Check (2): McKnight trusting beliefs/trusting intentions — CLEAN ✅
+
+Paper: "McKnight et al. (2002) distinguish between trusting beliefs - specific cognitions about a trustee's properties - and trusting intentions - willingness to depend on the trustee."
+
+McKnight et al. 2002 Table 1 and conceptual model explicitly distinguish trusting beliefs (cognitions about benevolence/integrity/competence) from trusting intentions (behavioral willingness to depend on the trustee). ✅ Accurate attribution.
+
+---
+
+### Check (3): Lee and See attribution — ATTRIBUTION CONCERN ❌ FIXED
+
+**Paper before fix:** "Lee and See (2004) identify this pattern as miscalibration in trust in automation: over-trust occurs when users apply mental models formed in one system to a different system with superficially similar interface conventions."
+
+**Problem:** Lee and See 2004 study trust calibration within a single automation domain (e.g., process control, autopilot). They do NOT study cross-domain mental model transfer (eCommerce → voting receipt). The cross-domain schema transfer characterization is the author's theoretical extension, not Lee and See's finding. Presenting it as "Lee and See identify this pattern" overstates the attribution.
+
+**Fix applied:** Hedged to "This maps onto the miscalibration Lee and See (2004) describe in trust in automation: over-reliance occurs when users apply a mental model that does not accurately reflect the system's actual behavior — here, when the eCommerce schema that 'confirmation code' activates does not match the receipt's privacy properties."
+
+The miscalibration framework (over-reliance when mental model ≠ actual behavior) is correctly attributed to Lee and See; the eCommerce-to-voting instantiation is now correctly positioned as the author's theoretical extension.
+
+---
+
+### Check (4): H2/H4 conditionality — CLEAN ✅
+
+"If H4 is supported" language used consistently before extending to general principles. H2 outcome classification correctly references §4.5. Pre-registered nature of both H2 and H4 correctly flagged. ✅
+
+---
+
+### Check (5): "Appears to be" hedging — CLEAN ✅
+
+"For private voting receipts, the answer for 'confirmation code' appears to be: schema import yes, override uncertain." Appropriately hedged for a pre-empirical theoretical section. ✅
+
+---
+
+### §6.2 Third-pass Summary (tick-3736)
+
+| Check | Status | Action |
+|---|---|---|
+| Opening paragraph: McKnight/Lee+See citation accuracy | ❌ Unsupported behavioral claims | FIXED: removed "complete tasks more quickly, report higher satisfaction" |
+| McKnight trusting beliefs/trusting intentions attribution | ✅ Clean | None |
+| Lee and See cross-domain transfer attribution | ❌ Attribution overclaim | FIXED: "identify this pattern" → "maps onto the miscalibration...describe" |
+| H2/H4 conditionality language | ✅ Clean | None |
+| "Appears to be" hedging | ✅ Clean | None |
+
+---
+
+## §6.3 Third-pass Audit (tick-3736)
+
+**Checks performed:**
+1. Norman (1988) feedback principle framing
+2. Felt et al. 2016 citation accuracy for HTTPS lock claim
+3. "Decades of usability research" scope claim
+4. DNT analogy accuracy (no citation check — qualitative claims only)
+5. Causal language in PIUP vs. predecessors comparison
+
+---
+
+### Check (1): Norman (1988) feedback principle framing — MINOR NOTE ⚠️
+
+**Paper:** "Norman's (1988) central feedback principle - 'always keep the user informed about what is going on'"
+
+**Note:** The exact phrase "always keep the user informed about what is going on" is the wording of Nielsen's (1994) first usability heuristic ("Visibility of system status: Always keep users informed about what is going on, through appropriate feedback within reasonable time"). Norman 1988 discusses feedback extensively but uses different phrasing (feedback "communicates the results of actions to the user"). The paper presents this in single quotes (indicating summary/paraphrase rather than verbatim quotation), so the attribution is not strictly wrong. However, a CHI reviewer familiar with Nielsen's heuristics may flag the phrasing.
+
+**Decision:** No fix applied — single quotes correctly signal paraphrase. Norman does articulate this principle; the summary is accurate in spirit. Flagged as Jony-review item: if submitting to CHI, consider using Norman's own language ("feedback communicates the results of an action") rather than Nielsen-adjacent phrasing.
+
+---
+
+### Check (2): Felt et al. 2016 for HTTPS lock claim — CLEAN ✅
+
+"Prior usability research has documented how poorly users understand what the lock icon actually means (Felt et al., 2016)"
+
+Felt et al. 2016 "Rethinking Connection Security Indicators" (USENIX SOUPS 2016) is specifically about HTTPS security indicators in Chrome. Correct citation for the lock icon comprehension claim. ✅
+
+---
+
+### Check (3): "Decades of usability research" scope — INACCURACY ❌ FIXED
+
+**Paper before fix:** "Decades of usability research have documented how poorly users understand what the lock icon actually means (Felt et al., 2016);"
+
+**Problem:** "Decades" requires multiple representative citations spanning an extended time range. Felt et al. 2016 is a single 2016 paper and cannot itself represent decades of accumulated evidence. Lock icon comprehension HAS been studied since the early 2000s (Whitten/Tygar 1999 context; later Sunshine et al. 2009; Felt et al. 2016), but citing only 2016 for "decades" is an overreach.
+
+**Fix applied:** "Decades of usability research" → "Prior usability research" — accurate without overstating the historical depth of the single citation.
+
+---
+
+### Check (4): DNT analogy accuracy — CLEAN ✅
+
+Current claims about DNT:
+- "DNT asks users to model a system restraint" — accurate ✅
+- "unnatural, but neutral in content terms" — accurate characterization ✅
+- "a toggle with uncertain semantics" — accurate; DNT comprehension problems are well-documented ✅
+
+No quantitative comprehension claims made (prior "near-zero" was removed in tick-3692). No citation for DNT; claims are qualitative/general-knowledge level appropriate for a theoretical section. ✅
+
+---
+
+### Check (5): Causal language in PIUP vs. predecessors — CLEAN ✅
+
+"Invariant 3 - the protective framing copy - is the design response to this inversion." — structural design description, not causal empirical claim. ✅
+
+"The protective absence feedback problem is addressed by treating the absence as a first-class receipt element" — describes design intent, not empirical result. ✅
+
+---
+
+### §6.3 Third-pass Summary (tick-3736)
+
+| Check | Status | Action |
+|---|---|---|
+| Norman (1988) feedback principle framing | ⚠️ Nielsen-adjacent phrasing | Jony-review: consider Norman's own language at submission |
+| Felt et al. 2016 for HTTPS lock | ✅ Clean | None |
+| "Decades of usability research" scope claim | ❌ Overclaim for one 2016 citation | FIXED: "Decades" → "Prior" |
+| DNT analogy accuracy | ✅ Clean | None |
+| Causal language in PIUP vs. predecessors | ✅ Clean | None |
+
