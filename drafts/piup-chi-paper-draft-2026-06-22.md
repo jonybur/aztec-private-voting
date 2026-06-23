@@ -263,7 +263,7 @@ Stimuli were committed to the repository at commit `fb710f5` before any particip
 
 *Composite accuracy:* Proportion correct on Q1-Q4 (range 0-1.0). This is the primary RQ1 measure.
 
-*Q5 (open-ended, scored separately):* "Why might the system choose not to show you your vote choice on this screen?" Scored 0-2: 0 = no mention of privacy or coercion protection; 1 = mentions privacy but not coercion; 2 = correctly identifies both privacy and coercion protection as motivations. Scored by two independent raters; inter-rater reliability threshold: Cohen's κ ≥ 0.70. Q5 is excluded from composite accuracy and analysed separately (§4.5).
+*Q5 (open-ended, scored separately):* "Why might the system choose not to show you your vote choice on this screen?" Scored 0–2: 0 = no correct privacy concept (e.g., attributed to technical error, storage constraints, or expressed confusion); 1 = references privacy, anonymity, ballot secrecy, or protection from coercion or surveillance, without explaining why the system does not record or reveal the vote choice; 2 = explains that the system does not store or reveal the voter's specific choice (mechanism explanation), with or without explicit coercion framing. Scored by two independent raters; inter-rater reliability threshold: Cohen's κ ≥ 0.70. Q5 is excluded from composite accuracy and analysed separately (§4.5).
 
 **Confidence (secondary; 7-point Likert).** After each comprehension item Q1-Q4, participants rated their confidence (1 = not at all confident, 7 = completely confident). Q5 is open-ended and receives no confidence rating. Confidence composite = mean across Q1-Q4.
 

@@ -159,7 +159,7 @@ Four HTML mockups (condition-a-fingerprint.html, condition-b-confirmation-code.h
   *(Tests: behavioral consequence of losing the receipt — understanding that the vote is not rescindable.)*
 
 - **Q5 (open-ended, scored separately):** "Why might the system choose not to show you your vote choice on this screen?"  
-  Scored on a 3-point scale: 0 = no mention of privacy/coercion protection; 1 = mentions privacy but not coercion; 2 = correctly identifies both privacy and coercion protection as motivations.  
+  Scored on a 3-point scale: 0 = no correct privacy concept (technical error attribution, storage explanation, or expressed confusion); 1 = references privacy, anonymity, ballot secrecy, or coercion/surveillance protection without explaining why the system does not record or reveal the vote choice; 2 = explains that the system does not store or reveal the voter’s specific choice (mechanism explanation), with or without explicit coercion framing. Full rubric in survey instrument §11.  
   Scored by 2 independent raters; inter-rater reliability required: Cohen's κ ≥ 0.70. Q5 is not included in composite accuracy.
 
 **Composite accuracy:** Proportion correct on Q1–Q4 (range: 0–4, treated as proportion 0–1.0). This is the primary RQ1 measure.
