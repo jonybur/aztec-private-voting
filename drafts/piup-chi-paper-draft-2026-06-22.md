@@ -292,7 +292,7 @@ The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bo
 
 **H4** (m = 3). One-way ANOVA on confidence composite; if significant, Tukey HSD for B vs. A, C, D. Calibration analysis: Spearman rank correlation between per-participant Q1–Q4 accuracy score (0–4) and per-participant confidence composite, computed per condition. H4 predicts the B correlation will be smaller (lower calibration) than A.
 
-**Q5 analysis.** Kruskal-Wallis test across 4 conditions; Dunn's pairwise post-hoc (Holm). A random sample of 25 responses per condition (sampled randomly, before hypothesis testing) is included in the published write-up to illustrate the range of mental model articulation.
+**Q5 analysis.** Kruskal-Wallis test across 4 conditions; if significant, Dunn's pairwise post-hoc (Holm). A random sample of 25 responses per condition (sampled randomly, before hypothesis testing) is included in the published write-up to illustrate the range of mental model articulation.
 
 **Confidence interval standard.** All proportions: Wilson 95% CI. All means: 95% CI from t-distribution. All odds ratios: log-scale 95% CI.
 

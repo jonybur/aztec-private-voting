@@ -1189,3 +1189,74 @@ The §2.1 attribution is an acceptable extrapolation in the CHI design-rationale
 | Alt-2 UUID verifiability — rejection on Invariant 1 grounds | ✅ Clean | None — internally consistent with §2.1 definition |
 | [CITE] placeholders (all 8 occurrences) | ❌ Placeholders | FIXED — all replaced with inline author/year |
 | §2.1 Egelman & Schechter attribution fit | ⚠️ Minor overclaim | FLAG for Jony — attribution slightly broader than paper establishes; optional fix in note above |
+
+---
+
+## §4.1 Third-pass Audit (tick-3726)
+
+Audit scope: §4.1 Research questions and hypotheses. Cross-checked against pre-registration §3 (H1–H4), §4.1 (study size), §6.7 (H4 calibration spec), §6.8 (Q5 analysis). Also verified §4.5 Q5 analysis line — one inaccuracy found and fixed.
+
+---
+
+### Check (1): RQ1–RQ3 vs. pre-reg — CLEAN ✅
+
+Paper §4.1 has RQ1 (label comprehension), RQ2 (dissociation: fingerprint vs. confirmation code), RQ3 (eCommerce label overconfidence/calibration failure). These are section-local RQ numbers; pre-registration uses different global numbering (parent protocol) where RQ2 and RQ4 are Study 2 items. No conflict — CHI papers use section-local RQ numbering; the paper does not include the parent-protocol numbering note that appears in the pre-reg.
+
+---
+
+### Check (2): H1–H4 formulations vs. pre-reg §3 — CLEAN ✅
+
+| Hypothesis | Paper §4.1 | Pre-reg §3 | Match |
+|---|---|---|---|
+| H1 | A > D on Q2 and Q3 | Q2(A>D), Q3(A>D), one-tailed | ✅ |
+| H2 (dissociation) | A ≈ B composite (TOST ±10pp); A > B on Q2 (primary) and Q3 (secondary) | Same — Q2(A>B) primary endpoint, Q3(A>B) secondary, TOST tertiary | ✅ |
+| H3 | C < all others on Q1 + composite; reversal risk from "nullified" reading; m=6 | Q1(C<A), Q1(C<B), Q1(C<D), composite C<each; m=6 | ✅ |
+| H4 | Confidence(B) > A, C, D | confidence(B>A), (B>C), (B>D) | ✅ |
+
+---
+
+### Check (3): H2 outcome classification — CLEAN ✅
+
+Paper §4.5 H2 outcome table vs. pre-reg §6.5:
+
+| Outcome | Paper | Pre-reg | Match |
+|---|---|---|---|
+| Supported | H2-primary significant (A>B on Q2) AND TOST equivalence established | Same | ✅ |
+| Null | H2-primary non-significant AND TOST equivalence | Same | ✅ |
+| Reversed | H2-primary non-significant AND post-hoc Q2(B>A) significant (α=0.05, two-tailed) AND equivalence established (or B>A composite) | Same | ✅ |
+| Inconclusive | None of the above (report effect sizes; expand n or revise design) | Same | ✅ |
+
+---
+
+### Check (4): H4 calibration spec — CLEAN ✅
+
+Paper §4.5: "Spearman rank correlation between per-participant Q1–Q4 accuracy score (0–4) and per-participant confidence composite, computed per condition."
+
+Pre-reg §6.7: "For each condition, compute Spearman rank correlation between per-participant Q1–Q4 accuracy score (0–4) and per-participant confidence composite."
+
+✅ Exact match with the formal spec in pre-reg §6.7. (The informal description in pre-reg §5.4 line says "mean confidence and composite accuracy, computed per condition" — ambiguous, but §6.7 is the binding formal spec and the paper follows it.)
+
+---
+
+### Check (5): Q5 analysis — "if significant" qualifier — INACCURACY ❌ FIXED
+
+**Paper before fix (line 295):** "Kruskal-Wallis test across 4 conditions; Dunn's pairwise post-hoc (Holm)."
+
+**Pre-reg §6.8:** "Kruskal-Wallis test across 4 conditions; **if significant**, Dunn's pairwise post-hoc with Holm correction."
+
+**R script (analysis/piup-study1-analysis.R, §6.8 section):** Gates Dunn's on kw_result$p.value < 0.05; prints "Non-significant. Q5 Dunn's post-hoc not warranted." if KW p ≥ 0.05.
+
+**Fix applied (tick-3726):** Added "if significant" qualifier to paper §4.5 Q5 analysis line. Revised to: "Kruskal-Wallis test across 4 conditions; if significant, Dunn's pairwise post-hoc (Holm)."
+
+---
+
+## §4.1 Third-pass Summary (tick-3726)
+
+| Check | Status | Action |
+|---|---|---|
+| RQ1–RQ3 section-local numbering | ✅ Clean | None |
+| H1–H4 formulations vs. pre-reg §3 | ✅ Clean | None |
+| H2 outcome classification (supported/null/reversed/inconclusive) | ✅ Clean | None |
+| H4 calibration Spearman spec (per-participant, per condition) | ✅ Clean | None |
+| Q5 analysis — missing "if significant" qualifier | ❌ Inaccuracy | FIXED (tick-3726) — pre-reg §6.8 + R script both gate Dunn's on KW significance |
+
