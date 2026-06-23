@@ -108,7 +108,7 @@ H2 is considered **reversed** if H2-primary favours B (B > A on Q2 at α = 0.05,
 
 ### 4.1 Target sample
 
-**Full study:** n = 50 per condition (N = 200 total).  
+**Full study:** n = 70 per condition (N = 280 total). *(Corrected from n = 50 before OSF upload — see §4.2 power analysis note.)*  
 **Pilot:** n = 10 per condition (N = 40 total).
 
 **Inclusion criteria:**
@@ -124,9 +124,11 @@ H2 is considered **reversed** if H2-primary favours B (B > A on Q2 at α = 0.05,
 
 ### 4.2 Power analysis
 
-**Primary measure (composite accuracy, binary):** Chi-squared test of proportions, 4 conditions. Assuming the largest expected pairwise difference is 20 pp (vote fingerprint 70% vs. nullifier 50%), α = 0.05 two-tailed, power = 0.80: required n = 49 per cell (G*Power 3.1.9.7, test: "Proportion: Inequality of two dependent proportions"). n = 50 per cell meets this criterion.
+**H2 primary endpoint (Q2 accuracy, A vs. B, one-tailed):** For a 15 pp difference (A: 65%, B: 50%) on Q2 specifically, G\*Power 3.1.9.7, test: "Proportion: Inequality of two independent proportions", Cohen's h = 0.30, one-tailed, α = 0.05, power = 0.80: required n = 67 per cell. Target n = 70 per cell (N = 280) provides approximately 82% power.
 
-**H2 primary endpoint (Q2 accuracy, A vs. B, one-tailed):** For a 15 pp difference (A: 65%, B: 50%) on Q2 specifically, chi-squared one-tailed, α = 0.05, power = 0.80: required n ≈ 52 per cell. n = 50 is marginally underpowered for a 15 pp Q2 difference. If pilot data suggests the Q2 effect is < 15 pp, consider increasing to n = 55/cell (N = 220) before full launch.
+*Correction note (pre-OSF):* The original power calculation used "Proportion: Inequality of two dependent proportions" (McNemar test, a within-subjects test), which does not apply to this between-subjects design. The original figure of n = 49 per cell was therefore incorrect. This is corrected to n = 67 (target n = 70) before OSF upload. No data have been collected under the original n = 50 target.
+
+**Primary omnibus (composite accuracy, binary):** Chi-squared test of proportions, 4 conditions (df = 3, effect size w ≈ 0.18). At n = 70 per cell the omnibus power is approximately 0.67; 80% power for the omnibus would require n ≈ 82 per cell. The omnibus is a secondary descriptive test; the H2 pairwise endpoint is the primary confirmatory test. If pilot data suggests the Q2 effect is substantially smaller than 15 pp, n will be expanded to n = 75/cell (N = 300) before full launch.
 
 **Confidence (Likert) secondary measure:** Cohen's d = 0.5, one-way ANOVA, α = 0.05, power = 0.80: required n ≈ 52 per cell. Same note applies.
 
