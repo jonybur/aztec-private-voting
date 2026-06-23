@@ -1323,3 +1323,112 @@ The paper (§4.2 power note) follows the main text (n=75). The n=55 figure in th
 | Pilot exclusion criteria (both ACs, <90s, SE exclusion) | ✅ Clean | None |
 | Between-subjects design spec | ✅ Clean | None |
 | Pre-reg §7.3 amendment clause n=55 vs n=75 | ⚠️ Pre-reg internal inconsistency | New Jony-action: fix pre-reg §7.3 before OSF upload |
+
+---
+
+## §4.3 Third-pass Audit (tick-3728)
+
+**Checks performed:**
+1. Stimuli file names in §4.3 vs. actual commit fb710f5
+2. Held-constant list internal consistency
+
+### Check (1): Stimuli file names — INACCURACY ❌ FIXED
+
+**Paper/pre-reg before fix:** "condition-a.html through condition-d.html"
+
+**Actual file names at commit fb710f5:**
+- condition-a-fingerprint.html
+- condition-b-confirmation-code.html
+- condition-c-nullifier.html
+- condition-d-receipt-id.html
+
+**Fix applied (tick-3728):** Both paper and pre-registration updated to list exact file names instead of the generic shorthand.
+
+### Check (2): Held-constant list — INTERNAL CONTRADICTION ❌ FIXED
+
+**Paper before fix:** Held-constant list included "the collapsed verification section" — but the same sentence in §4.3 explicitly described two variable elements *within* that section (the panel label and the explanation reference). Including the section in the held-constant list directly contradicted the variable references.
+
+**Fix applied (tick-3728):** Removed "the collapsed verification section" from held-constant list. List now ends at "the download prompt."
+
+---
+
+### §4.3 Third-pass Summary (tick-3728)
+
+| Check | Status | Action |
+|---|---|---|
+| Stimuli file names | ❌ Generic shorthand | FIXED (tick-3728): exact names from fb710f5 |
+| Held-constant list internal contradiction | ❌ Contradiction | FIXED (tick-3728): removed collapsed verification section |
+
+---
+
+## §4.4 Third-pass Audit (tick-3729)
+
+**Checks performed:**
+1. Q5 rubric in paper/pre-reg vs. survey instrument §11
+
+### Check (1): Q5 rubric — INACCURACY ❌ FIXED
+
+**Paper/pre-reg before fix:** "score 2 = correctly identifies both privacy AND coercion protection as motivations"
+
+**Survey instrument §11 (authoritative rubric):** "score 2 = mentions privacy/anonymity AND explains why system does not store or reveal choice"
+
+Coercion is ONE valid example of a mechanism explanation — not the required element. A response stating "the system wasn't designed to record your choice" + "for privacy" scores 2 without mentioning coercion. A response stating only "to protect against coercion" without explaining the mechanism scores 1.
+
+**Fix applied (tick-3729):** Both paper and pre-registration updated to match instrument §11 rubric. Pre-reg now cross-references instrument §11.
+
+**Flagged (Jony-action, no fix applied — requires pre-data-collection decision):**
+- Q3 wording divergence: pre-reg says "If a coercive employer asked you to send a screenshot..." vs. instrument says "Imagine your employer...asks you to show them this screen...could they tell which voting option you chose?"
+- Q4 wording + foil divergence: pre-reg says "What would happen if you LOST this value?" vs. instrument says "If you CLOSED THIS SCREEN without saving..." — different temporal framing. Instrument also has a 4th foil (d) absent from pre-reg.
+
+---
+
+### §4.4 Third-pass Summary (tick-3729)
+
+| Check | Status | Action |
+|---|---|---|
+| Q5 rubric: coercion as required vs. example mechanism | ❌ Inaccuracy | FIXED (tick-3729): rubric aligned to instrument §11 |
+| Q3 wording divergence (pre-reg vs. instrument) | ⚠️ Pre-pilot | Jony-action: file pre-reg amendment if using instrument wording |
+| Q4 wording + foil divergence (pre-reg vs. instrument) | ⚠️ Pre-pilot | Jony-action: file pre-reg amendment if using instrument versions |
+
+---
+
+## §5.1 Third-pass Audit (tick-3730)
+
+**Checks performed:**
+1. RQ1–RQ4 vs. design note §4 — re-verify after changes in adjacent sections
+2. M4 cross-reference in §5.4 (adjacent to §5.1 calibration theme)
+3. §5.5 primary analysis contingency description vs. design note §9.1
+
+---
+
+### Check (1): RQ1–RQ4 re-verification — CLEAN ✅
+
+RQ1–RQ4 wording re-checked against design note §4. All four research questions remain semantically equivalent to the design note. Minor phrasing differences (e.g. "moderated by label" vs "moderated by label choice"; "schema import unchecked" vs "because it activates the wrong schema") are compatible paraphrases, not inaccuracies. No changes needed.
+
+### Check (2): M4 cross-reference in §5.4 — INACCURACY ❌ FIXED
+
+**Paper before fix:** "confidence-accuracy residual (M4; I2 condition only) ... (design note §7.1 M4)."
+
+**Design note structure:**
+- §7.1 Primary measures: M1 (Q-AC accuracy), M2 (McKnight trust), M3 (save intention)
+- §7.2 Secondary measures: M4 (confidence miscalibration residual), M5 (verification engagement), M6 (Q-OE)
+
+M4 is in §7.2, not §7.1.
+
+**Fix applied (tick-3730):** Changed "(design note §7.1 M4)" → "(design note §7.2 M4)".
+
+### Check (3): §5.5 primary analysis contingency — CLEAN ✅
+
+Paper §5.5: "The default primary endpoint is the E main effect on Q-AC accuracy... The L × E interaction is the secondary endpoint... If Study 1's H4 is supported (confirmation code overconfidence), the I-factor calibration analysis becomes a co-primary."
+
+Design note §9.1: E main effect on Q-AC → primary. L × E → secondary. Conditional on Study 1 H4 support: I-factor calibration becomes co-primary. ✅ All three contingency paths match.
+
+---
+
+### §5.1 Third-pass Summary (tick-3730)
+
+| Check | Status | Action |
+|---|---|---|
+| RQ1–RQ4 vs. design note §4 | ✅ Clean | None |
+| M4 cross-reference (§5.4): §7.1 → §7.2 | ❌ Wrong section ref | FIXED (tick-3730) |
+| §5.5 primary analysis contingency paths | ✅ Clean | None |
