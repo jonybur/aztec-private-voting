@@ -21,15 +21,25 @@ _Paper cannot be submitted without these._
 - **Depends on:** Jony-action #6 (deploy contract to v5 testnet) → extract endpoint URL → insert into §2.1
 - **Paper submission notes section** also lists this implicitly under "Study 1 data" but the placeholder is an independent blocker — even the current draft abstract+intro cannot be shared publicly with the placeholder.
 
-### 2. Kulyk et al. 2017 citation venue
-- **Location:** Paper submission notes (line ~469): "check Kulyk et al. 2017 venue (may be IFIP VoteID, not USENIX)"
-- **Status:** Not yet verified. Currently cited in bibliography but venue not confirmed in audit history.
-- **Action:** One web_search before final submission. Low effort, no dependency.
+### ~~2. Kulyk et al. 2017 citation venue~~ ✅ RESOLVED tick-3765
+- **Resolution:** Year corrected 2017→2015; venue corrected USENIX VoteID→VoteID 2015 LNCS Springer (commit 9e0e21d). Bibliography entry now reads: 'Kulyk, O., Teague, V., and Volkamer, M. (2015). "Extending Helios Towards Private Eligibility Verifiability." VoteID 2015, LNCS vol. 9269, pp. 57–73. Springer. [VERIFIED tick-3765]'
+- **No action needed.**
 
 ### 3. CHI 2027 call for papers — format requirements
 - **Location:** Paper submission notes (line ~468): "CHI 2027 call for papers — confirm word limit and formatting requirements"
 - **Status:** Not yet checked. CHI 2027 call likely opens August 2026.
 - **Action:** Check CHI 2027 website when call opens (~August 2026).
+
+### 4. JONY-ACTION G: 'Unpublished pilot study, N=12' in §2.1 — document or reframe (tick-3767)
+- **Location:** `drafts/piup-chi-paper-draft-2026-06-22.md` §2.1 Verification affordance paragraph
+- **Original claim:** "user studies of comparable receipt UIs found that presenting it expanded created cognitive overload and caused users to disengage from the primary status line (unpublished pilot study, N=12)"
+- **Problem:** No documentation of this N=12 pilot study exists anywhere in the repo. CHI reviewers will ask. An undocumented 'unpublished pilot study' citation in a CHI submission is a credibility risk.
+- **Tick-3767 action:** Replaced the empirical claim with a design-rationale reframe: 'expanding it by default would displace the primary status line downward and compete for initial attention at the confirmation step...'
+- **Jony must decide before submission:**
+  - (a) If the pilot WAS run: document it in a research methods note (`docs/pilot-receipt-ui-2026-xx.md`) and restore the empirical citation with full documentation (N, method, conditions, finding). Recommended OSF registration if possible.
+  - (b) If the pilot was NOT run (or was informal ad-hoc testing): the design-rationale reframe applied in tick-3767 is CHI-safe. Confirm and leave as-is.
+- **Current paper state:** Design-rationale reframe applied (tick-3767). JONY-ACTION G inline note in paper.
+- **Blocking?** Not submission-blocking on its own, but a credibility risk if left unresolved.
 
 ---
 
@@ -131,7 +141,7 @@ _These cannot be completed until data exists._
 
 | Category | Count | Key bottleneck |
 |----------|-------|----------------|
-| 🔴 Blocking CHI submission | 3→2 fixed + 1 new | [verification URL] = needs contract deploy; JONY-ACTION F added |
+| 🔴 Blocking CHI submission | 3→2 fixed + 2 new | [verification URL] = needs contract deploy; JONY-ACTION F resolved (tick-3766); JONY-ACTION G added (tick-3767): N=12 pilot undocumented — design-rationale reframe applied |
 | 🟡 Blocking pre-pilot (OSF amendments) | 5 (A–E) | Wording decisions |
 | 🟢 Blocking Prolific launch | 3 | OSF upload is prerequisite |
 | 🔵 Post-data | 3 | Waiting on Study 1 |
