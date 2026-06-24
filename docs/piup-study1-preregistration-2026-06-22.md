@@ -351,9 +351,9 @@ Any deviation from this pre-registration during data collection or analysis will
 | Item | Cost (USD) |
 |------|------------|
 | Pilot (N = 40, ~10 min, ~$2.50/participant Prolific) | ~$100 |
-| Full study (N = 200, ~10 min, ~$2.50/participant) | ~$500 |
-| Platform fee (33%) | ~$200 |
-| **Total** | **~$800** |
+| Full study (N = 280, ~10 min, ~$2.50/participant) | ~$700 |
+| Platform fee (33%) | ~$264 |
+| **Total** | **~$1,064** |
 
 Note: Pilot cost is not included in the Wave 3 grant application budget request, as it will be self-funded from personal research allocation. Full study cost is covered by the grant application research budget.
 
