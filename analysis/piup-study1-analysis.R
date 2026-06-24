@@ -652,7 +652,7 @@ tukey_df$comparison <- rownames(tukey_df)
 
 h4_comparisons <- c("B-A", "B-C", "B-D")
 # Tukey HSD uses alphabetical order; B-A, B-C, B-D should be present
-# If not (e.g. stored as A-B), flip sign
+# If not (e.g. stored as A-B), flip sign and negate diff
 get_tukey_p <- function(tukey_df, comp) {
   row <- tukey_df[tukey_df$comparison == comp, ]
   if (nrow(row) == 0) {
@@ -665,16 +665,31 @@ get_tukey_p <- function(tukey_df, comp) {
   row[["p adj"]]
 }
 
+get_tukey_diff <- function(tukey_df, comp) {
+  # Returns signed diff; if comparison stored reversed (e.g. A-B when B-A requested),
+  # negates sign so result always reflects (requested_first - requested_second).
+  row <- tukey_df[tukey_df$comparison == comp, ]
+  if (nrow(row) > 0) return(row[["diff"]])
+  parts <- strsplit(comp, "-")[[1]]
+  rev_comp <- paste(rev(parts), collapse="-")
+  row <- tukey_df[tukey_df$comparison == rev_comp, ]
+  if (nrow(row) == 0) return(NA)
+  -row[["diff"]]  # negate because comparison was stored in opposite direction
+}
+
 cat("Tukey HSD: B vs. {A, C, D} (pre-specified)\n")
-h4_p_vals <- sapply(h4_comparisons, get_tukey_p, tukey_df = tukey_df)
+h4_p_vals   <- sapply(h4_comparisons, get_tukey_p,   tukey_df = tukey_df)
+h4_diff_vals <- sapply(h4_comparisons, get_tukey_diff, tukey_df = tukey_df)
 
 # Holm within H4 family (m=3) — Tukey already family-wise corrected,
 # but per pre-registration we report Holm within H4 family explicitly
 h4_p_holm <- p.adjust(h4_p_vals, method = "holm")
 for (i in seq_along(h4_comparisons)) {
-  cat(sprintf("  %s: Tukey p_adj = %.4f | Holm (within H4) = %.4f %s\n",
-              h4_comparisons[i], h4_p_vals[i], h4_p_holm[i],
-              ifelse(h4_p_holm[i] < 0.05, "* SIGNIFICANT", "ns")))
+  direction_ok <- !is.na(h4_diff_vals[i]) && h4_diff_vals[i] > 0
+  cat(sprintf("  %s: diff=%.3f, Tukey p_adj=%.4f | Holm=%.4f %s%s\n",
+              h4_comparisons[i], h4_diff_vals[i], h4_p_vals[i], h4_p_holm[i],
+              ifelse(h4_p_holm[i] < 0.05, "* SIGNIFICANT", "ns"),
+              ifelse(!direction_ok, " [DIRECTION REVERSED — B < other]", "")))
 }
 
 # Calibration analysis: Spearman correlation per condition
@@ -692,16 +707,24 @@ for (cond in CONDITIONS) {
               cond, CONDITION_LABELS[cond], cor_result$estimate, cor_result$p.value))
 }
 
-h4_support <- all(h4_p_holm < 0.05, na.rm = TRUE)
+# H4 support requires BOTH significance AND correct direction (B > others)
+# Tukey HSD is two-tailed; must verify direction explicitly.
+h4_sig       <- all(h4_p_holm  < 0.05,  na.rm = TRUE)
+h4_direction <- all(h4_diff_vals > 0, na.rm = TRUE)  # diff = B - other; must be positive
+h4_support   <- h4_sig && h4_direction
+
 rho_B <- spearman_results[["B"]]$estimate
 rho_A <- spearman_results[["A"]]$estimate
 cat(sprintf("\n  ρ(B) = %.3f vs. ρ(A) = %.3f → calibration %s for B vs. A\n",
             rho_B, rho_A, ifelse(rho_B < rho_A, "LOWER (H4 calibration direction)", "higher")))
 
 h4_verdict <- if (h4_support) {
-  "SUPPORTED: B confidence significantly > all other conditions (Holm-corrected)"
+  "SUPPORTED: B confidence significantly > all other conditions (Holm-corrected, direction confirmed)"
+} else if (h4_sig && !h4_direction) {
+  "DIRECTION FAILURE: B significantly DIFFERENT from others but NOT in predicted direction (B < some). H4 not supported."
 } else {
-  sprintf("NOT SUPPORTED: only %d/3 comparisons significant", sum(h4_p_holm < 0.05, na.rm=TRUE))
+  sprintf("NOT SUPPORTED: only %d/3 comparisons significant (and/or direction not consistently B > others)",
+          sum(h4_p_holm < 0.05, na.rm=TRUE))
 }
 cat(sprintf("\nH4 VERDICT: %s\n\n", h4_verdict))
 
