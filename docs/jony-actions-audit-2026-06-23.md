@@ -389,3 +389,51 @@ Reasoning:
 - All 5 recommendations now written. Jony's remaining decision: accept these recommendations or choose otherwise. All 5 OSF amendments are already drafted in `docs/osf-amendment-filing-2026-06-24.md` and ready to paste into OSF.
 
 _Last updated: tick-3804 (2026-06-24)._
+
+---
+
+## Update: tick-3813 (2026-06-24) — state sync ticks 3805–3813
+
+**CHI blocking items: UNCHANGED (2)** — no new items added; no items resolved since tick-3804.
+
+### What happened ticks 3805–3812
+
+**tick-3805 (2026-06-24):** v5 runbook updated — added Step 3b-compile noting contract artifact was stale since May 25. Three June 22 security changes (F1-RESIDUAL, EIP-191, N-F4) documented as requiring fresh nargo compile before deploy. Commit bd25f54.
+
+**tick-3806 (2026-06-24):** G\*Power pre-submission note in §4.2 cleared — the McNemar→independent-proportions correction paragraph already correctly explained the fix inline; no separate annotation needed. JONY-ACTION H (Norman paraphrase) independently re-confirmed acceptable: secondary source checks confirm paraphrase accurately captures the feedback principle; CHI reviewers do not require page numbers for foundational design texts. Inline [JONY-ACTION H] annotation remains in §6.3 for Jony's explicit sign-off before submission.
+
+**tick-3807 (2026-06-24):** PIUP Study 1 stimuli pre-pilot verification — all 5 checks PASS. Four condition HTML files confirmed correct: label text, privacy explainer copy, full hex value, copy button, verify panel, condition watermarks, Vercel config. Deployment-ready pending Jony deploy + Qualtrics setup.
+
+**ticks 3808–3809 (2026-06-24):** Thursday Talks series — full pre-publication review (tick-3808); all 6 flagged Part 2 arxiv citations verified real (tick-3809). All three posts clear to publish after citation check.
+
+**tick-3810 (2026-06-24):** Thursday Talks Part 2 line-edit fixes applied. Three fixes:
+1. arxiv:2605.05440 description corrected (authorization propagation, not OIDC — that's 2501.09674)
+2. Section header 'The AI agent problem is already here' → 'The scope problem is already in the field'
+3. Closing paragraph tightened — removed 'almost certain' qualifier
+
+**tick-3811 (2026-06-24):** Two draft fixes:
+1. Thursday Talks Part 1 — Weisz et al. CHI 2024 citation added to body text (was in references footer but uncited in text).
+2. `drafts/piup-study-arc-post-draft.md` — n=50/N=200 corrected to n=70/N=280; power analysis paragraph updated to match pre-registration (H2 primary endpoint, Cohen's h=0.30, required n=67, target n=70, 82% power).
+
+**tick-3812 (2026-06-24):** nargo beta.22 keccak256 compatibility fix + fresh contract artifact. `std::hash::keccak256` was removed in beta.22; fix adds external keccak256 dependency (`v0.1.3`) and updates call site in `main.nr`. Contract recompiled: 17 functions, 512,340 chars bytecode, includes all June 22 security patches (F1-RESIDUAL, EIP-191, N-F4). **This is the deploy-ready artifact.** v5 testnet confirmed live at block 7699 (was 5620 June 22 — still advancing). Commit b828cc6.
+
+### Summary of Jony actions — current state (tick-3813)
+
+| # | Action | Blocks | Status |
+|---|---|---|---|
+| 1 | Upload 3 OSF files + 5 amendments | OSF DOI → forum post → paper [verification URL] | ⏳ Jony action |
+| 2 | Create Qualtrics survey (4 conditions with condition URLs) | PIUP Study 1 launch | ⏳ Jony action |
+| 3 | Deploy stimuli: `npx vercel study-stimuli/ --prod` + set Prolific codes A/B/C/D | PIUP Study 1 launch | ⏳ Jony action |
+| 4 | Deploy contract: run `scripts/deploy-testnet.ts` with keys | [CONTRACT ADDRESS] in forum post + paper §2.1 | ⏳ Jony action — artifact ready (b828cc6) |
+| 5 | Confirm JONY-ACTION G: N=12 pilot design-rationale reframe sufficient? | CHI submission | ⏳ Jony judgment |
+| 6 | Confirm JONY-ACTION H: Norman paraphrase in §6.3 accepted? | CHI submission | ⏳ Jony judgment (recommended: accept) |
+| 7 | Decide OSF amendment wordings A–C (osf-amendment-filing-2026-06-24.md §A) | OSF upload | ⏳ Jony decision |
+| 8 | Review + publish Thursday Talks series (3 posts) | HCI portfolio visibility | ⏳ Jony action |
+| 9 | Email Sauvik Das (send after OSF DOI live; target: Sep–Oct 2026) | CMU HCII radar | 📅 Scheduled Sep-Oct |
+| 10 | Email Annie Anton (draft ready) | GT HCI radar | ⏳ Jony action |
+
+**Critical path:** Deploy contract (#4) → get address → update §2.1 [verification URL] + forum post [CONTRACT ADDRESS]. In parallel: OSF decisions A–C (#7) → upload 3 files + 5 amendments (#1) → get DOI → update forum post + email draft. Once both placeholders filled: submit forum post.
+
+**CHI paper:** Compilation-ready for submission once [verification URL] filled (#4) and G/H confirmed (#5, #6). All other review passes CLEAN through tick-3812.
+
+_Last updated: tick-3813 (2026-06-24)._
