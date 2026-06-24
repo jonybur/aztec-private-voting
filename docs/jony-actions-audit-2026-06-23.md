@@ -309,3 +309,83 @@ Reasoning:
 - Once all 5 wording decisions are made, OSF upload unblocks Qualtrics + stimuli deploy + Prolific launch.
 
 _Last updated: tick-3802 (2026-06-24)._
+
+---
+
+## Update: tick-3804 (2026-06-24)
+
+**Items A, B, C — instrument/pre-reg wording reconciliation: RECOMMENDATIONS**
+
+*Parallel analysis to tick-3802 Items D/E. Cross-checks instrument (survey §3, §4) against pre-registration (§5.2), paper (§4.3), and theoretical purpose of each item.*
+
+---
+
+### Item A — Q3: "Coercive employer" vs. "Your employer" framing
+
+**Recommendation: Use instrument wording. File OSF amendment.**
+
+Reasoning:
+
+1. **"Your employer" is more ecologically valid than "a coercive employer".** The adjective "coercive" flags the adversarial nature of the scenario explicitly, which arguably scaffolds the participant's interpretation. Real coercion rarely announces itself. The instrument's "Imagine your employer tells you they want to verify how you voted" describes the same scenario without the loaded framing — the coercion is implicit in the request, which is how it works in practice.
+
+2. **"Could they tell which voting option you chose" is more precise than "could they learn how you voted".** "How you voted" is ambiguous — it could encompass whether you voted, when you voted, or who you voted for. "Which voting option you chose" targets exactly the variable being tested (does the receipt reveal the selection?). Removing this ambiguity improves measurement validity without changing the correct answer (No).
+
+3. **"Show them this screen and your [LABEL]" maps to the actual receipt artifact.** The instrument names the specific object being shared — the receipt screen plus the [LABEL] token. The pre-reg's "send a screenshot" is also valid, but in the study context participants are looking at the receipt in situ; "show them this screen" is a better fit. The [LABEL] embed also makes explicit that the token itself is part of what's being shown (consistent with the coercer seeing the full receipt).
+
+4. **Amendment risk is low.** Correct answer (No), foil structure (Yes / No / Unsure ↔ Yes / No / I'm not sure), and binary scoring are all unchanged. This is an ecological concreteness improvement, not a change in construct.
+
+**One concern to confirm:** The phrase "your screen and your [LABEL]" may read as slightly redundant since [LABEL] is displayed on the screen. Confirm the intended reading is "showing someone the receipt page (which includes your [LABEL])" — if so, the wording is correct. If the intent was to test whether sharing just the [LABEL] token (e.g. copy-pasting the token string) reveals the vote, the wording needs adjustment. Given Q3 is specifically about the receipt screen, the former reading is almost certainly correct.
+
+**Paper impact:** §4.3 currently quotes pre-reg wording. If instrument wording chosen, §4.3 must be updated to quote the instrument version.
+
+**OSF amendment text (ready to file):** Already drafted in `docs/osf-amendment-filing-2026-06-24.md` Decision A.
+
+---
+
+### Item B — Q4: "Lost this value" vs. "Closed this screen without saving"
+
+**Recommendation: Use instrument wording. File OSF amendment. The foil (d) change is the most significant improvement.**
+
+Reasoning:
+
+1. **Foil (d) change is the key substantive improvement.** Pre-reg foil (d): "your vote would be reversed" — this is a fear-based distractor that most participants would immediately reject as implausible (why would losing a receipt reverse a vote?). Instrument foil (d): "nothing — I do not need to save it" — this captures the realistic "I don't need to keep a record" mental model. This is a much better distractor because it reflects a genuine, prevalent belief. Selecting this foil indicates the participant has not understood the verification purpose of the receipt. The pre-reg's foil (d) would be weak and barely selected; the instrument's foil (d) is theoretically motivated.
+
+2. **First-person foil wording ("my vote would be cancelled", "I could still check") is better survey design.** The pre-reg uses second-person foils ("you would lose your vote"), while the question stem is second-person. The instrument uses first-person foils. In Qualtrics, the question stem is "what would happen?" — first-person foils flow more naturally. Not a substantive issue, but improves item clarity.
+
+3. **"Closed this screen without saving" vs. "lost this value" — tradeoff acknowledged.** "Lost" is more general and tests token permanence as an abstract concept. "Closed this screen" is interface-specific and tests affordance recall. For PIUP, the design argument is that good receipt UX should prompt saving behaviour — testing whether participants recognise that closing without saving loses the receipt maps directly to the interface design under study. The slightly more concrete framing is a better fit for the research question.
+
+4. **[LABEL] embed in Q4 is consistent with Q3 and BI1.** Naming the artifact in the question ("saving your [LABEL]") is coherent with the instrument's overall approach.
+
+**Paper impact:** §4.3 currently quotes pre-reg Q4. If instrument wording chosen, §4.3 must be updated.
+
+**OSF amendment text (ready to file):** Already drafted in `docs/osf-amendment-filing-2026-06-24.md` Decision B.
+
+---
+
+### Item C — Q3 clarification: baseline vs. amendment-only
+
+**Recommendation: §7.2 is authoritative. Remove clarification from baseline. File amendment to resolve §5.2/§7.2 conflict.**
+
+Reasoning:
+
+1. **The clarification "Assume they can only see what is on this screen" anchors participants toward the correct answer.** If you tell participants to assume the coercer has access only to the receipt screen, you are pre-answering part of Q3 for them: since the receipt doesn't show the vote choice, the answer is obviously No. This removes exactly the cognitive work Q3 is designed to measure — whether participants spontaneously understand that the receipt cannot reveal the vote choice to a coercer. Including the clarification at baseline inflates correct response rates and reduces the variance Q3 needs to detect a label effect.
+
+2. **The actual instrument (survey §3) doesn't include it — which is the correct design decision.** The instrument was built for live use and omits the clarification. This is not an oversight: it reflects the same reasoning above. Treat the instrument as the ground truth for baseline design; the §5.2 inclusion was likely editorial over-specification, not intentional.
+
+3. **§7.2's framing makes more sense theoretically.** Post-pilot, if Q3 is showing evidence of misinterpretation (e.g., participants think the employer can somehow access backend records), adding the clarification becomes a valid correction. As a baseline item, it should test natural comprehension. As a corrective amendment, it addresses a specific, observed failure mode. The amendment-only framing gives it a clear, justified use case.
+
+4. **Resolving §5.2/§7.2 in favour of §7.2 also simplifies the pre-reg.** The §5.2 language listing the clarification as baseline text creates a false impression that omitting it is a deviation. Removing it from §5.2 (or clearly noting §7.2 takes precedence) means the instrument-as-designed IS the pre-reg baseline, with no deviation. This is the clean path.
+
+**OSF amendment text (ready to file):** Already drafted in `docs/osf-amendment-filing-2026-06-24.md` Decision C.
+
+---
+
+**Updated pre-pilot gate summary (tick-3804):**
+- A: RECOMMENDATION = use instrument wording (file amendment)
+- B: RECOMMENDATION = use instrument wording — foil (d) improvement is the key change (file amendment)
+- C: RECOMMENDATION = §7.2 authoritative — remove clarification from baseline (file amendment)
+- D: RECOMMENDATION = include two-part MQ1 (file amendment)
+- E: RECOMMENDATION = use instrument BI1 wording with label embedded (file amendment)
+- All 5 recommendations now written. Jony's remaining decision: accept these recommendations or choose otherwise. All 5 OSF amendments are already drafted in `docs/osf-amendment-filing-2026-06-24.md` and ready to paste into OSF.
+
+_Last updated: tick-3804 (2026-06-24)._
