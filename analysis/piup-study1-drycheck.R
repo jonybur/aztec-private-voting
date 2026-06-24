@@ -180,7 +180,8 @@ cat(sprintf("  Passed at least one check: %d / %d (%.1f%%) %s\n",
 # PACKAGE CHECK REPORT
 # =============================================================================
 cat("\n--- Package availability ---\n")
-pkgs <- c("PropCIs", "TOSTER", "multcomp", "irr", "dunn.test", "effsize", "DescTools", "broom")
+# [AMENDMENT 2026-06-24] DescTools removed from required packages list.
+pkgs <- c("PropCIs", "TOSTER", "multcomp", "irr", "dunn.test", "effsize", "broom")
 for (p in pkgs) {
   avail <- requireNamespace(p, quietly = TRUE)
   cat(sprintf("  %-15s %s\n", p, if(avail) "OK" else "MISSING — install before full study run"))

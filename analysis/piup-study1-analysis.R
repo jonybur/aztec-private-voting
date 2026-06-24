@@ -12,7 +12,8 @@
 #
 # Required packages:
 #   install.packages(c("PropCIs", "TOSTER", "multcomp", "irr", "dunn.test",
-#                      "effsize", "DescTools", "broom"))
+#                      "effsize", "broom"))
+# [AMENDMENT 2026-06-24] DescTools removed; replaced with base-R (see below).
 #
 # Usage:
 #   1. Replace DATA_PATH with the path to your Prolific export (CSV)
@@ -32,10 +33,39 @@ library(TOSTER)    # Equivalence tests (TOST)
 library(irr)       # Cohen's kappa (inter-rater reliability)
 library(dunn.test) # Dunn's post-hoc for Kruskal-Wallis
 library(effsize)   # Cohen's h, d
-library(DescTools) # CramerV, OddsRatio
+# [AMENDMENT 2026-06-24] DescTools removed — CramerV and OddsRatio
+# replaced with base-R equivalents (cramer_v_base / odds_ratio_base below).
+# Statistical results are identical; change made for portability (DescTools
+# requires the 'fs' C++ dependency unavailable in the analysis environment).
+# This amendment is logged per §14 (Amendments log) of the pre-registration.
 library(broom)     # tidy() for model output
 
 set.seed(20260622)  # Reproducibility seed — locked at pre-registration date
+
+# --- Base-R replacements for DescTools::CramerV and DescTools::OddsRatio ---
+# [AMENDMENT 2026-06-24]: these replace the DescTools package calls.
+
+cramer_v_base <- function(chisq_stat, n, k) {
+  # Cramér's V = sqrt(χ² / (n × (k − 1)))
+  # k = min(rows, cols) of the contingency table
+  sqrt(as.numeric(chisq_stat) / (n * (k - 1)))
+}
+
+odds_ratio_base <- function(mat, conf.level = 0.95) {
+  # Woolf (log-transform) CI for OR from a 2×2 matrix
+  # mat rows = groups, cols = correct / incorrect
+  a <- mat[1,1]; b <- mat[1,2]; c <- mat[2,1]; d <- mat[2,2]
+  # Guard against zeros (add 0.5 continuity correction)
+  if (any(c(a,b,c,d) == 0)) { a <- a+0.5; b <- b+0.5; c <- c+0.5; d <- d+0.5 }
+  or_val <- (a * d) / (b * c)
+  z      <- qnorm(1 - (1 - conf.level) / 2)
+  se_log <- sqrt(1/a + 1/b + 1/c + 1/d)
+  ci_lo  <- exp(log(or_val) - z * se_log)
+  ci_hi  <- exp(log(or_val) + z * se_log)
+  result <- or_val
+  attr(result, "conf.int") <- c(ci_lo, ci_hi)
+  result
+}
 
 DATA_PATH     <- "data/prolific-export.csv"   # Replace with actual path
 RESULTS_DIR   <- "analysis/results"
@@ -261,7 +291,7 @@ for (cond in CONDITIONS) {
   sub <- df[df$condition == cond, ]
   n_c <- nrow(sub)
   for (q in c("q1", "q2", "q3", "q4")) {
-    col <- get(paste0("COL_Q", toupper(q)))
+    col <- get(paste0("COL_", toupper(q)))
     x   <- sum(sub[[col]], na.rm = TRUE)
     ci  <- wilson_ci(x, n_c)
     desc_results <- rbind(desc_results, data.frame(
@@ -324,7 +354,7 @@ cat("Chi-squared (omnibus):\n")
 print(chisq_rq1)
 
 # Cramér's V
-cramer_v <- DescTools::CramerV(cont_table)
+cramer_v <- cramer_v_base(chisq_rq1$statistic, sum(cont_table), min(dim(cont_table)))
 cat(sprintf("Cramér's V = %.3f\n\n", cramer_v))
 
 cat("Decision: ")
@@ -364,7 +394,7 @@ two_by_two_chisq <- function(x1_correct, n1, x2_correct, n2,
   } else {
     p_one <- 1 - p_two / 2  # opposite direction; conservative
   }
-  or_result <- DescTools::OddsRatio(mat, conf.level = conf)
+  or_result <- odds_ratio_base(mat, conf.level = conf)
   list(
     chi2         = test$statistic,
     df           = test$parameter,
