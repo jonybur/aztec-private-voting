@@ -49,7 +49,7 @@ absent vote choice as a system failure rather than a design-enforced privacy gua
 The design I arrived at (the Proof-of-Inclusion UX Pattern) uses an explicit absent-choice
 explanation alongside a surrogate identifier. The core claim is that this explanation
 produces correct mental models of the system's privacy behavior in non-technical voters. It
-is now pre-registered on OSF: a 4-condition between-subjects Prolific study (N=200),
+is now pre-registered on OSF: a 4-condition between-subjects Prolific study (n=70 per condition, N=280),
 14 confirmatory tests across 4 Holm-corrected hypothesis families. The system is live on
 Aztec v5 testnet; the pre-registration and full analysis scripts are in the public repo.
 

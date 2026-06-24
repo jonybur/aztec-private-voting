@@ -1,0 +1,15 @@
+"family","test_id","description","p_raw","p_holm","significant"
+"H1","H1-Q2","Q2 accuracy A > D (one-tailed)",0.1646,0.3291,FALSE
+"H1","H1-Q3","Q3 accuracy A > D (one-tailed)",0.3028,0.3291,FALSE
+"H2","H2-primary","Q2 accuracy A > B (one-tailed) [PRIMARY ENDPOINT]",0.1646,0.3291,FALSE
+"H2","H2-secondary","Q3 accuracy A > B (one-tailed)",0.0339,0.1018,FALSE
+"H2","H2-tertiary","Composite equivalence A ≈ B, bounds ±0.10 (TOST)",0.9562,0.9562,FALSE
+"H3","H3-Q1(C<A)","Q1 accuracy C < A (one-tailed)",0.2051,1,FALSE
+"H3","H3-Q1(C<B)","Q1 accuracy C < B (one-tailed)",0.2051,1,FALSE
+"H3","H3-Q1(C<D)","Q1 accuracy C < D (one-tailed)",0.8286,1,FALSE
+"H3","H3-comp(C<A)","Composite accuracy C < A (one-tailed)",0.0169,0.1017,FALSE
+"H3","H3-comp(C<B)","Composite accuracy C < B (one-tailed)",0.8286,1,FALSE
+"H3","H3-comp(C<D)","Composite accuracy C < D (one-tailed)",0.7021,1,FALSE
+"H4","H4-conf(B>A)","Confidence B > A (Tukey HSD)",0.8078,1,FALSE
+"H4","H4-conf(B>C)","Confidence B > C (Tukey HSD)",0.99,1,FALSE
+"H4","H4-conf(B>D)","Confidence B > D (Tukey HSD)",1,1,FALSE

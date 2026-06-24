@@ -44,7 +44,7 @@ system failure rather than a privacy guarantee. The design I arrived at (called 
 Proof-of-Inclusion UX Pattern, or PIUP) uses an explicit absent-choice explanation alongside a
 surrogate identifier. The core claim is that this explanation produces correct privacy mental
 models faster than technically correct alternatives. That claim is now pre-registered on OSF:
-Study 1 is a 4-condition between-subjects Prolific study (N=200), 14 confirmatory tests across
+Study 1 is a 4-condition between-subjects Prolific study (n=70 per condition, N=280), 14 confirmatory tests across
 4 Holm-corrected hypothesis families. The system is live on Aztec v5 testnet.
 
 The reason I want to pursue this specifically at the SPUD Lab is a prediction I'm calling H4.

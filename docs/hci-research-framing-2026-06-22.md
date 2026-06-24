@@ -99,7 +99,7 @@ The following user study program would establish whether the PIUP design decisio
 
 | Study | Central question | Method | Status |
 |-------|-----------------|--------|--------|
-| 1 | Does identifier label affect privacy mental model? | 4-condition between-subjects screenshot study (Prolific, N=200) | Pre-registered; OSF upload + pilot pending |
+| 1 | Does identifier label affect privacy mental model? | 4-condition between-subjects screenshot study (Prolific, N=280) | Pre-registered; OSF upload + pilot pending |
 | 2 | Does absent-choice explanation affect trust and save behavior? Can calibration reduce over-confidence? | 2×2 L×E between-subjects interactive prototype study + calibration factor I (Prolific, N=240) | Design note written; finalise after Study 1 pilot |
 | 3 | Do users actually return to verify? What predicts verification? | Longitudinal field study in live DAO deployment | Deferred until Study 2 complete |
 
@@ -107,7 +107,7 @@ The following user study program would establish whether the PIUP design decisio
 
 **Question:** Does the identifier label on a private voting receipt — fingerprint, confirmation code, nullifier, or receipt ID — affect the user's mental model of what that receipt proves?
 
-**Method:** 4-condition between-subjects screenshot study on Prolific (N=200, 50 per condition). Participants see a static receipt image after a simulated vote. Four comprehension questions (Q1–Q4) test whether they believe: the system knows their choice, showing the receipt would reveal their vote, the identifier proves how they voted, and the receipt's absence of their choice is a failure or a feature. One open-text probe (Q5). Primary endpoint: Q2 ("does this prove how I voted?") for conditions A vs B (fingerprint vs. confirmation code).
+**Method:** 4-condition between-subjects screenshot study on Prolific (n=70 per condition, N=280). Participants see a static receipt image after a simulated vote. Four comprehension questions (Q1–Q4) test whether they believe: the system knows their choice, showing the receipt would reveal their vote, the identifier proves how they voted, and the receipt's absence of their choice is a failure or a feature. One open-text probe (Q5). Primary endpoint: Q2 ("does this prove how I voted?") for conditions A vs B (fingerprint vs. confirmation code).
 
 **Pre-registered hypotheses (4 families, 14 tests, Holm correction):** H1 — fingerprint/confirmation code outperform nullifier on Q2/Q3. H2 — fingerprint and confirmation code are accuracy-equivalent overall (±10pp TOST composite), but diverge on Q2/Q3 specifically. H3 — control condition scores lower than all labelled conditions on Q1. H4 — confirmation code produces highest confidence with moderate accuracy (calibration failure).
 
