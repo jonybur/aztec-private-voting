@@ -16,6 +16,20 @@ We describe the pattern's instantiation in Aztec Private Voting - a Noir ZK cont
 
 PIUP formalises three invariants - surrogate independence, surrogate privacy in transit, and minimal receipt content - and identifies one named limitation: vote choice remains visible in public calldata at the protocol layer, a constraint not resolvable through UI design.
 
+> **[FORMATTING-TRIM — tick-3796]** CHI abstract word limit is ~150 words; current abstract is ~261 words. Below is a 152-word trimmed version for Jony's review before submission. All core claims preserved; prose pruned.
+>
+> ---
+>
+> Submission confirmations carry an implicit claim: the system received what you sent. In private cryptographic voting, this creates a coercion surface — a receipt showing the submitted choice can be demanded as compliance proof.
+>
+> We present the **Proof-of-Inclusion UX Pattern (PIUP)**, a design class for systems that must confirm participation without revealing content. PIUP centers on *protective absence*: deliberate omission of the submitted choice, paired with a signal marking omission as intentional. This inverts Norman's feedback principle — correct feedback proves the action is *protected from display*.
+>
+> We instantiate PIUP in Aztec Private Voting and report two empirical studies: Study 1 (N=280, pre-registered, 4-condition between-subjects) on identifier label effects on privacy mental models; Study 2 (N=240, planned, 2×2×2 factorial) on explanation and calibration. PIUP formalises three invariants (surrogate independence, surrogate privacy in transit, minimal receipt content) and one named limitation: vote choice is visible in public calldata, not resolvable through UI design.
+>
+> ---
+>
+> **Jony-action:** Review and adopt trimmed abstract above, or revise further to taste, before CHI submission. The 261-word version remains above as the working draft.
+
 ---
 
 ## 1. Introduction
