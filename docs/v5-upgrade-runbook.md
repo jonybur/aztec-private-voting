@@ -53,14 +53,19 @@ curl -fsSL https://install.aztec.network | bash
 export PATH="$HOME/.aztec/bin:$PATH"
 ```
 
-### 3b-compile. Recompile contract ⚠️ REQUIRED — artifact is stale
+### 3b-compile. Recompile contract ✅ DONE (tick-3812, 2026-06-24)
 
-> **Why:** The compiled artifact at `contracts/target/private_voting-PrivateVoting.json` was last
-> produced **2026-05-25**. Contract source code was updated **2026-06-22** with three security
-> fixes (F1-RESIDUAL cast_vote mode restriction, EIP-191 circuit for ADR-036 Path C, N-F4
-> constructor guard). Deploying the old artifact would deploy **unpatched code**.
+> **Artifact freshly compiled 2026-06-24** with nargo 1.0.0-beta.22. Now includes all June 22
+> security patches: F1-RESIDUAL cast_vote mode restriction, EIP-191 circuit (ADR-036 Path C),
+> N-F4 constructor guard. 17 functions, 512,340 chars bytecode.
 
+> **Note:** nargo beta.22 removed `std::hash::keccak256`. Fixed in this commit:
+> - `contracts/Nargo.toml`: added `keccak256 = { tag = "v0.1.3", git = "https://github.com/noir-lang/keccak256" }`
+> - `contracts/src/main.nr`: changed `use std::hash::keccak256` → `keccak256::keccak256(...)` call directly
+
+If you need to recompile manually:
 ```bash
+export PATH="$HOME/.nargo/bin:$PATH"
 cd contracts
 nargo compile
 # Should produce: contracts/target/private_voting-PrivateVoting.json

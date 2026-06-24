@@ -23,7 +23,7 @@ pub contract PrivateVoting {
     };
     use sha256::sha256_var;
     use std::ecdsa_secp256k1;
-    use std::hash::keccak256;
+    // keccak256 from noir-lang/keccak256 v0.1.3 (std::hash::keccak256 removed in nargo beta.22+)
     use crate::merkle::{
         derive_hash160_sha256d,
         encode_field_as_root,
@@ -394,7 +394,7 @@ pub contract PrivateVoting {
         let mut eip191_msg: [u8; 60] = [0; 60];
         for i in 0..28 { eip191_msg[i] = eip191_prefix[i]; }
         for i in 0..32 { eip191_msg[28 + i] = challenge[i]; }
-        let msg_hash = keccak256(eip191_msg, 60);
+        let msg_hash = keccak256::keccak256(eip191_msg, 60);
         let sig_valid = ecdsa_secp256k1::verify_signature(pubkey_x, pubkey_y, sig, msg_hash);
         assert(sig_valid, "invalid secp256k1 signature: not the key owner (EIP-191)");
 
