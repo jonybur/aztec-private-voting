@@ -255,3 +255,57 @@ Found and fixed a real bug in `analysis/piup-study1-analysis.R`:
 - **Recommendation:** Accept paraphrase. CHI reviewers do not typically require page numbers for well-known design principles from foundational texts; the attribution to Norman (1988) is sufficient.
 
 **Net CHI blocking items: unchanged (2)** — [verification URL] placeholder + JONY-ACTION G confirm.
+
+---
+
+## Update: tick-3802 (2026-06-24)
+
+**Items D and E — instrument/pre-reg wording reconciliation: RECOMMENDATIONS**
+
+*This analysis cross-checks the instrument (§6 MQ1; §7 BI1) against the pre-registration (§4.6 MQ1; §6.10 BI1), the codebook (variables), and the scoring rubric to produce concrete recommendations so Jony can make these calls quickly.*
+
+### Item D — MQ1: Include "What does it NOT prove?"
+
+**Recommendation: Include the two-part wording. File OSF amendment updating question text and scoring format.**
+
+Reasoning:
+
+1. **Instrument already has it, rubric already handles it.** The instrument §6 wording is `"In your own words: what does your [LABEL] prove about your vote? What does it NOT prove?"` — and the instrument rubric and codebook already define two separate 0/1 dimensions: `MQ1_inclusion_r1/r2` (does the response correctly state the vote was counted?) and `MQ1_leakage_r1/r2` (does the response correctly state the vote choice is hidden?). The two-part coding is already there.
+
+2. **The "not prove" clause is the load-bearing H2 measurement.** Study 1 H2 tests whether "vote fingerprint" produces a better privacy mental model than "confirmation code" — specifically on understanding that the receipt does *not* reveal the vote choice (the dissociation mechanism). Without the `leakage` dimension, H2's mental model prediction would rest entirely on Q1–Q4 (the forced-choice items); MQ1 without the "not prove" clause provides much weaker qualitative evidence. Including it makes MQ1 a direct probe of the mechanism, not just a generic open-ended check.
+
+3. **Pre-reg 0–2 scale is consistent with two-dimension coding.** The pre-reg's cumulative 0–2 scale (0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states choice is hidden) maps cleanly to `inclusion + leakage` composite (0+0 = 0; 1+0 = 1; 1+1 = 2). The instrument's separate binary dimensions are a more granular implementation of the same scoring intent. The amendment should clarify: "question text updated to two-part form; scoring revised to separate inclusion and leakage as independent binary dimensions; composite MQ1_score = inclusion + leakage (range 0–2, same as pre-reg scale)."
+
+4. **Amendment risk is low.** This is a wording clarification that makes the question more precise, not a substantive design change. The deviation rationale writes itself: "The 'What does it NOT prove?' clause was added to the question to directly probe the absent-choice dimension central to H2, which the single-question form did not explicitly elicit. Scoring is unchanged in range and direction."
+
+**OSF amendment text (draft):** _"Item MQ1 wording updated from 'what does this value prove about your vote?' to two-part form: 'What does your [LABEL] prove about your vote? What does it NOT prove?' Scoring updated from cumulative 0–2 to two independent binary raters' dimensions (MQ1_inclusion, MQ1_leakage); composite score = sum (range 0–2, same). Rationale: two-part form directly elicits both the inclusion and absent-choice dimensions central to H2."_
+
+---
+
+### Item E — BI1: Label-embedded vs. label-neutral wording
+
+**Recommendation: Use the instrument wording ("save your [LABEL] for future reference") with explicit OSF amendment noting the label-embedding is intentional.**
+
+Reasoning:
+
+1. **The label-embedded wording is more theoretically motivated.** BI1 is described in the pre-reg (line 173) as an "RQ2 proxy" — measuring whether participants would preserve the receipt for later verification. The H2 mechanism analysis (`docs/h2-analysis-fingerprint-vs-confirmation-code.md`) predicts that "confirmation code" activates the correct behavioral schema (save to verify later) while potentially activating the wrong representational schema (system has a record of my choice). The label-embedded question — "save your confirmation code" vs. "save your vote fingerprint" — captures exactly this: does the label prime the saving behavior independently of receipt comprehension? This is the right measure for RQ2.
+
+2. **The demand characteristic concern is manageable.** The instrument already embeds [LABEL] throughout the stimuli — participants have been looking at "Your vote fingerprint" or "Your confirmation code" for the entire interaction. Embedding [LABEL] in BI1 is consistent with the treatment, not an independent new prime. If anything, the pre-reg wording "would you download this file?" is the odd one out, because it refers to the receipt as an unspecified "file" rather than the named artifact.
+
+3. **"Save" vs. "download" — instrument wording is slightly better.** The receipt UI has a "Download receipt" button. "Download" is accurate for the interaction affordance. But "save for future reference" adds the WHY (to verify later), which is exactly the behavioral intent PIUP is designed to promote. This framing is more aligned with the research question than a neutral "would you download?"
+
+4. **Scale direction is consistent (5 = positive intent, 1 = no intent) across both wordings.** No confusion risk.
+
+**OSF amendment text (draft):** _"Item BI1 wording updated from 'If this screen appeared after a real vote, would you download this file?' to 'If this was a real election and you saw this screen after submitting your vote, how likely would you be to save your [LABEL] for future reference?' Rationale: (a) 'save for future reference' makes the verification purpose of the saving behavior explicit, better operationalizing RQ2; (b) embedding [LABEL] in the question is intentional — BI1 measures whether the label's behavioral schema (save-to-verify) is activated, which is the behavioral corollary of the H2 representational schema hypothesis. Demand characteristic risk is low given [LABEL] is already prominent in the stimuli throughout the study."_
+
+---
+
+**Net effect on pre-pilot gate:** Items D and E each require one OSF amendment (both are instrument-wording amendments with low substantive risk). Items A, B, C still need Jony's judgment on specific wording preferences. Once D and E are decided (recommended: accept instrument wording for both), those two amendments can be drafted and bundled with the OSF upload.
+
+**Updated pre-pilot gate summary:**
+- A, B, C: Still require Jony decision (Q3 coercive-employer wording; Q4 "lost" vs. "closed screen"; §5.2 clarification baseline vs. amendment)
+- D: RECOMMENDATION = include two-part MQ1 (file amendment)
+- E: RECOMMENDATION = use instrument BI1 wording with label embedded (file amendment)
+- Once all 5 wording decisions are made, OSF upload unblocks Qualtrics + stimuli deploy + Prolific launch.
+
+_Last updated: tick-3802 (2026-06-24)._
