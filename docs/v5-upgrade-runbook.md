@@ -53,6 +53,20 @@ curl -fsSL https://install.aztec.network | bash
 export PATH="$HOME/.aztec/bin:$PATH"
 ```
 
+### 3b-compile. Recompile contract ⚠️ REQUIRED — artifact is stale
+
+> **Why:** The compiled artifact at `contracts/target/private_voting-PrivateVoting.json` was last
+> produced **2026-05-25**. Contract source code was updated **2026-06-22** with three security
+> fixes (F1-RESIDUAL cast_vote mode restriction, EIP-191 circuit for ADR-036 Path C, N-F4
+> constructor guard). Deploying the old artifact would deploy **unpatched code**.
+
+```bash
+cd contracts
+nargo compile
+# Should produce: contracts/target/private_voting-PrivateVoting.json
+# Verify no compile errors before proceeding to 3d.
+```
+
 ### 3c. Check fee juice balance for deployer2
 
 The L1→L2 bridge bug is fixed in v5. The pending L1 message may have been processed automatically by the new sequencer. Check first:
@@ -133,4 +147,4 @@ If a fresh v5 deploy completes (Step 3), update the forum post contract address 
 
 ---
 
-_Created: 2026-06-16 (tick-3043). Corrected: tick-3044 — replaced non-existent `aztec-cli faucet claim` with `aztec-wallet get-fee-juice-balance` + `bridge-fee-juice` (correct v4/v5 CLI). Added balance-check step before fresh bridge. Updated tick-3646 (2026-06-22): fixed all endpoint URLs to v5 (`https://v5.testnet.rpc.aztec-labs.com`); old `https://rpc.testnet.aztec-labs.com` is unreachable. Confirmed v5 live at block 5620. Noted state reset — Step 2 (verify old contract) now skipped; Step 3 is the required path. Added DEPLOYER_SECRET_KEY/DEPLOYER_SIGNING_KEY env vars to Step 3d._
+_Created: 2026-06-16 (tick-3043). Corrected: tick-3044 — replaced non-existent `aztec-cli faucet claim` with `aztec-wallet get-fee-juice-balance` + `bridge-fee-juice` (correct v4/v5 CLI). Added balance-check step before fresh bridge. Updated tick-3646 (2026-06-22): fixed all endpoint URLs to v5 (`https://v5.testnet.rpc.aztec-labs.com`); old `https://rpc.testnet.aztec-labs.com` is unreachable. Confirmed v5 live at block 5620. Noted state reset — Step 2 (verify old contract) now skipped; Step 3 is the required path. Added DEPLOYER_SECRET_KEY/DEPLOYER_SIGNING_KEY env vars to Step 3d. Updated tick-3805 (2026-06-24): added Step 3b-compile — artifact stale since May 25; three June 22 security changes (F1-RESIDUAL, EIP-191, N-F4) require fresh nargo compile before deploy._
