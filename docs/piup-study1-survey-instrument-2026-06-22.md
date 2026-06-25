@@ -258,16 +258,20 @@ Each of Q1–Q4 is followed immediately by a confidence item on the same page. Q
 *Displayed after Q5, before behavioral intent. Open-ended — scored by two raters (see §8).*
 
 **Question text:**  
-*"In your own words: what does your [LABEL] prove about your vote? What does it NOT prove?"*
+*"In your own words: what does your [LABEL] prove about your vote?"*
 
 *Free text entry. Minimum character limit: 20 characters.*
+
+*Note (2026-06-25): The two-part wording "What does it NOT prove?" was removed — it creates a demand characteristic that inflates non-leakage scores and reduces sensitivity to between-condition differences on the MQ1 non-leakage dimension. Pre-reg single-question wording restored. See `docs/piup-study1-pilot-decisions-2026-06-25.md` §Item D.*
 
 ---
 
 ### Behavioral intent item (BI1)
 
 **Question text:**  
-*"If this was a real election and you saw this screen after submitting your vote, how likely would you be to save your [LABEL] for future reference?"*
+*"If this was a real election and you saw this screen after submitting your vote, how likely would you be to save this code for future reference?"*
+
+*Note (2026-06-25): "[LABEL]" replaced with "this code" to remove label-name demand characteristic from behavioral intent measure. See `docs/piup-study1-pilot-decisions-2026-06-25.md` §Item E.*
 
 | Option | Code |
 |--------|------|
@@ -502,6 +506,11 @@ The R analysis script (`analysis/piup-study1-analysis.R`) references these colum
 | Date | Amendment type | Description | Authorized by |
 |------|---------------|-------------|---------------|
 | (none at pre-registration) | — | — | — |
+| 2026-06-25 (pre-pilot, pre-OSF) | Question wording — D | MQ1 "What does it NOT prove?" prompt removed. Reverted to pre-reg single-question wording to avoid demand characteristic. See piup-study1-pilot-decisions-2026-06-25.md §Item D. | @jonybur-oc |
+| 2026-06-25 (pre-pilot, pre-OSF) | Question wording — E | BI1 "your [LABEL]" replaced with "this code" to remove label-name demand from behavioral intent measure. Scale labels updated to match question. Coding unchanged. See piup-study1-pilot-decisions-2026-06-25.md §Item E. | @jonybur-oc |
+| PENDING (Jony decision) | Question wording — A | Q3 coercion scenario: recommend instrument wording over pre-reg wording. Construct specificity + ecological validity. Correct answer + tests unchanged. See piup-study1-pilot-decisions-2026-06-25.md §Item A. | Pending |
+| PENDING (Jony decision) | Question wording — B | Q4 "closed screen" replaces "lost this value"; foils consolidated. Correct answer unchanged. See piup-study1-pilot-decisions-2026-06-25.md §Item B. | Pending |
+| PENDING (Jony decision) | Baseline clarification — C | Q3 "assume only on screen" clarification dropped from baseline; "hypothetical scenario" note becomes optional. See piup-study1-pilot-decisions-2026-06-25.md §Item C. | Pending |
 
 ---
 
