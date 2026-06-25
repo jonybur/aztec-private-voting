@@ -2611,3 +2611,82 @@ The characterisation "usability evaluation of verification codes in real electio
 | Marky et al. (2018) — 95-participant, Benaloh Challenge | ✅ Clean | None |
 | Kulyk et al. (2015) — private eligibility verifiability | ✅ Clean | None |
 | Everett et al. (2008) — "verification codes in real elections" | ⚠️ Unverified | New Jony-action: verify citation fit before submission |
+
+---
+
+## §1.4 Prior Work Deep Audit (tick-3859)
+
+**Scope:** §1.4 paragraph 1 (e-voting usability prior work) — deeper check of all four citation characterisations and the novelty claim. This extends the tick-3847 audit which only verified bibliographic details, not mechanism claims.
+
+---
+
+### §1.4 Check (A): Marky et al. (2018) "three approaches to the Benaloh Challenge" — ✅ CLEAN
+
+**Claim in §1.4:** "Marky et al. (2018) conduct a 95-participant remote e-voting study at CHI evaluating **three approaches** to the Benaloh Challenge (cast-as-intended verification); their study measures whether voters successfully complete verification and their perceived workload."
+
+**Check:** Web search confirmed from Strathclyde pure portal and ACM DL abstract: "In this paper, we report on a usability evaluation of **three different approaches of the Benaloh Challenge** in the remote e-voting context. We performed a comparative user study with **95 participants**." The parenthetical "(cast-as-intended verification)" correctly characterises the Benaloh Challenge purpose. The paper concludes with a recommendation on which approaches to use in real-world elections.
+
+**Verdict:** ✅ CLEAN. §1.4 characterisation is exact and confirmed.
+
+---
+
+### §1.4 Check (B): Kulyk et al. (2015) "dummy ballots" mechanism — ❌ FIXED (commit this tick)
+
+**Claim in §1.4 (old):** "Kulyk et al. (2015) extend Helios to provide private eligibility verifiability **(hiding voter participation via dummy ballots)**"
+
+**Issue found:** Semantic Scholar abstract of Kulyk et al. (2015) states: *"The main idea is that real votes are hidden in a crowd of null votes that are cast by others but are indistinguishable from those of the eligible voter."*
+
+The mechanism is: other eligible participants cast **null votes** (blank/empty ballots), creating a crowd in which the real voter's participation is hidden. An observer sees that N votes were cast, but cannot determine which participant cast the real vote vs. the null votes.
+
+"Dummy ballots" implies the voter creates fake/blank ballots themselves. The actual mechanism is crowd-anonymity through null votes cast by OTHER eligible voters — a different concept. This imprecision would be visible to a CHI reviewer with e-voting expertise.
+
+**Fix applied:** §1.4 changed to "hiding voter participation by mixing real votes among null votes cast by other eligible voters." Bibliography note updated with content audit.
+
+**Impact:** This is a characterisation fix (mechanism accuracy), not a citation fit issue. The broader claim — "their work addresses cryptographic transparency, not receipt representational semantics" — remains ✅ CLEAN and correct.
+
+**Note:** Previous tick-3847 audit check on Kulyk (2015) was bibliographic only (year, venue); it did not verify the mechanism description in the parenthetical. This deeper check was first performed in tick-3859.
+
+---
+
+### §1.4 Check (C): Adida et al. (2009) + Bell et al. (2013) "cryptographically verifiable receipts" — ✅ CLEAN
+
+**Claim in §1.4:** "STAR-Vote (Bell et al. 2013) and Helios (Adida et al. 2009) provide cryptographically verifiable receipts; neither evaluates how users interpret what the receipt does not show."
+
+**Check (Adida et al. 2009 — Helios):** The bibliography title is "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios" (EVT/WOTE 2009). Helios is definitionally an end-to-end verifiable voting system in which the encrypted ballot posted on the bulletin board serves as a verifiable receipt. The real-world UCLouvain election deployment (Adida et al. 2009) demonstrates this in practice. The characterisation "cryptographically verifiable receipts" is accurate and standard. The second claim ("neither evaluates how users interpret what the receipt does not show") is also accurate — the 2009 paper is a deployment analysis, not a user comprehension study.
+
+**Check (Bell et al. 2013 — STAR-Vote):** STAR-Vote (EVT/WOTE 2013) is explicitly designed with end-to-end verifiability. Paper receipts with cryptographic commitments are a core design feature. The characterisation is accurate and standard. The paper is a system design paper (not a user comprehension study), so the second claim is also accurate.
+
+**Verdict:** ✅ CLEAN. Both characterisations accurate. The contrast ("neither evaluates how users interpret") is correct — both are system design or deployment papers.
+
+---
+
+### §1.4 Check (D): Novelty claim — ✅ DEFENSIBLE
+
+**Claim:** "No prior work directly examines what voters *believe* a cryptographic receipt reveals about their vote choice."
+
+**Assessment:** The claim is precisely scoped with "directly examines" and "what voters believe... reveals about their vote choice." The prior works cited in §1.4 operate in a different problem space:
+
+- **Marky et al. (2018):** Task-completion and workload — can voters successfully perform the Benaloh Challenge? Not about what voters believe the receipt reveals.
+- **Kulyk et al. (2015):** Cryptographic mechanism — how to hide eligibility information mathematically. No user comprehension study.
+- **Adida et al. (2009):** Real-world election deployment. No user comprehension study of receipt semantics.
+- **Bell et al. (2013):** System design paper. No user comprehension study.
+- **Everett et al. (2008):** If it covers verification codes at all (Jony-action K), it examines whether voters use the affordance — not whether voters correctly model what the receipt withholds about their choice.
+
+The key distinction PIUP draws is between **verification usability** (can voters use the mechanism) and **receipt comprehension** (do voters correctly model what the receipt semantically reveals vs. withholds). This gap is real. No cited paper, and no paper known from prior searches, directly studies voter mental models of what a cryptographic receipt reveals about vote choice. The "directly" qualifier is doing important protective work.
+
+**Verdict:** ✅ DEFENSIBLE. The novelty claim is precisely scoped and the prior works all operate in different problem spaces (verification task completion, cryptographic design, deployment analysis, affordance adoption).
+
+---
+
+## §1.4 Deep Audit Summary (tick-3859)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| Marky et al. (2018) "three approaches to the Benaloh Challenge" | ✅ Clean | None — confirmed from ACM DL + Strathclyde |
+| Kulyk et al. (2015) "dummy ballots" mechanism | ❌ Imprecise | FIXED — "null votes cast by other eligible voters" |
+| Adida et al. (2009) "cryptographically verifiable receipts" | ✅ Clean | None |
+| Bell et al. (2013) "cryptographically verifiable receipts" | ✅ Clean | None |
+| Novelty claim "no prior work directly examines..." | ✅ Defensible | None — "directly" qualifier correctly scoped |
+
+**Net: 1 FIX, 4 CLEAN**
+
