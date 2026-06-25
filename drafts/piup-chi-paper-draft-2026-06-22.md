@@ -186,7 +186,7 @@ A static circuit analysis and trust-boundary audit was conducted across the gene
 | No finalization before end\_time | `assert(now >= config.end_time)` in `finalize_vote` |
 | Tally only shown post-finalization | `assert(is_finalized)` in `get_final_tally` |
 | `record_vote` not callable externally | `#[only_self]` decorator |
-| Options count bounds | `> 1` and `<= 8` in constructor |
+| Options count bounds | `> 1` and `<= 8` in constructor; `vote_choice < options_count` enforced at call-time in `record_vote` |
 | No `is_finalized` bypass | Separate check in `record_vote` prevents post-finalize votes |
 | Timing boundary correctness | At `t == end_time`: cast fails, finalize succeeds |
 
@@ -196,7 +196,7 @@ Three findings were resolved before the study - one HIGH severity and two LOW:
 
 *F2 (Quorum bypass).* A `quorum = 0` deployment would allow `vote_count >= 0` to be vacuously true, permitting finalization with zero ballots. Resolved by adding `assert(config.quorum > 0)` in the constructor.
 
-*F3 (Receipt-ID collision).* A `receipt_id = 0` submission would succeed and mark `receipts[0] = true`; any subsequent voter submitting `receipt_id = 0` would have their `SingleUseClaim` nullifier spent but their `record_vote` rejected, producing a silent vote loss. Resolved by adding `assert(receipt_id != 0)` in `cast_vote` and a corresponding client-side validation in the React hooks.
+*F3 (Receipt-ID collision).* A `receipt_id = 0` submission would succeed and mark `receipts[0] = true`; any subsequent voter submitting `receipt_id = 0` would have their `SingleUseClaim` nullifier spent but their `record_vote` rejected, producing a silent vote loss. Resolved by adding `assert(receipt_id != 0)` in `cast_vote`, `cast_vote_token`, and `cast_vote_allowlist` (all three generic entrypoints), and a corresponding client-side validation in the React hooks. [Note (tick-3845): Prior description only named `cast_vote`. The guard is present in all three generic entrypoints — lines 110, 167, and 234 of main.nr — verified in §3.3 security-properties audit tick-3845.]
 
 Two design limitations are documented and not resolved at the prototype stage:
 
