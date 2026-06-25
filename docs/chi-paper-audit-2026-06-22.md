@@ -2958,3 +2958,23 @@ JONY-ACTION H remains open: before CHI submission, verify against DOET (approx. 
 | §7 JONY-ACTION L (C2 sentence) | ⚠️ OPEN | Jony to decide before CHI submission |
 | §7 JONY-ACTION M (C4 sentence) | ⚠️ OPEN | Jony to decide before CHI submission |
 
+
+---
+
+## §6.3 Audit (tick-3865) — Protective absence feedback inversion: three-domain timing + 'definitionally public' consistency
+
+**Scope:** (a) §6.3 three-domain timing location, (b) 'definitionally public' qualifier across §2.1/§6.4/§7, (c) §6.4 per-domain Inv2 timing vs Common Structure summary, (d) §6.4 Common Structure vs §7 exact match, (e) §6.3 protective framing placement vs §1.1 receipt order.
+
+| Check | Verdict | Action |
+|-------|---------|--------|
+| (a) §6.3 three-domain timing location | ✅ CLEAN | §6.3 correctly contains no timing claim; belongs in §6.4 |
+| (b) 'definitionally public' consistency §2.1→§6.4W→§6.4CS→§7 | ✅ CLEAN | §2.1+§6.4W use "definitionally public"; §6.4CS+§7 use "content publication" — equivalent, consistent |
+| (c) §6.4 per-domain Inv2 timing vs Common Structure | ✅ CLEAN | Auction→"auction reveal", Whistleblower→"content publication", Peer review→"review decision" all match |
+| (d) §6.4 Common Structure vs §7 timing enumeration | ✅ CLEAN | Exact match: "(auction reveal, content publication, or review decision)" in both |
+| (e) §6.3 "after the submission token" vs §1.1 receipt order | ✅ CLEAN | §1.1 corrected tick-3858: status→token→framing; §6.3 "after the submission token" is consistent |
+
+**Checks:** 5. **FIXES:** 0. **JONY-ACTIONS:** 0 new. **Status:** FULLY CLEAN.
+
+**Note on §2.1 parenthetical:** §2.1 Invariant 2 formal definition includes "(vote closes, auction reveals)" — this anticipatory parenthetical mentions auction domain before §6.4 establishes the generalisation. This is a deliberate forward-gesture; it does not create a consistency problem since §6.4 explicitly frames all three timing events as domain adaptations of the §2.1 principle. CHI reviewer query risk: LOW.
+
+**JONY-ACTION H:** Remains open — Norman DOET paraphrase vs Nielsen Heuristic #1 wording in §6.3 opening paragraph (pre-existing). Jony to verify against DOET p.27 before submission.
