@@ -2335,3 +2335,80 @@ Risk: A CHI reviewer reading the H4 paragraph could infer the Spearman is a 15th
 | (c) Direction internally consistent | ✅ Clean | None |
 
 **Commit: [pending]**
+
+---
+
+## §4.4 Q4 Foils + MQ Wording Audit (tick-3840)
+
+**CI check:** working-notes: success ✅
+
+**Scope:** Cross-check of §4.4 Q4 and MQ1 wording against the survey instrument (piup-study1-survey-instrument-2026-06-22.md) and pre-registration (piup-study1-preregistration-2026-06-22.md). Triggered by systematic §4.4 audit pass (ticks 3835–3839 covered MQ rubric, LA1 anchors, BI1, exclusion/inclusion criteria).
+
+---
+
+### Check (1): Q4 question wording — MISMATCH (instrument vs. pre-reg/paper, pending Item B) ⚠️
+
+**Pre-reg §5.2 Q4:** "What would happen if you lost this value?"  
+**Paper §4.4 Q4 (before this tick):** "What would happen if you lost this value?" ✅ matches pre-reg  
+**Survey instrument §6/Q4 (current):** "If you closed this screen without saving your [LABEL], what would happen?"
+
+The instrument wording was updated per pilot-decisions recommendation (§Item B: "Use instrument wording"). Item B is pending Jony's decision (Jony-action I). The paper correctly retains pre-reg wording until the decision is made.
+
+### Check (2): Q4 foils — SUBSTANTIVE MISMATCH (instrument foil (d) completely different) ⚠️
+
+**Pre-reg §5.2 foils:**
+- (a) you would lose your vote
+- (c) the system keeps a backup
+- (d) your vote would be reversed [catastrophic-misread distractor]
+
+**Instrument §6/Q4 foils (pending Item B):**
+- (a) My vote would be cancelled or reversed [merged pre-reg (a)+(d)]
+- (c) The voting system keeps a copy of my [LABEL], so I could always retrieve it later
+- (d) Nothing — my vote does not depend on having this [LABEL] [near-correct distractor — NEW]
+
+**Correct answer:** unchanged as option (b) in both versions.
+
+**Significance:** Foil (d) in the instrument is substantively different. Pre-reg foil (d) "your vote would be reversed" tests for a catastrophic vote-reversal misread. Instrument foil (d) "Nothing — my vote does not depend on having this [LABEL]" is a near-correct option — the vote IS durable (vote doesn't depend on the token for counting), but the participant misses the verification function (the token IS needed for personal proof of inclusion). This is a different cognitive construct: distinguishing vote durability from receipt verification, rather than detecting extreme wrong beliefs about vote reversibility.
+
+**Fix applied:** Added bracketed note to paper §4.4 Q4 explaining the discrepancy and pending Item B decision. Paper retains pre-reg wording until Jony approves Item B.
+
+### Check (3): Q4 correct answer wording — minor difference (same intent)
+
+**Pre-reg:** "You could still verify that your vote was counted, but you would not have proof that the receipt is yours."
+**Instrument:** "I could still verify that my vote was counted, but I would not have this [LABEL] as personal proof."
+
+Different voice (second vs. first person) and label reference. Both state: vote durability + loss of personal verification proof. Intent is identical. If Item B is adopted, paper §4.4 updates to instrument wording.
+
+### Check (4): MQ1 question wording — paper diverges from pre-reg after tick-3835 ⚠️
+
+**Pre-reg §5.2:** "In your own words, what does this value prove about your vote?" (using "this value")  
+**Paper §4.4 (after tick-3835):** "In your own words: what does your [LABEL] prove about your vote?" (using "[LABEL]")  
+**Instrument §7:** "[LABEL]" — matches paper
+
+The pre-reg audit at tick-3821 (line 2202) marked this "Identical ✅" — but that was before tick-3835 changed the paper to use "[LABEL]". The entry is now stale.
+
+**Analysis:** "This value" in the pre-reg was a generic placeholder for the condition-specific label. Using "[LABEL]" in the instrument (and paper after tick-3835) is consistent with the semantic intent — participants see the condition-specific label term (vote fingerprint / confirmation code / etc.) in the actual question. The deviation is from the surface wording of the pre-reg, not from its intent. Item D pilot decision explicitly endorsed "[LABEL]" wording.
+
+**Fix applied:** Added bracketed OSF amendment note to paper §4.4 MQ section explaining the wording change from pre-reg §5.2 "this value" → "[LABEL]" and noting that an OSF amendment is required before pilot upload.
+
+### Check (5): Q5 question wording — minor mismatch (paper matches pre-reg, instrument expanded) ⚠️ minor
+
+**Pre-reg §5.2 / Paper §4.4:** "Why might the system choose not to show you your vote choice on this screen?"  
+**Instrument §6/Q5:** "In your own words: why might this voting system choose NOT to show you which option you voted for on this screen?"
+
+The instrument added "In your own words:" (preamble), "this voting system" (specificity), and "which option you voted for" (instead of "your vote choice"). These are stylistic elaborations that maintain the same probe target. Paper correctly matches pre-reg wording. If instrument wording is finalised differently, paper and pre-reg both need updating. **No fix applied this tick** — minor and no pending decision to flag.
+
+---
+
+### §4.4 Q4/MQ Audit Summary (tick-3840)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| Q4 question wording: paper vs. pre-reg | ✅ Match | None — paper retains pre-reg wording pending Item B |
+| Q4 foils: pre-reg vs. instrument foil (d) | ⚠️ Substantive mismatch | Note added to paper; pending Item B decision |
+| Q4 correct answer: wording | ✅ Same intent | None — minor voice/label difference |
+| MQ1 wording: paper vs. pre-reg (post tick-3835) | ⚠️ Deviation | OSF amendment note added to paper |
+| Q5 wording: paper vs. instrument | ⚠️ Minor divergence | No fix — stylistic only |
+
+**Commits: pending**
+
