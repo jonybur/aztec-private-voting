@@ -2169,3 +2169,108 @@ Exact match on trigger condition (Q2 effect < 15 pp) and expansion target (n=75/
 | n=75/cell expansion trigger (Q2 effect < 15pp) | ✅ Clean | None |
 
 **0 fixes needed. Paper §4.2 matches pre-reg §4.2 on all 6 checklist items.**
+
+---
+
+## §4.4–§4.5 First-pass Audit (tick-3821)
+
+**Cross-check source:** `docs/piup-study1-preregistration-2026-06-22.md`
+
+Systematic check of all §4.4 measures and §4.5 analysis plan against the OSF pre-registration.
+
+---
+
+### Check 1: Q1–Q5 questions and correct answers — ✅ CLEAN
+
+| Item | Paper §4.4 | Pre-reg §5.2 | Match |
+|---|---|---|---|
+| Q1 correct answer | Yes | Yes | ✅ |
+| Q2 correct answer | No | No | ✅ |
+| Q3 correct answer | No | No | ✅ |
+| Q4 correct answer | "You could still verify...but you would not have proof that the receipt is yours" | Exact match | ✅ |
+| Q5 scoring rubric (0–2) | Matches | Matches | ✅ |
+| Composite accuracy Q1–Q4 | Proportion 0–1.0 | Proportion 0–1.0 | ✅ |
+
+---
+
+### Check 2: Confidence and mental model measures — ✅ CLEAN
+
+| Measure | Paper §4.4 | Pre-reg §5.2 | Match |
+|---|---|---|---|
+| Confidence Likert | 7-point, after Q1–Q4, 1=not at all/7=completely | Identical | ✅ |
+| Confidence composite | Mean Q1–Q4, Q5 excluded | Identical | ✅ |
+| Mental model quality wording | "In your own words, what does this value prove about your vote?" | Identical | ✅ |
+| Mental model scoring | 0=no correct element; 1=inclusion without choice; 2=choice hidden from system | Identical | ✅ |
+| Mental model κ threshold | ≥ 0.70 | ≥ 0.70 | ✅ |
+
+---
+
+### Check 3: Behavioral intent — ❌ MISSING ANALYTICAL STATUS LABEL → FIXED
+
+**Paper before fix:** "**Behavioral intent.** 'If this screen appeared after a real vote, would you download this file?' (5-point: Definitely yes → Definitely no.)"
+
+**Pre-reg §5.2:** "**Behavioral intent (RQ2 proxy):** 'If this screen appeared after a real vote, would you download this file?' (5-point: Definitely yes → Definitely no.)"
+
+**Issues:**
+1. Paper drops the "(RQ2 proxy)" designation — a reader cannot tell whether this is a confirmatory or exploratory measure.
+2. No statistical test is pre-specified for behavioral intent anywhere in H1–H4 families; unlike Confidence (labeled "secondary") and Mental model quality (labeled "exploratory"), behavioral intent had no analytical-status label. A CHI reviewer could read it as a pre-specified confirmatory measure.
+3. The pre-reg §6 analysis plan does not include any H-test for behavioral intent; it is a collected outcome measure with no pre-specified test.
+
+**Fix applied:** Changed label to "**Behavioral intent (secondary; no pre-specified test).**" and added: "Results reported descriptively per condition; no confirmatory test is pre-registered for this item." — consistent with the labeling pattern of other non-primary measures in §4.4.
+
+---
+
+### Check 4: H2 outcome classification — ❌ INCONCLUSIVE CASE FALSELY PRE-SPECIFIED → FIXED
+
+**Paper before fix:**
+> "H2 outcome classification: **supported**... **null**... **reversed**... **inconclusive** if none of the above apply (report effect sizes; expand n or revise design). All four outcome patterns are actionable (see §6.2)."
+
+**Pre-reg §H2:** Explicitly names THREE outcomes — supported, null, reversed — and states:
+> "**This is the pivot hypothesis.** All three outcome patterns (supported / null / reversed) produce actionable production decisions."
+
+Production decision table (pre-reg §6): Lists only 3 H2 rows (supported, null, reversed). No "inconclusive" row. No production decision pre-specified for the inconclusive case.
+
+**Also in §6.2 (before fix):**
+> "The pre-specified outcome classification (§4.5) treats H2-supported...H2-null...H2-reversed...and H2-inconclusive (neither directional pattern; expand n or revise design) as **four distinct actionable production decisions**, not as success/failure dichotomies."
+
+This was doubly inaccurate:
+- Calling the inconclusive case "pre-specified" — it is not in the OSF pre-registration.
+- Calling it an "actionable production decision" — no production decision is pre-specified for it; "expand n or revise design" is a methodological continuation decision, not a production/codebase decision.
+
+**Fix applied to §4.5:**
+- Removed "All four outcome patterns are actionable."
+- Added note: "[Note: The OSF pre-registration names these three formal H2 outcomes and states 'all three outcome patterns produce actionable production decisions' (pre-reg §H2). A fourth case — **H2-inconclusive**, when none of the three conditions apply — is added in this paper draft for presentation completeness; it is not named in the OSF pre-registration and no production decision is pre-specified for it. The appropriate response is to report effect sizes and expand n or revise the design.]"
+- Changed "All four outcome patterns are actionable" → "All three pre-registered H2 patterns are actionable production decisions."
+
+**Fix applied to §6.2:**
+- Changed "The pre-specified outcome classification (§4.5) treats...four distinct actionable production decisions" →
+  "The OSF pre-registration defines three H2 outcome patterns with pre-specified production decisions (§4.5)...These three patterns are designed as actionable production decisions, not success/failure dichotomies. A fourth case — H2-inconclusive, when none of the three conditions apply — is included in the paper's §4.5 analysis plan for completeness; it is not formally named in the OSF pre-registration, and its response is to report effect sizes and expand n or revise the design."
+
+---
+
+### Check 5: H2 TOST bounds and other tests — ✅ CLEAN
+
+| Check | Paper | Pre-reg | Match |
+|---|---|---|---|
+| H2 TOST bounds | ±10 pp | ±10 pp | ✅ |
+| H3 support criterion | C < 2 of 3 on Q1 after Holm | Identical | ✅ |
+| H3 ethics clause (< 30% Q1 Cond C) | Identical | Identical | ✅ |
+| H4 ANOVA + Tukey HSD (B vs A,C,D) | Identical | Identical | ✅ |
+| H4 calibration Spearman per condition | Identical | Identical | ✅ |
+| Q5 Kruskal-Wallis + Dunn's Holm | Identical | Identical | ✅ |
+| CI standard (Wilson proportions, t means, log OR) | Identical | Identical | ✅ |
+| 25 random Q5 responses per condition | Identical | Identical | ✅ |
+
+---
+
+## §4.4–§4.5 Audit Summary (tick-3821)
+
+| Check | Status | Action |
+|---|---|---|
+| Q1–Q5 questions and correct answers | ✅ Clean | None |
+| Confidence and mental model measures | ✅ Clean | None |
+| Behavioral intent analytical status | ❌ Inaccuracy | FIXED — added "(secondary; no pre-specified test)" label |
+| H2-inconclusive falsely presented as pre-specified | ❌ Inaccuracy | FIXED — §4.5 note + §6.2 reframed to OSF pre-reg 3 outcomes |
+| H2 TOST, H3, H4, Q5, CI standard | ✅ Clean | None |
+
+**Commit: 19371f7**
