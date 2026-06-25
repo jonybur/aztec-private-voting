@@ -2978,3 +2978,25 @@ JONY-ACTION H remains open: before CHI submission, verify against DOET (approx. 
 **Note on §2.1 parenthetical:** §2.1 Invariant 2 formal definition includes "(vote closes, auction reveals)" — this anticipatory parenthetical mentions auction domain before §6.4 establishes the generalisation. This is a deliberate forward-gesture; it does not create a consistency problem since §6.4 explicitly frames all three timing events as domain adaptations of the §2.1 principle. CHI reviewer query risk: LOW.
 
 **JONY-ACTION H:** Remains open — Norman DOET paraphrase vs Nielsen Heuristic #1 wording in §6.3 opening paragraph (pre-existing). Jony to verify against DOET p.27 before submission.
+
+---
+
+## §2.1 Formal Invariant Definitions Audit (tick-3867) — Eighth-pass structural audit
+
+**Scope:** (a) Invariant 1 three independence requirements identical in §1.1 and §2.1, (b) Invariant 2 'definitionally public' parenthetical vs §6.4 timing language, (c) Invariant 3 naming asymmetry — 'Minimal receipt content' (formal) vs 'minimal-content receipt' (§6.4/§7 shorthand) — intentional or fix?
+
+| Check | Verdict | Action |
+|-------|---------|--------|
+| (a) Inv1 three requirements in §2.1 vs §1.1 | ✅ CLEAN | Both list content + identity + observable state identically |
+| (b) Inv2 parenthetical §2.1 vs §6.4 timing language | ✅ CLEAN | Illustrative examples (not exhaustive); verb-phrase style vs noun-phrase style is stylistic |
+| (c) Inv3 name asymmetry — intentional? | ✅ CLEAN | Intentional: formal-name vs design-pattern-shorthand pattern applies to all three invariants |
+
+**Checks:** 3. **FIXES:** 0. **JONY-ACTIONS:** 0 new. **Status:** FULLY CLEAN.
+
+**Detail (a):** §2.1 line 66: 'must not be derivable from the submission content, the user's identity, or any publicly observable system state.' §1.1 line 128: 'must not be derivable from the submission content, the user's identity, or any publicly observable system state.' Exact match. All three independence requirements present in both. ✅ CLEAN.
+
+**Detail (b):** §2.1 line 68 and §1.1 line 130 both read '(vote closes, auction reveals)' — two verb-clause examples of 'definitionally public.' §6.4 CS and §7 use noun-phrase taxonomy '(auction reveal, content publication, or review decision)' — three events. The §2.1 parenthetical is deliberate: illustrative (not exhaustive), anticipating the auction domain before §6.4 develops the full three-domain taxonomy. Tick-3865 confirmed this as intentional; CHI reviewer query risk: LOW. The verb-phrase style ('auction reveals') vs §6.4 noun-phrase style ('auction reveal event') is a register difference (parenthetical example vs formal taxonomy) — not an inconsistency. ✅ CLEAN.
+
+**Detail (c):** Formal invariant names (§2.1) vs §6.4/§7 design-pattern shorthand names: Inv1 'Surrogate independence' ↔ 'token independence'; Inv2 'Surrogate privacy in transit' ↔ 'token privacy until that event'; Inv3 'Minimal receipt content' ↔ 'minimal-content receipt.' All three invariants follow the same naming asymmetry — formal noun-property name in §2.1 vs pattern-level noun in §6.4/§7 shorthand. §7 line 457 correctly uses formal name ('Invariant 3 (minimal receipt content)') when explicitly citing the invariant; §7 line 465 correctly uses design-pattern shorthand ('minimal-content receipt') within the §6.4 taxonomy context. Asymmetry is systematic and intentional. ✅ CLEAN.
+
+**JONY-ACTION H:** Remains open — Norman DOET paraphrase in §6.3.
