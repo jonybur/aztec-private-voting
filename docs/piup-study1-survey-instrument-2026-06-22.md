@@ -393,7 +393,9 @@ Two independent raters score each response on a 0–2 scale.
 
 ---
 
-### Mental Model Quality Rubric (MQ1: "What does your [LABEL] prove? What does it NOT prove?")
+### Mental Model Quality Rubric (MQ1: "In your own words: what does your [LABEL] prove about your vote?")
+
+*Note (2026-06-25): Question updated to single-question wording ("What does it NOT prove?" removed to avoid demand characteristic; see §7 and pilot-decisions doc §Item D). The two-dimensional rubric is unchanged — Dimension 2 (Non-leakage) is coded from responses that voluntarily mention what the identifier does not reveal. Removal of the prompt may reduce the frequency of non-leakage responses; this is a known sensitivity trade-off accepted in the pilot-launch decision.*
 
 Two-dimensional scoring: 0–2 total.
 
