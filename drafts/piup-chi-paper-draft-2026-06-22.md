@@ -283,7 +283,9 @@ Stimuli were committed to the repository at commit `fb710f5` before any particip
 
 **Mental model quality (exploratory; free text).** After Q1-Q4, participants answered: "In your own words, what does this value prove about your vote?" Scored 0-2: 0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states that vote choice is hidden from the system. Two raters; κ ≥ 0.70 required. If κ < 0.70, raters adjudicate disagreements and rescore before analysis. Mental model quality is excluded from composite accuracy and analysed separately (§4.5).
 
-**Behavioral intent (secondary; no pre-specified test).** "If this screen appeared after a real vote, would you download this file?" (5-point: Definitely yes → Definitely no.) Results reported descriptively per condition; no confirmatory test is pre-registered for this item.
+**Behavioral intent (secondary; RQ2 proxy; no pre-specified confirmatory test).** "If this screen appeared after a real vote, would you download this file?" (5-point: Definitely yes → Definitely no.) Results reported descriptively per condition; no confirmatory test is pre-registered for this item in Study 1. RQ2 (save behaviour and its relationship to comprehension) is addressed as a primary confirmatory endpoint in Study 2 (§5); this item provides a descriptive preview across label conditions.
+
+**Label affect (exploratory; descriptive only; no pre-registered analysis plan).** "What is your first reaction to the label [LABEL]?" (Valence slider: −3 to +3; asked after all comprehension questions.) Collected as part of Study 1 instrument (pre-reg §5.3 secondary measures); no §6.x analysis plan exists in the OSF pre-registration. Mean valence score and distribution reported per condition descriptively; all comparisons across conditions are exploratory and not subject to Holm correction.
 
 **Covariates (collected but not pre-specified as primary analyses):** age (categorical), prior voting experience, technology self-efficacy (3-item Hargittai scale), and two Prolific attention checks.
 
@@ -309,6 +311,8 @@ The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bo
 **Q5 analysis (pre-registered secondary; not in the 14-test Holm families; pre-reg §6.8).** Kruskal-Wallis test across 4 conditions; if significant, Dunn's pairwise post-hoc (Holm). A random sample of 25 responses per condition (sampled randomly, before hypothesis testing) is included in the published write-up to illustrate the range of mental model articulation.
 
 **Mental model quality analysis (exploratory; no pre-registered formal test).** Scored 0–2 by two independent raters (rubric in §4.4); κ ≥ 0.70 required before analysis; if κ < 0.70, raters adjudicate disagreements and rescore. Mean score and score distribution (proportion at each level 0/1/2) reported by condition. No formal analysis section exists in the OSF pre-registration for this item (no §6.x equivalent; compare Q5 which has pre-reg §6.8); all comparisons across conditions are exploratory and not subject to Holm correction. Mental model quality is not part of the composite accuracy score.
+
+**Label affect analysis (exploratory; no pre-registered formal test).** Mean valence score and distribution (proportion at each scale point −3 to +3) reported by condition. No §6.x equivalent in the OSF pre-registration (item defined in pre-reg §5.3 secondary measures only); all comparisons across conditions are exploratory and not subject to Holm correction.
 
 **Confidence interval standard.** All proportions: Wilson 95% CI. All means: 95% CI from t-distribution. All odds ratios: log-scale 95% CI.
 
