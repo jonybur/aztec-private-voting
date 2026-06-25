@@ -87,7 +87,7 @@ failure — is concrete and novel. Ends with the OSF pre-registration, which is 
 differentiating artifact. Most cold emails from prospective PhD students have no pre-registered
 work. This one does.
 
-**Paragraph 3 — The SPUD Lab connection:** Names Das's 2014 CCS paper specifically and
+**Paragraph 3 — The SPUD Lab connection:** Names Das's CCS 2014 paper ('Increasing Security Sensitivity With Social Proof: A Large-Scale Experimental Confirmation') specifically — this is verified real (doi:10.1145/2660267.2660271) and
 describes the relationship to H4. The framing is "related but distinct mechanism" — this
 positions Jony as someone who read the work carefully, not someone who made a vague analogy.
 Study 2 is described as benefiting from Das's methodology, which is the correct pitch: not

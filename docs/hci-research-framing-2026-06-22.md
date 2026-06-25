@@ -167,7 +167,7 @@ The convergence of three conditions makes this a tractable research moment:
 
 ## The Georgia Tech connection
 
-Georgia Tech HCI's Security and Privacy research area engages exactly this problem class: the gap between technically correct privacy mechanisms and user behavior. Prior work in this area (Das et al., 2014 on nudges for privacy; Felt et al. on permission UX) has established the research program: when users make suboptimal privacy decisions, is it because of the system's feedback, the user's mental model, or something about the decision context?
+Georgia Tech HCI's Security and Privacy research area engages exactly this problem class: the gap between technically correct privacy mechanisms and user behavior. Prior work in this area (Das et al., 2015 on social influence and security feature adoption; Felt et al. on permission UX) has established the research program: when users make suboptimal privacy decisions, is it because of the system's feedback, the user's mental model, or something about the decision context?
 
 The PIUP and the evaluation agenda above fit cleanly into this program. The specific contribution is a design space that has not been previously formalized: private submission receipts in ZK-powered systems. The specific research opportunity is that this design space is now observable in the wild, in deployed production systems, for the first time.
 
@@ -192,7 +192,7 @@ The work is real. The implementation exists and is deployed. The design decision
 - Bell, S., et al. "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." EVT/WOTE, 2013.
 - Whitten, A., and Tygar, J. "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." USENIX Security, 1999.
 - Cranor, L., and Garfinkel, S. *Security and Usability.* O'Reilly, 2005.
-- Das, S., et al. "The role of social influence in security feature adoption." CSCW, 2014.
+- Das, S., Kramer, A., Dabbish, L., and Hong, J. "The role of social influence in security feature adoption." CSCW, 2015.
 - Felt, A.P., et al. "Android permissions: User attention, comprehension, and behavior." SOUPS, 2012.
 - Everett, S., et al. "Measuring the usability and security of permuted elections on real voters." SOUPS, 2008.
 - McKnight, D.H., et al. "Developing and validating trust measures for e-commerce." Information Systems Research, 2002.
