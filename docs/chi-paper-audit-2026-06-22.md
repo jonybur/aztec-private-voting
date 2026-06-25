@@ -2295,3 +2295,43 @@ Systematic check of §4.5 H1 and H3 descriptions against pre-registration for cr
 |-------|--------|--------|
 | §4.5 H1 directional magnitude cross-ref | ❌ Missing | FIXED: ≥10 pp note added (5bed76a) |
 | §4.5 H3 support criterion vs. pre-reg | ✅ Clean | None |
+
+---
+
+## §4.5 H4 Calibration Audit (tick-3824)
+
+Systematic check of H4 calibration Spearman analysis in §4.5 against pre-registration.
+
+### Check (a): Is Spearman calibration analysis in the pre-reg? — CLEAN ✅
+
+**Pre-reg §6.7 (H4-calibration):** "For each condition, compute Spearman rank correlation between per-participant Q1–Q4 accuracy score (0–4) and per-participant confidence composite. Report by condition. H4 predicts the B correlation will be smaller (lower calibration) than the A correlation."
+
+**Paper §4.5 (before fix):** "Calibration analysis: Spearman rank correlation between per-participant Q1–Q4 accuracy score (0–4) and per-participant confidence composite, computed per condition. H4 predicts the B correlation will be smaller (lower calibration) than A."
+
+Texts match. Pre-reg coverage confirmed. ✅
+
+### Check (b): Analytical-status label — INACCURACY ❌ FIXED
+
+**Finding:** The Spearman calibration analysis appeared in §4.5 under H4 (m=3) without any label clarifying it is NOT one of the 14 Holm-corrected confirmatory tests. The H4 family of m=3 consists of: confidence(B>A), confidence(B>C), confidence(B>D) — the ANOVA + Tukey HSD tests. The Spearman is a pre-registered secondary/descriptive analysis: pre-reg §6.7 marks it as 'Report by condition' and does not specify a NHST decision threshold or Holm correction.
+
+Risk: A CHI reviewer reading the H4 paragraph could infer the Spearman is a 15th confirmatory test, or wonder why it is outside the Holm family but stated with a directional prediction.
+
+**Fix applied (tick-3824):**
+- Changed "Calibration analysis:" → "**Calibration analysis (pre-registered secondary/descriptive; not in the m = 3 Holm family):**"
+- Added: "computed per condition and reported descriptively"
+- Added directional reasoning: "that is, high confidence in Condition B is not predicted to track accuracy, producing a weaker accuracy–confidence relationship than Condition A"
+- Added footnote: "[Pre-reg §6.7 labels this 'H4-calibration' and specifies 'Report by condition'; it is not a formal NHST test and is not subject to Holm correction.]"
+
+### Check (c): Spearman direction internally consistent? — CLEAN ✅
+
+**Prediction:** B correlation smaller = lower calibration.
+
+**Logic:** B participants are predicted to have high confidence (eCommerce familiarity → felt competence) but lower accuracy on Q2/Q3 (schema mismatch). A high-confidence, low-accuracy participant produces a weak or negative Spearman between their accuracy score and confidence rating. Condition A participants (less familiar label, less imported confidence) are predicted to have confidence that more closely tracks their actual accuracy → higher Spearman. Smaller Spearman(B) vs Spearman(A) = weaker accuracy-confidence alignment in B = miscalibration. Direction is internally consistent. ✅
+
+| Check | Status | Action |
+|-------|--------|--------|
+| (a) Spearman in pre-reg | ✅ Clean | None |
+| (b) Analytical-status label | ❌ Missing | FIXED: 'pre-registered secondary/descriptive; not in m=3 Holm family' added |
+| (c) Direction internally consistent | ✅ Clean | None |
+
+**Commit: [pending]**
