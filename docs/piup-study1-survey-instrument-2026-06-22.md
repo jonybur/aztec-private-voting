@@ -379,7 +379,7 @@ The study is being conducted as part of research on the usability of privacy-pre
 
 ## §11 Scoring Rubric — Open-Ended Items
 
-### Q5 Rubric ("Why might the system choose not to show you your vote choice?")
+### Q5 Rubric ("In your own words: why might this voting system choose NOT to show you which option you voted for on this screen?")
 
 Two independent raters score each response on a 0–2 scale.
 
