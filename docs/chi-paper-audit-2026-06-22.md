@@ -2274,3 +2274,24 @@ This was doubly inaccurate:
 | H2 TOST, H3, H4, Q5, CI standard | ✅ Clean | None |
 
 **Commit: 19371f7**
+
+## §4.5 H1/H3 Cross-Reference Audit (tick-3823)
+
+Systematic check of §4.5 H1 and H3 descriptions against pre-registration for cross-reference consistency.
+
+### Check (1): §4.5 H1 — directional magnitude cross-reference — INACCURACY ❌ FIXED
+
+**Finding:** §4.5 H1 described the statistical test ("Two one-tailed chi-squared tests on Q2 and Q3 accuracy, A vs. D. Both must survive Holm correction within the family.") but omitted the pre-registered directional magnitude of ≥ 10 pp on each question, which is present in §4.1 and in pre-reg §H1 ("Condition A will outperform Condition D on Q2 and Q3 (privacy-mental-model items) by ≥ 10 percentage points."). A CHI reviewer reading only §4.5 would not see this pre-registered expectation.
+
+**Fix applied (tick-3823):** Added "Pre-registered directional magnitude: ≥ 10 pp on each question (see §4.1; pre-reg §H1)." to §4.5 H1 block. Commit 5bed76a.
+
+### Check (2): §4.5 H3 — support criterion vs. pre-reg §6.6 — CLEAN ✅
+
+**Finding:** Heartbeat state flagged a potential mismatch: "pre-reg says Q1 accuracy C vs each, all 3 required, vs. the paper says 'at least 2 of 3'".
+
+**Verification:** Pre-registration §6.6 explicitly states: "Support criterion: C must be significantly lower than at least 2 of the 3 other conditions on Q1 (after Holm correction)." Paper §4.5 says: "Support criterion: C significantly lower than at least 2 of the 3 other conditions on Q1 after Holm correction." These are identical. The heartbeat state concern was unfounded — no mismatch exists.
+
+| Check | Status | Action |
+|-------|--------|--------|
+| §4.5 H1 directional magnitude cross-ref | ❌ Missing | FIXED: ≥10 pp note added (5bed76a) |
+| §4.5 H3 support criterion vs. pre-reg | ✅ Clean | None |
