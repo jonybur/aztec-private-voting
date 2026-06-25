@@ -1,0 +1,971 @@
+# =============================================================================
+# PIUP Study 2 — Pre-Registered Analysis Script
+# Absent-Content Interpretation, Explanation Effects, and Trust Calibration
+# 2×2×2 Between-Subjects Factorial Experiment
+#
+# Design note:   docs/piup-study2-design-note-2026-06-22.md
+# Study 1 ref:   docs/piup-study1-preregistration-2026-06-22.md
+# Study 1 script: analysis/piup-study1-analysis.R
+#
+# Author:          Jony Bursztyn
+# Script version:  2026-06-25 (pre-pilot; upload to OSF before data collection)
+# R version:       >= 4.3
+#
+# Required packages:
+#   install.packages(c("PropCIs", "TOSTER", "multcomp", "irr", "dunn.test",
+#                      "effsize", "broom", "emmeans"))
+#
+# Factors:
+#   L (Label):       L1 = "vote fingerprint"    / L2 = "confirmation code"
+#   E (Explanation): E1 = explanation present   / E2 = explanation absent
+#   I (Intervention):I1 = no calibration prompt / I2 = calibration prompt + feedback
+#
+# 8 conditions: L1E1I1, L1E1I2, L1E2I1, L1E2I2,
+#               L2E1I1, L2E1I2, L2E2I1, L2E2I2
+#
+# Primary measures:
+#   M1 — Q-AC absent-content accuracy (binary)
+#   M2 — Trust-in-receipt composite (McKnight scale, 4 items, 1–7 Likert)
+#   M3 — Save intention (1–7 self-report) + download click (binary)
+#   M4 — Confidence miscalibration residual (I2 conditions only)
+#   M5 — Verification instruction engagement (binary: expand click)
+#   M6 — Open-text Q-OE absent-choice explanation (0–2, two raters)
+#
+# Confirmatory hypotheses (4 pre-specified families):
+#   H2.1 — E main effect on Q-AC (chi-squared, one-tailed, E1 > E2)
+#   H2.2 — L × E interaction on M2 trust (two-way ANOVA + simple effects)
+#   H2.3 — I2 reduces miscalibration residual in L2 [CONDITIONAL on Study 1 H4]
+#   H2.4 — M1 accuracy predicts M3 download click (logistic regression)
+#
+# Usage:
+#   1. Replace DATA_PATH with path to Prolific/Qualtrics export (CSV)
+#   2. Set H4_SUPPORTED to match Study 1 H4 verdict before final run
+#   3. Verify column names match COLUMN MAP below
+#   4. source("piup-study2-analysis.R")
+#   5. Results written to analysis/results-study2/ as CSV + console output
+#
+# All analyses in this script are PRE-SPECIFIED. Any analyses added after
+# data collection are marked [EXPLORATORY] and do not constitute confirmatory
+# evidence for any hypothesis.
+# =============================================================================
+
+# --- 0. SETUP ----------------------------------------------------------------
+
+library(PropCIs)   # Wilson CIs for proportions
+library(TOSTER)    # Equivalence tests (TOST)
+library(irr)       # Cohen's kappa (inter-rater reliability)
+library(dunn.test) # Dunn's post-hoc for Kruskal-Wallis
+library(effsize)   # Cohen's d, h
+library(broom)     # tidy() for model output
+library(emmeans)   # emmeans for simple effects from ANOVA
+
+set.seed(20260625)  # Reproducibility seed — locked at pre-registration date
+
+# --- Base-R helper: Cramér's V and OR (mirrors Study 1; no DescTools dep) ---
+cramer_v_base <- function(chisq_stat, n, k) {
+  sqrt(as.numeric(chisq_stat) / (n * (k - 1)))
+}
+
+odds_ratio_base <- function(mat, conf.level = 0.95) {
+  a <- mat[1,1]; b <- mat[1,2]; c <- mat[2,1]; d <- mat[2,2]
+  if (any(c(a,b,c,d) == 0)) { a <- a+0.5; b <- b+0.5; c <- c+0.5; d <- d+0.5 }
+  or_val <- (a * d) / (b * c)
+  z      <- qnorm(1 - (1 - conf.level) / 2)
+  se_log <- sqrt(1/a + 1/b + 1/c + 1/d)
+  ci_lo  <- exp(log(or_val) - z * se_log)
+  ci_hi  <- exp(log(or_val) + z * se_log)
+  result <- or_val
+  attr(result, "conf.int") <- c(ci_lo, ci_hi)
+  result
+}
+
+# --- Configuration -----------------------------------------------------------
+
+DATA_PATH     <- "data/prolific-export-study2.csv"   # Replace with actual path
+RESULTS_DIR   <- "analysis/results-study2"
+PILOT         <- FALSE   # TRUE = pilot mode (instrument validation only, no HTs)
+H4_SUPPORTED  <- FALSE   # Set TRUE if Study 1 H4 is confirmed before running H2.3
+
+# TOST equivalence bounds (pre-specified, §9)
+EQUIV_BOUNDS_SAVE  <- 0.5  # ±0.5 SD on M3 save intention (H2.3 equivalence test)
+
+dir.create(RESULTS_DIR, showWarnings = FALSE, recursive = TRUE)
+
+# --- COLUMN MAP (update to match Prolific/Qualtrics export headers) ----------
+
+COL_ID         <- "participant_id"
+COL_CONDITION  <- "condition"       # "L1E1I1","L1E1I2","L1E2I1","L1E2I2",
+                                    # "L2E1I1","L2E1I2","L2E2I1","L2E2I2"
+COL_L          <- "label"           # "L1" or "L2"
+COL_E          <- "explanation"     # "E1" or "E2"
+COL_I          <- "intervention"    # "I1" or "I2"
+
+# M1: Absent-content accuracy (Q-AC)
+COL_QAC        <- "qac_correct"     # 1 = correct ("No, my vote is not shown"), 0 = wrong/unsure
+
+# M2: Trust composite (4 McKnight items, 1–7 Likert each)
+COL_TI1        <- "trust_integrity_1"   # "receipt accurately reflects what happened"
+COL_TI2        <- "trust_integrity_2"   # "fingerprint/code is unique to my ballot"
+COL_TC1        <- "trust_competence_1"  # "could use receipt to prove ballot counted"
+COL_TC2        <- "trust_competence_2"  # "I understand what this receipt is for"
+
+# M3: Save intention
+COL_SAVE_INTENT  <- "save_intention"   # 1–7 self-report ("how likely to save/screenshot")
+COL_DOWNLOAD_CLICK <- "download_clicked" # 1 = clicked download, 0 = did not
+
+# M4: Calibration confidence (I2 conditions only)
+COL_CALIB_CONF <- "calibration_confidence"  # 1–7 Likert ("how confident your answers were correct")
+                                             # NA for I1 conditions
+
+# M5: Verification instruction engagement
+COL_VERIFY_EXPAND <- "verify_expanded"  # 1 = expanded "how to verify", 0 = did not
+
+# M6: Open-text rater scores
+COL_QOE_RATER1 <- "qoe_rater1"  # 0, 1, or 2
+COL_QOE_RATER2 <- "qoe_rater2"  # 0, 1, or 2
+
+# Exclusion-related columns
+COL_ATTN1      <- "attention_check_1"   # 1 = pass
+COL_ATTN2      <- "attention_check_2"   # 1 = pass
+COL_RT_SEC     <- "response_time_sec"   # Total completion time in seconds
+COL_OCCUPATION <- "occupation_sw_eng"   # 1 = self-reported software engineer (exclude)
+COL_PRIOR_STUDY <- "prior_receipt_study" # 1 = completed a prior voting-receipt study
+
+# Demographics (descriptive only)
+COL_AGE        <- "age_group"
+COL_PRIOR_VOTE <- "prior_voting"
+COL_EFFICACY   <- "tech_efficacy_mean"  # Mean of 3-item Hargittai scale
+
+# Condition factor levels
+CONDITIONS <- c("L1E1I1","L1E1I2","L1E2I1","L1E2I2",
+                "L2E1I1","L2E1I2","L2E2I1","L2E2I2")
+CONDITION_LABELS <- c(
+  L1E1I1 = "fingerprint + explanation + no calibration",
+  L1E1I2 = "fingerprint + explanation + calibration",
+  L1E2I1 = "fingerprint + no explanation + no calibration",
+  L1E2I2 = "fingerprint + no explanation + calibration",
+  L2E1I1 = "code + explanation + no calibration",
+  L2E1I2 = "code + explanation + calibration",
+  L2E2I1 = "code + no explanation + no calibration",
+  L2E2I2 = "code + no explanation + calibration"
+)
+
+# =============================================================================
+# SYNTHETIC DATA GENERATOR (smoke-test only; remove before OSF upload)
+# =============================================================================
+
+generate_synthetic_data <- function(n_per_cell = 30) {
+  # 8 conditions × n_per_cell participants
+  conds <- rep(CONDITIONS, each = n_per_cell)
+  N     <- length(conds)
+
+  # Parse factor levels from condition string
+  L_vec <- ifelse(startsWith(conds, "L1"), "L1", "L2")
+  E_vec <- ifelse(grepl("E1", conds), "E1", "E2")
+  I_vec <- ifelse(grepl("I1", conds), "I1", "I2")
+
+  # M1: Q-AC accuracy — E1 boosts; L1 gives small additional boost
+  p_qac <- ifelse(E_vec == "E1" & L_vec == "L1", 0.80,
+           ifelse(E_vec == "E1" & L_vec == "L2", 0.72,
+           ifelse(E_vec == "E2" & L_vec == "L1", 0.55,
+                                                  0.40)))
+  qac <- rbinom(N, 1, p_qac)
+
+  # M2: Trust (4 items, 1–7); L1E1 highest, L2E2 lowest
+  trust_mu <- ifelse(E_vec == "E1" & L_vec == "L1", 5.5,
+              ifelse(E_vec == "E1" & L_vec == "L2", 5.0,
+              ifelse(E_vec == "E2" & L_vec == "L1", 4.5,
+                                                     4.0)))
+  trust_items <- matrix(
+    pmin(7, pmax(1, round(rnorm(N * 4, rep(trust_mu, 4), 1.2)))),
+    nrow = N, ncol = 4
+  )
+  colnames(trust_items) <- c(COL_TI1, COL_TI2, COL_TC1, COL_TC2)
+
+  # M3: Save intention (1–7)
+  save_mu <- ifelse(qac == 1, 5.0, 3.5)
+  save_intent <- pmin(7, pmax(1, round(rnorm(N, save_mu, 1.5))))
+  download_click <- rbinom(N, 1, plogis(save_intent - 4))
+
+  # M4: Calibration confidence (I2 only; positive residual for L2)
+  calib_conf <- rep(NA_real_, N)
+  i2_idx <- which(I_vec == "I2")
+  calib_conf_mu <- ifelse(L_vec[i2_idx] == "L2", 5.0, 4.5)
+  calib_conf[i2_idx] <- pmin(7, pmax(1, round(rnorm(length(i2_idx), calib_conf_mu, 1.3))))
+
+  # M5: Verify expansion (higher in E1 conditions)
+  p_expand <- ifelse(E_vec == "E1", 0.60, 0.35)
+  verify_expand <- rbinom(N, 1, p_expand)
+
+  # M6: Open-text (0–2, two raters; agreement ~ 0.75)
+  qoe_true <- sample(0:2, N, replace = TRUE, prob = c(0.3, 0.4, 0.3))
+  qoe_r1 <- pmax(0, pmin(2, qoe_true + sample(c(-1,0,0,0,1), N, replace = TRUE)))
+  qoe_r2 <- pmax(0, pmin(2, qoe_true + sample(c(-1,0,0,0,1), N, replace = TRUE)))
+
+  # Exclusion cols
+  attn1 <- rbinom(N, 1, 0.88)
+  attn2 <- rbinom(N, 1, 0.90)
+  rt    <- round(rnorm(N, 700, 120))
+  occ   <- rbinom(N, 1, 0.04)
+  prior <- rbinom(N, 1, 0.03)
+
+  # Demographics
+  age   <- sample(c("18-24","25-34","35-44","45-54","55+"), N, replace = TRUE,
+                   prob = c(0.18, 0.30, 0.26, 0.16, 0.10))
+  pvote <- rbinom(N, 1, 0.62)
+  eff   <- round(rnorm(N, 3.5, 0.8), 1)
+
+  df <- data.frame(
+    participant_id      = sprintf("SYNTH%04d", seq_len(N)),
+    condition           = conds,
+    label               = L_vec,
+    explanation         = E_vec,
+    intervention        = I_vec,
+    qac_correct         = qac,
+    trust_integrity_1   = trust_items[,1],
+    trust_integrity_2   = trust_items[,2],
+    trust_competence_1  = trust_items[,3],
+    trust_competence_2  = trust_items[,4],
+    save_intention      = save_intent,
+    download_clicked    = download_click,
+    calibration_confidence = calib_conf,
+    verify_expanded     = verify_expand,
+    qoe_rater1          = qoe_r1,
+    qoe_rater2          = qoe_r2,
+    attention_check_1   = attn1,
+    attention_check_2   = attn2,
+    response_time_sec   = rt,
+    occupation_sw_eng   = occ,
+    prior_receipt_study = prior,
+    age_group           = age,
+    prior_voting        = pvote,
+    tech_efficacy_mean  = eff,
+    stringsAsFactors    = FALSE
+  )
+  df
+}
+
+# =============================================================================
+# 1. DATA LOADING AND PRE-PROCESSING
+# =============================================================================
+
+cat("\n=============================================================\n")
+cat("PIUP Study 2 — Pre-Registered Analysis\n")
+cat("Script version: 2026-06-25\n")
+cat("H4_SUPPORTED (Study 1):", H4_SUPPORTED, "\n")
+cat("PILOT mode:", PILOT, "\n")
+cat("=============================================================\n\n")
+
+# ---- 1.1 Load data ----------------------------------------------------------
+
+if (!file.exists(DATA_PATH)) {
+  cat("DATA_PATH not found. Using synthetic data for smoke test.\n")
+  cat("*** SYNTHETIC DATA — DO NOT USE FOR PUBLICATION ***\n\n")
+  raw <- generate_synthetic_data(n_per_cell = 30)
+} else {
+  raw <- read.csv(DATA_PATH, stringsAsFactors = FALSE)
+}
+
+cat("Raw data loaded: N =", nrow(raw), "\n")
+cat("Conditions observed:",
+    paste(sort(unique(raw[[COL_CONDITION]])), collapse = ", "), "\n\n")
+
+# ---- 1.2 Validate factor levels ---------------------------------------------
+
+unexpected_conds <- setdiff(raw[[COL_CONDITION]], CONDITIONS)
+if (length(unexpected_conds) > 0) {
+  warning("Unexpected condition codes: ", paste(unexpected_conds, collapse = ", "),
+          "\nCheck COL_CONDITION mapping.")
+}
+
+# ---- 1.3 Exclusions (pre-specified, §9.3) -----------------------------------
+
+n_raw <- nrow(raw)
+exclusion_log <- data.frame(rule = character(), n_excluded = integer(),
+                            n_remaining = integer(), stringsAsFactors = FALSE)
+
+log_exclusion <- function(df, rule, n_before) {
+  n_after <- nrow(df)
+  n_exc   <- n_before - n_after
+  cat(sprintf("  Exclusion [%s]: n = %d excluded; N remaining = %d\n",
+              rule, n_exc, n_after))
+  exclusion_log <<- rbind(exclusion_log,
+    data.frame(rule = rule, n_excluded = n_exc, n_remaining = n_after,
+               stringsAsFactors = FALSE))
+}
+
+df <- raw
+
+# Exclude self-reported software engineers / cryptographers
+n_before <- nrow(df)
+df <- df[df[[COL_OCCUPATION]] != 1, ]
+log_exclusion(df, "self-reported software engineer/cryptographer", n_before)
+
+# Exclude prior voting-receipt study participants (Prolific screener)
+n_before <- nrow(df)
+df <- df[is.na(df[[COL_PRIOR_STUDY]]) | df[[COL_PRIOR_STUDY]] != 1, ]
+log_exclusion(df, "prior voting-receipt study", n_before)
+
+# Exclude response time < 90 seconds
+n_before <- nrow(df)
+df <- df[!is.na(df[[COL_RT_SEC]]) & df[[COL_RT_SEC]] >= 90, ]
+log_exclusion(df, "response time < 90 sec", n_before)
+
+# Exclude participants who failed BOTH attention checks
+n_before <- nrow(df)
+df <- df[!(df[[COL_ATTN1]] == 0 & df[[COL_ATTN2]] == 0), ]
+log_exclusion(df, "failed both attention checks", n_before)
+
+cat(sprintf("\nFinal analytic N after exclusions: %d / %d (%.1f%% retained)\n\n",
+            nrow(df), n_raw, 100 * nrow(df) / n_raw))
+
+# ---- 1.4 Derive composite measures ------------------------------------------
+
+# M2 trust composite
+trust_cols <- c(COL_TI1, COL_TI2, COL_TC1, COL_TC2)
+df$m2_trust <- rowMeans(df[, trust_cols], na.rm = TRUE)
+
+# M1 convenience
+df$m1_qac <- df[[COL_QAC]]
+
+# M3 self-report save intention
+df$m3_save <- df[[COL_SAVE_INTENT]]
+
+# M3 download click (binary factor)
+df$m3_click <- df[[COL_DOWNLOAD_CLICK]]
+
+# M4 calibration confidence residual (Q-AC binary used as accuracy for I2 conditions)
+# Residual = confidence (1–7 scaled to 0–1) − Q-AC accuracy
+df$m4_conf_raw <- df[[COL_CALIB_CONF]]
+df$m4_residual <- NA_real_
+i2_rows <- !is.na(df$m4_conf_raw)
+# Scale confidence to 0–1 (1→0.0, 7→1.0)
+df$m4_residual[i2_rows] <- (df$m4_conf_raw[i2_rows] - 1) / 6 - df$m1_qac[i2_rows]
+
+# M5 verify expansion
+df$m5_expand <- df[[COL_VERIFY_EXPAND]]
+
+# M6 inter-rater mean
+df$m6_qoe <- rowMeans(df[, c(COL_QOE_RATER1, COL_QOE_RATER2)], na.rm = TRUE)
+
+# Factor variables for ANOVA
+df$L <- factor(df[[COL_L]], levels = c("L1", "L2"),
+               labels = c("fingerprint", "confirmation_code"))
+df$E <- factor(df[[COL_E]], levels = c("E1", "E2"),
+               labels = c("explanation_present", "explanation_absent"))
+df$I <- factor(df[[COL_I]], levels = c("I1", "I2"),
+               labels = c("no_calibration", "calibration"))
+df$condition_f <- factor(df[[COL_CONDITION]], levels = CONDITIONS)
+
+# =============================================================================
+# 2. DESCRIPTIVE STATISTICS
+# =============================================================================
+
+cat("=============================================================\n")
+cat("2. DESCRIPTIVE STATISTICS\n")
+cat("=============================================================\n\n")
+
+cat("Sample sizes by condition:\n")
+print(table(df[[COL_CONDITION]]))
+cat("\n")
+
+cat("Sample sizes by factor:\n")
+cat("  L (Label):       "); print(table(df$L))
+cat("  E (Explanation): "); print(table(df$E))
+cat("  I (Intervention):"); print(table(df$I))
+cat("\n")
+
+# M1 Q-AC accuracy by E (primary grouping)
+cat("M1 (Q-AC accuracy) by Explanation:\n")
+m1_by_E <- tapply(df$m1_qac, df$E, function(x)
+  sprintf("%.1f%% (n=%d)", 100 * mean(x, na.rm=TRUE), sum(!is.na(x))))
+print(m1_by_E)
+cat("\n")
+
+cat("M1 (Q-AC accuracy) by L × E cell:\n")
+m1_le <- tapply(df$m1_qac, list(df$L, df$E), function(x)
+  sprintf("%.1f%% (n=%d)", 100 * mean(x, na.rm=TRUE), sum(!is.na(x))))
+print(m1_le)
+cat("\n")
+
+cat("M2 (Trust composite 1–7) by L × E cell:\n")
+m2_le <- tapply(df$m2_trust, list(df$L, df$E), function(x)
+  sprintf("mean=%.2f, sd=%.2f, n=%d", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE), sum(!is.na(x))))
+print(m2_le)
+cat("\n")
+
+# Trust scale internal consistency (Cronbach's alpha approximation)
+trust_mat <- df[, trust_cols]
+trust_mat_complete <- trust_mat[complete.cases(trust_mat), ]
+if (nrow(trust_mat_complete) > 1 && ncol(trust_mat_complete) > 1) {
+  item_vars  <- apply(trust_mat_complete, 2, var, na.rm = TRUE)
+  total_var  <- var(rowSums(trust_mat_complete), na.rm = TRUE)
+  k          <- ncol(trust_mat_complete)
+  alpha_raw  <- (k / (k - 1)) * (1 - sum(item_vars) / total_var)
+  cat(sprintf("M2 Cronbach's alpha (trust composite): α = %.3f", alpha_raw))
+  if (alpha_raw < 0.70) cat("  *** BELOW THRESHOLD — report items individually (§7.1) ***")
+  cat("\n\n")
+}
+
+cat("M3 (Save intention 1–7) by E:\n")
+print(tapply(df$m3_save, df$E, function(x)
+  sprintf("mean=%.2f, sd=%.2f", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE))))
+
+cat("\nM3 (Download click rate) by E:\n")
+print(tapply(df$m3_click, df$E, function(x)
+  sprintf("%.1f%%", 100 * mean(x, na.rm=TRUE))))
+cat("\n")
+
+# Save descriptives
+desc_out <- data.frame(
+  condition = CONDITIONS,
+  n         = as.integer(table(df$condition_f)[CONDITIONS]),
+  m1_qac_pct = 100 * as.numeric(tapply(df$m1_qac, df$condition_f, mean, na.rm=TRUE)[CONDITIONS]),
+  m2_trust   = as.numeric(tapply(df$m2_trust, df$condition_f, mean, na.rm=TRUE)[CONDITIONS]),
+  m3_save    = as.numeric(tapply(df$m3_save, df$condition_f, mean, na.rm=TRUE)[CONDITIONS]),
+  m3_click_pct = 100 * as.numeric(tapply(df$m3_click, df$condition_f, mean, na.rm=TRUE)[CONDITIONS]),
+  stringsAsFactors = FALSE
+)
+write.csv(desc_out, file.path(RESULTS_DIR, "descriptives_study2.csv"), row.names = FALSE)
+cat("Descriptives written to:", file.path(RESULTS_DIR, "descriptives_study2.csv"), "\n\n")
+
+# =============================================================================
+# 3. INTER-RATER RELIABILITY — M6 OPEN-TEXT (§9.4)
+# =============================================================================
+
+cat("=============================================================\n")
+cat("3. INTER-RATER RELIABILITY — M6 Q-OE OPEN TEXT (§9.4)\n")
+cat("=============================================================\n\n")
+
+rater_data <- df[, c(COL_QOE_RATER1, COL_QOE_RATER2)]
+rater_data_complete <- rater_data[complete.cases(rater_data), ]
+
+if (nrow(rater_data_complete) > 0) {
+  kappa_result <- irr::kappa2(rater_data_complete, weight = "unweighted")
+  cat(sprintf("Cohen's kappa (unweighted): κ = %.3f, z = %.2f, p = %.4f, n = %d\n",
+              kappa_result$value, kappa_result$statistic, kappa_result$p.value,
+              kappa_result$subjects))
+  if (kappa_result$value < 0.70) {
+    cat("*** κ < 0.70 — raters must adjudicate disagreements before proceeding (§9.4). ***\n")
+    cat("*** Pause analysis at this point; do not proceed to confirmatory tests. ***\n")
+  } else {
+    cat("κ ≥ 0.70 — inter-rater agreement adequate. Proceed to hypothesis tests.\n")
+  }
+} else {
+  cat("No complete rater pairs found. Check COL_QOE_RATER1 / COL_QOE_RATER2 mapping.\n")
+}
+cat("\n")
+
+# =============================================================================
+# 4. HYPOTHESIS TESTS (suppressed in PILOT mode)
+# =============================================================================
+
+if (!PILOT) {
+
+# ---- Helper: chi-squared for two proportions (one-tailed) ------------------
+two_prop_chisq_one_tailed <- function(n1, x1, n2, x2, direction = "greater") {
+  # direction = "greater": H_A is p1 > p2
+  # Returns list: OR, OR_CI, chi_stat, p_two_tailed, p_one_tailed, n1/x1/n2/x2
+  mat <- matrix(c(x1, n1 - x1, x2, n2 - x2), nrow = 2, byrow = TRUE)
+  ct  <- chisq.test(mat, correct = FALSE)
+  or  <- odds_ratio_base(mat)
+  # One-tailed p: chi-squared is symmetric, so one-tailed = two-tailed / 2
+  # only when the effect is in the predicted direction
+  p_one <- if ((direction == "greater" && x1/n1 > x2/n2) ||
+               (direction == "less"    && x1/n1 < x2/n2)) {
+    ct$p.value / 2
+  } else {
+    1 - ct$p.value / 2
+  }
+  list(
+    chi_stat   = as.numeric(ct$statistic),
+    df         = ct$parameter,
+    p_two      = ct$p.value,
+    p_one      = p_one,
+    n1 = n1, x1 = x1, p1 = x1/n1,
+    n2 = n2, x2 = x2, p2 = x2/n2,
+    OR = as.numeric(or),
+    OR_CI_lo   = attr(or, "conf.int")[1],
+    OR_CI_hi   = attr(or, "conf.int")[2],
+    direction  = direction
+  )
+}
+
+fmt_binary_result <- function(res) {
+  sprintf("%.1f%% vs %.1f%%; χ²(1) = %.3f; OR = %.2f [%.2f, %.2f]; p(one-tailed) = %.4f",
+          100*res$p1, 100*res$p2,
+          res$chi_stat, res$OR, res$OR_CI_lo, res$OR_CI_hi, res$p_one)
+}
+
+# =============================================================================
+# 4.1 H2.1 — E MAIN EFFECT ON Q-AC (§9.1)
+# =============================================================================
+
+cat("=============================================================\n")
+cat("4.1 H2.1 — E MAIN EFFECT ON Q-AC ACCURACY (§9.1)\n")
+cat("Prediction: E1 > E2 on absent-content accuracy (M1)\n")
+cat("=============================================================\n\n")
+
+# Aggregate E levels (pool across L and I)
+E1_rows <- df$E == "explanation_present"
+E2_rows <- df$E == "explanation_absent"
+n_E1    <- sum(E1_rows, na.rm = TRUE)
+n_E2    <- sum(E2_rows, na.rm = TRUE)
+x_E1    <- sum(df$m1_qac[E1_rows], na.rm = TRUE)
+x_E2    <- sum(df$m1_qac[E2_rows], na.rm = TRUE)
+
+h21_result <- two_prop_chisq_one_tailed(n_E1, x_E1, n_E2, x_E2, direction = "greater")
+cat("H2.1: E1 vs. E2 on Q-AC\n")
+cat("  ", fmt_binary_result(h21_result), "\n\n")
+
+# Wilson confidence intervals for each E level
+cat("Wilson 95% CIs:\n")
+cat(sprintf("  E1 (explanation present): %.1f%% [%.1f%%, %.1f%%] (n=%d)\n",
+            100*h21_result$p1,
+            100*as.numeric(PropCIs::scoreci(x_E1, n_E1, 0.95)$conf.int[1]),
+            100*as.numeric(PropCIs::scoreci(x_E1, n_E1, 0.95)$conf.int[2]),
+            n_E1))
+cat(sprintf("  E2 (explanation absent):  %.1f%% [%.1f%%, %.1f%%] (n=%d)\n",
+            100*h21_result$p2,
+            100*as.numeric(PropCIs::scoreci(x_E2, n_E2, 0.95)$conf.int[1]),
+            100*as.numeric(PropCIs::scoreci(x_E2, n_E2, 0.95)$conf.int[2]),
+            n_E2))
+
+h21_sig <- h21_result$p_one < 0.05
+h21_verdict <- if (h21_sig) {
+  sprintf("H2.1 SUPPORTED: Explanation significantly increases absent-content accuracy (p=%.4f).",
+          h21_result$p_one)
+} else {
+  sprintf("H2.1 NOT SUPPORTED: No significant E main effect on Q-AC (p=%.4f).",
+          h21_result$p_one)
+}
+cat(sprintf("\nH2.1 VERDICT: %s\n\n", h21_verdict))
+
+# Predicted rank ordering (exploratory cell-level check — §8.1)
+cat("[EXPLORATORY] Q-AC accuracy by L × E cell (predicted: L1E1 ≥ L2E1 > L1E2 ≥ L2E2):\n")
+cell_acc <- tapply(df$m1_qac, list(df$L, df$E), mean, na.rm = TRUE)
+print(round(cell_acc * 100, 1))
+cat("\n")
+
+# Ceiling note (pre-specified: §11.2 — if I2E1 cells > 90%, flag)
+cat("[Pre-specified ceiling check per §11.2 (I2E1 conditions)]\n")
+for (l_lev in c("fingerprint","confirmation_code")) {
+  cell_I2E1 <- df$L == l_lev & df$E == "explanation_present" & df$I == "calibration"
+  acc_I2E1  <- mean(df$m1_qac[cell_I2E1], na.rm = TRUE)
+  flag <- if (!is.nan(acc_I2E1) && acc_I2E1 > 0.90) "*** CEILING — see §11.2 ***" else "OK"
+  cat(sprintf("  %s I2E1: %.1f%% %s\n", l_lev, 100*acc_I2E1, flag))
+}
+cat("\n")
+
+# =============================================================================
+# 4.2 H2.2 — L × E INTERACTION ON M2 TRUST (§9.1)
+# =============================================================================
+
+cat("=============================================================\n")
+cat("4.2 H2.2 — L × E INTERACTION ON M2 TRUST COMPOSITE (§9.1)\n")
+cat("Prediction: Interaction F significant; E effect larger for L2 than L1\n")
+cat("=============================================================\n\n")
+
+# Two-way ANOVA (L × E, between-subjects) — main effects + interaction
+# Exclude I factor for this analysis (pool across I per pre-registration §9.1)
+df_anova <- df[!is.na(df$m2_trust) & !is.na(df$L) & !is.na(df$E), ]
+
+m2_aov <- aov(m2_trust ~ L * E, data = df_anova)
+m2_aov_tidy <- broom::tidy(m2_aov)
+cat("Two-way ANOVA (L × E) on M2 trust:\n")
+print(m2_aov_tidy)
+cat("\n")
+
+# Interaction F significance
+interaction_row <- m2_aov_tidy[m2_aov_tidy$term == "L:E", ]
+h22_interaction_sig <- !is.null(interaction_row) &&
+                       nrow(interaction_row) > 0 &&
+                       !is.na(interaction_row$p.value) &&
+                       interaction_row$p.value < 0.05
+
+if (h22_interaction_sig) {
+  cat("Interaction is significant (α = 0.05). Pre-specified simple effects follow:\n\n")
+
+  # Simple effect of E within L1 (fingerprint)
+  df_L1 <- df_anova[df_anova$L == "fingerprint", ]
+  t_E_L1 <- t.test(m2_trust ~ E, data = df_L1, var.equal = FALSE)
+  cat(sprintf("  Simple effect of E within L1 (fingerprint): t(%s) = %.3f, p = %.4f\n",
+              round(t_E_L1$parameter, 1), t_E_L1$statistic, t_E_L1$p.value))
+  cat(sprintf("    E1 mean=%.2f, E2 mean=%.2f, diff=%.2f [%.2f, %.2f]\n",
+              t_E_L1$estimate[1], t_E_L1$estimate[2],
+              t_E_L1$estimate[1] - t_E_L1$estimate[2],
+              t_E_L1$conf.int[1], t_E_L1$conf.int[2]))
+
+  # Simple effect of E within L2 (confirmation code)
+  df_L2 <- df_anova[df_anova$L == "confirmation_code", ]
+  t_E_L2 <- t.test(m2_trust ~ E, data = df_L2, var.equal = FALSE)
+  cat(sprintf("  Simple effect of E within L2 (confirmation code): t(%s) = %.3f, p = %.4f\n",
+              round(t_E_L2$parameter, 1), t_E_L2$statistic, t_E_L2$p.value))
+  cat(sprintf("    E1 mean=%.2f, E2 mean=%.2f, diff=%.2f [%.2f, %.2f]\n",
+              t_E_L2$estimate[1], t_E_L2$estimate[2],
+              t_E_L2$estimate[1] - t_E_L2$estimate[2],
+              t_E_L2$conf.int[1], t_E_L2$conf.int[2]))
+
+  # Predicted direction: E effect larger for L2
+  E_eff_L1 <- abs(t_E_L1$estimate[1] - t_E_L1$estimate[2])
+  E_eff_L2 <- abs(t_E_L2$estimate[1] - t_E_L2$estimate[2])
+  cat(sprintf("\n  E effect size: L1=%.2f, L2=%.2f — L2 > L1: %s (predicted direction)\n",
+              E_eff_L1, E_eff_L2, if (E_eff_L2 > E_eff_L1) "YES ✓" else "NO ✗"))
+
+  h22_verdict <- sprintf(
+    "H2.2 SUPPORTED: L × E interaction significant (F(1,%d) = %.3f, p = %.4f). E effect larger in L2 (%.2f) than L1 (%.2f): %s.",
+    as.integer(interaction_row$df.residual[nrow(m2_aov_tidy)]),
+    interaction_row$statistic, interaction_row$p.value,
+    E_eff_L2, E_eff_L1,
+    if (E_eff_L2 > E_eff_L1) "CONFIRMED" else "NOT CONFIRMED"
+  )
+} else {
+  # Report 90% CI on interaction term per pre-registration §9.1
+  cat("Interaction not significant. Reporting 90% CI on interaction term (pre-specified):\n")
+
+  m2_lm     <- lm(m2_trust ~ L * E, data = df_anova)
+  int_ci90  <- confint(m2_lm, level = 0.90)
+  int_term  <- "Lfingerprintconfirmation_code:Eexplanation_presentexplanation_absent"
+  # Use emmeans to get interaction contrast reliably
+  emm <- emmeans::emmeans(m2_lm, ~ L * E)
+  int_contrast <- emmeans::contrast(emm, interaction = "pairwise")
+  cat("Interaction contrast (emmeans):\n")
+  print(summary(int_contrast, infer = TRUE, level = 0.90))
+  cat("\n")
+
+  h22_verdict <- sprintf(
+    "H2.2 NOT SUPPORTED: L × E interaction not significant (F = %.3f, p = %.4f). Null result; 90%% CI on interaction term reported above.",
+    ifelse(is.na(interaction_row$statistic), NA, interaction_row$statistic),
+    ifelse(is.na(interaction_row$p.value), NA, interaction_row$p.value)
+  )
+}
+cat(sprintf("\nH2.2 VERDICT: %s\n\n", h22_verdict))
+
+# =============================================================================
+# 4.3 H2.3 — CALIBRATION INTERVENTION ON MISCALIBRATION RESIDUAL (§9.1)
+#     CONDITIONAL ON STUDY 1 H4 BEING SUPPORTED
+# =============================================================================
+
+cat("=============================================================\n")
+cat("4.3 H2.3 — CALIBRATION EFFECT ON M4 RESIDUAL (§9.1)\n")
+cat(sprintf("H4_SUPPORTED (Study 1): %s\n", H4_SUPPORTED))
+cat("=============================================================\n\n")
+
+if (!H4_SUPPORTED) {
+  cat("H2.3 is SKIPPED: Study 1 H4 not supported.\n")
+  cat("Pre-registration §9.1: H2.3 is a pre-specified conditional test —\n")
+  cat("run only if H4 is supported in Study 1. See study 2 design note §5.\n\n")
+  h23_verdict <- "H2.3 SKIPPED (conditional test; Study 1 H4 not supported)"
+} else {
+  cat("H4 supported — running H2.3 on L2 conditions only.\n\n")
+
+  # L2 participants with I2 (calibration) or I1 (no calibration)
+  df_L2     <- df[df$L == "confirmation_code" & !is.na(df$m4_residual), ]
+  df_L2_I1  <- df_L2[df_L2$I == "no_calibration", ]
+  df_L2_I2  <- df_L2[df_L2$I == "calibration", ]
+
+  cat(sprintf("L2 analytic n: I1 = %d, I2 = %d\n", nrow(df_L2_I1), nrow(df_L2_I2)))
+
+  # M4 residual: one-tailed t-test, prediction I1 > I2 (calibration reduces residual)
+  if (nrow(df_L2_I1) > 1 && nrow(df_L2_I2) > 1) {
+    t_h23 <- t.test(df_L2_I1$m4_residual, df_L2_I2$m4_residual,
+                    alternative = "greater", var.equal = FALSE)
+    cat(sprintf("M4 residual (I1 vs. I2, L2 only): t(%s) = %.3f, p(one-tailed) = %.4f\n",
+                round(t_h23$parameter, 1), t_h23$statistic, t_h23$p.value))
+    cat(sprintf("  I1 mean residual = %.3f; I2 mean residual = %.3f; diff = %.3f [%.3f, %.3f]\n",
+                mean(df_L2_I1$m4_residual, na.rm = TRUE),
+                mean(df_L2_I2$m4_residual, na.rm = TRUE),
+                t_h23$conf.int[1], t_h23$conf.int[1], t_h23$conf.int[2]))
+
+    # M3 save intention equivalence test: I1 ≈ I2 in L2 (TOST, bounds ±0.5 SD)
+    save_sd <- sd(df_L2$m3_save, na.rm = TRUE)
+    bounds  <- EQUIV_BOUNDS_SAVE * save_sd
+    cat(sprintf("\nM3 save intention equivalence (L2): bounds = ±%.2f (%.2f × SD=%.2f)\n",
+                bounds, EQUIV_BOUNDS_SAVE, save_sd))
+
+    tost_h23 <- TOSTER::tsum_TOST(
+      m1 = mean(df_L2_I1$m3_save, na.rm = TRUE),
+      m2 = mean(df_L2_I2$m3_save, na.rm = TRUE),
+      sd1 = sd(df_L2_I1$m3_save, na.rm = TRUE),
+      sd2 = sd(df_L2_I2$m3_save, na.rm = TRUE),
+      n1 = nrow(df_L2_I1),
+      n2 = nrow(df_L2_I2),
+      low_eqbound  = -bounds,
+      high_eqbound =  bounds,
+      alpha = 0.05,
+      var.equal = FALSE
+    )
+    cat("TOST result (M3 equivalence):\n")
+    print(tost_h23)
+
+    h23_mismatch_note <- if (nrow(df_L2_I1) < 30 || nrow(df_L2_I2) < 30) {
+      sprintf(
+        "\n*** POWER WARNING: L2 subgroup n < 30 per cell (I1=%d, I2=%d). Test may be underpowered. See §10.3 — consider Study 2b. ***",
+        nrow(df_L2_I1), nrow(df_L2_I2))
+    } else { "" }
+
+    h23_verdict <- sprintf(
+      "H2.3: Calibration t-test p(one-tailed) = %.4f (%s); TOST equivalence on save intent: %s.%s",
+      t_h23$p.value,
+      if (t_h23$p.value < 0.05) "SUPPORTED — residual reduced" else "NOT SUPPORTED",
+      if (!is.null(tost_h23$TOST_p1) && max(tost_h23$TOST_p1, tost_h23$TOST_p2, na.rm = TRUE) < 0.05)
+        "EQUIVALENT (save intent preserved)" else "NOT ESTABLISHED",
+      h23_mismatch_note
+    )
+  } else {
+    cat("Insufficient L2 observations for H2.3.\n")
+    h23_verdict <- "H2.3 SKIPPED (insufficient L2 observations)"
+  }
+  cat(sprintf("\nH2.3 VERDICT: %s\n\n", h23_verdict))
+}
+
+# =============================================================================
+# 4.4 H2.4 — M1 PREDICTS M3 DOWNLOAD CLICK (§9.1)
+# =============================================================================
+
+cat("=============================================================\n")
+cat("4.4 H2.4 — M1 ACCURACY PREDICTS M3 DOWNLOAD CLICK (§9.1)\n")
+cat("Prediction: Q-AC accuracy (M1=1) predicts higher download click rate\n")
+cat("=============================================================\n\n")
+
+df_lr <- df[!is.na(df$m3_click) & !is.na(df$m1_qac) &
+            !is.na(df$L) & !is.na(df$E) & !is.na(df$I), ]
+
+# Primary logistic regression: download_click ~ M1 + L + E + I (main effects)
+lr_primary <- glm(m3_click ~ m1_qac + L + E + I,
+                  data = df_lr, family = binomial())
+lr_summary <- broom::tidy(lr_primary, exponentiate = TRUE, conf.int = TRUE)
+cat("Primary logistic regression (download click ~ M1 + L + E + I):\n")
+print(lr_summary[, c("term","estimate","conf.low","conf.high","p.value")])
+cat("\n")
+
+# OR for M1
+m1_row <- lr_summary[lr_summary$term == "m1_qac", ]
+if (nrow(m1_row) > 0) {
+  cat(sprintf("M1 (Q-AC accuracy): OR = %.2f [%.2f, %.2f], p = %.4f\n",
+              m1_row$estimate, m1_row$conf.low, m1_row$conf.high, m1_row$p.value))
+  h24_sig <- m1_row$p.value < 0.05 && m1_row$estimate > 1
+  h24_verdict <- if (h24_sig) {
+    sprintf("H2.4 SUPPORTED: Correct absent-content interpretation predicts higher download click (OR = %.2f, p = %.4f).",
+            m1_row$estimate, m1_row$p.value)
+  } else {
+    sprintf("H2.4 NOT SUPPORTED: M1 does not significantly predict download click (OR = %.2f, p = %.4f).",
+            m1_row$estimate, m1_row$p.value)
+  }
+}
+cat(sprintf("\nH2.4 VERDICT: %s\n\n", h24_verdict))
+
+# [EXPLORATORY] M1 × L interaction — stronger effect in fingerprint condition?
+cat("[EXPLORATORY] M1 × L interaction (§9.1 exploratory):\n")
+lr_exp <- glm(m3_click ~ m1_qac * L + E + I,
+              data = df_lr, family = binomial())
+lr_exp_tidy <- broom::tidy(lr_exp, exponentiate = TRUE, conf.int = TRUE)
+int_row_exp <- lr_exp_tidy[grepl("m1_qac:L", lr_exp_tidy$term), ]
+if (nrow(int_row_exp) > 0) {
+  cat(sprintf("  M1 × L interaction: OR = %.2f, p = %.4f\n",
+              int_row_exp$estimate, int_row_exp$p.value))
+} else {
+  cat("  Interaction term not found; check factor level names.\n")
+}
+cat("  *** EXPLORATORY — not pre-registered. ***\n\n")
+
+} # end if (!PILOT)
+
+# =============================================================================
+# 5. SECONDARY / EXPLORATORY MEASURES
+# =============================================================================
+
+cat("=============================================================\n")
+cat("5. SECONDARY AND EXPLORATORY MEASURES\n")
+cat("=============================================================\n\n")
+
+# M5: Verification instruction engagement by E
+cat("[EXPLORATORY] M5 Verify expansion rate by E:\n")
+print(tapply(df$m5_expand, df$E, function(x)
+  sprintf("%.1f%% (n=%d)", 100*mean(x, na.rm=TRUE), sum(!is.na(x)))))
+cat("Expected: E1 > E2 (explanation establishes verification purpose first).\n\n")
+
+# M5 by L × E
+cat("[EXPLORATORY] M5 Verify expansion rate by L × E cell:\n")
+print(100 * round(tapply(df$m5_expand, list(df$L, df$E), mean, na.rm = TRUE), 3))
+cat("\n")
+
+# M6: Open-text quality by E
+cat("[EXPLORATORY] M6 Q-OE mean rater score by E:\n")
+print(tapply(df$m6_qoe, df$E, function(x)
+  sprintf("mean=%.2f, sd=%.2f, n=%d", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE), sum(!is.na(x)))))
+cat("\n")
+
+if (!PILOT) {
+  # Kruskal-Wallis on M6 across all 8 conditions
+  kw_m6 <- kruskal.test(m6_qoe ~ condition_f, data = df)
+  cat("[EXPLORATORY] Kruskal-Wallis M6 across 8 conditions:\n")
+  print(kw_m6)
+  if (kw_m6$p.value < 0.05) {
+    cat("Significant — Dunn post-hoc (Holm):\n")
+    dunn_m6 <- dunn.test::dunn.test(df$m6_qoe, df$condition_f,
+                                     method = "holm", kw = FALSE, label = TRUE)
+  }
+  cat("  *** EXPLORATORY ***\n\n")
+
+  # M4 residual descriptives across I conditions (all L)
+  cat("[EXPLORATORY] M4 Calibration residual by I (I2 only; all L):\n")
+  df_I2 <- df[df$I == "calibration" & !is.na(df$m4_residual), ]
+  print(tapply(df_I2$m4_residual, df_I2$L, function(x)
+    sprintf("mean=%.3f, sd=%.3f, n=%d", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE), sum(!is.na(x)))))
+  cat("Positive residual = over-confidence; H4 from Study 1 predicts L2 > L1.\n\n")
+}
+
+# =============================================================================
+# 6. SUMMARY TABLE — ALL PRE-SPECIFIED CONFIRMATORY TESTS
+# =============================================================================
+
+if (!PILOT) {
+
+cat("=============================================================\n")
+cat("6. SUMMARY — ALL PRE-SPECIFIED CONFIRMATORY TESTS\n")
+cat("=============================================================\n\n")
+
+# Build summary table
+summary_tests <- data.frame(
+  family      = c("H2.1", "H2.2", "H2.3", "H2.4"),
+  description = c(
+    "E main effect on Q-AC accuracy (E1 > E2, one-tailed chi-squared)",
+    "L × E interaction on M2 trust (two-way ANOVA; simple effects if F sig.)",
+    "I2 reduces M4 miscalibration residual in L2 [CONDITIONAL on Study 1 H4]",
+    "M1 (Q-AC accuracy) predicts M3 download click (logistic regression)"
+  ),
+  p_value   = round(c(
+    h21_result$p_one,
+    ifelse(nrow(interaction_row) > 0, interaction_row$p.value, NA),
+    NA,  # H2.3 p extracted from h23_verdict text; see above
+    ifelse(exists("m1_row") && nrow(m1_row) > 0, m1_row$p.value, NA)
+  ), 4),
+  significant = c(
+    h21_sig,
+    h22_interaction_sig,
+    NA,  # H2.3 conditional
+    ifelse(exists("h24_sig"), h24_sig, NA)
+  ),
+  verdict     = c(
+    h21_verdict,
+    h22_verdict,
+    h23_verdict,
+    ifelse(exists("h24_verdict"), h24_verdict, "H2.4 — see above")
+  ),
+  stringsAsFactors = FALSE
+)
+
+print(summary_tests[, c("family","p_value","significant")])
+cat("\n")
+for (i in seq_len(nrow(summary_tests))) {
+  cat(sprintf("[%s] %s\n", summary_tests$family[i], summary_tests$verdict[i]))
+}
+write.csv(summary_tests, file.path(RESULTS_DIR, "confirmatory_tests_summary_study2.csv"),
+          row.names = FALSE)
+cat("\nSummary table written to:",
+    file.path(RESULTS_DIR, "confirmatory_tests_summary_study2.csv"), "\n\n")
+
+# =============================================================================
+# 7. PRODUCTION / DESIGN DECISION (§3 — contingency table)
+# =============================================================================
+
+cat("=============================================================\n")
+cat("7. DESIGN DECISION (§3 contingency)\n")
+cat("=============================================================\n\n")
+
+h21_sup <- h21_result$p_one < 0.05
+h22_sup <- h22_interaction_sig
+
+design_decision <- if (h21_sup && h22_sup) {
+  "Explanation copy is the primary load-bearing element (H2.1 supported). Label × Explanation interaction confirmed (H2.2): fingerprint + explanation is the strongest combination. DEPLOY L1E1 (vote fingerprint + absent-choice explanation) as the production default."
+} else if (h21_sup && !h22_sup) {
+  "Explanation copy drives accuracy improvement (H2.1 supported) with no significant label moderation (H2.2 null). Explanation is necessary; label is not independently causal. DEPLOY with explanation copy regardless of label choice."
+} else if (!h21_sup && h22_sup) {
+  "Explanation has no main effect on accuracy (H2.1 null), but label × explanation interaction exists (H2.2). Check simple effects to determine which L × E combination is superior."
+} else {
+  "Neither explanation effect nor interaction is significant. Absent-content accuracy may be ceiling in these conditions (check §11.2 ceiling note) or the receipt design requires broader revision. FLAG for Jony — do not change production defaults without further investigation."
+}
+cat(sprintf("DESIGN DECISION: %s\n\n", design_decision))
+
+} # end if (!PILOT)
+
+# =============================================================================
+# 8. PILOT INSTRUMENT VALIDATION (PILOT mode only)
+# =============================================================================
+
+if (PILOT) {
+
+cat("=============================================================\n")
+cat("8. PILOT INSTRUMENT VALIDATION (N per cell ≈ 5–10)\n")
+cat("=============================================================\n\n")
+
+cat("M2 Trust composite — internal consistency check:\n")
+trust_alpha_msg <- if (exists("alpha_raw")) {
+  sprintf("α = %.3f (%s)", alpha_raw, if (alpha_raw < 0.70) "BELOW THRESHOLD" else "OK")
+} else "Not computed"
+cat("  ", trust_alpha_msg, "\n\n")
+
+cat("Floor/ceiling on M1 (Q-AC) by condition:\n")
+for (cond in CONDITIONS) {
+  sub_c <- df[df[[COL_CONDITION]] == cond, ]
+  n_c   <- nrow(sub_c)
+  prop  <- mean(sub_c$m1_qac, na.rm = TRUE)
+  flag  <- if (prop < 0.20) "*** FLOOR ***" else if (prop > 0.90) "*** CEILING ***" else ""
+  cat(sprintf("  %s: %.1f%% (n=%d) %s\n", cond, 100*prop, n_c, flag))
+}
+
+cat("\nM3 save intention distribution:\n")
+print(table(df$m3_save, useNA = "always"))
+
+cat("\nVerification instruction engagement by condition:\n")
+print(tapply(df$m5_expand, df[[COL_CONDITION]], mean, na.rm = TRUE))
+
+cat("\nTask completion time (seconds):\n")
+print(summary(df[[COL_RT_SEC]]))
+med_rt <- median(df[[COL_RT_SEC]], na.rm = TRUE)
+if (med_rt < 480 || med_rt > 900) {
+  cat("*** WARNING: Median time outside 8–15 min target. Adjust task length before full study. ***\n")
+}
+
+cat("\nAttention check pass rates:\n")
+cat(sprintf("  Passed ATTN1: %d/%d (%.1f%%)\n",
+            sum(df[[COL_ATTN1]] == 1, na.rm=TRUE), nrow(df),
+            100 * mean(df[[COL_ATTN1]] == 1, na.rm=TRUE)))
+cat(sprintf("  Passed ATTN2: %d/%d (%.1f%%)\n",
+            sum(df[[COL_ATTN2]] == 1, na.rm=TRUE), nrow(df),
+            100 * mean(df[[COL_ATTN2]] == 1, na.rm=TRUE)))
+
+cat("\nM6 inter-rater spot check (kappa, if available):\n")
+rater_pilot <- df[, c(COL_QOE_RATER1, COL_QOE_RATER2)]
+rater_pilot_complete <- rater_pilot[complete.cases(rater_pilot), ]
+if (nrow(rater_pilot_complete) > 2) {
+  k_pilot <- irr::kappa2(rater_pilot_complete, weight = "unweighted")
+  cat(sprintf("  κ = %.3f (n=%d pairs) — %s\n",
+              k_pilot$value, k_pilot$subjects,
+              if (k_pilot$value < 0.60) "LOW — revise coding guide before full study"
+              else "Acceptable for pilot"))
+}
+
+cat("\n*** PILOT MODE: Hypothesis tests SUPPRESSED per pre-registration §9. ***\n")
+cat("*** Pilot data will NOT be combined with full-study data. ***\n\n")
+
+}
+
+# =============================================================================
+# 9. SESSION INFO
+# =============================================================================
+
+cat("=============================================================\n")
+cat("9. SESSION INFO\n")
+cat("=============================================================\n\n")
+print(sessionInfo())
+
+cat("\n--- Study 2 Analysis Complete ---\n")
+cat(sprintf("Results written to: %s/\n", RESULTS_DIR))
+cat("Files: descriptives_study2.csv, confirmatory_tests_summary_study2.csv\n\n")
+cat("Design note: docs/piup-study2-design-note-2026-06-22.md\n")
+cat("Study 1 reference: docs/piup-study1-preregistration-2026-06-22.md\n")
+cat("Pre-register this script on OSF before Study 2 data collection.\n")
+cat("Set H4_SUPPORTED to match Study 1 verdict before final run.\n")
+cat("Any deviation from the pre-registration must be documented in the amendments log.\n")
