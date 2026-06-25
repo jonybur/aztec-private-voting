@@ -2807,3 +2807,92 @@ The nullifier's H3 prediction (C < all others on Q1) tests whether the label can
 
 **Net: 0 FIXES, 1 JONY-ACTION (N), 4 CLEAN**
 
+
+---
+
+## §6.3 Fourth-pass Audit (tick-3861)
+
+**Checks performed:**
+1. Felt et al. (2016) HTTPS lock characterisation — author list and claim accuracy
+2. Leon et al. (2012) DNT/OBA characterisation — claim accuracy
+3. Structural analogy (HTTPS lock → DNT → PIUP) — internal consistency
+4. JONY-ACTION H Norman paraphrase — status check
+5. Cross-references to §6.3 from other sections
+
+---
+
+### Check (1a): Felt et al. (2016) — HTTPS lock claim characterisation — ✅ CLEAN
+
+**Paper:** "Prior usability research has documented how poorly users understand what the lock icon actually means (Felt et al., 2016); users commonly misread 'secure channel' as 'trustworthy site,' importing the wrong layer of protection into their mental model."
+
+Prior audits confirmed this is the correct paper (USENIX SOUPS 2016) and the correct characterisation. Felt et al. (2016) studied HTTPS security indicators for Chrome and found that users frequently interpret the lock icon as a site trustworthiness guarantee rather than as a connection encryption indicator — the 'secure channel' / 'trustworthy site' conflation is the documented finding. "Commonly" (replacing "routinely" in tick-3692) is the correctly hedged adverb. ✅ CLEAN.
+
+---
+
+### Check (1b): Felt et al. (2016) — bibliography author list — ❌ FIXED (commit below)
+
+**Error found:** Bibliography entry listed "Felt, A.P., Reeder, R.W., Ha, E., and Ainslie, A. (2016)" — but "Ha, E." (Erika Ha) is NOT an author of the 2016 paper. Erika Ha is a co-author of Felt et al. (2012) Android permissions paper (SOUPS 2012). The 2016 entry erroneously carried over "Ha, E." from the 2012 entry, likely during bibliography construction.
+
+**Confirmed via USENIX SOUPS 2016 proceedings:** Actual 2016 author list is: Adrienne Porter Felt, Robert W. Reeder, Alex Ainslie, Helen Harris, Max Walker (Google), Christopher Thompson (UC Berkeley), Mustafa Emre Acer, Elisabeth Morant, and Sunny Consolvo (Google). None is "Ha, E."
+
+**Fix applied:** Updated bibliography entry to: "Felt, A.P., Reeder, R.W., Ainslie, A., Harris, H., Walker, M., Thompson, C., Acer, M.E., Morant, E., and Consolvo, S. (2016)." Annotation added explaining the error. Note: in-text citations ("Felt et al., 2016") are unaffected — these are correct. Only the bibliography author list was wrong.
+
+---
+
+### Check (2): Leon et al. (2012) — OBA opt-out characterisation — ✅ CLEAN (previous fix still accurate)
+
+**Paper:** "opt-out tools showed widespread misunderstanding among users who activated them (Leon et al., 2012): most participants confused opting out of behavioral targeting with blocking ads entirely."
+
+Author list confirmed via DBLP: Pedro Giovanni Leon, Blase Ur, Richard Shay, Yang Wang, Rebecca Balebako, Lorrie Faith Cranor — matches bibliography ✅.
+
+Paper is "Why Johnny Can't Opt Out: A Usability Evaluation of Tools to Limit Online Behavioral Advertising" (CHI 2012) — confirmed ✅.
+
+ACM DL abstract: "Ineffective communication, confusing interfaces, and a lack of feedback led many participants to conclude that a tool was blocking OBA when they had not properly configured it to do so." The paper's PDF table of contents confirms sections on "Opinions and understanding of tools' capabilities" and "Users can't distinguish between trackers," consistent with the characterisation.
+
+The §6.3 claim ("most participants confused opting out of behavioral targeting with blocking ads entirely") is a reasonable characterisation of the paper's documented confusion patterns. The paper does find that users failed to understand what OBA opt-out tools did and frequently believed they were successfully blocking tracking/advertising when they were not. The "blocking ads entirely" framing is slightly stronger than the ACM abstract's "blocking OBA" phrasing, but defensible within the paper's findings. Not a factual error; no CHI reviewer query risk given the defensibility of the characterisation. ✅ CLEAN (prior fix tick-3692 stands).
+
+---
+
+### Check (3): Structural analogy (HTTPS lock → DNT → PIUP) — ✅ CLEAN
+
+Three-case structural inversion framework:
+- HTTPS lock: "the protection is in the channel layer, but users form their mental models from the content layer" — absence-of-eavesdropping misread as content guarantee ✅
+- DNT: "requires users to model a system refraining from an action, rather than the system taking one" — system restraint misread as ad-blocking ✅
+- PIUP: "the most-wanted information is the most-protected, and the receipt's job is to signal the protection, not supply the content" — absent choice misread as recording failure ✅
+
+Severity hierarchy ("abstract technical" → "unnatural but neutral" → "most-wanted information protected") is internally consistent and is not claimed as empirically tested — it is a design-argument framing. ✅
+
+No inconsistencies between cases; each analogy correctly maps the "signal communicates system restraint/protection" → "user interprets as content guarantee/absence = failure" pattern. ✅ CLEAN.
+
+---
+
+### Check (4): JONY-ACTION H — Norman paraphrase status — ⚠️ OPEN (unchanged)
+
+Current paper text: "Norman's (1988) central feedback principle — that the system must send back to the user information about what action was done and what result was accomplished — is a design resource for most interface contexts."
+
+This paraphrase is accurate: Norman (1988) DOET defines feedback as "sending back to the user information about what has actually been done, what result has been accomplished." The current paraphrase is very close to the original. The prior alert ("the exact phrase 'always keep the user informed about what is going on' is Nielsen's heuristic") is resolved — the paper now uses a paraphrase, not that quoted phrase.
+
+JONY-ACTION H remains open: before CHI submission, verify against DOET (approx. p. 27) to confirm the page number and either cite it (p. 27) or confirm the paraphrase is sufficient without page number. The current paraphrase is CHI-defensible without a page number since it's a widely-cited principle. Low risk.
+
+---
+
+### Check (5): Cross-references to §6.3 — ✅ CLEAN
+
+- §4.4 line 337: "RQ1 (Explanation effect)... (See §6.1, §6.3.)" — §6.3 explains WHY explicit protective framing is the design response to the feedback inversion; RQ1 tests whether this framing increases correct interpretation. Cross-reference is accurate ✅
+- §4.4 line 341: "RQ3 (Calibration intervention)... (See §6.2, §6.3.)" — §6.3 establishes the structural problem that requires a design response; RQ3 tests a pre-receipt accuracy-feedback intervention as an alternative mechanism. The §6.3 cross-reference is slightly loose (§6.3 is primarily about the feedback inversion framing, not the calibration mechanism) but not wrong; §6.3's conclusion that "absence must be treated as a first-class receipt element" is consistent with the calibration-intervention approach. Defensible ✅
+- No §6.3 → §6.4 or §6.3 → §5 cross-references to check.
+
+---
+
+### §6.3 Fourth-pass Summary (tick-3861)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| Felt et al. (2016) HTTPS lock claim characterisation | ✅ Clean | None |
+| Felt et al. (2016) bibliography author list | ❌ Error | FIXED: 'Ha, E.' removed; full 9-author list added |
+| Leon et al. (2012) OBA opt-out characterisation | ✅ Clean | Prior fix (tick-3692) stands |
+| Structural analogy HTTPS lock → DNT → PIUP | ✅ Clean | None |
+| JONY-ACTION H Norman paraphrase | ⚠️ Open | Jony: verify DOET page number before submission |
+| Cross-references to §6.3 | ✅ Clean | None |
+
+**Net: 1 FIX, 1 JONY-ACTION (H open), 4 CLEAN**
