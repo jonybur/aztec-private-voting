@@ -2690,3 +2690,120 @@ The key distinction PIUP draws is between **verification usability** (can voters
 
 **Net: 1 FIX, 4 CLEAN**
 
+
+---
+
+## §6.1 Cognitive load / schema-import audit — 1 JONY-ACTION, 3 CLEAN (tick-3860)
+
+**Cross-check sources:** Paper draft §6.1–6.2, bibliography section; Lee and See (2004) *Human Factors*; McKnight et al. (2002) *Information Systems Research*.
+
+Four checks from nextRotation:
+1. Lee and See (2004) characterisation and placement
+2. McKnight et al. (2002) characterisation
+3. Familiarity tax internal consistency
+4. Study 1 Q1 and Q2 mapping to §6.1 predictions
+
+---
+
+### Check 1: Lee and See (2004) — two uses — 1 OPEN, 1 CLEAN
+
+**Lee and See (2004) full citation:** "Trust in Automation: Designing for Appropriate Reliance." *Human Factors 46(1):50-80.*
+
+**Primary contribution of the paper:** A comprehensive review of human-automation trust. The authors define trust as an attitude, distinguish calibrated trust (appropriate reliance) from miscalibration (over-reliance when trust exceeds automation capability; under-reliance when trust is too low). Their framework: trust is shaped by automation performance, purpose, and process; over-reliance occurs when the user's mental model of automation capability is more optimistic than actual capability.
+
+**Use 1 (§6.2, line 395) — ⚠️ MINOR PRECISION GAP (JONY-ACTION N)**
+
+> "Users who encounter interface patterns they recognise tend to extend more trust to them than to unfamiliar conventions (McKnight et al., 2002; Lee and See, 2004)."
+
+Assessment: The claim is "familiarity → confidence/trust." McKnight et al. (2002) directly addresses this within e-commerce trust formation — prior experience and institutional familiarity are explicit components of their trust typology. Lee and See (2004) is primarily about automation trust calibration; familiarity is one factor they discuss (experience with automation shapes mental models), but it is not their primary empirical contribution. Citing Lee and See alongside McKnight for the general "familiarity produces confidence" claim is a slight mismatch: Lee and See's contribution is specifically to the automation context, not to UI familiarity more broadly.
+
+The citation is **not wrong** — Lee and See do discuss experience-based trust formation. However, a CHI reviewer expert in the trust-in-automation literature might query the use of Lee and See (2004) here, as their paper is specifically about operator trust in automated systems (aircraft autopilot, robots, medical diagnosis systems), not about UI label familiarity.
+
+**Recommended action (JONY-ACTION N):** Before CHI submission, consider whether Lee and See (2004) should be dropped from the line 395 co-citation (leaving McKnight et al. 2002 as the sole citation for familiarity→confidence) or whether a bridging qualifier like "familiarity and experience effects that Lee and See (2004) document in the automation-trust literature" would better signal the theoretical extension. Lee and See is more precisely placed at line 399 (see Use 2 below) where the automation trust framework is directly analogized.
+
+**No auto-fix applied** — this is a citation precision judgment, not a factual error.
+
+---
+
+**Use 2 (§6.2, line 399) — ✅ CLEAN**
+
+> "This maps onto the miscalibration Lee and See (2004) describe in trust in automation: over-reliance occurs when users apply a mental model that does not accurately reflect the system's actual behavior."
+
+Assessment: This is a direct and accurate characterisation of Lee and See's over-reliance framework. Their paper explicitly discusses over-reliance as the result of mental models that are too optimistic about automation capability — users over-rely when their model of the system (automation can handle this) diverges from reality (automation cannot). The paper's analogical extension (eCommerce schema → inaccurate mental model of receipt's privacy properties → over-reliance on wrong inference) is appropriately hedged with "maps onto." ✅ CLEAN.
+
+---
+
+### Check 2: McKnight et al. (2002) — THREE USES — ALL CLEAN ✅
+
+**McKnight et al. (2002) full citation:** "Developing and Validating Trust Measures for E-Commerce: An Integrative Typology." *Information Systems Research 13(3):334-359.*
+
+**Primary contribution:** An integrative typology of e-commerce trust distinguishing (a) trusting beliefs — benevolence, integrity, competence beliefs about a trustee — and (b) trusting intentions — willingness to depend on the trustee. Validated multi-item scales for each component.
+
+**Use 1 (§6.2, line 395) — ✅ CLEAN**
+Co-citation for "familiarity produces confidence." McKnight et al. explicitly address how initial trust is formed (institution-based trust, disposition to trust, prior knowledge and experience). Familiarity with e-commerce conventions is within scope of their framework. ✅
+
+**Use 2 (§6.2, line 397) — ✅ CLEAN**
+> "McKnight et al. (2002) distinguish between trusting beliefs - specific cognitions about a trustee's properties - and trusting intentions - willingness to depend on the trustee."
+
+Direct and accurate characterisation of the McKnight typology's primary distinction. ✅
+
+**Use 3 (Study 2 §5.4 McKnight scale) — ✅ CLEAN**
+4-item adapted scale: TI1/TI2 (integrity), TC1/TC2 (competence). Maps plausibly to McKnight (2002) trust typology dimensions. Standard 4-item adaptation practice for HCI contexts. ✅
+
+---
+
+### Check 3: Familiarity tax internal consistency — ✅ CLEAN
+
+The "familiarity tax" argument structure in §6.2:
+1. Familiar label ("confirmation code") activates eCommerce trusting-beliefs complex
+2. eCommerce schema: confirmation = retrievable evidence of content → wrong schema for private voting
+3. H2 (dissociation) predicts: accuracy deficit on Q2/Q3 (privacy items), composite accuracy ≈ fingerprint
+4. H4 (miscalibration) predicts: higher confidence with confirmation code despite Q2/Q3 deficit
+5. Familiarity tax = confident users with wrong privacy model, invisible to users and designers, dangerous under coercion
+
+Internal consistency assessment:
+- H2 and H4 together operationalize the full familiarity tax claim (accuracy deficit + confidence miscalibration). The paper correctly frames this as requiring both: "If H4 is supported, the label simultaneously does the designer's work of reducing onboarding friction and the coercer's work of producing a wrong mental model." ✅
+- The familiarity tax claim is appropriately flagged as "a theoretical projection that H4 is designed to test empirically" — not stated as an established finding. ✅
+- The "compounds under coercion or audit" projection is a design inference extrapolating from Q2/Q3 performance to real coercion scenarios — the paper does not claim this is empirically tested. ✅
+- §6.1's two-conditions structure (framing condition + label condition) is consistent with §6.2's schema-import focus: §6.2 is specifically about the label condition's schema effect on the privacy-model questions (Q2/Q3). ✅
+
+**Verdict: ✅ CLEAN** — no consistency gaps found.
+
+---
+
+### Check 4: Study 1 Q1 and Q2 measure mapping to §6.1 predictions — ✅ CLEAN
+
+**§6.1 two conditions:**
+- Condition 1 (framing): receipt must carry design-intent signal distinguishing omission from failure
+- Condition 2 (label): token label must not import schema inconsistent with privacy model
+
+**Q1 ("Does having this LABEL prove your vote was counted?"):**
+- Primary target: inclusion inference — whether the receipt successfully signals that the ballot was counted (framing condition 1)
+- Study 1 limitation: framing is fixed ON in all Study 1 conditions; Q1 in Study 1 tests LABEL effect on inclusion inference (H3: nullifier deflates Q1 accuracy) rather than FRAMING effect on inclusion inference
+- Paper already acknowledges this: §2.2 Alt3: "Study 1's Q1 measure… cannot isolate the framing contribution (Study 1 includes no without-framing baseline)." ✅
+- Study 2 (E factor → Q-AC) tests framing condition 1 directly. Study 1 Q1 is a secondary measure for H3 (label safety check).
+
+**Q2 ("Does having this LABEL prove which voting option you chose?"):**
+- Primary target: choice-blindness — whether the label activates the choice-encoding schema (label condition 2)
+- This is the H2-primary endpoint (Q2: A > B, fingerprint > confirmation code on choice-blindness). ✅ Clean mapping.
+- Q3 is the H2-secondary endpoint (coercion-scenario version of the same privacy-model question). ✅
+
+**H3 and Q1 interaction:**
+The nullifier's H3 prediction (C < all others on Q1) tests whether the label can contaminate the inclusion inference — a label effect on what is nominally a framing condition 1 measure. This is consistent with §6.1's "both conditions simultaneously" framing: even with framing present, a sufficiently misleading label can undermine Q1 accuracy. ✅ Internally coherent.
+
+**Verdict: ✅ CLEAN** — Q1 maps to condition 1 (framing; tested in Study 2 primarily), Q2 maps to condition 2 (label; H2 primary endpoint). Paper already discloses the Study 1 Q1 limitation.
+
+---
+
+### §6.1 Audit Summary (tick-3860)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| Lee and See (2004) — line 395 co-citation for familiarity→confidence | ⚠️ Precision gap | JONY-ACTION N: consider dropping from line 395 or adding bridging qualifier; Lee and See precisely placed at line 399 only |
+| Lee and See (2004) — line 399 over-reliance from inaccurate mental model | ✅ Clean | None |
+| McKnight et al. (2002) — all three uses | ✅ Clean | None |
+| Familiarity tax internal consistency | ✅ Clean | None |
+| Study 1 Q1/Q2 → §6.1 conditions mapping | ✅ Clean | Paper already discloses Q1 Study-1 limitation |
+
+**Net: 0 FIXES, 1 JONY-ACTION (N), 4 CLEAN**
+
