@@ -59,7 +59,7 @@ PIUP is a design class for submission systems where three conditions hold simult
 
 Under these conditions, standard confirmation design fails: it either violates condition (2) (by showing the content) or violates condition (1) in users' eyes (by showing an opaque identifier that reads as error).
 
-PIUP's resolution is *protective absence*: the receipt omits the content but explicitly signals that the omission is a design guarantee, not a failure. The receipt shows the submission token (a cryptographic identifier), the fact of inclusion (a status line: "Your ballot was counted"), a protective framing ("Your vote choice is not shown. This is intentional - it protects your privacy"), and a verification affordance (a collapsed mechanism for confirming inclusion at a later time; §2.1). The omitted choice is named before the user notices it is missing, in a sequence that establishes purpose before triggering the failure-inference.
+PIUP's resolution is *protective absence*: the receipt omits the content but explicitly signals that the omission is a design guarantee, not a failure. The receipt shows the fact of inclusion (a status line: "Your ballot was counted"), the submission token (a cryptographic identifier), a protective framing ("Your vote choice is not shown. This is intentional - it protects your privacy"), and a verification affordance (a collapsed mechanism for confirming inclusion at a later time; §2.1). [Note (tick-3858): enumeration order corrected — §2.1 and §3.4 both specify the status line appears first in the rendered receipt, before the submission token; prior §1.1 listed token before status line, inconsistent with the formal spec and the VoteReceipt.tsx rendering order.] The omitted choice is named before the user notices it is missing, in a sequence that establishes purpose before triggering the failure-inference.
 
 Three formal invariants characterize the pattern:
 
@@ -93,7 +93,7 @@ H2 is the most theoretically interesting hypothesis in Study 1 (pre-registered t
 
 ### 1.3 Contributions
 
-This paper makes three contributions:
+This paper makes four contributions: [Note (tick-3858): count corrected from 'three' to 'four' — tick-3847 (commit 4873f89) split what was previously a single 'Empirical validation' contribution covering both Study 1 and Study 2 into two separate contributions (Study 1 empirical evidence + Study 2 pre-registered design plan), but did not update the count. With this correction the four contributions are: (1) PIUP design artifact, (2) Aztec Private Voting system instantiation, (3) Study 1 empirical evidence (pre-registered), (4) Study 2 pre-registered study design.]
 
 **Design artifact (PIUP).** The Proof-of-Inclusion UX Pattern: a named, formally-characterized design class for coercion-resistant confirmation in privacy-preserving submission systems. Three invariants define the pattern; one named limitation bounds its scope. Invariants: §2.1. Named limitation: §1.1, §3.3.
 
