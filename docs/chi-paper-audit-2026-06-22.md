@@ -2412,3 +2412,72 @@ The instrument added "In your own words:" (preamble), "this voting system" (spec
 
 **Commits: pending**
 
+
+---
+
+## §2.2 Design Alternatives — ONE INCOMPLETE REASONING FIXED (tick-3846)
+
+**Three checks; Alt 1 and Alt 2 CLEAN, Alt 3 had a reasoning-chain gap.**
+
+---
+
+### Check (a): Alt 2 rejection conflict — ✅ CLEAN (pre-noted conflict already resolved)
+
+**Pre-noted concern:** "Alt 2 rejection reasoning conflict ('would satisfy Invariant 1 by construction' vs. 'rejected on Invariant 1 grounds')"
+
+**Current text:** "A random 128-bit UUID would satisfy the independence **sub-condition** of Invariant 1 — it is not derivable from content, identity, or observable state — and could be stored locally. Rejected on Invariant 1 grounds: Invariant 1 requires not only independence but verifiability against a public ledger..."
+
+**Assessment:** The current draft already says "sub-condition," not "Invariant 1 by construction." The pre-noted conflict was about an older version. Cross-checking §2.1: Invariant 1 has two requirements — (a) independence (`token = f(random_seed)`) and (b) verifiability (`isInLedger(token) → bool`). UUID satisfies (a), fails (b). "Rejected on Invariant 1 grounds" = rejected because it fails the full invariant (specifically the verifiability clause). The explanation that follows makes the grounds unambiguous. ✅
+
+---
+
+### Check (b): Alt 1 coercion-surface shift claim — ✅ CLEAN
+
+**Paper claims:** "the authentication credential itself becomes the coercion target. A coercer who cannot obtain the receipt can instead coerce the voter into signing an authentication message. The attack surface shifts from receipt content to receipt access; it does not shrink."
+
+**Assessment:** If a receipt is behind a wallet-auth gate, the coercer replaces "show me the receipt" with "sign this auth message so I can see your receipt." The attack surface doesn't shrink — the coercer still has a viable path (demand auth + view). "Does not shrink" is about the formal attack surface, not friction level, and is accurate. ✅
+
+---
+
+### Check (c): Alt 3 "worse than coercible receipt" — INCOMPLETE REASONING FIXED ❌
+
+**Lead-in claim:** "Three alternative designs were explored during system development and **rejected on coercion-resistance grounds**."
+
+**Alt 3 body (before fix):** "This creates a distinct failure mode that is, **from a participation standpoint**, worse than a coercible receipt... leaving the user to believe their participation was ineffective and potentially attempt to vote again. This comparison is a design inference..."
+
+**Conflict:** The lead-in says coercion-resistance grounds; Alt 3 argues only from a participation standpoint. A CHI reviewer would notice: "You said coercion-resistance grounds, but then only gave a participation argument — are these the same?"
+
+**Missing reasoning chain:**
+A voter who incorrectly believes their vote failed may seek assistance or attempt to resubmit. A coercer who is present (or follows up) can exploit this:
+- "Your vote didn't go through — let me watch you try again."
+- Voter revotes under supervision → coercion window reopened.
+
+PIUP's receipt is designed to CLOSE the coercion window at the submission event (voter has receipt, vote is done). Without protective framing, the window reopens because the voter believes nothing has been accomplished.
+
+**Fix applied (commit 551cdeb):**
+Added after "potentially attempt to vote again":
+> "— and a voter who believes their ballot was not counted is accessible to a second supervised submission, reopening exactly the coercion window the pattern is designed to close."
+
+This closes the reasoning chain: participation failure → voter accessible to second supervised submission → coercion window reopened. The lead-in "rejected on coercion-resistance grounds" is now accurate for all three alternatives.
+
+---
+
+### Citation note (Alt 3 — no fix; flagged for Jony)
+
+**Claim:** "Prior work on absent-content interpretation [Whitten and Tygar 1999; Egelman and Schechter 2013] consistently finds that users interpret absent expected content as failure unless absence is explicitly marked as intentional."
+
+**Concern:** Whitten and Tygar 1999 ("Why Johnny Can't Encrypt") is a broad PGP usability paper. Its primary findings are about interface confusion in PGP, not specifically about absent confirmation content being interpreted as failure. Attribution of the "absent expected content = failure unless marked intentional" pattern to W&T may be a stretch; the security indicators literature (e.g., absent lock icon studies) is a more direct source.
+
+**Jony-action:** Verify that Whitten & Tygar 1999 and Egelman & Schechter 2013 directly support the "absent expected content = failure" claim in §2.2 and §2.1. If W&T 1999 cannot be pinned to this specific claim, consider replacing it with a security-indicator study that explicitly shows the absent-indicator = assumed-failure pattern (e.g., Felt et al. 2016 or a lock-icon comprehension study).
+
+---
+
+## §2.2 Audit Summary (tick-3846)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| Alt 2 "Invariant 1 by construction" conflict | ✅ Already resolved | No change — current text says "sub-condition" |
+| Alt 1 coercion-surface shift claim | ✅ Clean | None |
+| Alt 3 lead-in vs. participation-only body | ❌ Reasoning gap | FIXED — added coercion-window chain (commit 551cdeb) |
+| Alt 3 Whitten & Tygar 1999 citation precision | ⚠️ Minor concern | Jony-action: verify citation fit |
+
