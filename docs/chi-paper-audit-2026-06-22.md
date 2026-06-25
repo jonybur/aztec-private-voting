@@ -2481,3 +2481,133 @@ This closes the reasoning chain: participation failure → voter accessible to s
 | Alt 3 lead-in vs. participation-only body | ❌ Reasoning gap | FIXED — added coercion-window chain (commit 551cdeb) |
 | Alt 3 Whitten & Tygar 1999 citation precision | ⚠️ Minor concern | Jony-action: verify citation fit |
 
+
+---
+
+## §1.3 + §1.4 Audit (tick-3847)
+
+### Scope
+First audit of §1.3 (Contributions) and §1.4 (Scope and relation to prior work). These sections had not been audited in any prior tick.
+
+**Checks:**
+1. §1.3: Verify each contribution claim is grounded in what the paper actually delivers.
+2. §1.4: Check for overclaims or unsupported characterisations of prior systems.
+
+---
+
+### §1.3 Check (1): C1 Design artifact (PIUP) — ✅ CLEAN
+
+**Claim:** "a named, formally-characterized design class for coercion-resistant confirmation in privacy-preserving submission systems. Three invariants define the pattern; one named limitation bounds its scope. Invariants: §2.1. Named limitation: §1.1, §3.3."
+
+**Cross-check:**
+- §2.1 exists and contains all three invariants (Surrogate independence, Surrogate privacy in transit, Minimal receipt content). ✅
+- §1.1 Named limitation (calldata layer) is fully described. ✅
+- §3.3 L1 privacy gap is present (audited tick-3845). ✅
+
+**Verdict:** ✅ CLEAN. Contribution C1 is grounded in what the paper delivers.
+
+---
+
+### §1.3 Check (2): C2 System instantiation — ✅ CLEAN
+
+**Claim:** "Aztec Private Voting - a Noir ZK smart contract and React component library implementing PIUP on the Aztec v5 testnet. The system provides a working implementation of all three invariants and the receipt UI described in this paper. The VoteReceipt component is the canonical PIUP instantiation. Section 3."
+
+**Cross-check:**
+- Contract compiled (b828bc6) + v5 testnet live at block 7741 (confirmed tick-3815). ✅
+- VoteReceipt.tsx exists and implements all three invariants (audited §3.4 tick-3843). ✅
+- §3 (system description) exists in the paper. ✅
+
+**Verdict:** ✅ CLEAN. Contribution C2 is grounded.
+
+---
+
+### §1.3 Check (3): C3 "Empirical validation" — ❌ OVERCLAIM FIXED
+
+**Old claim:** "**Empirical validation.** Study 1 (N=280, pre-registered): a 4-condition between-subjects experiment establishing which identifier label produces the most accurate privacy mental model. Study 2 (N=240, planned): a 2×2×2 factorial (L × E × I; 8 cells, n=30/cell) testing explanation effects and calibration interventions for the label × mental model relationship. Section 4 (Study 1), Section 5 (Study 2 pre-analysis plan)."
+
+**Issue:** The heading "Empirical validation" covers both Study 1 (results expected) and Study 2 (design-note stage, not yet pre-registered). At time of CHI submission, Study 2 will provide a pre-analysis plan in §5, not empirical validation. A CHI reviewer who reads the contributions list and then finds §5 contains a pre-analysis plan (not results) will correctly identify this as an overclaim. The "Section 5 (Study 2 pre-analysis plan)" reference already signals the right framing, but the overarching heading contradicts it.
+
+Additionally: calling the single contribution "Empirical validation" when it covers two separate studies — one with results, one without — conflates two distinct contribution types. CHI papers regularly contribute pre-registered designs as standalone contributions; this should be named as such.
+
+**Fix applied (commit this tick):**
+Split into two separate contribution bullets:
+- "**Empirical evidence (Study 1, pre-registered, N=280).**" → §4
+- "**Pre-registered study design (Study 2, planned, N=240).**" → §5
+
+**Verdict:** ❌ Overclaim | FIXED (this tick)
+
+---
+
+### §1.4 Check (1): STAR-Vote (Bell et al. 2013) — ✅ CLEAN
+
+**Claim:** "STAR-Vote (Bell et al. 2013) [...] provide[s] cryptographically verifiable receipts; [it] evaluates how users interpret what the receipt does not show."
+
+**Cross-check:**
+- Bibliography confirms Bell et al. 2013, EVT/WOTE. ✅
+- STAR-Vote is a system description paper with no user evaluation of receipt interpretation. ✅
+
+**Verdict:** ✅ CLEAN.
+
+---
+
+### §1.4 Check (2): Helios (Adida et al. 2009) — ✅ CLEAN
+
+**Claim:** "Helios (Adida et al. 2009) provide[s] cryptographically verifiable receipts; [it] evaluates how users interpret what the receipt does not show."
+
+**Cross-check:**
+- Bibliography confirms: Adida, B., de Marneffe, O., Pereira, O., and Quisquater, J.-J. (2009). "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." EVT/WOTE 2009. ✅
+- The 2009 paper is a real-world deployment paper; it describes Helios's verifiable receipts in a real election, not a user evaluation of receipt privacy properties. ✅
+
+**Verdict:** ✅ CLEAN. (Note: The original Helios cryptographic design is in Adida 2008 USENIX Security; citing the 2009 deployment paper for "provides verifiable receipts" is a slightly softer reference but defensible in context.)
+
+---
+
+### §1.4 Check (3): Marky et al. (2018) — ✅ CLEAN
+
+**Claim:** "Marky et al. (2018) conduct a 95-participant remote e-voting study at CHI evaluating three approaches to the Benaloh Challenge (cast-as-intended verification); their study measures whether voters successfully complete verification and their perceived workload."
+
+**Cross-check:** VERIFIED tick-3766 (DOI: 10.1145/3173574.3173750, 95-participant Benaloh Challenge study, authors confirmed via Strathclyde repository). ✅
+
+**Verdict:** ✅ CLEAN. Characterisation confirmed in prior audit pass.
+
+---
+
+### §1.4 Check (4): Kulyk et al. (2015) — ✅ CLEAN
+
+**Claim:** "Kulyk et al. (2015) extend Helios to provide private eligibility verifiability (hiding voter participation via dummy ballots); their work addresses cryptographic transparency, not receipt representational semantics."
+
+**Cross-check:** VERIFIED tick-3765: year corrected 2017→2015; venue VoteID 2015 LNCS Springer. "Extending Helios Towards Private Eligibility Verifiability" at VoteID 2015. ✅
+
+**Verdict:** ✅ CLEAN.
+
+---
+
+### §1.4 Check (5): Everett et al. (2008) — ⚠️ CITATION FIT UNVERIFIED
+
+**Claim:** "Prior work in security receipt design - Everett et al.'s (2008) usability evaluation of *verification codes in real elections* - evaluates whether voters *use* the verification affordance, not whether they correctly understand the privacy property that makes the receipt safe to use."
+
+**Issue:** The bibliography title for Everett et al. CHI 2008 is:
+> "Electronic Voting Machines versus Traditional Methods: Improving Voter Attitudes and Satisfaction."
+
+This title describes a comparison between EVM and traditional voting methods for voter attitudes and satisfaction — it does NOT explicitly reference "verification codes." The `[CITE]` → `(2008)` substitution in tick-3721 resolved the placeholder but included no content verification.
+
+The characterisation "usability evaluation of verification codes in real elections" may be accurate (the paper may study a verification affordance as part of EVM comparison) or may be wrong (the correct paper for "verification codes" may be a different Everett et al. paper). This cannot be resolved without reading the actual CHI 2008 paper.
+
+**Action:** Added in-paper note flagging this as an unverified citation characterisation. New Jony-action added to paper.
+
+**Verdict:** ⚠️ CITATION FIT UNVERIFIED | New Jony-action (tick-3847): Before CHI submission, verify that Everett et al. CHI 2008 "Electronic Voting Machines versus Traditional Methods" specifically studies voter use of verification codes; if not, identify the correct citation for "usability evaluation of verification codes in real elections."
+
+---
+
+## §1.3 + §1.4 Audit Summary (tick-3847)
+
+| Check | Status | Action |
+|-------|--------|--------|
+| C1 PIUP design artifact — grounded in §2.1, §1.1, §3.3 | ✅ Clean | None |
+| C2 System instantiation — grounded in §3, contract, VoteReceipt.tsx | ✅ Clean | None |
+| C3 "Empirical validation" heading — Study 2 is pre-analysis plan | ❌ Overclaim | FIXED — split into two bullets (this tick) |
+| STAR-Vote (Bell et al. 2013) characterisation | ✅ Clean | None |
+| Helios (Adida et al. 2009) characterisation | ✅ Clean | None |
+| Marky et al. (2018) — 95-participant, Benaloh Challenge | ✅ Clean | None |
+| Kulyk et al. (2015) — private eligibility verifiability | ✅ Clean | None |
+| Everett et al. (2008) — "verification codes in real elections" | ⚠️ Unverified | New Jony-action: verify citation fit before submission |
