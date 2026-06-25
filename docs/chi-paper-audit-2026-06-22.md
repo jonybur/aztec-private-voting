@@ -32,7 +32,14 @@ The claim that "public functions cannot receive private inputs" is the correct A
 
 **Verdict:** Accurate for Aztec v5. The `record_vote` public function takes `vote_choice` as a plaintext argument. The claim correctly distinguishes state-layer privacy (nullifier + tally, hidden) from calldata-layer exposure (choice plaintext in public function args). ✅
 
-**Additional observation (not a §6.5 fix — flagged for Jony):** §1 para 2 says "Aztec's ZK rollup allows a voter to prove eligibility and submit a ballot **without revealing the ballot's contents in public calldata**" and "The cryptographic part - hiding the choice - is solved." This introduces tension with the Named limitation §1.1 that immediately contradicts it. The §1 framing describes what Aztec ZK makes possible in principle; the Named limitation documents where the current implementation falls short. But the text does not hedge "allows" as "can in principle allow." A CHI reviewer may flag this as self-contradictory. **Jony-action:** Consider hedging §1 para 2: "makes it possible to prove eligibility and submit a ballot without revealing ballot contents in public calldata — though the named limitation below documents where the current implementation falls short."
+**Additional observation — FIXED tick-3820.** §1 para 2 originally said "The cryptographic part - hiding the choice - is solved," which introduced tension with the Named Limitation §1.1 (choice visible in calldata). A CHI reviewer could flag this as self-contradictory.
+
+**Fix applied (tick-3820):** Replaced the unhedged "is solved" claim with a two-part statement that explicitly distinguishes the two layers:
+- "At the private state layer, ZK achieves what it is designed for: the system records a nullifier...but no persistent state links the voter to their choice."
+- "A named limitation remains at the calldata layer: in the current contract architecture, the vote choice appears as a plaintext argument in the contract's public accounting step, visible at submission time (§1.1)."
+- Closing sentence: "State-level storage of the choice is eliminated; calldata exposure at the moment of submission is not."
+
+This eliminates the self-contradiction without weakening the paper's claims about what ZK achieves. ✅
 
 ---
 
@@ -100,7 +107,7 @@ The claim that the receipt must confirm "that the full preference ordering was r
 
 | Check | Status | Action |
 |---|---|---|
-| Calldata claim accuracy for Aztec v5 | ✅ Clean | None (§1 para 2 ambiguity flagged for Jony separately) |
+| Calldata claim accuracy for Aztec v5 | ✅ Clean | ✅ §1 para 2 self-contradiction fixed tick-3820 |
 | Ecological validity "confidence items (Q4)" | ❌ Inaccuracy | FIXED — Q4 is behavioral-consequence question; confidence items are secondary Likert ratings |
 | Demand characteristics mitigations | ❌ Inaccuracy | FIXED — replaced false AC/Q-OE description with actual mitigations (task instructions + button styling, §11.1) |
 | Ranked-choice/QV scope claim | ✅ Clean | None |
