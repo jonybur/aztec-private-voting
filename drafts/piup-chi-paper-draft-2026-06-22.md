@@ -281,7 +281,7 @@ Stimuli were committed to the repository at commit `fb710f5` before any particip
 
 **Confidence (secondary; 7-point Likert).** After each comprehension item Q1-Q4, participants rated their confidence (1 = not at all confident, 7 = completely confident). Q5 is open-ended and receives no confidence rating. Confidence composite = mean across Q1-Q4.
 
-**Mental model quality (exploratory; free text).** After Q1-Q4, participants answered: "In your own words, what does this value prove about your vote?" Scored 0-2: 0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states that vote choice is hidden from the system. Two raters; κ ≥ 0.70 required.
+**Mental model quality (exploratory; free text).** After Q1-Q4, participants answered: "In your own words, what does this value prove about your vote?" Scored 0-2: 0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states that vote choice is hidden from the system. Two raters; κ ≥ 0.70 required. If κ < 0.70, raters adjudicate disagreements and rescore before analysis. Mental model quality is excluded from composite accuracy and analysed separately (§4.5).
 
 **Behavioral intent (secondary; no pre-specified test).** "If this screen appeared after a real vote, would you download this file?" (5-point: Definitely yes → Definitely no.) Results reported descriptively per condition; no confirmatory test is pre-registered for this item.
 
@@ -307,6 +307,8 @@ The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bo
 **H4** (m = 3). One-way ANOVA on confidence composite; if significant, Tukey HSD for B vs. A, C, D. **Calibration analysis (pre-registered secondary/descriptive; not in the m = 3 Holm family):** Spearman rank correlation between per-participant Q1–Q4 accuracy score (0–4) and per-participant confidence composite, computed per condition and reported descriptively. H4 predicts the B correlation will be smaller (lower calibration) than A — that is, high confidence in Condition B is not predicted to track accuracy, producing a weaker accuracy–confidence relationship than Condition A. [Pre-reg §6.7 labels this 'H4-calibration' and specifies 'Report by condition'; it is not a formal NHST test and is not subject to Holm correction.]
 
 **Q5 analysis (pre-registered secondary; not in the 14-test Holm families; pre-reg §6.8).** Kruskal-Wallis test across 4 conditions; if significant, Dunn's pairwise post-hoc (Holm). A random sample of 25 responses per condition (sampled randomly, before hypothesis testing) is included in the published write-up to illustrate the range of mental model articulation.
+
+**Mental model quality analysis (exploratory; no pre-registered formal test).** Scored 0–2 by two independent raters (rubric in §4.4); κ ≥ 0.70 required before analysis; if κ < 0.70, raters adjudicate disagreements and rescore. Mean score and score distribution (proportion at each level 0/1/2) reported by condition. No formal analysis section exists in the OSF pre-registration for this item (no §6.x equivalent; compare Q5 which has pre-reg §6.8); all comparisons across conditions are exploratory and not subject to Holm correction. Mental model quality is not part of the composite accuracy score.
 
 **Confidence interval standard.** All proportions: Wilson 95% CI. All means: 95% CI from t-distribution. All odds ratios: log-scale 95% CI.
 
