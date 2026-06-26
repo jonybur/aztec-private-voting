@@ -138,6 +138,19 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 5 — CS/SE student screener extension (pre-OSF deviation)
+
+**Status:** ✅ Ready to file  
+**OSF field:** Amendment log  
+**Category:** Exclusion criteria deviation  
+**Source:** JONY-ACTION O (tick-3870)
+
+> _"Exclusion criteria amendment (pre-data, pre-OSF): The Prolific screener question SC2, as deployed in the survey instrument, extends the professional exclusion to CS/SE students — participants who self-report as 'Student in computer science or software engineering' are excluded in addition to software engineering professionals (computer science, software development, or cryptography as primary occupation). The OSF pre-registration §3 lists only the professional exclusion criterion. The SC2 student-extension uses the same domain-expert contamination rationale as the professional exclusion: CS/SE students have technical exposure to cryptographic concepts that could systematically elevate comprehension scores and invalidate the between-subjects comprehension measures. This extension was made before pilot launch and is documented in the survey instrument §SC2. §4.2 of the paper accurately describes the deployed screener criteria ('self-reported software engineering professionals (computer science, software development, or cryptography by primary occupation) or CS/SE students'). This amendment documents the student extension as a Type I minor deviation (pre-data, pre-collection, same rationale as the registered professional exclusion; pre-reg §7.1)."_
+
+**Supporting documentation:** piup-chi-paper-draft-2026-06-22.md §4.2 SC2 exclusion note (tick-3870); piup-study1-survey-instrument-2026-06-22.md §SC2.
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -157,6 +170,7 @@ Complete this before OSF upload.
 - [ ] Amendment 2 — MQ1 two-part wording (Decision D: if accepted)
 - [ ] Amendment 3 — BI1 label-embedded wording (Decision E: if accepted)
 - [ ] Amendment 4 — DescTools → base-R
+- [ ] Amendment 5 — CS/SE student screener extension
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)
