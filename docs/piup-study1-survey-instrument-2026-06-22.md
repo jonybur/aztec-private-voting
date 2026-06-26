@@ -441,7 +441,7 @@ Stimulus URL uses `${e://Field/condition}` to select the correct HTML file.
 
 ### Randomisation (alternative to URL parameter)
 
-If Prolific does not support URL parameter condition assignment, use a Qualtrics Randomizer block at the survey start to randomly assign participants to conditions A–D. Set `condition` and `condition_label` via the branch logic above. Even randomisation (n = 50 per condition) should be enforced using Qualtrics Quotas.
+If Prolific does not support URL parameter condition assignment, use a Qualtrics Randomizer block at the survey start to randomly assign participants to conditions A–D. Set `condition` and `condition_label` via the branch logic above. Even randomisation (n = 70 per condition) should be enforced using Qualtrics Quotas. [Fixed tick-3882: prior quota was n = 50 per condition, matching the old pre-reg target (n = 49 rounded up). Corrected to n = 70 per condition to match the updated sample size (see pre-registration §4.2 power analysis note). If running the full study with n = 75/cell (N = 300) expansion — triggered by pilot suggesting Q2 effect < 15 pp — update this quota to n = 75 before the full launch.]
 
 ### Timing data
 
