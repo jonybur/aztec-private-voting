@@ -437,3 +437,177 @@ _Last updated: tick-3804 (2026-06-24)._
 **CHI paper:** Compilation-ready for submission once [verification URL] filled (#4) and G/H confirmed (#5, #6). All other review passes CLEAN through tick-3812.
 
 _Last updated: tick-3813 (2026-06-24)._
+
+---
+
+## Update: ticks 3814–3928 (2026-06-24 → 2026-06-26) — Full JONY-ACTION index sweep
+
+_Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success ✅. This block records all JONY-ACTIONs added to the paper between tick-3813 and tick-3928 and verifies each is present in the paper._
+
+### JONY-ACTION S — RESOLVED (tick-3899)
+- **Location (was):** §6.3 line 417 (Leon et al. 2012 claim)
+- **Resolution:** 'most participants' softened to 'many participants' to match Leon et al.'s own register. Inline marker [JONY-ACTION S (tick-3887, RESOLVED tick-3899)] remains as a fix note in the paper.
+- **No further action needed.**
+
+---
+
+### New JONY-ACTIONs — CHI pre-submission (resolve before submitting)
+
+#### JONY-ACTION I — §4.2 pilot-launch decisions memo cross-ref (tick-3819 documented; tick-3927 added to paper)
+- **Location:** `drafts/piup-chi-paper-draft-2026-06-22.md` §4.2 Power paragraph, line 262
+- **Status:** JONY-ACTION I block added to paper in tick-3927 (commit 26d3b8e). Prior to tick-3927 the tracking entry existed in heartbeat state but had no inline annotation in the paper.
+- **Summary:** Five wording conflicts between the OSF pre-registration and survey instrument are documented in `docs/piup-study1-pilot-decisions-2026-06-25.md`:
+  - Item A: Q3 coercion-scenario phrasing (recommend instrument wording + OSF amendment)
+  - Item B: Q4 'lost this value' vs. 'closed screen without saving your [LABEL]' + foil (d) revision (recommend instrument wording + OSF amendment)
+  - Item C: Q3 clarification drop (recommend dropping + OSF amendment)
+  - Item D: MQ1 one-part vs. two-part prompt (recommend retaining pre-reg single-question wording; no amendment needed)
+  - Item E: BI1 'download this file' vs. 'save your [LABEL]' (recommend instrument wording + OSF amendment)
+  - Net: 4 OSF amendments required (A, B, C, E). §4.4 notes (pending Items A, B, C) require paper updates once resolved.
+- **Action:** Awaiting Jony decision on all five items before OSF upload.
+- **Blocks:** Pre-pilot gate (all five must be resolved before OSF upload).
+
+#### JONY-ACTION J — §2.1 + §2.2 Alt3 W&T citation ordering (tick-3876)
+- **Location:** `drafts/piup-chi-paper-draft-2026-06-22.md` line 134 (§2.1 Protective framing) and line 146 (§2.2 Alternative 3)
+- **Status:** Both sites have [Note (tick-3876 — JONY-J audit)] annotations.
+- **Summary:** At both locations, [Egelman and Schechter 2013; Whitten and Tygar 1999] co-citation. E&S (2013) is the tighter citation for absent-content-as-failure-signal (directly studies security feedback violating conventions). W&T (1999) is foundational framing for cryptographic systems (users who cannot interpret output conclude it has failed) but is not a study of absent output specifically. Resolution applied: E&S listed first at both sites. Remaining Jony decision: drop W&T from §2.1 entirely (keeping only at §6.1 where it is used more precisely) or retain co-citation as-is with E&S first.
+- **Action:** Jony decides: drop W&T from §2.1/§2.2 or retain.
+- **Blocking?** Low CHI reviewer risk — not a factual error. Pre-submission polish.
+
+#### JONY-ACTION L — §7 C2 system instantiation (tick-3852)
+- **Location:** Line 459 (§7 conclusion)
+- **Status:** Note block present: 'JONY-ACTION (new, tick-3852)'.
+- **Summary:** §7 conclusion does not reflect C2 (Aztec Private Voting — Noir ZK contract + React component library). A CHI reviewer cross-checking §1.3 contributions against §7 will find no mention of the working system. Before CHI submission: decide whether to add one grounding sentence — e.g., 'The Aztec Private Voting instantiation (§3) demonstrates all three invariants in a live ZK deployment: receipt_id/vote_choice separation is enforced at the contract layer, and VoteReceipt.tsx renders the full four-component PIUP receipt structure.'
+- **Action:** Jony decides: add sentence (recommended) or leave §7 silent on C2.
+- **Blocking?** Pre-submission. Not adding it risks a CHI reviewer gap between §1.3 C2 and §7.
+
+#### JONY-ACTION M — §7 C4 Study 2 wording (tick-3852 + tick-3900 dependency audit)
+- **Location:** Line 463 (§7 conclusion)
+- **Status:** Note block present: 'JONY-ACTION (new, tick-3852)' + dependency annotation (tick-3900).
+- **Summary:** §7 does not reflect C4 ('Pre-registered study design (Study 2, planned, N=240)') as a standalone contribution — appears only parenthetically. Before CHI submission: add sentence, but wording depends on JONY-ACTION U resolution:
+  - If U → option (a) (Study 2 pre-registered before submission): use 'pre-registered 2×2×2 factorial design'
+  - If U → option (b) (not yet pre-registered): use 'pre-analysis plan for a 2×2×2 factorial design'
+- **Critical dependency:** Resolve JONY-ACTION U before finalising the M sentence.
+- **Blocking?** Pre-submission. M cannot be written until U is resolved.
+
+#### JONY-ACTION N — §6.2 Lee and See line 395 co-citation (tick-3860)
+- **Location:** Bibliography line 486 (Lee and See 2004 entry)
+- **Status:** Note block present in bibliography.
+- **Summary:** Two uses of Lee and See (2004). Line 399 (§6.2) — CLEAN: direct characterisation of miscalibration/over-reliance framework. Line 395 (§6.2) co-citation with McKnight for 'familiarity produces confidence' — slightly loose; Lee and See's primary contribution is automation trust calibration, not UI familiarity effects. McKnight et al. (2002) is the more direct citation for line 395. Before CHI submission: (a) drop Lee and See from line 395, reserve for line 399 only; or (b) add bridging qualifier ('familiarity and experience effects Lee and See document in automation contexts'). Not factually wrong but may prompt reviewer query.
+- **Action:** Jony decides: drop (a) or qualify (b).
+- **Blocking?** Pre-submission polish.
+
+#### JONY-ACTION O — §4.2 CS/SE student screener extension (tick-3870; Amendment 5 drafted tick-3920)
+- **Location:** Line 258 (§4.2 Participants)
+- **Status:** JONY-ACTION O note at line 258. Amendment 5 text drafted in `docs/osf-amendment-filing-2026-06-24.md` (tick-3920, commit a4df690). Disclosure sentence added to §4.2 body (tick-3920).
+- **Summary:** Survey instrument SC2 screener extends professional exclusion to CS/SE students; OSF pre-registration §3 lists only professionals. Amendment 5 drafted. Disclosure sentence in paper reads: 'The SC2 screener's extension of the professional exclusion to CS/SE students was made before pilot launch and is documented in the OSF amendment log (Amendment 5).'
+- **Action:** File OSF Amendment 5 (text ready in osf-amendment-filing doc) before pilot launch. Paper disclosure sentence already in place.
+- **Blocks:** Pre-pilot gate.
+
+#### JONY-ACTION P — §5.2 Study 2 power justification (tick-3872)
+- **Location:** Line 353 (§5.2 Factor I description)
+- **Status:** JONY-ACTION P note present.
+- **Summary:** §5 lacks a power justification sentence for n=30/cell. CHI reviewer will ask. Preliminary estimate from design note §10.1: Q-AC accuracy 50%→70% in E1 vs. E2 (OR≈2.3), α=0.05, one-tailed, power≈0.84 at n=30; N=240 also provides adequate headroom for H2.2 interaction (f≈0.22, N=240, power≈0.80, design note §10.2). Final power analysis to be revised with Study 1 pilot data per §5.6.
+- **Action:** Add brief power sentence to §5.2 or §5.4 before CHI submission. Text ready in note.
+- **Blocking?** Pre-submission. Missing power justification is a standard CHI reviewer ask.
+
+#### JONY-ACTION Q — §4.2 IRB/ethics statement (tick-3882)
+- **Location:** Line 260 (§4.2 Power/participants)
+- **Status:** JONY-ACTION Q note present.
+- **Summary:** Paper has NO IRB/ethics statement. CHI requires one. Pre-registration §10 anticipates exemption under 45 CFR 46.104(d)(2). Before CHI submission: (a) confirm exemption with relevant IRB; (b) add brief ethics sentence to §4.2. Options documented in paper: if formal exemption sought, 'This study was determined exempt from full IRB review under 45 CFR 46.104(d)(2)...'; if no institutional IRB, 'No institutional IRB review was required under 45 CFR 46.104(d)(2); Prolific's standard participant protections and informed consent process apply.'
+- **Action:** Jony decides which statement applies and adds it to §4.2.
+- **Blocking:** Yes — CHI submission blocked without an ethics statement.
+
+#### JONY-ACTION R — §4.2 condition assignment mechanism (tick-3882)
+- **Location:** Line 260 (§4.2 Power/participants, alongside Q)
+- **Status:** JONY-ACTION R note present.
+- **Summary:** Paper says 'randomly assigned to one of four conditions' but does not disclose the mechanism. Options: (a) Prolific URL-parameter condition assignment (each condition gets its own Prolific link, condition code passed as URL parameter to Qualtrics); (b) Qualtrics Randomizer block with Quotas (n=70/condition, corrected from n=50 in tick-3882). Disclosure sentences for both options documented in paper note.
+- **Action:** Jony specifies mechanism (Prolific URL-parameter or Qualtrics Randomizer) and adds one sentence to §4.2.
+- **Blocking?** Pre-submission. Reviewers will ask.
+
+#### JONY-ACTION T — §7 Invariant 1 summary incomplete (tick-3890)
+- **Location:** Line 457 (§7 conclusion)
+- **Status:** JONY-ACTION T note present: 'JONY-ACTION T (new, tick-3890)'.
+- **Summary:** §7 summary: 'Invariant 1 (surrogate independence) ensures the submission token is not derivable from the vote choice.' §2.1 defines three independence requirements: (1) submission content (vote choice) ✓; (2) user's identity ✗ omitted; (3) observable system state ✗ omitted. §6.4 domain applications (auction/whistleblower/peer-review) enumerate all three. Before CHI submission: (a) expand §7 to 'not derivable from the vote choice, the voter's identity, or any observable system state' [recommended]; (b) add cross-reference '(§2.1)' after 'vote choice' to direct skim-readers to full definition.
+- **Action:** Jony decides (a) expand or (b) cross-ref. Option (a) recommended.
+- **Blocking?** Pre-submission. Inconsistency between §2.1, §6.4, and §7.
+
+#### JONY-ACTION U — §1.3 C4 'Pre-registered study design' heading overclaim (tick-3891)
+- **Location:** Line 104 (§1.3 C4 heading)
+- **Status:** JONY-ACTION U note present: 'JONY-ACTION U (tick-3891)'.
+- **Summary:** §1.3 C4 heading says 'Pre-registered study design (Study 2, planned, N=240)' but §5.6 states Study 2 is 'currently at design-note stage; it will be finalised and pre-registered after Study 1 pilot data.' If submitted to CHI before Study 2 is pre-registered, the heading is inaccurate. Options: (a) if Study 2 IS pre-registered before CHI submission, confirm OSF DOI and retain heading; (b) if NOT yet pre-registered, change heading to 'Pre-analysis plan (Study 2, planned, N=240).' Body text already uses 'pre-analysis plan' which is safer.
+- **Critical dependency:** U must be resolved BEFORE M (JONY-ACTION M's §7 sentence wording depends on U resolution).
+- **Action:** Jony decides at CHI submission sprint: check Study 2 pre-reg status → option (a) or (b).
+- **Blocking?** Pre-submission. Option (b) is the safe default if Study 2 has not been pre-registered.
+
+#### JONY-ACTION V — §5.4 M2 label missing at definition site (tick-3898)
+- **Location:** Line 361 (§5.4 Measures, McKnight trust composite definition)
+- **Status:** JONY-ACTION V note present: 'JONY-ACTION V (new, tick-3898)'.
+- **Summary:** §5.5 uses 'M2 trust composite' and §6.2 uses 'the trust composite (M2; §5.5)' but §5.4 does not label the composite as M2 at its definition site. §5.4 labels M4 but omits M1-M3 labels. Fix: (a) add '(M2)' to McKnight trust composite line; (b) add '(M1)' to save-intention line if M1 is its design-note label; (c) confirm whether Q-AC has an M-series label. Simplest fix is (a) alone.
+- **Action:** Jony decides: add M2/M1 labels at §5.4 definition site.
+- **Blocking?** Pre-submission. Broken cross-reference chain M2 (§5.5/§6.2) → §5.4 definition without label.
+
+#### JONY-ACTION W — §2.1 Invariant 2 timing clause vs Named Limitation (tick-3903)
+- **Location:** Line 130 (§2.1 Invariant 2 formal statement)
+- **Status:** JONY-ACTION W note present: 'JONY-ACTION W (new, tick-3903)'.
+- **Summary:** Invariant 2 states token 'must be treated as private until the content is definitionally public (vote closes, auction reveals).' In the Aztec instantiation, vote_choice is in L1 calldata from block finalization (§3.3 L1 privacy gap) — so the 'private until vote close' timing premise is partially undermined at the protocol layer. The Named Limitation (§2.1, §1.1, §3.3, §6.5) documents this exception, but Invariant 2's formal statement stands alone without a cross-reference. Before CHI submission: add '(subject to the Named Limitation below; in the Aztec instantiation the vote choice is in L1 calldata from submission — §1.1, §3.3)' after the timing clause. Jony decides exact phrasing.
+- **Action:** Add Named Limitation cross-reference at Invariant 2 timing clause.
+- **Blocking?** Pre-submission. CHI reviewer may flag the tension between Invariant 2 and the Named Limitation.
+
+#### JONY-ACTION X — §6.1 necessity claim cross-ref to §2.2/§6.5 (tick-3913)
+- **Location:** Line 391 (§6.1 Design implications)
+- **Status:** JONY-ACTION X note present: 'JONY-ACTION X (new, tick-3913)'.
+- **Summary:** §6.1 states 'The pattern requires both components; neither is sufficient alone' without a local cross-reference to §2.2's disclosure that Study 1 includes no without-framing baseline. §2.2 Alternative 3 (line 146) explicitly flags this as a design inference. §6.1 cross-refs §5.5 as a forward empirical pointer but not §2.2/§6.5. A CHI reviewer reading §6.1 in isolation may ask for direct empirical evidence that Study 1 does not provide. Before CHI submission: add parenthetical cross-referencing §2.2 and §6.5 after the necessity claim. Jony decides exact phrasing.
+- **Action:** Add §2.2/§6.5 cross-ref after necessity claim.
+- **Blocking?** Pre-submission. Reviewer-resistance fix.
+
+#### JONY-ACTION (Das) — bibliography floating reference (tick-3855 identified; tick-3876 confirmed)
+- **Location:** Bibliography line 475 (Das et al. 2014)
+- **Status:** Note block present: 'REMOVE BEFORE SUBMISSION — tick-3876 JONY-Das confirmed'.
+- **Summary:** Das, S., Dabbish, L., and Hong, J. (2014). 'The Effect of Social Influence on Security Sensitivity.' ACM CCS 2014. Tick-3855 audit: no good fit anywhere in the paper. Tick-3876 confirmation: recommendation stands — remove. Only viable path to retain: add explicit text in §6.2 familiarity-tax paragraph naming social influence as a second security-sensitivity degradation mechanism (different causal pathway from schema-import). Option (a) remove is recommended.
+- **Action:** Jony decides: remove (a) [recommended] or add §6.2 text (b).
+- **Blocking?** Must remove or cite before submission — floating reference with [REMOVE BEFORE SUBMISSION] tag.
+
+---
+
+### Updated Full Summary Table (tick-3928)
+
+| Label | Location | Category | Status | Blocks |
+|-------|----------|----------|--------|--------|
+| [verification URL] | §2.1 line 136 | 🔴 CHI blocking | Open | Contract deploy (#6) |
+| G | §2.1 line 136 | 🔴 CHI blocking | Open — design-rationale reframe applied | Jony confirm |
+| Q | §4.2 line 260 | 🔴 CHI blocking | Open | Add IRB/ethics statement |
+| U | §1.3 line 104 | 🔴 CHI blocking | Open | Resolve at submission sprint (U→M dependency) |
+| Das | Bibliography line 475 | 🔴 CHI blocking | Open — remove before submission | Jony decides |
+| H | §6.3 line 409 | 🟠 CHI pre-submission | Open — paraphrase applied | Jony confirm DOET paraphrase |
+| I | §4.2 line 262 | 🟠 CHI pre-submission | Open — note added to paper tick-3927 | Resolve items A-E; 4 OSF amendments |
+| J | §2.1 line 134; §2.2 line 146 | 🟠 CHI pre-submission | Open — E&S ordered first | Jony decides drop W&T or retain |
+| L | §7 line 459 | 🟠 CHI pre-submission | Open | Jony decides add C2 sentence |
+| M | §7 line 463 | 🟠 CHI pre-submission | Open — depends on U | Resolve U first |
+| N | Bibliography line 486 | 🟠 CHI pre-submission | Open | Drop or qualify Lee and See line 395 |
+| P | §5.2 line 353 | 🟠 CHI pre-submission | Open | Add power justification sentence |
+| R | §4.2 line 260 | 🟠 CHI pre-submission | Open | Jony specifies assignment mechanism |
+| T | §7 line 457 | 🟠 CHI pre-submission | Open | Expand Invariant 1 summary |
+| V | §5.4 line 361 | 🟠 CHI pre-submission | Open | Add M2 label at definition site |
+| W | §2.1 line 130 | 🟠 CHI pre-submission | Open | Add Named Limitation cross-ref |
+| X | §6.1 line 391 | 🟠 CHI pre-submission | Open | Add §2.2/§6.5 cross-ref |
+| A | §4.3 / instrument §3 | 🟡 Pre-pilot | Open | Q3 wording decision → OSF amendment |
+| B | §4.3 / instrument §4 | 🟡 Pre-pilot | Open | Q4 wording + foil (d) → OSF amendment |
+| C | §4.3 / pre-reg §5.2 | 🟡 Pre-pilot | Open | Q3 clarification baseline vs. amendment-only |
+| O | §4.2 line 258 | 🟡 Pre-pilot | Disclosure in paper ✅; Amendment 5 drafted | File Amendment 5 before pilot launch |
+| 1 | — | 🟢 Prolific launch | Open | OSF upload (3 files + 4-5 amendments) |
+| 2 | — | 🟢 Prolific launch | Open | Create Qualtrics survey |
+| 3 | — | 🟢 Prolific launch | Open | Deploy stimuli + set completion codes |
+| 4 | forum post | 🔵 Post-upload | Open | Insert OSF DOI after upload |
+| 5 | piup-study-arc-post-draft.md | ⚪ Anytime | Open | Jony reviews; do not publish from heartbeat |
+| 6 | — | ⚪ Anytime | Open — artifact ready (b828bc6) | Deploy contract to v5 testnet |
+| 7 | Thursday Talks drafts | ⚪ Anytime | Open — all 3 posts cleared tick-3815 | Jony reviews; do not publish from heartbeat |
+| 8 | Email Sauvik Das | ⚪ Anytime | Open — reminder set 2026-09-15 | Send after OSF DOI live |
+| F | §1.4/§2.2 | ✅ RESOLVED | tick-3766 commit 7cad392 | — |
+| S | §6.3 line 417 | ✅ RESOLVED | tick-3899 — 'most' → 'many' (Leon et al. 2012) | — |
+| Abstract | Abstract | 🔴 CHI formatting | Open — ~261 words, limit ~150 | Trim before submission |
+
+**Open count:** 17 pre-submission JONY-ACTIONs (G, H, I, J, L, M, N, P, Q, R, T, U, V, W, X, [verification URL], Das) + 3 pre-pilot (A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime.
+
+**Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: resolve U→M, add Q (IRB), add R (mechanism), expand T (Invariant 1), add M2 label (V), add W cross-ref, add X cross-ref, decide L, confirm G/H, clear Das.
+
+_Last updated: tick-3928 (2026-06-26)._
