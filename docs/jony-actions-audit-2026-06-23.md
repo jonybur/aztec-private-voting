@@ -614,3 +614,30 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add R (mechanism), confirm G; J (confirm W&T retain - recommendation in paper). O partially done. Q CLEARED.
 
 _Last updated: tick-4001 (2026-06-27). JONY-ACTION I audit: osf-amendment-filing-2026-06-24.md corrected (commit e4184a5) — Amendment 2 (MQ1 two-part) voided (stale; decision was keep pre-reg wording, no amendment); Amendment 3 text corrected ('save this code' not 'save your [LABEL]'). Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O + [verification URL] (7 items; count unchanged). R RESOLVED tick-3999; Q RESOLVED tick-3998; P RESOLVED tick-3997; Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
+
+---
+
+## Update: tick-4008 (2026-06-27)
+
+**JONY-ACTION J — status table correction**
+
+J was confirmed RESOLVED in tick-4003 (commit 523d256): three-pass analysis (ticks 3876, 3991, 4003) all concluded RETAIN W&T at §2.1 and §2.2 with E&S-first ordering. No paper change needed. The summary table above (last updated tick-3928) showed J as 'Open'. Corrected here. If Jony prefers DROP before CHI submission, remove W&T from lines 134+146 — no other changes needed.
+
+**New: Amendments 6 and 7 drafted — Q1 and Q2 label-substitution (tick-4008)**
+
+The §4.4 Q1 note (tick-3842) and Q2 note (tick-3842) both flagged OSF amendments as required for the '[LABEL]' substitution in question stems (replacing pre-reg 'this value' with condition-specific label name). These were missing from `docs/osf-amendment-filing-2026-06-24.md`. Added this tick:
+
+- **Amendment 6** (Q1 label-substitution): Pre-reg Q1 → '[LABEL]' instrument form. Includes construct-validity note: in Condition C, Q1 reads 'Does having this nullifier prove...' — 'nullifier' in the question stem may independently prime the wrong response (nullified = invalidated), creating an indirect demand characteristic in the H3 direction. Notes this limitation does not change the pre-registered H3 analysis.
+- **Amendment 7** (Q2 label-substitution): Pre-reg Q2 → '[LABEL]' instrument form. No construct-validity concern (all four label terms are neutral on whether the identifier proves vote choice; no demand characteristic).
+
+Total amendments now: **7 ready-to-file** (1, 3, 4, 5, 6, 7 + Amendment A/B/C pending Jony decisions). Section C checklist updated.
+
+**New: §6.5 Q1 Condition-C demand characteristic disclosure added (tick-4008)**
+
+§4.4 Q1 note (tick-3842) flagged this as a construct-validity disclosure to add to §6 limitations. Added this tick: new paragraph 'Q1 Condition-C demand characteristic' in §6.5, positioned before 'Study 2 demand characteristics.' Explains that 'nullifier' in Q1(C) stem may independently prime incorrect response; H3 analysis unaffected but interpretation of Q1(C) deficit should note this confound. §4.4 Q1 note updated to mark as done.
+
+**JONY-ACTIONS open (tick-4008): 6 (I, G, A, B, C, O) + [verification URL]**
+
+J RESOLVED tick-4003 ✅. Open count: 6 items + [verification URL] placeholder.
+
+_Last updated: tick-4008 (2026-06-27). Commit: see below._

@@ -153,6 +153,32 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 6 — Q1 wording: label-substitution from 'this value' to '[LABEL]' form (pre-OSF deviation)
+
+**Status:** ✅ Ready to file  
+**OSF field:** Amendment log  
+**Category:** Instrument wording deviation  
+**Source:** §4.4 Q1 note (tick-3842); construct-validity disclosure added tick-4008
+
+> _"Item Q1 wording updated from the pre-registered text 'Does this value prove that your vote was counted?' to: 'After voting, the system showed you your [LABEL]. Does having this [LABEL] prove that your vote was counted?' Changes: (1) preamble sentence added to contextualise the question; (2) 'this value' replaced with 'your [LABEL]' and 'Does this value prove' replaced with 'Does having this [LABEL] prove' — condition-specific label name is substituted throughout. Correct answer (Yes), foils (No; Unsure), and binary scoring are unchanged. Rationale: the '[LABEL]' form is consistent with the label-effect manipulation across all question items and makes explicit that the identifier being asked about is the same label the participant received on the receipt stimulus. This amendment was made before any data were collected. Construct-validity note: in Condition C (nullifier), Q1 reads 'Does having this nullifier prove that your vote was counted?' — the word 'nullifier' appears in the question stem itself, which may independently prime the incorrect 'nullified = invalidated' schema. This creates a potential indirect demand characteristic operating in the H3 prediction direction (H3 predicts Q1(C) < Q1(A, B, D)). This limitation does not change the pre-registered H3 analysis; it is disclosed in §6.5 of the paper and should be noted in the OSF deviation log."_
+
+**Supporting documentation:** `piup-chi-paper-draft-2026-06-22.md` §4.4 Q1 note (tick-3842); §6.5 Q1 construct-validity disclosure (tick-4008); `piup-study1-survey-instrument-2026-06-22.md` §6/Q1.
+
+---
+
+### Amendment 7 — Q2 wording: label-substitution from 'this value' to '[LABEL]' form (pre-OSF deviation)
+
+**Status:** ✅ Ready to file  
+**OSF field:** Amendment log  
+**Category:** Instrument wording deviation  
+**Source:** §4.4 Q2 note (tick-3842); added to filing doc tick-4008
+
+> _"Item Q2 wording updated from the pre-registered text 'Does this value prove which option you chose?' to: 'The [LABEL] is a string of numbers and letters that is unique to your vote. Does having this [LABEL] prove which voting option you chose?' Changes: (1) preamble sentence added describing the identifier's structural properties; (2) 'this value' replaced with 'this [LABEL]' and 'Does this value prove' replaced with 'Does having this [LABEL] prove'; (3) 'which option you chose' updated to 'which voting option you chose'. Correct answer (No), foils (Yes; Unsure), and binary scoring are unchanged. Rationale: the '[LABEL]' form is consistent with the label-effect manipulation and ensures the Q2 question directly references the same identifier the participant received in the stimulus. The preamble ('a string of numbers and letters that is unique to your vote') provides a neutral description of the token's structure, free of any hint about its content-revealing or content-hiding properties; this framing is value-neutral across all four conditions. This amendment was made before any data were collected. No construct-validity concern analogous to Q1: none of the four condition labels (fingerprint, confirmation code, nullifier, receipt ID) semantically suggest whether the identifier proves or fails to prove vote choice; the H1, H2, H3, and H4 comparisons are unaffected by this wording change."_
+
+**Supporting documentation:** `piup-chi-paper-draft-2026-06-22.md` §4.4 Q2 note (tick-3842); `piup-study1-survey-instrument-2026-06-22.md` §6/Q2.
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -173,6 +199,8 @@ Complete this before OSF upload.
 - [ ] Amendment 3 — BI1 'this code' wording (Item E: file this)
 - [ ] Amendment 4 — DescTools → base-R
 - [ ] Amendment 5 — CS/SE student screener extension
+- [ ] Amendment 6 — Q1 '[LABEL]' label-substitution (file this)
+- [ ] Amendment 7 — Q2 '[LABEL]' label-substitution (file this)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)
