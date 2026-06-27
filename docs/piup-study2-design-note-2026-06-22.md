@@ -450,7 +450,7 @@ Study 2 has the following dependencies on Study 1:
 
 2. **Study 1 full-study data** — H2.3 (calibration intervention) is conditional on H4 being supported in Study 1. If H4 is not supported, H2.3 is dropped from Study 2 and N can be reduced to 160 (4 cells × 40).
 
-3. **Interactive prototype deployment** — the `VoteReceipt.tsx` component needs a "study mode" prop that disables actual file download, enables click logging, and injects condition-specific label and explanation variants. This is a ≈ 1-day engineering task.
+3. **Interactive prototype deployment** — ✅ DONE (tick-4061, commit 039633f). `VoteReceipt.tsx` has three new props: `studyMode?: boolean` (disables real download, routes to `onDownloadClick` callback), `explanationVariant?: ExplanationVariant` ('explained' E1 / 'unexplained' E2 / undefined = production), `onDownloadClick`, `onVerifyExpanded`. 25 new tests added (APV-PIUP-02, APV-PIUP-03); all 70 VoteReceipt tests pass. Study 2 can use the deployed Vercel build with `studyMode=true` and the appropriate `explanationVariant`. No further engineering is needed before Study 2 launch on this item.
 
 4. **Study 2 pre-registration** — this design note is not a pre-registration. Once Study 1 pilot results are available and H4 status is known, this document should be converted to a formal pre-registration (OSF upload) with the Study 1 contingencies resolved.
 
@@ -458,7 +458,7 @@ Study 2 has the following dependencies on Study 1:
 1. Run Study 1 pilot (N = 40) → confirm power estimates + identify protocol issues
 2. Run Study 1 full study (N = 280, n = 70/cell) → confirm or refute H4
 3. Update Study 2 design based on H4 status (resolve H2.3 conditional)
-4. Build Study 2 interactive prototype (VoteReceipt study mode)
+4. ~~Build Study 2 interactive prototype (VoteReceipt study mode)~~ ✅ Done (commit 039633f, tick-4061)
 5. Pre-register Study 2 on OSF
 6. Run Study 2 (N = 160–240 depending on H4)
 
@@ -469,6 +469,7 @@ Study 2 has the following dependencies on Study 1:
 | Date | Amendment type | Description | Authorized by |
 |------|---------------|-------------|---------------|
 | 2026-06-22 | Initial design note | First draft; not yet pre-registered | Jony Bursztyn |
+| 2026-06-27 | Status update — §14 item 3 | Interactive prototype (VoteReceipt study mode) marked complete: `studyMode`, `explanationVariant`, `onDownloadClick`, `onVerifyExpanded` props implemented (commit 039633f). 70 VoteReceipt tests pass. No further engineering needed for §14.3 before Study 2 launch. (tick-4061) | OpenClaw Agent |
 
 ---
 
