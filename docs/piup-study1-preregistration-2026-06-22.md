@@ -239,7 +239,7 @@ Chi-squared (2 × 2: conditions A and B × Q3 correct/incorrect), one-tailed, α
 
 **H2-tertiary (composite equivalence, A vs. B):**  
 Two one-sided tests (TOST) on composite proportion. Equivalence bounds: [−0.10, +0.10] (10 percentage points). α = 0.05 per one-sided test.  
-Equivalence is established if both one-sided p-values are < 0.05. If equivalence cannot be established, report the composite effect size (Cohen's h) and its CI.
+Equivalence is established if both one-sided p-values are < 0.05. If equivalence cannot be established, report the composite effect size (Cohen's h) and its CI. [Amendment 9 (pre-data): tost_prop() lower.tail flags corrected in the analysis script before OSF upload. Original implementation had p_lo = pnorm(z_lo, lower.tail=TRUE), p_hi = pnorm(z_hi, lower.tail=FALSE) — flags were inverted, making p_tost > 0.50 whenever the observed difference fell within the equivalence bounds and making the equivalence criterion (p_tost < 0.05) impossible to satisfy. Corrected: p_lo = pnorm(z_lo, lower.tail=FALSE) [reject H0a: diff ≤ −δ when z_lo large]; p_hi = pnorm(z_hi, lower.tail=TRUE) [reject H0b: diff ≥ +δ when z_hi small]. Equivalence bounds (±0.10), α (0.05), and the equivalence_established criterion are unchanged; 90% CI and Cohen's h are unaffected. See §14 Amendment 9 and osf-amendment-filing-2026-06-24.md.]
 
 **H2 outcome classification (reported in discussion):**
 - **Supported:** H2-primary significant (A > B on Q2) AND H2-tertiary establishes equivalence.
