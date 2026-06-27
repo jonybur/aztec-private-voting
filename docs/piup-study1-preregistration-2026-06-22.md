@@ -118,7 +118,7 @@ H2 is considered **reversed** if H2-primary favours B (B > A on Q2 at α = 0.05,
 - No prior participation in this study (Prolific deduplication)
 
 **Exclusion criteria (pre-specified):**
-- Self-reported software engineering professionals (computer science / software dev / cryptography as primary occupation) — to prevent domain-expert contamination of mental model measures
+- Self-reported software engineering professionals (computer science / software dev / cryptography as primary occupation) — to prevent domain-expert contamination of mental model measures [Amendment 5 (pre-data): SC2 screener extended to also exclude CS/SE students: 'Student in computer science or software engineering' added to this criterion. Rationale: same domain-expert contamination concern as professional exclusion. Paper §4.2 correctly describes the deployed screener (both professionals and students excluded). See §14 Amendment 5 and osf-amendment-filing-2026-06-24.md.]
 - Failing both attention checks (not just one)
 - Response time < 90 seconds (indicates non-serious completion; too fast to have read the mockup and answered questions)
 
