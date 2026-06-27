@@ -201,7 +201,7 @@ Between-subjects vignette study. Participants are shown either a PIUP receipt (c
 
 This study does not require a real election. It uses a scenario-based design (Green and Gerber 2002, Knox et al. 2019 for vignette methods in political behavior research).
 
-A single coercion demand vignette has been used in voting UX studies (Kulyk et al. 2017 on coercibility perception in remote electronic voting); the current protocol adapts that design to the private-voting receipt context.
+A single coercion demand vignette has been used in voting UX studies (Kulyk et al. 2017 on coercibility perception in remote electronic voting) [Unverified tick-4049: citation unverifiable — see References note]; the current protocol adapts that design to the private-voting receipt context.
 
 **Note on ethics:** The coercion scenario is described as hypothetical and involves no real coercive pressure on participants. IRB review should confirm that the vignette design does not itself constitute a coercive act.
 
@@ -263,5 +263,5 @@ This is a feasible single-researcher thesis chapter, or a strong conference subm
 - Das, S., et al. (2014). Increasing security sensitivity with social proof: A large-scale experimental confirmation. *SOUPS 2014*. [Fixed tick-4048: venue CCS→SOUPS; same correction as pre-reg tick-4042 and ADR-037 tick-4046]
 - Green, D. P., & Gerber, A. S. (2002). Reclaiming the experimental tradition in political science. *Political Science: The State of the Discipline*.
 - Hargittai, E. (2009). An update on survey measures of web-oriented digital literacy. *Social Science Computer Review*.
-- Kulyk, O., et al. (2017). Does my vote count? Voter experience with verifiability in internet voting. *INTERACT 2017*.
+- Kulyk, O., et al. (2017). Does my vote count? Voter experience with verifiability in internet voting. *INTERACT 2017*. [Unverified tick-4049: this citation could not be verified. DBLP lists all 8 Oksana Kulyk 2017 publications — none match this title or venue. Google Scholar returns zero results for this exact title+author+year combination. Body text (§3.3) also misdescribes the paper as being about 'coercibility perception' while the title refers to 'verifiability' — internal inconsistency. Jony must either: (a) supply the correct DOI/page-range for this paper if it exists as a workshop paper not indexed in DBLP, or (b) replace with the correct citation for the coercion-vignette precedent (possibly Nissen et al. EVT/WOTE 2025 'Voting Under Pressure' or a different Kulyk paper), or (c) remove the citation and rephrase the sentence as protocol design rationale without a precedent citation. Action required before submission.]
 - Whitten, A., & Tygar, J. D. (1999). Why Johnny can't encrypt: A usability evaluation of PGP 5.0. *USENIX Security 1999*.
