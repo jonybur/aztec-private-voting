@@ -268,7 +268,7 @@ Q5 is not part of composite accuracy. Scored by 2 raters (0–2 scale; see §5.2
 
 ### 6.9 Confidence interval standard
 
-All proportions: Wilson 95% CI (appropriate for binary outcomes near 0.5 with n = 50). All means: standard 95% CI from t-distribution. All ORs: log-scale 95% CI.
+All proportions: Wilson 95% CI (appropriate for binary outcomes near 0.5 with n = 70). All means: standard 95% CI from t-distribution. All ORs: log-scale 95% CI. [Fixed tick-4028: 'n = 50' updated to 'n = 70' — stale reference to the pre-correction sample size (n = 50 was the original McNemar-based target; corrected to n = 70 per cell before OSF upload per §4.1/§4.2 power analysis note). Wilson CIs remain appropriate at n = 70; the parenthetical now reflects the actual target.]
 
 ### 6.10 Software
 
