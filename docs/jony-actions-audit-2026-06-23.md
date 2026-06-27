@@ -641,3 +641,19 @@ Total amendments now: **7 ready-to-file** (1, 3, 4, 5, 6, 7 + Amendment A/B/C pe
 J RESOLVED tick-4003 ✅. Open count: 6 items + [verification URL] placeholder.
 
 _Last updated: tick-4008 (2026-06-27). Commit: see below._
+
+---
+
+**§4.5 H3 directional magnitudes added — one-hundred-fiftieth pass (tick-4017)**
+
+Cross-section consistency audit (tick-4017, odd): systematic review of §1-7, bibliography, and all Note/Fixed/JONY-ACTION blocks in the full draft.
+
+One new structural gap found: **§4.5's H3 paragraph was missing the pre-registered directional magnitudes** stated in §4.1 (Cond C < 45% on Q1; Cond A ≥ 65% on Q1). The §4.5 H1 entry correctly includes its directional magnitude ("Pre-registered directional magnitude: ≥ 10 pp on each question (see §4.1; pre-reg §H1)"). H3's §4.5 entry had no equivalent — a CHI reviewer verifying the analysis plan would need to cross-reference §4.1 to find the H3 magnitudes.
+
+Fix: added "Pre-registered directional magnitudes: Cond C < 45% on Q1; Cond A ≥ 65% on Q1 (see §4.1; pre-reg §H3)." to the §4.5 H3 paragraph, with a Note explaining the ethics-clause threshold (30%) is a separate, more extreme safety-net criterion distinct from the directional magnitude (45%).
+
+Also confirmed no new structural issues in: §1.1 Named Limitation (consistent with §3.3, §6.5, abstract — ticks 4012-4014), §3.3 L1/M3 cross-reference (tick-4014), §3.5 M2 benchmark note (tick-4012), §5.5 Study 2 primary analysis plan, §6.1-6.5 all limitations, §7 conclusion, bibliography (all entries verified).
+
+No new JONY-ACTIONs introduced.
+
+**JONY-ACTIONS open (tick-4017): 6 (I, G, A, B, C, O) + [verification URL] — unchanged.**
