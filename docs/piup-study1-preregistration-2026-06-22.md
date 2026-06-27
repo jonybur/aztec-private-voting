@@ -402,8 +402,8 @@ _All entries below are pre-data amendments (no participant data had been collect
 - Felt, A.P., et al. (2012). "How to Ask for Permission." *USENIX HotSec.*
 - Das, S., Dabbish, L. and Hong, J. (2014). "The Effect of Social Influence on Security Sensitivity." *ACM CCS 2014.*
 - Hargittai, E. (2009). "An Update on Survey Measures of Web-Oriented Digital Literacy." *Social Science Computer Review 27(1).*
-- Kulyk, O., et al. (2017). "Coercion-Resistant and Receipt-Free Voting." *USENIX Security.*
-- Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses." *SPSS* 8(4).
+- Kulyk, O., Teague, V., and Volkamer, M. (2015). "Extending Helios Towards Private Eligibility Verifiability." *VoteID 2015*, LNCS vol. 9269, pp. 57–73. Springer. [Fixed tick-4038: year corrected 2017→2015; title corrected from 'Coercion-Resistant and Receipt-Free Voting'; venue corrected from 'USENIX Security' to VoteID 2015 LNCS Springer. Parallel to CHI paper correction tick-3765 (where [VERIFIED tick-3765] note was added). The paper is Kulyk, Teague, Volkamer 2015 — private eligibility verifiability by hiding voter participation via null votes from other eligible voters (crowd-anonymity mechanism cited in CHI paper §1.4).]
+- Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses." *Social Psychological and Personality Science* 8(4):355–362. [Fixed tick-4038: journal corrected from 'SPSS' (IBM statistics software acronym) to full journal name 'Social Psychological and Personality Science'. CHI paper bibliography entry uses the full journal name. Note: correct abbreviation is SPPS not SPSS; 'SPSS' here was almost certainly a typo for the journal's colloquial abbreviation.]
 - Norman, D.A. (1988). *The Design of Everyday Things.* Basic Books.
 
 ---
