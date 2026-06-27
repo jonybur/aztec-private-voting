@@ -521,12 +521,12 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** DONE (tick-3998).
 - **Blocking:** RESOLVED.
 
-#### JONY-ACTION R - §4.2 condition assignment mechanism (tick-3882)
-- **Location:** Line 260 (§4.2 Power/participants, alongside Q)
-- **Status:** JONY-ACTION R note present.
-- **Summary:** Paper says 'randomly assigned to one of four conditions' but does not disclose the mechanism. Options: (a) Prolific URL-parameter condition assignment (each condition gets its own Prolific link, condition code passed as URL parameter to Qualtrics); (b) Qualtrics Randomizer block with Quotas (n=70/condition, corrected from n=50 in tick-3882). Disclosure sentences for both options documented in paper note.
-- **Action:** Jony specifies mechanism (Prolific URL-parameter or Qualtrics Randomizer) and adds one sentence to §4.2.
-- **Blocking?** Pre-submission. Reviewers will ask.
+#### JONY-ACTION R - §4.2 condition assignment mechanism (tick-3882) - RESOLVED tick-3999 ✅
+- **Location:** §4.2 (after held-constant paragraph, before **Participants.**)
+- **Status:** ✅ RESOLVED tick-3999. Primary option from instrument §12 applied: Prolific study-conditions feature. Sentence added: 'Condition assignment used Prolific's study-conditions feature, distributing participants equally across four study links; each link embedded the condition code as a URL parameter passed to Qualtrics.' [JONY-ACTION R] block replaced with [Fixed tick-3999] annotation documenting the primary option choice and the fallback Qualtrics Randomizer wording (if needed).
+- **Summary:** Paper previously said 'randomly assigned to one of four conditions' but did not disclose the mechanism. Applied Prolific URL-parameter option (primary per instrument §12): four separate Prolific study links (one per condition A/B/C/D), condition code passed as URL parameter to Qualtrics. Qualtrics Randomizer fallback documented in [Fixed] annotation if needed before CHI submission.
+- **Action:** DONE (tick-3999).
+- **Blocking?** RESOLVED.
 
 #### JONY-ACTION T - §7 Invariant 1 summary incomplete (tick-3890)
 - **Location:** Line 457 (§7 conclusion)
@@ -614,4 +614,4 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add R (mechanism), confirm G; J (confirm W&T retain - recommendation in paper). O partially done. Q CLEARED.
 
-_Last updated: tick-3998 (2026-06-27). JONY-ACTION Q RESOLVED tick-3998: IRB/ethics statement added to §4.2 ('No institutional IRB review was required under 45 CFR §46.104(d)(2); Prolific's standard participant protections and informed consent process apply.') — no-institutional-IRB option, matching pre-reg §10 and study-protocol §IRB anticipation. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O, R + [verification URL] (8 items; Q RESOLVED tick-3998). P RESOLVED tick-3997; Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
+_Last updated: tick-3999 (2026-06-27). JONY-ACTION R RESOLVED tick-3999: condition assignment mechanism added to §4.2 — Prolific study-conditions feature, URL-parameter method (primary from instrument §12); sentence added after held-constant paragraph. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O + [verification URL] (7 items; R RESOLVED tick-3999). Q RESOLVED tick-3998; P RESOLVED tick-3997; Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
