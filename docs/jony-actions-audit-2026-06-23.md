@@ -553,12 +553,12 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** DONE. Named Limitation cross-reference added at Invariant 2 timing clause (tick-3985).
 - **Blocking?** Resolved. §1.1/§3.3/§6.5 Named Limitation chain intact.
 
-#### JONY-ACTION X — §6.1 necessity claim cross-ref to §2.2/§6.5 (tick-3913)
+#### JONY-ACTION X — §6.1 necessity claim cross-ref to §2.2/§6.5 (tick-3913) — RESOLVED tick-3986
 - **Location:** Line 391 (§6.1 Design implications)
-- **Status:** JONY-ACTION X note present: 'JONY-ACTION X (new, tick-3913)'.
-- **Summary:** §6.1 states 'The pattern requires both components; neither is sufficient alone' without a local cross-reference to §2.2's disclosure that Study 1 includes no without-framing baseline. §2.2 Alternative 3 (line 146) explicitly flags this as a design inference. §6.1 cross-refs §5.5 as a forward empirical pointer but not §2.2/§6.5. A CHI reviewer reading §6.1 in isolation may ask for direct empirical evidence that Study 1 does not provide. Before CHI submission: add parenthetical cross-referencing §2.2 and §6.5 after the necessity claim. Jony decides exact phrasing.
-- **Action:** Add §2.2/§6.5 cross-ref after necessity claim.
-- **Blocking?** Pre-submission. Reviewer-resistance fix.
+- **Status:** RESOLVED tick-3986. Parenthetical added: '(design inference; Study 1 holds protective framing constant and includes no without-framing baseline — §2.2, §6.5)'.
+- **Summary:** §6.1 states 'The pattern requires both components; neither is sufficient alone' without a local cross-reference to §2.2's disclosure that Study 1 includes no without-framing baseline. §2.2 Alternative 3 (line 146) explicitly flags this as a design inference. §6.1 cross-refs §5.5 as a forward empirical pointer but not §2.2/§6.5. A CHI reviewer reading §6.1 in isolation may ask for direct empirical evidence that Study 1 does not provide. FIXED tick-3986: parenthetical co-locates §2.2/§6.5 cross-refs at the necessity claim site; §2.2 Alt3 and §6.5 disclosures confirmed intact.
+- **Action:** DONE (tick-3986).
+- **Blocking?** RESOLVED.
 
 #### JONY-ACTION (Das) — bibliography floating reference (tick-3855 identified; tick-3876 confirmed)
 - **Location:** Bibliography line 475 (Das et al. 2014)
@@ -610,4 +610,4 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: resolve U→M, add Q (IRB), add R (mechanism), expand T (Invariant 1), add M2 label (V), add W cross-ref, add X cross-ref, decide L, confirm G/H, clear Das.
 
-_Last updated: tick-3982 (2026-06-27). No new JONY-ACTIONs found in 21-pass audit (ticks 3961–3981): §3.3-§3.4, §2.2/§3.1-§3.2, §7, §4.2, §4.3, §4.4, §4.5 H1/H2/H3/Q5+exploratory, §5.1-§5.2, §5.3-§5.4, §5.5, §6.1, §6.2, §6.3, §6.4, §6.5, bibliography all CLEAN. Tick-3982: §4.6 Results placeholder/§5.6 Status/Author Bio/Submission Notes all 0 JONY-ACTION blocks; no new JONY-ACTIONs in remaining blocks. Open action count unchanged from tick-3928._
+_Last updated: tick-3986 (2026-06-27). JONY-ACTION X RESOLVED tick-3986: parenthetical added to §6.1 necessity claim; JONY-ACTION V RESOLVED tick-3984: M2 label added to §5.4 McKnight definition; JONY-ACTION W RESOLVED tick-3985: Named Limitation cross-ref added to §2.1 Invariant 2 timing clause. Open: T, U, J, I, L, M, G, H, N, (Das), A, B, C, O, P, Q, R (17 items)._
