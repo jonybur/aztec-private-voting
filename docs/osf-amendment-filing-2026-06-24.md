@@ -102,27 +102,29 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
-### Amendment 2 — MQ1 wording: two-part form (Item D)
+### ~~Amendment 2 — MQ1 wording: two-part form (Item D)~~
 
-**Status:** ✅ Ready to file  
-**OSF field:** Amendment log  
-**Category:** Instrument wording / measurement procedure
+**Status:** ⛔ VOID — DO NOT FILE (superseded 2026-06-25)  
+**OSF field:** N/A — no amendment required  
+**Category:** N/A
 
-> _"Item MQ1 wording updated from the pre-registered 'In your own words, what does this value prove about your vote?' to the two-part instrument form: 'In your own words: what does your [LABEL] prove about your vote? What does it NOT prove?' Scoring updated from cumulative 0–2 scale to two independent binary rater dimensions (MQ1_inclusion and MQ1_leakage); composite score = MQ1_inclusion + MQ1_leakage (range 0–2, same scale as pre-registered). Rationale: the two-part form directly elicits both the inclusion and absent-choice dimensions that are central to H2. The pre-registered 0–2 cumulative scale maps directly onto the two binary dimensions (0+0 = 0; 1+0 = 1; 1+1 = 2); no re-analysis is required. This amendment was made before any data were collected."_
+**Reason voided:** The pilot-launch decisions memo (`docs/piup-study1-pilot-decisions-2026-06-25.md` §Item D) overrode the earlier draft recommendation. The final decision was to **keep the pre-registration single-question wording** ('In your own words, what does your [LABEL] prove about your vote?') and NOT add the 'What does it NOT prove?' clause. The survey instrument was reverted to match the pre-reg wording (tick-3819). No amendment is needed — reverting to the pre-reg wording requires no OSF deviation filing. Filing this amendment would be incorrect and would document a change that was not made.
 
-**Supporting documentation:** jony-actions-audit-2026-06-23.md §Item D analysis; survey instrument §6 (MQ1 wording).
+**Rationale for reversal:** The two-part form ('What does it NOT prove?') creates a demand characteristic that inflates non-leakage scores in all conditions, reducing the measure's sensitivity to between-condition differences. The spontaneous mention of non-leakage is the higher-validity test; an explicit prompt undermines this. See pilot-decisions §Item D for full analysis.
+
+**Supporting documentation:** `docs/piup-study1-pilot-decisions-2026-06-25.md` §Item D; `docs/piup-study1-survey-instrument-2026-06-22.md` §7/MQ1 note (2026-06-25); `docs/jony-actions-audit-2026-06-23.md` §Item D (resolved tick-3819, no amendment). [Note added tick-4001: Amendment 2 void confirmed by JONY-ACTION I audit.]
 
 ---
 
-### Amendment 3 — BI1 wording: label-embedded form (Item E)
+### Amendment 3 — BI1 wording: 'this code' form (Item E)
 
 **Status:** ✅ Ready to file  
 **OSF field:** Amendment log  
 **Category:** Instrument wording / behavioral intention measure
 
-> _"Item BI1 wording updated from the pre-registered 'If this screen appeared after a real vote, would you download this file?' (5-point: Definitely yes → Definitely no) to the instrument form: 'If this was a real election and you saw this screen after submitting your vote, how likely would you be to save your [LABEL] for future reference?' (5-point: Definitely would save it → Definitely would not save it). Rationale: (a) 'save for future reference' makes the verification purpose of saving explicit, better operationalizing RQ2 (behavioral intention to preserve the receipt for later verification); (b) embedding [LABEL] in the question is intentional — BI1 measures whether the label's behavioral schema (save-to-verify) is activated independently of comprehension accuracy, which is the behavioral corollary of the H2 representational schema hypothesis. Demand characteristic risk is low because [LABEL] appears prominently throughout the stimuli. Response scale direction preserved (Definitely would save = positive behavioral intention). This amendment was made before any data were collected."_
+> _"Item BI1 wording updated from the pre-registered 'If this screen appeared after a real vote, would you download this file?' (5-point: Definitely yes → Definitely no) to: 'If this was a real election and you saw this screen after submitting your vote, how likely would you be to save this code for future reference?' (5-point: Definitely would save it → Definitely would not save it). Rationale: (a) 'save for future reference' makes the verification purpose of saving explicit, better operationalizing RQ2 (behavioral intention to preserve the receipt for later verification); (b) 'this code' replaces 'your [LABEL]' to remove label-name demand from the behavioral intent measure — BI1 should measure whether participants intend to save the receipt, not whether they associate saving with their specific condition label schema; (c) 'this code' is a neutral label-agnostic reference that maps cleanly to the download affordance visible in the stimulus across all four conditions. Response scale direction preserved (Definitely would save = positive behavioral intention). This amendment was made before any data were collected."_
 
-**Supporting documentation:** jony-actions-audit-2026-06-23.md §Item E analysis; survey instrument §7 (BI1 wording); h2-analysis-fingerprint-vs-confirmation-code.md (schema mechanism).
+**Supporting documentation:** `docs/piup-study1-pilot-decisions-2026-06-25.md` §Item E; `docs/piup-study1-survey-instrument-2026-06-22.md` §7/BI1 (updated to 'this code', 2026-06-25); `docs/jony-actions-audit-2026-06-23.md` §Item E (resolved tick-3819). [Note updated tick-4001: corrected from 'save your [LABEL]' to 'save this code' per final pilot-decisions recommendation. Earlier draft had '[LABEL]' which was the instrument wording before the demand-characteristic fix was applied.]
 
 ---
 
@@ -167,8 +169,8 @@ Complete this before OSF upload.
 
 **Amendments to paste into OSF (Section B above):**
 - [ ] Amendment 1 — G\*Power correction
-- [ ] Amendment 2 — MQ1 two-part wording (Decision D: if accepted)
-- [ ] Amendment 3 — BI1 label-embedded wording (Decision E: if accepted)
+- ~~[ ] Amendment 2 — VOID: Item D kept pre-reg wording; no amendment needed; do not file~~
+- [ ] Amendment 3 — BI1 'this code' wording (Item E: file this)
 - [ ] Amendment 4 — DescTools → base-R
 - [ ] Amendment 5 — CS/SE student screener extension
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
