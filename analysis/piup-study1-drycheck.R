@@ -181,7 +181,10 @@ cat(sprintf("  Passed at least one check: %d / %d (%.1f%%) %s\n",
 # =============================================================================
 cat("\n--- Package availability ---\n")
 # [AMENDMENT 2026-06-24] DescTools removed from required packages list.
-pkgs <- c("PropCIs", "TOSTER", "multcomp", "irr", "dunn.test", "effsize", "broom")
+# [AMENDMENT tick-4032] TOSTER removed (never called; not a proportions test).
+# [CLEANUP tick-4055] effsize, broom, multcomp removed: never loaded or called in
+#   analysis script; not in pre-reg §6.9. Required packages: PropCIs, irr, dunn.test.
+pkgs <- c("PropCIs", "irr", "dunn.test")
 for (p in pkgs) {
   avail <- requireNamespace(p, quietly = TRUE)
   cat(sprintf("  %-15s %s\n", p, if(avail) "OK" else "MISSING — install before full study run"))
@@ -191,5 +194,5 @@ cat("\n=== DRY-CHECK COMPLETE ===\n")
 cat("Column structure: OK\n")
 cat("Exclusion logic: OK\n")
 cat("Pilot validation: OK\n")
-cat("To install missing packages: install.packages(c('PropCIs','TOSTER','multcomp','irr','dunn.test','effsize','DescTools','broom'))\n")
+cat("To install missing packages: install.packages(c('PropCIs','irr','dunn.test'))\n")
 cat("To run pilot analysis (N=40): set PILOT=TRUE in piup-study1-analysis.R and source() it.\n\n")

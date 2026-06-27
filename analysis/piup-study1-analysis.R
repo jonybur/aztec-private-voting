@@ -11,9 +11,11 @@
 # R version:       >= 4.3
 #
 # Required packages:
-#   install.packages(c("PropCIs", "multcomp", "irr", "dunn.test",
-#                      "effsize", "broom"))
+#   install.packages(c("PropCIs", "irr", "dunn.test"))
 # [AMENDMENT 2026-06-24] DescTools removed; replaced with base-R (see below).
+# [CLEANUP tick-4055] effsize and broom removed from install list — never in
+#   pre-reg §6.9, never called. effsize::cohen.h() was superseded by inline
+#   2*asin(sqrt(p)) calculation in tost_prop(); broom::tidy() was never used.
 #
 # Usage:
 #   1. Replace DATA_PATH with the path to your Prolific export (CSV)
@@ -38,13 +40,17 @@ library(PropCIs)   # Wilson CIs for proportions
 # dependency. Statistical results unchanged. Documented as Amendment 10.
 library(irr)       # Cohen's kappa (inter-rater reliability)
 library(dunn.test) # Dunn's post-hoc for Kruskal-Wallis
-library(effsize)   # Cohen's h, d
+# [CLEANUP tick-4055] effsize removed. Loaded for Cohen's h, but cohen_h is
+# computed inline in tost_prop() as 2*asin(sqrt(p1)) - 2*asin(sqrt(p2));
+# effsize::cohen.h() was never called. Not in pre-reg §6.9. No OSF amendment
+# required (packages not in pre-reg; no statistical result affected).
+# [CLEANUP tick-4055] broom removed. Loaded for tidy() model output but
+# tidy() was never called anywhere in the script. Not in pre-reg §6.9.
 # [AMENDMENT 2026-06-24] DescTools removed — CramerV and OddsRatio
 # replaced with base-R equivalents (cramer_v_base / odds_ratio_base below).
 # Statistical results are identical; change made for portability (DescTools
 # requires the 'fs' C++ dependency unavailable in the analysis environment).
 # This amendment is logged per §14 (Amendments log) of the pre-registration.
-library(broom)     # tidy() for model output
 
 set.seed(20260622)  # Reproducibility seed — locked at pre-registration date
 
