@@ -103,10 +103,19 @@ export interface UseM2SigningResult {
 /**
  * Build the vote-specific 32-byte challenge for cast_vote_babylon_v2.
  *
- * Matches the Noir circuit:
- *   challenge = sha256(encode_field(title_hash) || encode_field(root_field))
+ * Matches the Noir circuit (corrected tick-4009):
+ *   challenge = sha256( title_hash.to_be_bytes::<32>() || encode_field_as_root(root_field) )
  *
- * Both title_hash and merkleRootField are Aztec Fields: to_be_bytes(32).
+ * ENCODING RULES (different for each input — see m2-secp256k1-ownership-proof-design.md):
+ *
+ * - titleHash: poseidon2 hash, BN254 field in [0, p), p ≈ 2^254. Use fieldToBytes32 (32 bytes).
+ *   ~97.9% of poseidon2 outputs are ≥ 2^248 and have a non-zero high byte. Using a 31-byte
+ *   truncated encoding would drop that byte, producing a challenge the circuit rejects.
+ *   The Noir circuit uses `config.title_hash.to_be_bytes::<32>()` to match.
+ *
+ * - rootField: Merkle root encoded by hash_bytes_as_field — always < 2^248 (byte 0 dropped).
+ *   fieldToBytes32(rootField) naturally produces [0x00, ...31 bytes], matching
+ *   the circuit’s `encode_field_as_root(root_field)` = [0x00, field.to_be_bytes::<31>()].
  *
  * @param titleHash     VoteConfig.title_hash as bigint (poseidon2 hash of title)
  * @param rootField     Merkle root lower-31-bytes field (from merkle-root-v2.json rootAsField)
@@ -117,8 +126,8 @@ export async function buildM2Challenge(
 ): Promise<Uint8Array> {
   const { sha256 } = await import('@noble/hashes/sha256');
   const combined = new Uint8Array(64);
-  combined.set(fieldToBytes32(titleHash), 0);
-  combined.set(fieldToBytes32(rootField), 32);
+  combined.set(fieldToBytes32(titleHash), 0);   // 32 bytes: matches circuit to_be_bytes::<32>()
+  combined.set(fieldToBytes32(rootField), 32);  // [0x00,...]: rootField<2^248, matches encode_field_as_root
   return sha256(combined);
 }
 

@@ -295,11 +295,18 @@ negligible in practice — but worth a comment in the contract.
 - [ ] Measure proving time on target browser hardware
 - [ ] Update GRANT.md M2 section with confirmed derivation approach and proving-time measurement
 
-### Challenge format (implemented)
+### Challenge format (corrected tick-4009)
 ```
-challenge = sha256( encode_field_as_root(config.title_hash) || encode_field_as_root(root_field) )
+challenge = sha256( title_hash.to_be_bytes::<32>() || encode_field_as_root(root_field) )
 ```
-Both inputs are 32-byte field encodings (0x00 padding + 31 field bytes).
+
+**Encoding rules (important — different for each input):**
+
+- `title_hash`: poseidon2 hash of the vote title. BN254 field element in [0, p), where p ≈ 2^254.
+  Use `to_be_bytes::<32>()` — full 32-byte big-endian encoding. Matches TypeScript `fieldToBytes32(titleHash)` in `buildM2Challenge`. Using `encode_field_as_root` (31 bytes + 0x00 pad) would silently drop the high byte for ~97.9% of poseidon2 hash outputs (those ≥ 2^248), producing a challenge mismatch that breaks ECDSA verification.
+
+- `root_field`: Merkle root encoded via `hash_bytes_as_field(sha256[...])`, which drops byte 0 of the SHA-256 output and encodes bytes 1..31 as a field. Always < 2^248 by construction. Use `encode_field_as_root` — 0x00 padding + 31 field bytes. Matches TypeScript `fieldToBytes32(rootField)` (which also produces `[0x00, ...]` since rootField < 2^248).
+
 Change from original spec (which used contract_address || title_hash):
 using title_hash || root achieves the same replay-prevention goal while
 avoiding the `this_address()` API dependency in private context.

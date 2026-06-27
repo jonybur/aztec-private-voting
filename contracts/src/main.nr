@@ -364,8 +364,20 @@ pub contract PrivateVoting {
         //    across different votes. Both title_hash and the Merkle root are
         //    committed in the immutable VoteConfig, so this challenge is
         //    unique per vote and cannot be forged by an attacker.
-        //    challenge = sha256( title_hash_encoded[32] || root_bytes[32] )
-        let title_bytes = encode_field_as_root(config.title_hash);
+        //
+        //    challenge = sha256( title_hash_bytes32[32] || root_bytes[32] )
+        //
+        //    ENCODING NOTE (fixed tick-4009):
+        //    title_hash is a poseidon2 hash — a BN254 field element in [0, p).
+        //    p ≈ 2^254, so ~97.9% of title_hash values have a non-zero high byte
+        //    when encoded as 32 big-endian bytes. We MUST use to_be_bytes::<32>()
+        //    here to match fieldToBytes32() in buildM2Challenge (useM2Signing.ts).
+        //    Using encode_field_as_root() (which truncates to 31 bytes and zero-pads)
+        //    would produce a different challenge for those ~97.9% of inputs,
+        //    causing ecdsa_secp256k1::verify_signature to reject the MetaMask sig.
+        //    root_field is safe with encode_field_as_root because it is constructed
+        //    from hash_bytes_as_field(sha256[...]) and is always < 2^248.
+        let title_bytes: [u8; 32] = config.title_hash.to_be_bytes();
         let mut challenge_input = [0u8; 64];
         for i in 0..32 { challenge_input[i] = title_bytes[i]; }
         for i in 0..32 { challenge_input[32 + i] = root_bytes[i]; }
