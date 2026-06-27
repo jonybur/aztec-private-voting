@@ -43,7 +43,7 @@ _Paper cannot be submitted without these._
 - **Jony must decide before submission:**
   - (a) If the pilot WAS run: document it in a research methods note (`docs/pilot-receipt-ui-2026-xx.md`) and restore the empirical citation with full documentation (N, method, conditions, finding). Recommended OSF registration if possible.
   - (b) If the pilot was NOT run (or was informal ad-hoc testing): the design-rationale reframe applied in tick-3767 is CHI-safe. Confirm option (b) - heartbeat will then remove the JONY-ACTION G block from the paper.
-- **Current paper state:** Design-rationale reframe applied (tick-3767). JONY-ACTION G inline note in paper. Re-verified tick-3993: reframe intact, no new pilot docs.
+- **Current paper state:** Design-rationale reframe applied (tick-3767). JONY-ACTION G inline note in paper. Re-verified tick-3993: reframe intact, no new pilot docs. Re-verified tick-3997: fresh repo-wide search for N=12 pilot docs — still no documentation found in any .md file in aztec-private-voting/ (searched all .md files; only references to N=12 trace back to the original undocumented claim in the paper draft, the research statements, and the audit files). Design-rationale reframe INTACT at §2.1 line 136. Option (b) remains the confirmed viable path. G open pending Jony confirmation only.
 - **Blocking?** Not submission-blocking on its own. Design-rationale reframe is CHI-safe as-is. G open only to ensure Jony confirms option (b) before submission so the JONY-ACTION G note block is removed from the final paper.
 
 ---
@@ -507,12 +507,12 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** File OSF Amendment 5 (text ready in osf-amendment-filing doc) before pilot launch. Paper disclosure sentence already in place.
 - **Blocks:** Pre-pilot gate.
 
-#### JONY-ACTION P - §5.2 Study 2 power justification (tick-3872)
-- **Location:** Line 353 (§5.2 Factor I description)
-- **Status:** JONY-ACTION P note present.
-- **Summary:** §5 lacks a power justification sentence for n=30/cell. CHI reviewer will ask. Preliminary estimate from design note §10.1: Q-AC accuracy 50%→70% in E1 vs. E2 (OR≈2.3), α=0.05, one-tailed, power≈0.84 at n=30; N=240 also provides adequate headroom for H2.2 interaction (f≈0.22, N=240, power≈0.80, design note §10.2). Final power analysis to be revised with Study 1 pilot data per §5.6.
-- **Action:** Add brief power sentence to §5.2 or §5.4 before CHI submission. Text ready in note.
-- **Blocking?** Pre-submission. Missing power justification is a standard CHI reviewer ask.
+#### JONY-ACTION P - §5.2 Study 2 power justification (tick-3872) — RESOLVED tick-3997 ✅
+- **Location:** After Factor I paragraph (§5.2)
+- **Status:** RESOLVED tick-3997. Power justification paragraph added as '**Power (preliminary estimate).**' after Factor I definition.
+- **Summary:** Added: 'For the primary H2.1 endpoint (Q-AC accuracy, E main effect: 50% in E2 → 70% in E1, one-tailed, α = 0.05), n = 30 per cell provides approximately 84% power (OR ≈ 2.3; design note §10.1). N = 240 also provides approximately 80% power for the H2.2 interaction endpoint (f ≈ 0.22; design note §10.2) and adequate headroom for a 20–25% Prolific exclusion rate without falling below 80% power for H2.1. The final power analysis will be revised using Study 1 pilot data before Study 2 pre-registration (§5.6).'
+- **Action:** DONE (tick-3997).
+- **Blocking?** Resolved.
 
 #### JONY-ACTION Q - §4.2 IRB/ethics statement (tick-3882)
 - **Location:** Line 260 (§4.2 Power/participants)
@@ -614,4 +614,4 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add Q (IRB), add R (mechanism), confirm G; J (confirm W&T retain - recommendation in paper). O partially done. Das CLEARED.
 
-_Last updated: tick-3996 (2026-06-27). JONY-ACTION (Das) RESOLVED tick-3996: Das et al. (2014) floating bibliography entry removed (option a). §6.2 has no clear hook for social influence; schema-import (familiarity→eCommerce confidence) is a different causal pathway. Das entry dropped entirely. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O, P, Q, R + [verification URL] (10 items). Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
+_Last updated: tick-3997 (2026-06-27). JONY-ACTION P RESOLVED tick-3997: power justification paragraph added to §5.2 ('Power (preliminary estimate).') with H2.1 84% power at n=30 (OR≈2.3, design note §10.1) and H2.2 80% power at N=240 (f≈0.22, design note §10.2). G re-verified tick-3997: no new pilot docs found; reframe intact; open pending Jony confirmation only. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O, Q, R + [verification URL] (9 items; P RESOLVED tick-3997). Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
