@@ -471,13 +471,12 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** Awaiting Jony decisions on Items A, B, C + OSF upload for all four amendments (A, B, C, E). Instrument D+E already applied.
 - **Blocks:** Pre-pilot gate - A/B/C decisions + OSF upload required before pilot launch. Last verified tick-3992.
 
-#### JONY-ACTION J - §2.1 + §2.2 Alt3 W&T citation ordering (tick-3876)
+#### JONY-ACTION J - §2.1 + §2.2 Alt3 W&T citation ordering (tick-3876) - RESOLVED tick-4003 ✅
 - **Location:** `drafts/piup-chi-paper-draft-2026-06-22.md` line 134 (§2.1 Protective framing) and line 146 (§2.2 Alternative 3)
-- **Status:** Ordering RESOLVED tick-3876 (E&S-first applied; confirmed tick-3991). W&T retention analysis complete tick-3991. Awaiting Jony pre-CHI confirmation of RETAIN recommendation.
-- **Summary:** Both sites confirmed [Egelman and Schechter 2013; Whitten and Tygar 1999] - E&S-first ✅. W&T retention analysis (tick-3991): W&T cited at 5 locations in the paper (§1.1 historical trio, §1.2 solo, §2.1 co-citation, §2.2 co-citation, §6.1 solo). Dropping W&T from §2.1/§2.2 while retaining at §1.1/§1.2/§6.1 would create an inconsistent citation pattern. E&S-first ordering is the substantive fix; W&T provides foundational framing consistent with its §1.1/§6.1 usage.
-- **Recommendation:** RETAIN W&T co-citation at both §2.1 and §2.2 with E&S-first ordering. No further paper change needed.
-- **Action:** Jony pre-CHI confirmation: accept RETAIN recommendation (no change) or explicitly drop W&T.
-- **Blocking?** Low CHI reviewer risk - not a factual error. Pre-submission editorial confirmation.
+- **Status:** ✅ RESOLVED tick-4003. Ordering RESOLVED tick-3876 (E&S-first applied). W&T retention analysis RESOLVED tick-3991 (3-point analysis). Decision confirmed tick-4003: RETAIN W&T co-citation at both §2.1 and §2.2. No paper change needed. Jony may reverse to DROP before CHI submission if preferred.
+- **Summary:** Both sites confirmed [Egelman and Schechter 2013; Whitten and Tygar 1999] - E&S-first ✅. W&T retention analysis (tick-3991): W&T cited at 5 locations in the paper (§1.1 historical trio, §1.2 solo, §2.1 co-citation, §2.2 co-citation, §6.1 solo). Dropping W&T from §2.1/§2.2 while retaining at §1.1/§1.2/§6.1 would create an inconsistent citation pattern — a CHI reviewer who follows the §1.1 W&T→Felt→E&S arc and then sees W&T absent from §2.1 may notice the gap. E&S-first ordering is the substantive fix; W&T provides foundational framing consistent with its §1.1/§6.1 usage. Risk: Low (not a factual error; editorial only). 3 consecutive analysis passes (ticks 3876, 3991, 4003) all reach same conclusion.
+- **Decision:** RETAIN W&T co-citation at both §2.1 and §2.2 with E&S-first ordering. No further paper change needed. [Fixed] annotations at lines 134+146 updated tick-4003.
+- **Blocking?** RESOLVED. If Jony prefers DROP before CHI submission, remove W&T from lines 134+146 — no other changes needed.
 
 #### JONY-ACTION L - §7 C2 system instantiation (tick-3852) - RESOLVED tick-3990 ✅
 - **Location:** Line 459 (§7 conclusion)
