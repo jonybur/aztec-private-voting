@@ -541,10 +541,10 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 #### JONY-ACTION V — §5.4 M2 label missing at definition site (tick-3898)
 - **Location:** Line 361 (§5.4 Measures, McKnight trust composite definition)
-- **Status:** JONY-ACTION V note present: 'JONY-ACTION V (new, tick-3898)'.
-- **Summary:** §5.5 uses 'M2 trust composite' and §6.2 uses 'the trust composite (M2; §5.5)' but §5.4 does not label the composite as M2 at its definition site. §5.4 labels M4 but omits M1-M3 labels. Fix: (a) add '(M2)' to McKnight trust composite line; (b) add '(M1)' to save-intention line if M1 is its design-note label; (c) confirm whether Q-AC has an M-series label. Simplest fix is (a) alone.
-- **Action:** Jony decides: add M2/M1 labels at §5.4 definition site.
-- **Blocking?** Pre-submission. Broken cross-reference chain M2 (§5.5/§6.2) → §5.4 definition without label.
+- **Status:** ✅ RESOLVED tick-3984. Fix (a) applied: '(M2)' added at McKnight composite definition site. M2 reference chain §5.4 → §5.5 → §6.2 now complete.
+- **Summary:** §5.5 uses 'M2 trust composite' and §6.2 uses 'the trust composite (M2; §5.5)' but §5.4 did not label the composite as M2 at its definition site. Fix (a) applied: changed 'trust in the receipt system (4-item adapted McKnight scale…)' to 'trust in the receipt system (M2; 4-item adapted McKnight scale…)'. Items (b) and (c) deferred to Jony: design note §7.1 labels save intention as M3 (not M1); Q-AC sits outside the M-series. If Jony confirms M3 for save intention, add '(M3)' before submission.
+- **Action:** Jony decides: confirm/deny M3 label for save-intention measure; Q-AC is correctly outside the M-series.
+- **Blocking?** V (a) resolved. M3 label for save-intention: minor pre-submission polish only.
 
 #### JONY-ACTION W — §2.1 Invariant 2 timing clause vs Named Limitation (tick-3903)
 - **Location:** Line 130 (§2.1 Invariant 2 formal statement)
