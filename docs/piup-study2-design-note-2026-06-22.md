@@ -21,7 +21,7 @@ Study 2 addresses all four. It is the second of a three-study arc:
 
 | Study | Central question | Method | Status |
 |-------|-----------------|--------|--------|
-| 1 | Does label choice affect privacy mental model? | 4-condition between-subjects screenshot study (Prolific, N=200) | Pre-registered; pending OSF upload + pilot |
+| 1 | Does label choice affect privacy mental model? | 4-condition between-subjects screenshot study (Prolific, N=280, n=70/cell; corrected from pre-registration N=200 after power analysis fix — see CHI paper §4.2) | Pre-registered; pending OSF upload + pilot |
 | **2** | **Does absent-choice explanation affect trust and save behavior? Can calibration interventions reduce over-confidence?** | **2×2 between-subjects interactive prototype study (Prolific, N=240)** | **This document** |
 | 3 | Do users actually return to verify? What predicts verification behavior? | Longitudinal field study in DAO deployment | Deferred until Study 2 complete |
 
@@ -454,7 +454,7 @@ Study 2 has the following dependencies on Study 1:
 
 **Recommended sequence:**
 1. Run Study 1 pilot (N = 40) → confirm power estimates + identify protocol issues
-2. Run Study 1 full study (N = 200) → confirm or refute H4
+2. Run Study 1 full study (N = 280, n = 70/cell) → confirm or refute H4
 3. Update Study 2 design based on H4 status (resolve H2.3 conditional)
 4. Build Study 2 interactive prototype (VoteReceipt study mode)
 5. Pre-register Study 2 on OSF
@@ -481,7 +481,6 @@ Study 2 has the following dependencies on Study 1:
 - Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses." _SPSS 8(4)._
 - McKnight, D.H., Choudhury, V., and Kacmar, C. (2002). "Developing and Validating Trust Measures for E-Commerce: An Integrative Typology." _Information Systems Research 13(3)._
 - Lee, J.D., and See, K.A. (2004). "Trust in Automation: Designing for Appropriate Reliance." _Human Factors 46(1)._
-- Everett, S., et al. (2008). "Measuring the Usability and Security of Permuted Elections on Real Voters." _SOUPS._
 - Cranor, L.F., and Garfinkel, S. (eds.) (2005). _Security and Usability._ O'Reilly.
 - Norman, D.A. (1988). _The Design of Everyday Things._ Basic Books.
 
