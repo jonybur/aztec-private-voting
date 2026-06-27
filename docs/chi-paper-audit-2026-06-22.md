@@ -3000,3 +3000,29 @@ JONY-ACTION H remains open: before CHI submission, verify against DOET (approx. 
 **Detail (c):** Formal invariant names (§2.1) vs §6.4/§7 design-pattern shorthand names: Inv1 'Surrogate independence' ↔ 'token independence'; Inv2 'Surrogate privacy in transit' ↔ 'token privacy until that event'; Inv3 'Minimal receipt content' ↔ 'minimal-content receipt.' All three invariants follow the same naming asymmetry — formal noun-property name in §2.1 vs pattern-level noun in §6.4/§7 shorthand. §7 line 457 correctly uses formal name ('Invariant 3 (minimal receipt content)') when explicitly citing the invariant; §7 line 465 correctly uses design-pattern shorthand ('minimal-content receipt') within the §6.4 taxonomy context. Asymmetry is systematic and intentional. ✅ CLEAN.
 
 **JONY-ACTION H:** Remains open — Norman DOET paraphrase in §6.3.
+
+---
+
+## Pre-registration §14 amendments log — populated (tick-4030)
+
+**Scope:** Pre-registration document `docs/piup-study1-preregistration-2026-06-22.md` §14 had 'none at pre-registration' despite 8 active pre-data amendments fully documented in `docs/osf-amendment-filing-2026-06-24.md`. Gap identified tick-4030; fix committed ae80a70.
+
+**Gap:** §14 must match the osf-amendment-filing so the pre-registration is self-consistent when uploaded to OSF. A reviewer who reads the pre-registration document in isolation would see no amendments; a reviewer who reads the osf-amendment-filing would see 8. This is an internal inconsistency that could undermine credibility at peer review.
+
+**Fix applied:** §14 table populated with all 8 active amendments (chronological), concise descriptions, and 'Authorized by: Jony Bursztyn' for each. Amendment 2 (VOID) correctly omitted with explanatory header note.
+
+| Amendment | Date | Type | Status in §14 |
+|-----------|------|------|---------------|
+| 1 | 2026-06-22 | G\*Power correction, n=50→70, N=200→280 | ✅ Added |
+| 2 | VOID | MQ1 two-part form — reverted, no deviation | ✅ Omitted (VOID explained in header) |
+| 3 | 2026-06-25 | BI1 'save this code' wording | ✅ Added |
+| 4 | 2026-06-24 | DescTools → base-R (CramerV, OddsRatio) | ✅ Added |
+| 5 | 2026-06-22 | SC2 screener: CS/SE students added | ✅ Added |
+| 6 | 2026-06-22 | Q1 '[LABEL]' label-substitution + preamble | ✅ Added |
+| 7 | 2026-06-22 | Q2 '[LABEL]' label-substitution + preamble | ✅ Added |
+| 8 | 2026-06-27 | MQ1 '[LABEL]' label-substitution | ✅ Added |
+| 9 | 2026-06-27 | tost_prop() lower.tail bug fix | ✅ Added |
+
+**Result:** Pre-registration §14 is now self-consistent with the osf-amendment-filing. Both documents agree on the 8 active pre-data amendments before OSF upload.
+
+**JONY-ACTIONS open (tick-4030): 6 (I, G, A, B, C, O) — unchanged.**
