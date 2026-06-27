@@ -205,6 +205,19 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 10 — TOSTER package removal (software dependency, pre-data)
+
+**Status:** ✅ Ready to file  
+**OSF field:** Amendment log  
+**Category:** Analysis script — software dependency (pre-data, pre-OSF)  
+**Source:** tick-4032 audit
+
+> _"Analysis script software dependency change (pre-data, pre-OSF): TOSTER removed from the required packages list and from the script. The OSF pre-registration §6.9 listed TOSTER as a planned package for equivalence tests. On review of the analysis script, TOSTER::tsum_TOST was never called: H2-tertiary uses a custom tost_prop() z-test function (implemented in the script at lines ~495–520). TOSTER::tsum_TOST operates on means (t-distribution); H2-tertiary is a TOST of two independent proportions, which requires a z-test on the raw probability scale, not an arcsine-transformed t-test. The custom tost_prop() implements the correct two one-sided z-test procedure per Lakens (2017). TOSTER was loaded via library(TOSTER) but never called, creating a spurious installation dependency. Removing it is parallel to Amendment 4 (DescTools removal). No statistical result is affected; the tost_prop() function and all H2-tertiary outputs are unchanged. (Pre-data.) Amendment logged in the script at lines ~32–40 with [AMENDMENT tick-4032] comment."_
+
+**Supporting documentation:** `analysis/piup-study1-analysis.R` (library block); pre-reg §6.9 (packages list updated to remove TOSTER); pre-reg §14 Amendment 10.
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -229,6 +242,7 @@ Complete this before OSF upload.
 - [ ] Amendment 7 — Q2 '[LABEL]' label-substitution (file this)
 - [ ] Amendment 8 — MQ1 '[LABEL]' label-substitution (file this)
 - [ ] Amendment 9 — TOST lower.tail bug fix (file this; re-upload analysis.R)
+- [ ] Amendment 10 — TOSTER package removal (file this; re-upload analysis.R)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)

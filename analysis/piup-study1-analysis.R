@@ -11,7 +11,7 @@
 # R version:       >= 4.3
 #
 # Required packages:
-#   install.packages(c("PropCIs", "TOSTER", "multcomp", "irr", "dunn.test",
+#   install.packages(c("PropCIs", "multcomp", "irr", "dunn.test",
 #                      "effsize", "broom"))
 # [AMENDMENT 2026-06-24] DescTools removed; replaced with base-R (see below).
 #
@@ -29,7 +29,13 @@
 # --- 0. SETUP ----------------------------------------------------------------
 
 library(PropCIs)   # Wilson CIs for proportions
-library(TOSTER)    # Equivalence tests (TOST)
+# [AMENDMENT tick-4032] TOSTER removed. The pre-registration §6.9 listed TOSTER as a planned
+# package for equivalence tests. However, TOSTER::tsum_TOST operates on means (t-tests), not
+# on proportions (z-tests), making it inappropriate for the H2-tertiary composite TOST.
+# H2-tertiary uses a custom tost_prop() z-test below (per Lakens 2017 TOST framework;
+# proportions use z-test on raw probability scale, not arcsine-transform t-test).
+# TOSTER was never called anywhere in the script; removing it eliminates a spurious
+# dependency. Statistical results unchanged. Documented as Amendment 10.
 library(irr)       # Cohen's kappa (inter-rater reliability)
 library(dunn.test) # Dunn's post-hoc for Kruskal-Wallis
 library(effsize)   # Cohen's h, d
@@ -480,8 +486,10 @@ B_sub <- df[df$condition == "B", ]
 cat("H2-primary (Q2, A > B, one-tailed):", format_test(h2_primary), "\n")
 cat("H2-secondary (Q3, A > B, one-tailed):", format_test(h2_secondary), "\n\n")
 
-# TOST for proportions using TOSTER::tsum_TOST
-# For proportions, use two one-sided z-tests on arcsine-transformed proportions
+# H2-tertiary TOST for proportions: custom z-test implementation
+# TOSTER::tsum_TOST is for means (t-distribution); proportions require a z-test on the
+# raw probability scale (not arcsine-transformed). Implements the two one-sided z-test
+# (TOST) procedure from Lakens (2017): two one-sided tests on (p1 - p2) with pooled SE.
 p_A_comp  <- mean(A_sub$composite_acc, na.rm = TRUE)
 p_B_comp  <- mean(B_sub$composite_acc, na.rm = TRUE)
 n_A_comp  <- sum(!is.na(A_sub$composite_acc))
