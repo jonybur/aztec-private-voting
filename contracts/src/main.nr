@@ -419,6 +419,17 @@ pub contract PrivateVoting {
         //    An attacker without privkey cannot compute the correct sig, so
         //    they cannot pre-compute or steal this nullifier.
         //    Including both r and s prevents second-preimage on s alone.
+        //
+        //    TRUST ASSUMPTION (named — see docs/m2-front-running-security-analysis-2026-06-27.md §3):
+        //    Single-use enforcement (one vote per Cosmos key per election) relies on the
+        //    signing wallet implementing RFC 6979 deterministic nonce generation. All EIP-191
+        //    EVM wallets (MetaMask, WalletConnect, Ledger via MetaMask) use RFC 6979 — safe
+        //    for ADR-036 Path C (current). Cosmos SDK (Keplr) also uses RFC 6979 by default.
+        //    A wallet with randomised k can produce multiple valid sigs → multiple valid
+        //    nullifiers → multiple votes from the same key. Mitigation: add protocol-level
+        //    pubkey claim keyed on hash(pubkey_x||pubkey_y) before production deployment.
+        //    Current risk is LOW (bounded: attacker must hold the private key; no external
+        //    exploit; each extra vote costs Aztec gas; vote weight is not inflated).
         let holder_nullifier = hash_bytes_as_field(sha256_var(sig, 64));
 
         // 7. Enqueue the public vote record.

@@ -319,12 +319,17 @@ in GRANT.md as a named deviation before grant submission.
   during signing knows which option they chose (it's visible in the UI).
   The ownership proof closes the snapshot-forwarding attack; it does not
   address shoulder-surfing or malware on the voter's device.
-- **Front-running within the same block:** If an attacker intercepts the
-  signed proof *after* it is submitted but before it lands on-chain, they
-  could potentially replay it in the same block. Aztec's private kernel
-  applies the single-use claim before the proof hits the sequencer, so
-  ordering within a block is handled, but this is worth confirming against
-  v5 sequencer semantics.
+- **Front-running within the same block [RESOLVED tick-4007]:** Full security
+  analysis in `docs/m2-front-running-security-analysis-2026-06-27.md`. Summary:
+  (a) `record_vote` is `#[only_self]` — external callers cannot inject a vote
+  with an observed nullifier. (b) The nullifier `hash(sha256(sig))` is preimage-
+  resistant — knowing the nullifier value does not enable constructing a valid
+  proof. (c) Transaction byte replay is blocked by Aztec sequencer deduplication.
+  **New finding:** single-use enforcement has a named dependency on RFC 6979
+  deterministic signing (see §3 of the analysis doc). EIP-191 EVM wallets
+  (current ADR-036 Path C) are confirmed safe. Mitigation for production:
+  add a protocol-level claim keyed on `hash(pubkey_x ‖ pubkey_y)` before
+  enabling Keplr or hardware-wallet signing paths.
 - **Vote direction privacy on-chain:** M1 limitation still applies — `vote_choice`
   is a public argument of the enqueued `record_vote` call. Choices are
   anonymous (unlinked to an address) but not hidden. Hidden tallies
@@ -335,6 +340,7 @@ in GRANT.md as a named deviation before grant submission.
 ## Related documents
 
 - `docs/f2-atomicity-analysis-2026-06-22.md` — F2 receipt-collision analysis (separate attack)
+- `docs/m2-front-running-security-analysis-2026-06-27.md` — Front-running + RFC 6979 analysis (tick-4007)
 - `docs/proof-of-inclusion-ux-pattern-2026-06-22.md` — UX framing for what M2 enables
 - `GRANT.md` — M2 roadmap summary for grant reviewers
 - `contracts/src/main.nr` — current `cast_vote_babylon` implementation
