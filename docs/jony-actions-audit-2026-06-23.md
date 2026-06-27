@@ -546,12 +546,12 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** Jony decides: confirm/deny M3 label for save-intention measure; Q-AC is correctly outside the M-series.
 - **Blocking?** V (a) resolved. M3 label for save-intention: minor pre-submission polish only.
 
-#### JONY-ACTION W — §2.1 Invariant 2 timing clause vs Named Limitation (tick-3903)
+#### JONY-ACTION W — §2.1 Invariant 2 timing clause vs Named Limitation (tick-3903) — RESOLVED tick-3985 ✅
 - **Location:** Line 130 (§2.1 Invariant 2 formal statement)
-- **Status:** JONY-ACTION W note present: 'JONY-ACTION W (new, tick-3903)'.
-- **Summary:** Invariant 2 states token 'must be treated as private until the content is definitionally public (vote closes, auction reveals).' In the Aztec instantiation, vote_choice is in L1 calldata from block finalization (§3.3 L1 privacy gap) — so the 'private until vote close' timing premise is partially undermined at the protocol layer. The Named Limitation (§2.1, §1.1, §3.3, §6.5) documents this exception, but Invariant 2's formal statement stands alone without a cross-reference. Before CHI submission: add '(subject to the Named Limitation below; in the Aztec instantiation the vote choice is in L1 calldata from submission — §1.1, §3.3)' after the timing clause. Jony decides exact phrasing.
-- **Action:** Add Named Limitation cross-reference at Invariant 2 timing clause.
-- **Blocking?** Pre-submission. CHI reviewer may flag the tension between Invariant 2 and the Named Limitation.
+- **Status:** RESOLVED tick-3985. Cross-reference added inline: '(subject to the Named Limitation; in the Aztec instantiation vote_choice is in L1 calldata from submission — §1.1, §3.3)' inserted after '(vote closes, auction reveals)' in the Invariant 2 timing clause. JONY-ACTION W block replaced with [Fixed tick-3985] annotation.
+- **Summary:** Invariant 2 stated token 'must be treated as private until the content is definitionally public (vote closes, auction reveals).' In the Aztec instantiation, vote_choice is in L1 calldata from submission (§3.3 L1 privacy gap) — so the 'private until vote close' timing premise was partially undermined at the protocol layer. The Named Limitation (§2.1, §1.1, §3.3, §6.5) documented this exception, but Invariant 2's formal statement stood alone without a cross-reference. Fix: added '(subject to the Named Limitation; in the Aztec instantiation vote_choice is in L1 calldata from submission — §1.1, §3.3)' co-located with the timing clause so a skim-reading reviewer sees the exception at the same site.
+- **Action:** DONE. Named Limitation cross-reference added at Invariant 2 timing clause (tick-3985).
+- **Blocking?** Resolved. §1.1/§3.3/§6.5 Named Limitation chain intact.
 
 #### JONY-ACTION X — §6.1 necessity claim cross-ref to §2.2/§6.5 (tick-3913)
 - **Location:** Line 391 (§6.1 Design implications)
