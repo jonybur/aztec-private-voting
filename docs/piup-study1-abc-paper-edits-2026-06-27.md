@@ -142,4 +142,89 @@ These are §4.1/§6.1 cross-reference checks for the next pass after A/B/C are a
 
 ---
 
-_Prepared by heartbeat agent tick-4005. Jony confirms → next tick applies all three changes._
+## Addendum: Cross-Reference Audit Results (tick-4006)
+
+**Scope:** All paper sites that describe Q3's content using "screenshot" language. If Decision A is adopted (instrument wording: "show them this screen" instead of "send a screenshot"), these sites become slightly inaccurate — they anchor Q3's scenario to the old pre-reg framing.
+
+**Audit result:** §4.1 CLEAN, §4.5 CLEAN, §6.1 CLEAN. Three sites need updating.
+
+### Site 1 — Line 90 (§1.2, H2 dissociation prediction)
+
+**Context:** Intro-level paraphrase of what Q3 measures, embedded in the H2 dissociation prediction.
+
+**Current:**
+```
+Q3: whether a third party could learn how the voter voted from a screenshot of the receipt
+```
+
+**After Decision A:**
+```
+Q3: whether a third party could determine the vote choice by seeing the receipt
+```
+
+**Rationale:** "from a screenshot" anchors to the pre-reg scenario (employer asks for a screenshot). New Q3 uses "show them this screen" — a live screen-sharing scenario, not an asynchronous screenshot send. "seeing the receipt" is wording-agnostic and accurate under both old and new Q3 framings.
+
+---
+
+### Site 2 — Line 403 (§6.2, H2 description)
+
+**Context:** H2 dissociation analysis description in the Discussion.
+
+**Current:**
+```
+Q3 (whether a third party could learn how the voter voted from a screenshot)
+```
+
+**After Decision A:**
+```
+Q3 (whether a third party could determine the vote choice by seeing the receipt screen)
+```
+
+**Rationale:** Same fix as Site 1 — removes "screenshot" shorthand that references the old pre-reg framing.
+
+---
+
+### Site 3 — Line 463 (§7, conclusion boundary condition)
+
+**Context:** §7 conclusion characterising Q3 as the H2-secondary endpoint.
+
+**Current:**
+```
+potentially Q3, whether a screenshot reveals the vote choice (H2-secondary; §4.5)
+```
+
+**After Decision A:**
+```
+potentially Q3, whether sharing the receipt reveals the vote choice (H2-secondary; §4.5)
+```
+
+**Rationale:** "a screenshot reveals" → "sharing the receipt reveals". Neutral phrasing covers both the old (send screenshot) and new (show screen) scenario framings.
+
+---
+
+### Sites confirmed CLEAN (no changes needed)
+
+| Section | Lines | Check | Result |
+|---|---|---|---|
+| §4.1 H1 | 240 | "Q2 and Q3" — no wording-specific description | ✅ CLEAN |
+| §4.1 H2 | 241 | "Q2 (primary) and Q3 (secondary)" — no wording-specific description | ✅ CLEAN |
+| §4.5 H1 | 307 | "chi-squared tests on Q2 and Q3 accuracy" — no wording description | ✅ CLEAN |
+| §4.5 H2 | 309 | "H2-secondary: Q3 accuracy, A vs. B" — no wording description | ✅ CLEAN |
+| §6.1 | 393 | "coercion scenario" framing — conceptual, no "screenshot" Q3 description | ✅ CLEAN |
+| §6.5 / §4.3 | 266, 439, 441 | "screenshot stimuli" / "screenshot method" — describes METHOD not Q3 wording | ✅ CLEAN |
+
+### Summary of additional changes to apply after Decision A confirmed
+
+When applying the A/B/C changes from the section above, also apply:
+
+| Site | Line | Current | After Decision A |
+|---|---|---|---|
+| §1.2 | 90 | "from a screenshot of the receipt" | "by seeing the receipt" |
+| §6.2 | 403 | "from a screenshot" | "by seeing the receipt screen" |
+| §7 | 463 | "whether a screenshot reveals" | "whether sharing the receipt reveals" |
+
+Total additional paper changes after Decision A: **3 one-phrase replacements** (all in main text, none in Note blocks).
+
+---
+
+_Prepared by heartbeat agent tick-4005. Cross-reference addendum added tick-4006. Jony confirms → next tick applies all §4.4 + cross-ref changes in one pass._
