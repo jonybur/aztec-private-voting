@@ -15,6 +15,20 @@ import type { VoteReceipt as VoteReceiptData } from '../types';
  */
 export type ReceiptLabelVariant = 'fingerprint' | 'confirmation-code' | 'nullifier' | 'receipt-id';
 
+/**
+ * Controls the protective-framing explanation shown on the receipt.
+ * Used in Study 2 of the PIUP user study (Factor E: Explanation × Label).
+ *
+ * - 'explained'   (E1) Full absent-choice explanation: "This is intentional.
+ *                 Keeping your vote private means your receipt can be shared,
+ *                 checked, or subpoenaed without revealing how you voted."
+ *                 (design note §6.1).
+ * - 'unexplained' (E2) Minimal statement only: "Your vote choice is not shown
+ *                 on this receipt." — no design-intent signal.
+ * - undefined     Production framing (current default; used in Study 1).
+ */
+export type ExplanationVariant = 'explained' | 'unexplained';
+
 const LABEL_COPY: Record<ReceiptLabelVariant, { heading: string; noun: string }> = {
   'fingerprint':       { heading: 'Your vote fingerprint',  noun: 'fingerprint'       },
   'confirmation-code': { heading: 'Your confirmation code', noun: 'confirmation code'  },
@@ -33,6 +47,91 @@ export interface VoteReceiptProps {
    * Set a different variant when rendering Study 1 stimuli.
    */
   labelVariant?: ReceiptLabelVariant;
+  /**
+   * Controls the protective-framing explanation copy (Study 2 Factor E).
+   *
+   * - 'explained'   (E1) Full explanation including design-intent rationale.
+   * - 'unexplained' (E2) Minimal statement: no design-intent signal.
+   * - undefined     Production framing (default; used in Study 1).
+   */
+  explanationVariant?: ExplanationVariant;
+  /**
+   * When true, the component operates in study-data-collection mode:
+   *   - The Download button fires `onDownloadClick(true)` instead of
+   *     triggering an actual file download. No file is written to disk.
+   *   - The "How to verify" toggle fires `onVerifyExpanded(expanded)` on
+   *     every state change so the host can log behavioural engagement.
+   *   - `onDownload` is NOT called in study mode.
+   * Defaults to false (production behaviour).
+   */
+  studyMode?: boolean;
+  /**
+   * Fires when the participant clicks Download in study mode.
+   * Receives `true` on every click (one-shot behavioural signal).
+   * Not called in production mode.
+   */
+  onDownloadClick?: (clicked: true) => void;
+  /**
+   * Fires whenever the verification section is expanded or collapsed
+   * in study mode. Receives the new `expanded` state.
+   * Not called in production mode.
+   */
+  onVerifyExpanded?: (expanded: boolean) => void;
+}
+
+/**
+ * Returns the protective-framing explainer paragraph based on the
+ * explanation variant and identifier noun.
+ *
+ * E1 ('explained'): Full absent-choice explanation (design note §6.1).
+ * E2 ('unexplained'): Minimal factual statement — no design-intent signal.
+ * undefined (production / Study 1): Current production framing.
+ */
+function ExplainerParagraph({
+  explanationVariant,
+  identifierNoun,
+}: {
+  explanationVariant: ExplanationVariant | undefined;
+  identifierNoun: string;
+}): JSX.Element {
+  if (explanationVariant === 'explained') {
+    // E1: Full explanation including design-intent rationale (design note §6.1).
+    // "Your vote choice is not shown on this receipt. This is intentional.
+    //  Keeping your vote private means your receipt can be shared, checked,
+    //  or subpoenaed without revealing how you voted. Your [noun] is the
+    //  only thing you need — matching it later proves your ballot was
+    //  counted, nothing more."
+    return (
+      <p className="apv-receipt__explainer apv-receipt__explainer--explained">
+        Your vote choice is not shown on this receipt. This is intentional.
+        Keeping your vote private means your receipt can be shared, checked,
+        or subpoenaed without revealing how you voted. Your {identifierNoun} is
+        the only thing you need — matching it later proves your ballot was
+        counted, nothing more.
+      </p>
+    );
+  }
+
+  if (explanationVariant === 'unexplained') {
+    // E2: Minimal statement. No "This is intentional" signal, no rationale.
+    // Tests whether the label alone (without explanation) supports
+    // correct absent-choice inference.
+    return (
+      <p className="apv-receipt__explainer apv-receipt__explainer--unexplained">
+        Your vote choice is not shown on this receipt.
+      </p>
+    );
+  }
+
+  // Production / Study 1 framing (current default).
+  return (
+    <p className="apv-receipt__explainer">
+      Your vote choice is not shown on this receipt. This is intentional —
+      this {identifierNoun} proves your ballot was counted without revealing
+      what you voted for. Save it to verify after the vote closes, and keep
+      it private until then.
+    </p>
+  );
 }
 
 export function VoteReceipt({
@@ -41,6 +140,10 @@ export function VoteReceipt({
   onVerify,
   verifierUrl,
   labelVariant = 'fingerprint',
+  explanationVariant,
+  studyMode = false,
+  onDownloadClick,
+  onVerifyExpanded,
 }: VoteReceiptProps): JSX.Element {
   const [showHowToVerify, setShowHowToVerify] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -54,11 +157,27 @@ export function VoteReceipt({
   };
 
   const handleDownload = (): void => {
+    if (studyMode) {
+      // Study mode: log the click but do NOT write any file to disk.
+      // `onDownload` is intentionally bypassed so the host study harness
+      // captures the behavioural signal via `onDownloadClick`.
+      onDownloadClick?.(true);
+      return;
+    }
     if (onDownload) {
       onDownload(receipt);
       return;
     }
     downloadReceipt(receipt);
+  };
+
+  const handleVerifyToggle = (): void => {
+    const next = !showHowToVerify;
+    setShowHowToVerify(next);
+    if (studyMode) {
+      // Study mode: fire expansion log on every toggle.
+      onVerifyExpanded?.(next);
+    }
   };
 
   const handleVerify = (): void => {
@@ -108,12 +227,10 @@ export function VoteReceipt({
         </div>
       </div>
 
-      <p className="apv-receipt__explainer">
-        Your vote choice is not shown on this receipt. This is intentional —
-        this {identifierNoun} proves your ballot was counted without revealing
-        what you voted for. Save it to verify after the vote closes, and keep
-        it private until then.
-      </p>
+      <ExplainerParagraph
+        explanationVariant={explanationVariant}
+        identifierNoun={identifierNoun}
+      />
 
       <div className="apv-receipt__actions">
         <button type="button" className="apv-receipt__primary" onClick={handleDownload}>
@@ -122,7 +239,7 @@ export function VoteReceipt({
         <button
           type="button"
           className="apv-receipt__secondary"
-          onClick={() => setShowHowToVerify((v) => !v)}
+          onClick={handleVerifyToggle}
           aria-expanded={showHowToVerify}
         >
           {showHowToVerify ? 'Hide' : 'How to verify'}
