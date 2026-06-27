@@ -3057,3 +3057,34 @@ No inline note existed at any of these four sites. This creates an internal inco
 **Result:** §5.2/§5.3 body is now self-consistent with §14 and osf-amendment-filing. A CHI reviewer reading the pre-registration sequentially will see the deviations disclosed at the relevant measure definition sites, not only in the amendments log. Commit tick-4033.
 
 **JONY-ACTIONS open (tick-4033): 6 (I, G, A, B, C, O) — unchanged.**
+
+---
+
+## Pre-registration §6.10 package list — Amendment 11 (tick-4060)
+
+**Scope:** `docs/piup-study1-preregistration-2026-06-22.md` §6.10 (Software, planned packages).
+
+**Gap found:** Cross-reference audit of §6.10 against `analysis/piup-study1-analysis.R` revealed two discrepancies:
+1. **`multcomp` listed but never used.** §6.10 listed `multcomp (Holm corrections)`. The analysis script has zero occurrences of `library(multcomp)` or any `multcomp::` call. Holm corrections throughout the script use base-R `p.adjust(vector, method = "holm")`, which requires no external package. `multcomp` appeared only in the original `install.packages()` comment (tick-3636) and was a ghost dependency from the start.
+2. **`dunn.test` used but not listed.** `dunn.test` was loaded (`library(dunn.test)`) and called (`dunn.test::dunn.test()` at H3 secondary Q5 Kruskal-Wallis post-hoc) since tick-3636 but was absent from §6.10.
+
+**Fix applied:** Amendment 11 (pre-data):
+- Removed `multcomp` from §6.10 planned packages list
+- Added `dunn.test (Kruskal-Wallis post-hoc, H3 secondary)` to §6.10
+- Added Amendment 11 inline note at §6.10 site
+- Added Amendment 11 row to §14 amendment table
+- Added Amendment 11 section to `docs/osf-amendment-filing-2026-06-24.md` with OSF filing text and checklist item
+
+No statistical result affected: Holm corrections unchanged (base-R `p.adjust()`); Dunn post-hoc is H3-secondary only. Parallel to Amendments 4 (DescTools) and 10 (TOSTER).
+
+| Check | Result |
+|-------|--------|
+| `multcomp` in library block | ❌ Zero occurrences — removed from §6.10 |
+| `dunn.test` in library block and calls | ✅ Present since tick-3636 — added to §6.10 |
+| Statistical results affected | ✅ None — p.adjust() unchanged; dunn.test H3-secondary |
+| §14 table updated | ✅ Amendment 11 row added |
+| osf-amendment-filing updated | ✅ Section + checklist item added |
+
+**Sites 1–4 cross-reference verification (tick-4060):** Paper draft text at lines 90 (Site 1), 403 (Site 2), 441 (Site 4), 463 (Site 3) all confirmed to match the spec in `piup-study1-abc-paper-edits-2026-06-27.md` exactly. No drift since tick-4006/4031 audits. All four sites ready to apply when Jony confirms A/B/C.
+
+**JONY-ACTIONS open (tick-4060): 6 (I, G, A, B, C, O) — unchanged.**

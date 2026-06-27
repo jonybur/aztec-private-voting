@@ -218,6 +218,30 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 11 — multcomp removal + dunn.test addition (software dependency, pre-data)
+
+**Type:** Pre-data, pre-OSF. Software dependency correction.
+
+**Pre-registration section affected:** §6.10 (Software, planned packages list).
+
+**What changed:** `multcomp` removed from planned packages list; `dunn.test` added.
+
+**Reason:**
+- `multcomp` was listed in the original §6.10 as 'Holm corrections' but was never loaded (`library(multcomp)` absent from script) and never called anywhere in the analysis. Holm corrections use base-R `p.adjust(vector, method = "holm")`. `multcomp` appeared only in the `install.packages()` comment at script creation (tick-3636) and was a ghost dependency.
+- `dunn.test` has been loaded (`library(dunn.test)`) and called (`dunn.test::dunn.test()`) for the H3 secondary Q5 Kruskal-Wallis post-hoc block since tick-3636. Absent from §6.10 despite being a genuine dependency.
+
+**Net effect:** Removes `multcomp`; adds `dunn.test`. No statistical result affected: Holm corrections unchanged (base-R `p.adjust()`); Dunn post-hoc is H3-secondary only.
+
+**Parallel amendments:** Amendment 4 (DescTools removal), Amendment 10 (TOSTER removal).
+
+**OSF amendment text:**
+
+> _"§6.10 Software planned packages corrected (pre-data, pre-OSF): multcomp removed — Holm multiple-comparison corrections are implemented via base-R p.adjust(); multcomp appeared in the original install.packages() comment but was never loaded (no library(multcomp)) or called anywhere in the analysis script. dunn.test added — loaded via library(dunn.test) and called via dunn.test::dunn.test() for H3 secondary Q5 Kruskal-Wallis post-hoc analysis; present in script from initial commit but absent from §6.10. No statistical result affected. (Pre-data, pre-OSF upload.)"_
+
+**Supporting documentation:** `analysis/piup-study1-analysis.R` (library block line 42, install hint line 14); pre-reg §6.10 (Amendment 11 inline note added); pre-reg §14 Amendment 11.
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -243,6 +267,7 @@ Complete this before OSF upload.
 - [ ] Amendment 8 — MQ1 '[LABEL]' label-substitution (file this)
 - [ ] Amendment 9 — TOST lower.tail bug fix (file this; re-upload analysis.R)
 - [ ] Amendment 10 — TOSTER package removal (file this; re-upload analysis.R)
+- [ ] Amendment 11 — multcomp removal + dunn.test addition (file this; no analysis.R re-upload needed — script already correct)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)
