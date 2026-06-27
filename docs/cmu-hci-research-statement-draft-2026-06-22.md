@@ -26,7 +26,7 @@ The three studies follow directly from the PIUP's core claims. Study 1 — pre-r
 
 Beyond voting, the underlying problem class is general: any system that records that a private submission occurred without recording the content faces the same design questions about receipt design, identifier choice, and verification affordance. Whistleblower submission systems, sealed-bid auctions, blind peer review — all have this structure. The PIUP is a first attempt to name the pattern across the class; whether the design guidelines generalize is a research question in its own right. The absent-choice explanation in PIUP is structurally analogous to the privacy nutrition labels that Cranor and colleagues have developed — both aim to communicate what is *not* disclosed rather than what is — and I would want to build on that line of work.
 
-CMU HCI is where I want to pursue this work because of the SPUD Lab's program of research connecting social context to security and privacy outcomes. Das et al.'s 2014 CCS work on social nudges for security adoption (the Facebook study) is particularly relevant to the longitudinal field study I described above: deferred verification behavior may not be purely individual — users may verify when they see others doing so, or when the social cost of not verifying becomes visible. That social dimension is absent from the verifiable voting literature and would be a novel contribution. The CyLab Privacy and Security group, and Cranor's work on communicating privacy through structured disclosure, provides a second point of connection: the PIUP's "privacy by absent content" framing is an untested instance of structured privacy disclosure applied to ZK systems, and I would want to situate it there.
+CMU HCI is where I want to pursue this work because of the SPUD Lab's program of research connecting social context to security and privacy outcomes. Das et al.'s 2014 SOUPS work on social nudges for security adoption (the Facebook study) <!-- [Fixed tick-4052] CCS→SOUPS: Das et al. 'Increasing Security Sensitivity With Social Proof' was published at SOUPS 2014, not CCS. CCS 2014 is the wrong venue. Consistent with pre-reg (tick-4042), study-protocol (tick-4048), ADR-037 (tick-4046), study2-design-note (tick-4050) fixes. --> is particularly relevant to the longitudinal field study I described above: deferred verification behavior may not be purely individual — users may verify when they see others doing so, or when the social cost of not verifying becomes visible. That social dimension is absent from the verifiable voting literature and would be a novel contribution. The CyLab Privacy and Security group, and Cranor's work on communicating privacy through structured disclosure, provides a second point of connection: the PIUP's "privacy by absent content" framing is an untested instance of structured privacy disclosure applied to ZK systems, and I would want to situate it there.
 
 I have a working implementation, a documented design rationale, a named pattern with stated invariants, and a proposed evaluation agenda. What I do not have is the methodological depth to run the studies well, the peer community to stress-test the research framing, or the institutional access to recruit and compensate participants. That is what a PhD is for.
 
@@ -38,7 +38,7 @@ I have a working implementation, a documented design rationale, a named pattern 
 - **Primary:** Sauvik Das · SPUD Lab · Associate Professor, CMU HCII (https://sauvikdas.com)
   - _Verified current as of June 2026_ — moved from Georgia Tech; now at CMU HCII and CyLab
   - Research fit: security feedback design, mental models of privacy, social proof for security behavior
-  - Cite specifically: Das et al., "Increasing Security Sensitivity With Social Proof: A Large-Scale Experimental Confirmation," CCS 2014
+  - Cite specifically: Das et al., "Increasing Security Sensitivity With Social Proof: A Large-Scale Experimental Confirmation," SOUPS 2014 <!-- [Fixed tick-4052] CCS→SOUPS: wrong venue in advisor-targeting note -->
 - **Secondary:** Lorrie Faith Cranor · CyLab / HCII (privacy nutrition labels, P3P usability)
   - The PIUP absent-choice explanation is structurally a privacy nutrition label for ZK receipts — make this explicit in any cover letter or SOP supplement
 
@@ -58,7 +58,7 @@ I have a working implementation, a documented design rationale, a named pattern 
 - Do not claim results not yet produced (studies have not run; the statement correctly positions PIUP as a design contribution that generates research questions)
 
 ### Contact / application logistics
-- Sauvik Das email: reach out before applying; mention the CCS 2014 social nudge work explicitly
+- Sauvik Das email: reach out before applying; mention the SOUPS 2014 social nudge work explicitly <!-- [Fixed tick-4052] CCS→SOUPS: wrong venue in contact logistics note -->
 - CMU HCII application portal: https://hcii.cmu.edu/academics/phd/apply
 - SPUD Lab page: https://sauvikdas.com/lab
 - CyLab directory: https://www.cylab.cmu.edu/directory/bios/das-sauvik.html
