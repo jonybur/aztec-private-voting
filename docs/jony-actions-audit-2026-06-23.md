@@ -455,16 +455,16 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 #### JONY-ACTION I - §4.2 pilot-launch decisions memo cross-ref (tick-3819 documented; tick-3927 added to paper)
 - **Location:** `drafts/piup-chi-paper-draft-2026-06-22.md` §4.2 Power paragraph, line 262
-- **Status:** JONY-ACTION I block added to paper in tick-3927 (commit 26d3b8e). Prior to tick-3927 the tracking entry existed in heartbeat state but had no inline annotation in the paper.
+- **Status:** Verified tick-3992. JONY-ACTION I block added to paper in tick-3927 (commit 26d3b8e). Instrument fixes D+E applied tick-3819. Items A/B/C blocked on Jony decision.
 - **Summary:** Five wording conflicts between the OSF pre-registration and survey instrument are documented in `docs/piup-study1-pilot-decisions-2026-06-25.md`:
-  - Item A: Q3 coercion-scenario phrasing (recommend instrument wording + OSF amendment)
-  - Item B: Q4 'lost this value' vs. 'closed screen without saving your [LABEL]' + foil (d) revision (recommend instrument wording + OSF amendment)
-  - Item C: Q3 clarification drop (recommend dropping + OSF amendment)
-  - Item D: MQ1 one-part vs. two-part prompt (recommend retaining pre-reg single-question wording; no amendment needed)
-  - Item E: BI1 'download this file' vs. 'save your [LABEL]' (recommend instrument wording + OSF amendment)
-  - Net: 4 OSF amendments required (A, B, C, E). §4.4 notes (pending Items A, B, C) require paper updates once resolved.
-- **Action:** Awaiting Jony decision on all five items before OSF upload.
-- **Blocks:** Pre-pilot gate (all five must be resolved before OSF upload).
+  - Item A: Q3 coercion-scenario phrasing — recommend instrument wording + OSF amendment. **AWAITING JONY DECISION.** Amendment A drafted in `docs/osf-amendment-filing-2026-06-24.md`.
+  - Item B: Q4 'lost this value' vs. 'closed screen without saving your [LABEL]' + foil (d) revision — recommend instrument wording + OSF amendment. **AWAITING JONY DECISION.** Amendment B drafted in `docs/osf-amendment-filing-2026-06-24.md`.
+  - Item C: Q3 clarification drop — recommend dropping + OSF amendment. **AWAITING JONY DECISION.** Amendment C drafted in `docs/osf-amendment-filing-2026-06-24.md`.
+  - Item D: MQ1 one-part vs. two-part prompt — revert to pre-reg single-question wording. **✅ APPLIED tick-3819.** No OSF amendment needed (reverting to pre-reg wording requires no deviation filing).
+  - Item E: BI1 'download this file' → 'save this code for future reference' — instrument fix applied tick-3819 (replaced [LABEL] with 'this code'). **Instrument ✅ APPLIED tick-3819. OSF amendment (Amendment 3) drafted in `docs/osf-amendment-filing-2026-06-24.md` — pending Jony OSF upload.**
+  - Net: 4 OSF amendments required (A, B, C, E). D done (no amendment). §4.4 notes (pending Items A, B, C) require paper updates once resolved.
+- **Action:** Awaiting Jony decisions on Items A, B, C + OSF upload for all four amendments (A, B, C, E). Instrument D+E already applied.
+- **Blocks:** Pre-pilot gate — A/B/C decisions + OSF upload required before pilot launch. Last verified tick-3992.
 
 #### JONY-ACTION J - §2.1 + §2.2 Alt3 W&T citation ordering (tick-3876)
 - **Location:** `drafts/piup-chi-paper-draft-2026-06-22.md` line 134 (§2.1 Protective framing) and line 146 (§2.2 Alternative 3)
@@ -609,4 +609,4 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add Q (IRB), add R (mechanism), confirm G/H, clear Das; J (confirm W&T retain — recommendation in paper). O partially done.
 
-_Last updated: tick-3991 (2026-06-27). JONY-ACTION J analysis complete tick-3991: ordering CONFIRMED E&S-first at §2.1 (line 134) and §2.2 (line 146) — applied tick-3876. W&T retention analysis: W&T cited at 5 locations; dropping from §2.1/§2.2 while retaining at §1.1/§1.2/§6.1 would be inconsistent; RECOMMENDATION: RETAIN co-citation E&S-first. Note blocks replaced with [Fixed tick-3991] at both sites. J awaiting Jony pre-CHI confirmation of RETAIN (accept = no change needed). Low-blocking. Open: J (confirm W&T), I, G, H, N, (Das), A, B, C, O, P, Q, R + [verification URL] (13 items; J ordering done). L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
+_Last updated: tick-3992 (2026-06-27). JONY-ACTION I verified tick-3992: D APPLIED tick-3819 (no amendment); E instrument APPLIED tick-3819 (OSF amendment pending upload); A/B/C awaiting Jony decisions. JONY-ACTION J analysis complete tick-3991: ordering CONFIRMED E&S-first at §2.1 (line 134) and §2.2 (line 146) — applied tick-3876. W&T retention analysis: W&T cited at 5 locations; dropping from §2.1/§2.2 while retaining at §1.1/§1.2/§6.1 would be inconsistent; RECOMMENDATION: RETAIN co-citation E&S-first. Note blocks replaced with [Fixed tick-3991] at both sites. J awaiting Jony pre-CHI confirmation of RETAIN (accept = no change needed). Low-blocking. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G, H, N, (Das), A, B, C, O, P, Q, R + [verification URL] (13 items). L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
