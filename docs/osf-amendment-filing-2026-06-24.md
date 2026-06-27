@@ -192,6 +192,19 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 9 — TOST p-value tail direction bug fix (pre-data correction)
+
+**Status:** ✅ Ready to file  
+**OSF field:** Amendment log  
+**Category:** Analysis script bug fix (pre-data, pre-OSF)  
+**Source:** tick-4029 audit
+
+> _"Analysis script bug fix (pre-data, pre-OSF): The tost_prop() function in the pre-registered analysis script had inverted lower.tail arguments in the two one-sided z-test p-value calculations (H2-tertiary equivalence test, §6.5). As written, the script computed: p_lo = pnorm(z_lo, lower.tail=TRUE) and p_hi = pnorm(z_hi, lower.tail=FALSE). The correct computation for TOST of two independent proportions is: p_lo = pnorm(z_lo, lower.tail=FALSE) [upper tail, rejecting H0a: diff ≤ -δ when z_lo is large] and p_hi = pnorm(z_hi, lower.tail=TRUE) [lower tail, rejecting H0b: diff ≥ +δ when z_hi is small]. The inverted tails produced p_tost = max(p_lo, p_hi) > 0.50 when the observed difference was within the equivalence bounds, making the equivalence criterion (p_tost < 0.05) impossible to satisfy regardless of effect size. The fix swaps the lower.tail arguments to their correct values. The 90% CI of the proportion difference (ci_lo_90, ci_hi_90) and the Cohen's h effect size are unaffected. The equivalence bounds (±0.10), alpha (0.05), and the logical equivalence_established criterion (p_tost < alpha) are unchanged. This correction was made before any data were collected. Amendment logged in the script at line ~503 with [AMENDMENT tick-4029] comment."_
+
+**Supporting documentation:** `analysis/piup-study1-analysis.R` lines ~499–506 (tost_prop() function); CHI paper §4.5 H2-tertiary description; pre-reg §6.5 (TOST equivalence test specification).
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -203,7 +216,7 @@ Complete this before OSF upload.
 
 **Files to upload:**
 - [ ] `docs/piup-study1-preregistration-2026-06-22.md` → OSF pre-registration
-- [ ] `analysis/piup-study1-analysis.R` → OSF file (committed at tick-3798)
+- [ ] `analysis/piup-study1-analysis.R` → OSF file (committed at tick-3798; **re-upload after Amendment 9 fix**)
 - [ ] `docs/piup-study1-survey-instrument-2026-06-22.md` → OSF file
 
 **Amendments to paste into OSF (Section B above):**
@@ -215,6 +228,7 @@ Complete this before OSF upload.
 - [ ] Amendment 6 — Q1 '[LABEL]' label-substitution (file this)
 - [ ] Amendment 7 — Q2 '[LABEL]' label-substitution (file this)
 - [ ] Amendment 8 — MQ1 '[LABEL]' label-substitution (file this)
+- [ ] Amendment 9 — TOST lower.tail bug fix (file this; re-upload analysis.R)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)

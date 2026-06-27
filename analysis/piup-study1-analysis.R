@@ -500,8 +500,13 @@ tost_prop <- function(p1, n1, p2, n2, low_eqbound, high_eqbound, alpha = 0.05) {
   se    <- sqrt(p1 * (1 - p1) / n1 + p2 * (1 - p2) / n2)
   z_lo  <- (diff - low_eqbound)  / se   # should be > 0 for equivalence
   z_hi  <- (diff - high_eqbound) / se   # should be < 0 for equivalence
-  p_lo  <- pnorm(z_lo, lower.tail = TRUE)   # one-tailed
-  p_hi  <- pnorm(z_hi, lower.tail = FALSE)  # one-tailed
+  # [AMENDMENT tick-4029] Bug fix: lower.tail flags were inverted.
+  # H0a: diff <= low_eqbound; reject H0a when z_lo large → p = P(Z >= z_lo) = lower.tail=FALSE.
+  # H0b: diff >= high_eqbound; reject H0b when z_hi small → p = P(Z <= z_hi) = lower.tail=TRUE.
+  # Prior code had these swapped: pnorm(z_lo, TRUE) and pnorm(z_hi, FALSE),
+  # producing p-values > 0.5 when within bounds and making equivalence impossible to establish.
+  p_lo  <- pnorm(z_lo, lower.tail = FALSE)  # one-tailed: P(Z >= z_lo)
+  p_hi  <- pnorm(z_hi, lower.tail = TRUE)   # one-tailed: P(Z <= z_hi)
   p_tost <- max(p_lo, p_hi)
   equiv  <- p_tost < alpha
   # Cohen's h for effect size
