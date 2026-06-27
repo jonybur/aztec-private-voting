@@ -211,20 +211,42 @@ potentially Q3, whether sharing the receipt reveals the vote choice (H2-secondar
 | §4.5 H1 | 307 | "chi-squared tests on Q2 and Q3 accuracy" — no wording description | ✅ CLEAN |
 | §4.5 H2 | 309 | "H2-secondary: Q3 accuracy, A vs. B" — no wording description | ✅ CLEAN |
 | §6.1 | 393 | "coercion scenario" framing — conceptual, no "screenshot" Q3 description | ✅ CLEAN |
-| §6.5 / §4.3 | 266, 439, 441 | "screenshot stimuli" / "screenshot method" — describes METHOD not Q3 wording | ✅ CLEAN |
+| §6.5 / §4.3 | 266, 439 | "screenshot stimuli" / "screenshot method" — describes METHOD not Q3 wording | ✅ CLEAN |
+| §6.5 | 441 | **⚠️ GAP — quotes old Q4 wording directly** (see Site 4 below) | needs fix after Decision B |
 
-### Summary of additional changes to apply after Decision A confirmed
+### Site 4 — Line 441 (§6.5, ecological validity note)
 
-When applying the A/B/C changes from the section above, also apply:
+**Context:** Ecological validity discussion. Quotes the Q4 wording directly to argue Q4 is a knowledge question answerable from a screenshot. Argument is valid under both old and new Q4 wording; only the quoted text needs updating.
 
-| Site | Line | Current | After Decision A |
-|---|---|---|---|
-| §1.2 | 90 | "from a screenshot of the receipt" | "by seeing the receipt" |
-| §6.2 | 403 | "from a screenshot" | "by seeing the receipt screen" |
-| §7 | 463 | "whether a screenshot reveals" | "whether sharing the receipt reveals" |
+**Current:**
+```
+Note: Q4 as defined in §4.4 is a behavioral-consequence knowledge question ('what would happen if you lost this value?') - a knowledge item equally answerable from a screenshot
+```
 
-Total additional paper changes after Decision A: **3 one-phrase replacements** (all in main text, none in Note blocks).
+**After Decision B:**
+```
+Note: Q4 as defined in §4.4 is a behavioral-consequence knowledge question ('if you closed this screen without saving your [LABEL], what would happen?') - a knowledge item equally answerable from a screenshot
+```
+
+**Rationale:** The ecological validity argument is unchanged — Q4 tests abstract knowledge of a behavioral consequence, not an interactive affordance, so it remains equally answerable from a screenshot under either wording. The quote simply needs to reflect the adopted instrument wording. The [LABEL] placeholder is used throughout the paper and is appropriate here.
+
+**Gap discovered:** tick-4031 cross-reference audit. This site was not in the tick-4006 addendum (that addendum only audited "screenshot" METHOD language for Decision A; this is a Decision B Q4 quote gap).
 
 ---
 
-_Prepared by heartbeat agent tick-4005. Cross-reference addendum added tick-4006. Jony confirms → next tick applies all §4.4 + cross-ref changes in one pass._
+### Summary of additional changes to apply after A/B/C confirmed
+
+When applying the A/B/C changes from the section above, also apply:
+
+| Site | Line | Triggered by | Current | After decision |
+|---|---|---|---|---|
+| §1.2 | 90 | Decision A | "from a screenshot of the receipt" | "by seeing the receipt" |
+| §6.2 | 403 | Decision A | "from a screenshot" | "by seeing the receipt screen" |
+| §7 | 463 | Decision A | "whether a screenshot reveals" | "whether sharing the receipt reveals" |
+| §6.5 | 441 | Decision B | "'what would happen if you lost this value?'" | "'if you closed this screen without saving your [LABEL], what would happen?'" |
+
+Total additional paper changes: **3 after Decision A + 1 after Decision B** (all in main text, none in Note blocks).
+
+---
+
+_Prepared by heartbeat agent tick-4005. Cross-reference addendum added tick-4006. Site 4 (§6.5 Q4 quote) added tick-4031. Jony confirms → next tick applies all §4.4 + cross-ref changes in one pass._
