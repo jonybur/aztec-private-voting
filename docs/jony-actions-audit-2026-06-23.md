@@ -480,14 +480,12 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** Jony decides: add sentence (recommended) or leave §7 silent on C2.
 - **Blocking?** Pre-submission. Not adding it risks a CHI reviewer gap between §1.3 C2 and §7.
 
-#### JONY-ACTION M — §7 C4 Study 2 wording (tick-3852 + tick-3900 dependency audit)
+#### JONY-ACTION M — §7 C4 Study 2 wording (tick-3852 + tick-3900 dependency audit) — RESOLVED tick-3989 ✅
 - **Location:** Line 463 (§7 conclusion)
-- **Status:** Note block present: 'JONY-ACTION (new, tick-3852)' + dependency annotation (tick-3900).
-- **Summary:** §7 does not reflect C4 ('Pre-registered study design (Study 2, planned, N=240)') as a standalone contribution — appears only parenthetically. Before CHI submission: add sentence, but wording depends on JONY-ACTION U resolution:
-  - If U → option (a) (Study 2 pre-registered before submission): use 'pre-registered 2×2×2 factorial design'
-  - If U → option (b) (not yet pre-registered): use 'pre-analysis plan for a 2×2×2 factorial design'
-- **Critical dependency:** Resolve JONY-ACTION U before finalising the M sentence.
-- **Blocking?** Pre-submission. M cannot be written until U is resolved.
+- **Status:** ✅ RESOLVED tick-3989. C4 sentence added to §7 end of first-boundary-condition paragraph; Note block replaced with [Fixed tick-3989].
+- **Summary:** §7 now explicitly reflects C4 as a standalone contribution. Sentence added: 'Study 2's pre-analysis plan for a 2×2×2 factorial design (§5) provides a pre-specified test of whether absent-choice explanation is the load-bearing element determining whether familiar labels can be rehabilitated through protective framing — operationalising the uncertainty Study 1 leaves open.' U was resolved as option (b) (tick-3988), so 'pre-analysis plan' wording is correct. If Study 2 is pre-registered on OSF before CHI submission, update to 'pre-registered 2×2×2 factorial design' with OSF DOI.
+- **Action:** DONE (tick-3989).
+- **Blocking?** RESOLVED.
 
 #### JONY-ACTION N — §6.2 Lee and See line 395 co-citation (tick-3860)
 - **Location:** Bibliography line 486 (Lee and See 2004 entry)
@@ -606,8 +604,8 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 | S | §6.3 line 417 | ✅ RESOLVED | tick-3899 — 'most' → 'many' (Leon et al. 2012) | — |
 | Abstract | Abstract | 🔴 CHI formatting | Open — ~261 words, limit ~150 | Trim before submission |
 
-**Open count:** 15 open JONY-ACTIONs (G, H, I, J, L, M, N, P, Q, R, [verification URL], Das, A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. (U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
+**Open count:** 14 open JONY-ACTIONs (G, H, I, J, L, N, P, Q, R, [verification URL], Das, A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. (M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
 
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: resolve U→M, add Q (IRB), add R (mechanism), expand T (Invariant 1), add M2 label (V), add W cross-ref, add X cross-ref, decide L, confirm G/H, clear Das.
 
-_Last updated: tick-3988 (2026-06-27). JONY-ACTION U RESOLVED tick-3988: §1.3 C4 heading changed from 'Pre-registered study design (Study 2, planned, N=240)' to 'Pre-analysis plan (Study 2, planned, N=240)' — option (b) applied; Study 2 is at design-note stage and not yet pre-registered; heading overclaimed; body text 'pre-analysis plan' was already neutral and unchanged; §1.3 count Note updated; U→M dependency unblocked. JONY-ACTION T RESOLVED tick-3987. X RESOLVED tick-3986. W RESOLVED tick-3985. V RESOLVED tick-3984. Open: J, I, L, M, G, H, N, (Das), A, B, C, O, P, Q, R + [verification URL] (15 items)._
+_Last updated: tick-3989 (2026-06-27). JONY-ACTION M RESOLVED tick-3989: C4 sentence added to §7 end of first-boundary-condition paragraph — 'Study 2's pre-analysis plan for a 2×2×2 factorial design (§5) provides a pre-specified test of whether absent-choice explanation is the load-bearing element determining whether familiar labels can be rehabilitated through protective framing — operationalising the uncertainty Study 1 leaves open.' U resolved as option (b) so 'pre-analysis plan' wording applied (not 'pre-registered'). Note block replaced with [Fixed tick-3989]. Open: J, I, L, G, H, N, (Das), A, B, C, O, P, Q, R + [verification URL] (14 items). U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
