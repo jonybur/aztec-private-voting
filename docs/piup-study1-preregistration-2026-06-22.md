@@ -213,7 +213,7 @@ If the omnibus test is significant, proceed to pre-specified pairwise comparison
 |--------|-------|---------|
 | H1 (fingerprint > receipt ID on privacy) | Q2(A>D), Q3(A>D) | 2 |
 | H2 (dissociation: fingerprint vs. confirmation code) | Q2(A>B) one-tailed, Q3(A>B) one-tailed, TOST composite A≈B | 3 |
-| H3 (nullifier underperforms) | Q1(C<A), Q1(C<B), Q1(C<D), composite(C<each) | 6 |
+| H3 (nullifier underperforms) | Q1(C<A), Q1(C<B), Q1(C<D), composite(C<A), composite(C<B), composite(C<D) [composite pairings conditional on omnibus significance; §6.6] | 6 | [Fixed tick-4047: expanded 'composite(C<each)' abbreviation to list all 3 composite pairwise tests explicitly; the previous entry looked like 4 items but m=6 requires 6 — the abbreviation obscured that composite(C<each) represents 3 separate tests (C<A, C<B, C<D on composite accuracy). No change to analysis; count remains 3 Q1 pairwise + 3 composite pairwise = 6.]
 | H4 (confirmation code overconfidence) | confidence(B>A), confidence(B>C), confidence(B>D) | 3 |
 
 Holm correction is applied within each family. Cross-family corrections are not applied (each hypothesis is a pre-specified, independent prediction).
@@ -252,7 +252,7 @@ Note: The Q1 analysis (B ≥ A on vote-counted inference) is **not** pre-specifi
 ### 6.6 H3 tests
 
 **H3-Q1 (per pair):** Three one-tailed chi-squared tests: Q1 accuracy, C vs. A (C < A); C vs. B (C < B); C vs. D (C < D). Holm correction within H3 family (m = 6).  
-**H3-composite:** One-way ANOVA-equivalent for proportions; if omnibus significant, Holm-corrected pairwise extractions for C vs. each other condition.  
+**H3-composite:** One-way ANOVA-equivalent for proportions; if omnibus significant, Holm-corrected pairwise extractions for C vs. each other condition — that is, 3 pairwise tests: composite(C<A), composite(C<B), composite(C<D). These 3 composite pairings are the remaining 3 tests in the H3 Holm family (m = 6 = 3 Q1 pairwise + 3 composite pairwise); they proceed only when the omnibus is significant. If the omnibus is non-significant, composite pairwise extractions are not performed, a null result for the composite is reported without further decomposition, and only the 3 Q1 pairwise tests are conducted (still corrected at m = 6 for conservatism). [Fixed tick-4047: added explicit enumeration of the 3 composite pairings and the omnibus-conditional non-performance clause; clarifies the m=6 decomposition for the pre-reg table.]  
 **Support criterion:** C must be significantly lower than at least 2 of the 3 other conditions on Q1 (after Holm correction).
 
 ### 6.7 H4 tests
