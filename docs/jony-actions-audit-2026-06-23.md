@@ -526,10 +526,10 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 #### JONY-ACTION T — §7 Invariant 1 summary incomplete (tick-3890)
 - **Location:** Line 457 (§7 conclusion)
-- **Status:** JONY-ACTION T note present: 'JONY-ACTION T (new, tick-3890)'.
-- **Summary:** §7 summary: 'Invariant 1 (surrogate independence) ensures the submission token is not derivable from the vote choice.' §2.1 defines three independence requirements: (1) submission content (vote choice) ✓; (2) user's identity ✗ omitted; (3) observable system state ✗ omitted. §6.4 domain applications (auction/whistleblower/peer-review) enumerate all three. Before CHI submission: (a) expand §7 to 'not derivable from the vote choice, the voter's identity, or any observable system state' [recommended]; (b) add cross-reference '(§2.1)' after 'vote choice' to direct skim-readers to full definition.
-- **Action:** Jony decides (a) expand or (b) cross-ref. Option (a) recommended.
-- **Blocking?** Pre-submission. Inconsistency between §2.1, §6.4, and §7.
+- **Status:** ✅ RESOLVED tick-3987. Option (a) applied: §7 Invariant 1 summary expanded from 'not derivable from the vote choice' to 'not derivable from the vote choice, the voter's identity, or any observable system state' — matching §2.1's three-part formal definition and §6.4's domain-application pattern.
+- **Summary:** §7 summary now enumerates all three independence requirements: (1) submission content (vote choice), (2) voter's identity, (3) observable system state — consistent with §2.1 Invariant 1 formal definition and §6.4 auction/whistleblower/peer-review paragraphs (ticks 3862/3856/3874). JONY-ACTION T block replaced with [Fixed tick-3987] note.
+- **Action:** DONE (tick-3987).
+- **Blocking?** RESOLVED.
 
 #### JONY-ACTION U — §1.3 C4 'Pre-registered study design' heading overclaim (tick-3891)
 - **Location:** Line 104 (§1.3 C4 heading)
@@ -610,4 +610,4 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: resolve U→M, add Q (IRB), add R (mechanism), expand T (Invariant 1), add M2 label (V), add W cross-ref, add X cross-ref, decide L, confirm G/H, clear Das.
 
-_Last updated: tick-3986 (2026-06-27). JONY-ACTION X RESOLVED tick-3986: parenthetical added to §6.1 necessity claim; JONY-ACTION V RESOLVED tick-3984: M2 label added to §5.4 McKnight definition; JONY-ACTION W RESOLVED tick-3985: Named Limitation cross-ref added to §2.1 Invariant 2 timing clause. Open: T, U, J, I, L, M, G, H, N, (Das), A, B, C, O, P, Q, R (17 items)._
+_Last updated: tick-3987 (2026-06-27). JONY-ACTION T RESOLVED tick-3987: §7 Invariant 1 summary expanded to enumerate all three independence requirements (vote choice, voter's identity, observable system state) — matching §2.1 formal definition and §6.4 domain-application pattern. JONY-ACTION X RESOLVED tick-3986: parenthetical added to §6.1 necessity claim; JONY-ACTION V RESOLVED tick-3984: M2 label added to §5.4 McKnight definition; JONY-ACTION W RESOLVED tick-3985: Named Limitation cross-ref added to §2.1 Invariant 2 timing clause. Open: U, J, I, L, M, G, H, N, (Das), A, B, C, O, P, Q, R (16 items)._
