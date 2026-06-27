@@ -396,7 +396,7 @@ _All entries below are pre-data amendments (no participant data had been collect
 ## References
 
 - Whitten, A. and Tygar, J.D. (1999). "Why Johnny Can't Encrypt." *USENIX Security.*
-- Adida, B., et al. (2008). "Electing a University President Using Open-Source Software: The Helios Voting System." *USENIX EVT.*
+- Adida, B., et al. (2009). "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." *EVT/WOTE 2009.* [Fixed tick-4040: three errors corrected: (1) year 2008→2009; (2) title 'Using Open-Source Software: The Helios Voting System' → 'Using Open-Audit Voting: Analysis of Real-World Use of Helios'; (3) venue 'USENIX EVT' → 'EVT/WOTE 2009'. CHI paper references (line 475) have the correct citation; pre-reg had a corrupted version — 'Open-Source Software' is not in the actual title and 'Open-Audit Voting' is the correct Helios mechanism descriptor. Full authors: Adida, de Marneffe, Pereira, Quisquater. Year and venue confirmed against CHI paper (which was verified when added tick-3876 per JONY-K resolution).]
 - Bell, S., et al. (2013). "STAR-Vote." *USENIX EVT/WOTE.*
 - Cranor, L.F. and Garfinkel, S. (eds.) (2005). *Security and Usability.* O'Reilly.
 - Felt, A.P., et al. (2012). "How to Ask for Permission." *USENIX HotSec.*
