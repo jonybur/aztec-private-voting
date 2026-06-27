@@ -21,7 +21,7 @@ This document is a research framing. It argues that the receipt design in this p
 
 **Problem statement:** Users of private voting systems need a mechanism for confirming that their vote was counted — without that mechanism revealing their vote. This requirement is formally called *receipt-freeness* (Benaloh and Tuinstra, 1994). Its protocol-level solution (ZK proofs over private state) is well understood. Its *UX* solution is not.
 
-Existing work on the usability of verifiable voting systems (Adida et al. 2008 on Helios; Bell et al. 2013 on STAR-Vote) has documented the failure modes: users do not understand cryptographic proofs, do not verify after the fact even when verification is available, and form mental models that are often wrong in security-relevant ways. This work has not proposed a design pattern that resolves the tension.
+Existing work on the usability of verifiable voting systems (Adida et al. 2009 on Helios; Bell et al. 2013 on STAR-Vote) has documented the failure modes: users do not understand cryptographic proofs, do not verify after the fact even when verification is available, and form mental models that are often wrong in security-relevant ways. This work has not proposed a design pattern that resolves the tension. <!-- [Fixed tick-4053] Adida 2008→2009: the usability/deployment study is the EVT/WOTE 2009 paper, not the single-author 2008 USENIX Security system paper. Consistent with pre-reg (tick-4040), proof-of-inclusion (tick-4052), receipt-design (tick-4052), ADR-037 (tick-4046), study-protocol (tick-4048), study2-design-note (tick-4050) fixes. -->
 
 The **Proof-of-Inclusion UX Pattern (PIUP)** documented in this project is a candidate solution. The claim is:
 
@@ -188,7 +188,7 @@ The work is real. The implementation exists and is deployed. The design decision
 ## References
 
 - Benaloh, J., and Tuinstra, D. "Receipt-free secret ballot elections." STOC, 1994.
-- Adida, B., et al. "Helios: Web-based Open-Audit Voting." USENIX Security, 2008.
+- Adida, B., de Marneffe, O., Pereira, O., and Quisquater, J.-J. "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." EVT/WOTE, 2009. <!-- [Fixed tick-4053] was: Adida, B., et al. "Helios: Web-based Open-Audit Voting." USENIX Security, 2008. That is the single-author 2008 USENIX Security paper. The body cites Adida et al. for usability/deployment failure modes, which refers to the 2009 EVT/WOTE paper (university president election study). Full author list + correct title + correct year + correct venue. -->
 - Bell, S., et al. "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." EVT/WOTE, 2013.
 - Whitten, A., and Tygar, J. "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." USENIX Security, 1999.
 - Cranor, L., and Garfinkel, S. *Security and Usability.* O'Reilly, 2005.
