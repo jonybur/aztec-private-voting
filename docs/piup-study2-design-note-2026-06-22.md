@@ -424,7 +424,7 @@ The Study 3 design note will be written after Study 2 data collection.
 
 Das's research program is focused on how security context and social signals affect security-protective behavior. The Study 2 research questions map to two of his program's central concerns:
 
-1. **Explanation effects on trust.** Das et al. (2014 CCS) found that social proof signals change security feature adoption rates. Study 2's H2.1 tests whether an analogous effect exists for explanatory framing (not social proof, but design-intent transparency) in receipt comprehension. This is a micro-extension of his work: instead of social influence, the influence is the designer's stated intent.
+1. **Explanation effects on trust.** Das et al. (2014, SOUPS) found that social proof signals change security feature adoption rates. [Fixed tick-4050: venue corrected CCS→SOUPS; same correction as pre-reg tick-4042, ADR-037 tick-4046, study-protocol tick-4048] Study 2's H2.1 tests whether an analogous effect exists for explanatory framing (not social proof, but design-intent transparency) in receipt comprehension. This is a micro-extension of his work: instead of social influence, the influence is the designer's stated intent.
 
 2. **Calibration and over-confidence.** Das's lab has addressed the "confidence-competence gap" in security contexts — users who feel secure without being secure. H2.3 in Study 2 is a direct intervention study in that tradition: testing a calibration mechanism (accuracy feedback) against over-confidence produced by familiar UI conventions.
 
@@ -475,11 +475,11 @@ Study 2 has the following dependencies on Study 1:
 ## References
 
 - Whitten, A., and Tygar, J.D. (1999). "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." _USENIX Security._
-- Adida, B., et al. (2009). "Helios: Web-based Open-Audit Voting." _USENIX Security / EVT/WOTE._
-- Bell, S., et al. (2013). "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." _EVT/WOTE._
-- Das, S., Dabbish, L., and Hong, J. (2014). "The Effect of Social Influence on Security Sensitivity." _ACM CCS._
+- Adida, B., de Marneffe, O., Pereira, O., and Quisquater, J.-J. (2009). "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." _EVT/WOTE 2009._ [Fixed tick-4050: title was 'Helios: Web-based Open-Audit Voting' (2008 USENIX Security paper) with year 2009 — title/venue mismatch. Corrected to the 2009 EVT/WOTE university-president paper, consistent with pre-reg tick-4040, ADR-037 tick-4046, study-protocol tick-4048.]
+- Bell, S., et al. (2013). "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." _EVT/WOTE 2013._ [Fixed tick-4050: venue missing year — 'EVT/WOTE' → 'EVT/WOTE 2013', consistent with pre-reg tick-4041 and ADR-037 tick-4046.]
+- Das, S., Kim, T.H.-J., Dabbish, L., and Hong, J. (2014). "Increasing Security Sensitivity with Social Proof: A Large-Scale Experimental Confirmation." _SOUPS 2014, pp. 143–157. USENIX._ [Fixed tick-4050: (1) title wrong — 'The Effect of Social Influence on Security Sensitivity' is not the SOUPS 2014 title; (2) venue wrong — 'ACM CCS' → 'SOUPS 2014'; (3) author list missing Kim, T.H.-J. as second author. Same correction as pre-reg tick-4042, ADR-037 tick-4046, study-protocol tick-4048.]
 - Das, S., Kim, T.H.-J., Dabbish, L., and Hong, J. (2014). "The Role of Social Influence in Security Feature Adoption." _CSCW._
-- Felt, A.P., Ha, E., Egelman, S., Haney, A., Chin, E., and Wagner, D. (2012). "Android Permissions: User Attention, Comprehension, and Behavior." _SOUPS._
+- Felt, A.P., Ha, E., Egelman, S., Haney, A., Chin, E., and Wagner, D. (2012). "Android Permissions: User Attention, Comprehension, and Behavior." _SOUPS 2012._ [Fixed tick-4050: venue missing year — 'SOUPS' → 'SOUPS 2012', consistent with pre-reg tick-4041 and ADR-037 tick-4046.]
 - Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses." _SPSS 8(4)._
 - McKnight, D.H., Choudhury, V., and Kacmar, C. (2002). "Developing and Validating Trust Measures for E-Commerce: An Integrative Typology." _Information Systems Research 13(3)._
 - Lee, J.D., and See, K.A. (2004). "Trust in Automation: Designing for Appropriate Reliance." _Human Factors 46(1)._
