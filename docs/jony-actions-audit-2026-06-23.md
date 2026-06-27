@@ -564,10 +564,10 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** DONE (tick-3986).
 - **Blocking?** RESOLVED.
 
-#### JONY-ACTION (Das) - bibliography floating reference (tick-3855 identified; tick-3876 confirmed)
-- **Location:** Bibliography line 475 (Das et al. 2014)
-- **Status:** Note block present: 'REMOVE BEFORE SUBMISSION - tick-3876 JONY-Das confirmed'.
-- **Summary:** Das, S., Dabbish, L., and Hong, J. (2014). 'The Effect of Social Influence on Security Sensitivity.' ACM CCS 2014. Tick-3855 audit: no good fit anywhere in the paper. Tick-3876 confirmation: recommendation stands - remove. Only viable path to retain: add explicit text in §6.2 familiarity-tax paragraph naming social influence as a second security-sensitivity degradation mechanism (different causal pathway from schema-import). Option (a) remove is recommended.
+#### JONY-ACTION (Das) - bibliography floating reference (RESOLVED tick-3996)
+- **Location:** Bibliography (Das et al. 2014) — entry removed
+- **Status:** RESOLVED tick-3996 — option (a) applied: Das entry removed from bibliography. §6.2 familiarity-tax paragraph is schema-import focused (eCommerce schema → confidence miscalibration); Das (social influence → security sensitivity) is a different causal pathway with no clear §6.2 hook. No new text required. Das, S., Dabbish, L., and Hong, J. (2014) no longer cited anywhere in paper.
+- **Summary:** Das, S., Dabbish, L., and Hong, J. (2014). 'The Effect of Social Influence on Security Sensitivity.' ACM CCS 2014. Removed. Sauvik Das (CMU) still relevant as a target PhD advisor/collaborator — see email action #8 (separate from this citation decision).
 - **Action:** Jony decides: remove (a) [recommended] or add §6.2 text (b).
 - **Blocking?** Must remove or cite before submission - floating reference with [REMOVE BEFORE SUBMISSION] tag.
 
@@ -581,7 +581,7 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 | G | §2.1 line 136 | 🔴 CHI blocking | Open - design-rationale reframe applied | Jony confirm |
 | Q | §4.2 line 260 | 🔴 CHI blocking | Open | Add IRB/ethics statement |
 | U | §1.3 line 104 | 🔴 CHI blocking | ✅ RESOLVED tick-3988 - option (b) applied, heading → 'Pre-analysis plan' | U→M unblocked |
-| Das | Bibliography line 475 | 🔴 CHI blocking | Open - remove before submission | Jony decides |
+| Das | Bibliography (removed) | ✅ Resolved | RESOLVED tick-3996 — option (a) applied: entry removed | — |
 | H | §6.3 line 409 | 🟠 CHI pre-submission | Open - paraphrase applied | Jony confirm DOET paraphrase |
 | I | §4.2 line 262 | 🟠 CHI pre-submission | Open - note added to paper tick-3927 | Resolve items A-E; 4 OSF amendments |
 | J | §2.1 line 134; §2.2 line 146 | 🟠 CHI pre-submission | Open - E&S ordered first | Jony decides drop W&T or retain |
@@ -610,8 +610,8 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 | S | §6.3 line 417 | ✅ RESOLVED | tick-3899 - 'most' → 'many' (Leon et al. 2012) | - |
 | Abstract | Abstract | 🔴 CHI formatting | Open - ~261 words, limit ~150 | Trim before submission |
 
-**Open count:** 12 open JONY-ACTIONs (G, I, J, N, P, Q, R, [verification URL], Das, A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. J ordering RESOLVED tick-3876 (E&S-first confirmed tick-3991); J awaiting Jony pre-CHI RETAIN confirmation (low-blocking). (H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
+**Open count:** 10 open JONY-ACTIONs (G, I, J, P, Q, R, [verification URL], A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. J ordering RESOLVED tick-3876 (E&S-first confirmed tick-3991); J awaiting Jony pre-CHI RETAIN confirmation (low-blocking). (Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
 
-**Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add Q (IRB), add R (mechanism), confirm G, clear Das, clear N; J (confirm W&T retain - recommendation in paper). O partially done.
+**Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add Q (IRB), add R (mechanism), confirm G; J (confirm W&T retain - recommendation in paper). O partially done. Das CLEARED.
 
-_Last updated: tick-3995 (2026-06-27). JONY-ACTION N RESOLVED tick-3995: Lee and See (2004) dropped from line 395 co-citation (option a); [Fixed tick-3995] annotations added at line 395 and bibliography entry. Lee and See now used once (line 399, clean). Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), (Das), A, B, C, O, P, Q, R + [verification URL] (11 items). N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
+_Last updated: tick-3996 (2026-06-27). JONY-ACTION (Das) RESOLVED tick-3996: Das et al. (2014) floating bibliography entry removed (option a). §6.2 has no clear hook for social influence; schema-import (familiarity→eCommerce confidence) is a different causal pathway. Das entry dropped entirely. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O, P, Q, R + [verification URL] (10 items). Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
