@@ -531,13 +531,13 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 - **Action:** DONE (tick-3987).
 - **Blocking?** RESOLVED.
 
-#### JONY-ACTION U — §1.3 C4 'Pre-registered study design' heading overclaim (tick-3891)
+#### JONY-ACTION U — §1.3 C4 'Pre-registered study design' heading overclaim (tick-3891) — RESOLVED tick-3988 ✅
 - **Location:** Line 104 (§1.3 C4 heading)
-- **Status:** JONY-ACTION U note present: 'JONY-ACTION U (tick-3891)'.
-- **Summary:** §1.3 C4 heading says 'Pre-registered study design (Study 2, planned, N=240)' but §5.6 states Study 2 is 'currently at design-note stage; it will be finalised and pre-registered after Study 1 pilot data.' If submitted to CHI before Study 2 is pre-registered, the heading is inaccurate. Options: (a) if Study 2 IS pre-registered before CHI submission, confirm OSF DOI and retain heading; (b) if NOT yet pre-registered, change heading to 'Pre-analysis plan (Study 2, planned, N=240).' Body text already uses 'pre-analysis plan' which is safer.
-- **Critical dependency:** U must be resolved BEFORE M (JONY-ACTION M's §7 sentence wording depends on U resolution).
-- **Action:** Jony decides at CHI submission sprint: check Study 2 pre-reg status → option (a) or (b).
-- **Blocking?** Pre-submission. Option (b) is the safe default if Study 2 has not been pre-registered.
+- **Status:** ✅ RESOLVED tick-3988. Option (b) applied: heading changed from 'Pre-registered study design (Study 2, planned, N=240)' to 'Pre-analysis plan (Study 2, planned, N=240)'. §1.3 contributions count Note updated to '(4) Study 2 pre-analysis plan'. JONY-ACTION U block replaced with [Fixed tick-3988] annotation.
+- **Summary:** §1.3 C4 heading said 'Pre-registered study design' but §5.6 states Study 2 is 'currently at design-note stage; it will be finalised and pre-registered after Study 1 pilot data.' Study 2 is not pre-registered at this stage, so option (b) is the safe default. Body text already used 'pre-analysis plan' (neutral term); heading now matches. If Study 2 IS pre-registered on OSF before CHI submission, heading should be updated back to 'Pre-registered study design (Study 2, planned, N=240)' with OSF DOI.
+- **Critical dependency:** U resolution determines M sentence wording. Option (b) applied → JONY-ACTION M's §7 sentence should use 'pre-analysis plan for a 2×2×2 factorial design' (not 'pre-registered'). If Study 2 is pre-registered before submission, M sentence wording needs revisiting.
+- **Action:** DONE (tick-3988). Option (b) applied. M can now be resolved using 'pre-analysis plan' wording.
+- **Blocking?** RESOLVED. U→M dependency unblocked.
 
 #### JONY-ACTION V — §5.4 M2 label missing at definition site (tick-3898)
 - **Location:** Line 361 (§5.4 Measures, McKnight trust composite definition)
@@ -576,7 +576,7 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 | [verification URL] | §2.1 line 136 | 🔴 CHI blocking | Open | Contract deploy (#6) |
 | G | §2.1 line 136 | 🔴 CHI blocking | Open — design-rationale reframe applied | Jony confirm |
 | Q | §4.2 line 260 | 🔴 CHI blocking | Open | Add IRB/ethics statement |
-| U | §1.3 line 104 | 🔴 CHI blocking | Open | Resolve at submission sprint (U→M dependency) |
+| U | §1.3 line 104 | 🔴 CHI blocking | ✅ RESOLVED tick-3988 — option (b) applied, heading → 'Pre-analysis plan' | U→M unblocked |
 | Das | Bibliography line 475 | 🔴 CHI blocking | Open — remove before submission | Jony decides |
 | H | §6.3 line 409 | 🟠 CHI pre-submission | Open — paraphrase applied | Jony confirm DOET paraphrase |
 | I | §4.2 line 262 | 🟠 CHI pre-submission | Open — note added to paper tick-3927 | Resolve items A-E; 4 OSF amendments |
@@ -606,8 +606,8 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 | S | §6.3 line 417 | ✅ RESOLVED | tick-3899 — 'most' → 'many' (Leon et al. 2012) | — |
 | Abstract | Abstract | 🔴 CHI formatting | Open — ~261 words, limit ~150 | Trim before submission |
 
-**Open count:** 17 pre-submission JONY-ACTIONs (G, H, I, J, L, M, N, P, Q, R, T, U, V, W, X, [verification URL], Das) + 3 pre-pilot (A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime.
+**Open count:** 15 open JONY-ACTIONs (G, H, I, J, L, M, N, P, Q, R, [verification URL], Das, A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. (U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
 
 **Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: resolve U→M, add Q (IRB), add R (mechanism), expand T (Invariant 1), add M2 label (V), add W cross-ref, add X cross-ref, decide L, confirm G/H, clear Das.
 
-_Last updated: tick-3987 (2026-06-27). JONY-ACTION T RESOLVED tick-3987: §7 Invariant 1 summary expanded to enumerate all three independence requirements (vote choice, voter's identity, observable system state) — matching §2.1 formal definition and §6.4 domain-application pattern. JONY-ACTION X RESOLVED tick-3986: parenthetical added to §6.1 necessity claim; JONY-ACTION V RESOLVED tick-3984: M2 label added to §5.4 McKnight definition; JONY-ACTION W RESOLVED tick-3985: Named Limitation cross-ref added to §2.1 Invariant 2 timing clause. Open: U, J, I, L, M, G, H, N, (Das), A, B, C, O, P, Q, R (16 items)._
+_Last updated: tick-3988 (2026-06-27). JONY-ACTION U RESOLVED tick-3988: §1.3 C4 heading changed from 'Pre-registered study design (Study 2, planned, N=240)' to 'Pre-analysis plan (Study 2, planned, N=240)' — option (b) applied; Study 2 is at design-note stage and not yet pre-registered; heading overclaimed; body text 'pre-analysis plan' was already neutral and unchanged; §1.3 count Note updated; U→M dependency unblocked. JONY-ACTION T RESOLVED tick-3987. X RESOLVED tick-3986. W RESOLVED tick-3985. V RESOLVED tick-3984. Open: J, I, L, M, G, H, N, (Das), A, B, C, O, P, Q, R + [verification URL] (15 items)._
