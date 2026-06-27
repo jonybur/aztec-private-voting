@@ -147,10 +147,10 @@ Four HTML mockups (condition-a-fingerprint.html, condition-b-confirmation-code.h
 **Comprehension accuracy (per question, binary: correct/incorrect):**
 
 - **Q1:** "Does this value prove that your vote was counted?" Correct answer: **Yes**. Foil: No / Unsure.  
-  *(Tests: was the ballot inclusion event correctly understood?)*
+  *(Tests: was the ballot inclusion event correctly understood?)* [Amendment 6 (pre-data): wording updated to 'After voting, the system showed you your [LABEL]. Does having this [LABEL] prove that your vote was counted?' — condition-specific label substituted for 'this value'; preamble added. Correct answer, foils, and binary scoring unchanged. Construct-validity note: in Condition C, 'nullifier' appearing in the stem may prime the incorrect cancelled/void schema independently; disclosed as demand characteristic in §6.5 and in Amendment 6 deviation log. See §14 and osf-amendment-filing-2026-06-24.md.]
 
 - **Q2:** "Does this value prove which option you chose?" Correct answer: **No**. Foil: Yes / Unsure.  
-  *(Tests: representational schema — does the user understand the identifier is choice-blind?)*
+  *(Tests: representational schema — does the user understand the identifier is choice-blind?)* [Amendment 7 (pre-data): wording updated to 'The [LABEL] is a string of numbers and letters that is unique to your vote. Does having this [LABEL] prove which voting option you chose?' — condition-specific label substituted; preamble describing the token's structural properties added; 'which option you chose' → 'which voting option you chose'. Correct answer, foils, and binary scoring unchanged. No analogous demand-characteristic concern for Q2. See §14 and osf-amendment-filing-2026-06-24.md.]
 
 - **Q3:** "If a coercive employer asked you to send them a screenshot of this screen as proof of your vote, could they learn how you voted?" Correct answer: **No**. Foil: Yes / Unsure.  
   *(Tests: privacy model applied to a real-world coercion scenario. Clarification appended: "Assume they can only see what is on this screen." This wording is in the stimuli and cannot be changed post-registration without amendment.)*
@@ -168,9 +168,9 @@ Four HTML mockups (condition-a-fingerprint.html, condition-b-confirmation-code.h
 
 **Confidence:** After each comprehension question (Q1–Q4), participants rate their confidence on a 7-point Likert scale (1 = not at all confident, 7 = completely confident). Mean across Q1–Q4 = confidence composite. Q5 is open-ended and receives no confidence rating.
 
-**Mental model quality (RQ3, open text):** After Q1–Q4, participants answer: "In your own words, what does this value prove about your vote?" Free text, scored 0–2 (0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states choice is hidden from system). Two raters; κ ≥ 0.70 required.
+**Mental model quality (RQ3, open text):** After Q1–Q4, participants answer: "In your own words, what does this value prove about your vote?" Free text, scored 0–2 (0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states choice is hidden from system). Two raters; κ ≥ 0.70 required. [Amendment 8 (pre-data): wording updated to 'In your own words: what does your [LABEL] prove about your vote?' — 'this value' replaced with 'your [LABEL]'; colon added. Two-rater scoring construct (0–2; κ ≥ 0.70) unchanged. Parallel to Amendments 6 (Q1) and 7 (Q2). Note: Amendment 2 (VOID) addressed a separate two-part form reversion; this amendment documents the independent '[LABEL]' substitution deviation. See §14 and osf-amendment-filing-2026-06-24.md.]
 
-**Behavioral intent (RQ2 proxy):** "If this screen appeared after a real vote, would you download this file?" (5-point: Definitely yes → Definitely no.)
+**Behavioral intent (RQ2 proxy):** "If this screen appeared after a real vote, would you download this file?" (5-point: Definitely yes → Definitely no.) [Amendment 3 (pre-data): wording updated to 'If this was a real election and you saw this screen after submitting your vote, how likely would you be to save this code for future reference?' (5-point: Definitely would save it → Definitely would not save it.) Rationale: (a) 'save for future reference' makes the verification purpose explicit, better operationalising behavioral intent to preserve the receipt; (b) 'this code' replaces '[LABEL]' to remove label-name demand from the behavioral intent measure — BI1 should measure save intention, not label-schema association; (c) response scale direction preserved. See §14 and osf-amendment-filing-2026-06-24.md §Item E.]
 
 **Label affect:** "What is your first reaction to the label [LABEL]?" (Valence slider: −3 to +3.) Asked after all comprehension questions.
 

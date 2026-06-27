@@ -3026,3 +3026,34 @@ JONY-ACTION H remains open: before CHI submission, verify against DOET (approx. 
 **Result:** Pre-registration §14 is now self-consistent with the osf-amendment-filing. Both documents agree on the 8 active pre-data amendments before OSF upload.
 
 **JONY-ACTIONS open (tick-4030): 6 (I, G, A, B, C, O) — unchanged.**
+
+---
+
+## Pre-registration §5.2/§5.3 inline amendment notes — added (tick-4033)
+
+**Scope:** `docs/piup-study1-preregistration-2026-06-22.md` §5.2 (comprehension measures Q1, Q2) and §5.3 (secondary measures MQ1, BI1).
+
+**Gap found:** The pre-registration body text at §5.2/§5.3 retained original (pre-amendment) wording for four items that have pre-data amendments filed in §14 and osf-amendment-filing-2026-06-24.md:
+- Q1: "Does this value prove..." → Amendment 6 changed to '[LABEL]' form + preamble
+- Q2: "Does this value prove..." → Amendment 7 changed to '[LABEL]' form + preamble
+- MQ1: "what does this value prove..." → Amendment 8 changed to '[LABEL]' form
+- BI1: "would you download this file?" → Amendment 3 changed to 'save this code for future reference'
+
+No inline note existed at any of these four sites. This creates an internal inconsistency: a reader who looks at §5.2/§5.3 in isolation sees the pre-registered wording; a reader who checks §14 or the osf-amendment-filing sees four deviations from it. Pattern established by §6.9 (Amendment 4 DescTools + Amendment 10 TOSTER inline notes) was not mirrored in §5.2/§5.3.
+
+**Fix applied:** Added inline `[Amendment N (pre-data): ...]` notes at each of the four sites, matching the §6.9 inline-note style:
+1. Q1 (§5.2): Amendment 6 note — updated wording, construct-validity note about Condition C demand characteristic, §14/osf-amendment-filing cross-reference
+2. Q2 (§5.2): Amendment 7 note — updated wording, no analogous demand characteristic, §14/osf-amendment-filing cross-reference
+3. MQ1 (§5.3): Amendment 8 note — '[LABEL]' substitution, Amendment 2 VOID distinction, §14 cross-reference
+4. BI1 (§5.3): Amendment 3 note — updated wording + scale, demand-characteristic rationale for 'this code', §14/osf-amendment-filing cross-reference
+
+| Item | Amendment | Site | Status |
+|------|-----------|------|--------|
+| Q1 | 6 | §5.2 | ✅ Inline note added |
+| Q2 | 7 | §5.2 | ✅ Inline note added |
+| MQ1 | 8 | §5.3 | ✅ Inline note added |
+| BI1 | 3 | §5.3 | ✅ Inline note added |
+
+**Result:** §5.2/§5.3 body is now self-consistent with §14 and osf-amendment-filing. A CHI reviewer reading the pre-registration sequentially will see the deviations disclosed at the relevant measure definition sites, not only in the amendments log. Commit tick-4033.
+
+**JONY-ACTIONS open (tick-4033): 6 (I, G, A, B, C, O) — unchanged.**
