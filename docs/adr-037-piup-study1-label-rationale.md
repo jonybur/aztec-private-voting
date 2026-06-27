@@ -75,13 +75,13 @@ The following are pre-registered directional hypotheses for Study 1, grounded in
 
 ### H3: "nullifier" will underperform all other conditions on Q1–Q4
 
-**Basis:** This is the strongest prediction in the set. The word "nullifier" contains "null" — lexically adjacent to "void" and "cancel." In informal usability sessions of systems using Helios-style terminology (Adida et al. 2008), users shown "nullifier" described their reaction as "it sounds like my vote was cancelled or rejected." This is precisely the wrong mental model: users who believe their vote was voided may re-vote, complain, or disengage from verification.
+**Basis:** This is the strongest prediction in the set. The word "nullifier" contains "null" — lexically adjacent to "void" and "cancel." In informal usability sessions of systems using Helios-style terminology (Adida et al. 2009), users shown "nullifier" described their reaction as "it sounds like my vote was cancelled or rejected." This is precisely the wrong mental model: users who believe their vote was voided may re-vote, complain, or disengage from verification.
 
 The cryptographic accuracy of the term (a nullifier is a value that prevents double-spending; it does not nullify the vote) provides no protection against this failure mode. Technically correct feedback that violates mental models is effectively misleading feedback (Whitten and Tygar 1999).
 
 **Predicted outcome:** Condition C will score lowest on Q1 ("Does this prove the vote was counted?" correct: Yes — this is a reversal risk) and on composite accuracy. Predicted < 45% accuracy on Q1 if the misreading is common, vs. ≥ 65% for Condition A.
 
-**Source:** Whitten and Tygar (1999); Bell et al. (2013) (STAR-Vote), section on voter confirmation messaging; Adida et al. (2008) (Helios) §7 on usability limitations.
+**Source:** Whitten and Tygar (1999); Bell et al. (2013) (STAR-Vote), section on voter confirmation messaging; Adida et al. (2009) (Helios) §7 on usability limitations. [Fixed tick-4046: Adida year corrected 2008→2009 in both body locations — parallel to pre-reg fix tick-4040 and ADR-037 References fix below.]
 
 ### H4: Comprehension confidence will be higher for B than for A, C, or D, regardless of accuracy
 
@@ -89,7 +89,7 @@ The cryptographic accuracy of the term (a nullifier is a value that prevents dou
 
 **Predicted outcome:** Condition B will have the highest mean confidence rating (7-point Likert) but will not top the accuracy ranking. An accuracy × confidence calibration analysis is planned as a secondary outcome.
 
-**Source:** Dunning-Kruger literature in security usability (Felt et al. 2012, CHI, on SSL indicators); Ur et al. (2012, SOUPS) on the gap between stated and actual password security knowledge.
+**Source:** Dunning-Kruger literature in security usability (Felt et al. 2012, SOUPS, on Android permission dialog comprehension); Ur et al. (2012, SOUPS) on the gap between stated and actual password security knowledge. [Fixed tick-4046: Felt body citation corrected — 'CHI, on SSL indicators' was wrong on both venue (SOUPS not CHI) and topic (Android permissions not SSL indicators). The correct paper is Felt, Ha, Egelman et al. (2012) 'Android Permissions: User Attention, Comprehension, and Behavior' SOUPS 2012 — parallel to pre-reg References fix tick-4041. SSL indicators work was Felt et al. 2014 CHI, a different paper.]
 
 ---
 
@@ -125,14 +125,14 @@ An IRB reviewer needs the protocol. A grant reviewer (Aztec Wave 3) needs both. 
 ## References
 
 - Whitten, A. and Tygar, J.D. (1999). "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." _USENIX Security Symposium._
-- Adida, B., De Marneffe, O., Pereira, O. and Quisquater, J.-J. (2008). "Electing a University President Using Open-Source Software: The Helios Voting System." _USENIX EVT._
-- Bell, S., et al. (2013). "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." _USENIX EVT/WOTE._
+- Adida, B., De Marneffe, O., Pereira, O. and Quisquater, J.-J. (2009). "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." _EVT/WOTE 2009._ [Fixed tick-4046: three errors corrected — (1) year 2008→2009; (2) title 'Open-Source Software: The Helios Voting System' → 'Open-Audit Voting: Analysis of Real-World Use of Helios'; (3) venue 'USENIX EVT' → 'EVT/WOTE 2009'. Parallel to pre-reg fix tick-4040 and CHI paper entry (line 475).]
+- Bell, S., et al. (2013). "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." _EVT/WOTE 2013._ [Fixed tick-4046: venue corrected — 'USENIX EVT/WOTE' → 'EVT/WOTE 2013'; 'USENIX' prefix removed and year added. Parallel to pre-reg fix tick-4041.]
 - Norman, D.A. (1988). _The Design of Everyday Things._ Basic Books.
 - Cranor, L.F. and Garfinkel, S. (eds.) (2005). _Security and Usability._ O'Reilly Media.
 - Fogg, B.J. and Tseng, H. (1999). "The Elements of Computer Credibility." _CHI 1999._
-- Felt, A.P., et al. (2012). "How to Ask for Permission." _USENIX HotSec._
+- Felt, A.P., Ha, E., Egelman, S., Haney, A., Chin, E., and Wagner, D. (2012). "Android Permissions: User Attention, Comprehension, and Behavior." _SOUPS 2012._ [Fixed tick-4046: wrong paper — 'How to Ask for Permission' (USENIX HotSec 2012) was a different Felt 2012 paper. The body citation (line 92) references the Android permissions comprehension work; correct paper is Felt, Ha, Egelman et al. (2012) SOUPS 2012 on user attention/comprehension of Android permission dialogs. Full author list added to match CHI paper line 481. Parallel to pre-reg References fix tick-4041.]
 - Ur, B., et al. (2012). "How Does Your Password Measure Up? The Effect of Strength Meters on Password Creation." _USENIX Security._
-- Das, S., Dabbish, L. and Hong, J. (2014). "The Effect of Social Influence on Security Sensitivity." _ACM CCS 2014._
+- Das, S., Kim, T.H.-J., Dabbish, L.A., and Hong, J.I. (2014). "The Effect of Social Influence on Security Sensitivity." _SOUPS 2014_, pp. 143–157. USENIX. [Fixed tick-4046: two errors corrected — (1) venue 'ACM CCS 2014' → 'SOUPS 2014' (USENIX-sponsored venue, not ACM CCS); (2) author list 'Das, S., Dabbish, L. and Hong, J.' → full 4-author list including Kim, T.H.-J. as second author. Parallel to pre-reg fix tick-4042 and CHI paper entry.]
 
 ---
 
