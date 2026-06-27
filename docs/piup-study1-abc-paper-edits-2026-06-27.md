@@ -77,16 +77,16 @@ This decision pairs with Decision A above. The full Q3 line after both A+C is sh
 
 **After Decision B (instrument wording):**
 ```
-*Q4 (Behavioral consequence of receipt loss):* "If you closed this screen without saving your [LABEL], what would happen?" Correct answer: I could still check that my vote was counted, but I would not have proof the receipt is mine; foils: My vote would be cancelled or reversed; The voting system keeps a copy of my [LABEL], so I could always retrieve it later; Nothing — I do not need to save it.
+*Q4 (Behavioral consequence of receipt loss):* "If you closed this screen without saving your [LABEL], what would happen?" Correct answer: I could still verify that my vote was counted, but I would not have this [LABEL] as personal proof; foils: My vote would be cancelled or reversed; The voting system keeps a copy of my [LABEL], so I could always retrieve it later; Nothing — my vote does not depend on having this [LABEL].
 ```
 
 **Key changes:**
 - "lost this value" → "closed this screen without saving your [LABEL]": maps to actual interface affordance; tests interface-level comprehension rather than abstract object-permanence
 - Foil (a): "you would lose your vote" → "My vote would be cancelled or reversed": adds "reversed" escalation for better distractor validity
 - Foil (c): "the system keeps a backup" → "The voting system keeps a copy of my [LABEL], so I could always retrieve it later": more specific (uses [LABEL])
-- Foil (d): "your vote would be reversed" → "Nothing — I do not need to save it": replaces catastrophic-misread distractor with a near-correct option, which isolates comprehension of the verification function (the receipt is not the vote — not saving it has no vote-outcome consequence)
-- Correct answer: unchanged conceptually; first-person voice aligned with instrument format
-- Note: foil (d) design-change is substantive — the pre-reg's "vote reversed" distractor tests catastrophic-misread; the instrument's "nothing — I do not need to save it" tests whether participants understand the receipt is optional for the vote but needed for verification. This is a better operationalization of H2 schema understanding and was pre-cleared in pilot-decisions §Item B.
+- Foil (d): "your vote would be reversed" → "Nothing — my vote does not depend on having this [LABEL]": replaces catastrophic-misread distractor with a near-correct option, which isolates comprehension of the verification function (the receipt is not the vote — not having [LABEL] has no vote-outcome consequence; but it removes personal verification proof)
+- Correct answer: "check" → "verify"; "proof the receipt is mine" → "this [LABEL] as personal proof" — instrument uses [LABEL] embed for label-consistency
+- Note: foil (d) design-change is substantive — the pre-reg's "vote reversed" distractor tests catastrophic-misread; the instrument's "my vote does not depend on having this [LABEL]" tests whether participants understand the receipt is optional for the vote but needed for verification. This is a better operationalization of H2 schema understanding and was pre-cleared in pilot-decisions §Item B. [Fixed tick-4024: prior draft had 'Nothing — I do not need to save it' and 'I could still check...proof the receipt is mine' — both sourced from an earlier draft; corrected to match the finalized instrument (piup-study1-survey-instrument-2026-06-22.md §6/Q4 and piup-study1-pilot-decisions-2026-06-25.md §Item B).]
 
 ### Change 2 of 2: Note block replacement
 
@@ -94,7 +94,7 @@ This decision pairs with Decision A above. The full Q3 line after both A+C is sh
 > Replace with:
 
 ```
-[Fixed tick-4005: Decision B adopted (instrument wording). Q4 updated from pre-reg 'lost this value' phrasing to instrument 'closed this screen without saving your [LABEL]' phrasing. Foil (d) updated from 'your vote would be reversed' (catastrophic-misread distractor) to 'Nothing — I do not need to save it' (near-correct distractor; isolates verification-function understanding). Correct answer unchanged. OSF Amendment B filed per osf-amendment-filing-2026-06-24.md. See pilot-decisions §Item B for full foil-revision rationale.]
+[Fixed tick-4005: Decision B adopted (instrument wording). Q4 updated from pre-reg 'lost this value' phrasing to instrument 'closed this screen without saving your [LABEL]' phrasing. Foil (d) updated from 'your vote would be reversed' (catastrophic-misread distractor) to 'Nothing — my vote does not depend on having this [LABEL]' (near-correct distractor; isolates verification-function understanding). Correct answer updated: 'check' → 'verify'; '[LABEL] as personal proof' embed added. OSF Amendment B filed per osf-amendment-filing-2026-06-24.md. See pilot-decisions §Item B for full foil-revision rationale. [Foil text corrected tick-4024: earlier draft had 'Nothing — I do not need to save it' and 'I could still check...proof the receipt is mine' — corrected to instrument-exact wording.]]
 ```
 
 ---
