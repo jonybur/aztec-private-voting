@@ -468,10 +468,11 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 #### JONY-ACTION J - §2.1 + §2.2 Alt3 W&T citation ordering (tick-3876)
 - **Location:** `drafts/piup-chi-paper-draft-2026-06-22.md` line 134 (§2.1 Protective framing) and line 146 (§2.2 Alternative 3)
-- **Status:** Both sites have [Note (tick-3876 - JONY-J audit)] annotations.
-- **Summary:** At both locations, [Egelman and Schechter 2013; Whitten and Tygar 1999] co-citation. E&S (2013) is the tighter citation for absent-content-as-failure-signal (directly studies security feedback violating conventions). W&T (1999) is foundational framing for cryptographic systems (users who cannot interpret output conclude it has failed) but is not a study of absent output specifically. Resolution applied: E&S listed first at both sites. Remaining Jony decision: drop W&T from §2.1 entirely (keeping only at §6.1 where it is used more precisely) or retain co-citation as-is with E&S first.
-- **Action:** Jony decides: drop W&T from §2.1/§2.2 or retain.
-- **Blocking?** Low CHI reviewer risk - not a factual error. Pre-submission polish.
+- **Status:** Ordering RESOLVED tick-3876 (E&S-first applied; confirmed tick-3991). W&T retention analysis complete tick-3991. Awaiting Jony pre-CHI confirmation of RETAIN recommendation.
+- **Summary:** Both sites confirmed [Egelman and Schechter 2013; Whitten and Tygar 1999] — E&S-first ✅. W&T retention analysis (tick-3991): W&T cited at 5 locations in the paper (§1.1 historical trio, §1.2 solo, §2.1 co-citation, §2.2 co-citation, §6.1 solo). Dropping W&T from §2.1/§2.2 while retaining at §1.1/§1.2/§6.1 would create an inconsistent citation pattern. E&S-first ordering is the substantive fix; W&T provides foundational framing consistent with its §1.1/§6.1 usage.
+- **Recommendation:** RETAIN W&T co-citation at both §2.1 and §2.2 with E&S-first ordering. No further paper change needed.
+- **Action:** Jony pre-CHI confirmation: accept RETAIN recommendation (no change) or explicitly drop W&T.
+- **Blocking?** Low CHI reviewer risk - not a factual error. Pre-submission editorial confirmation.
 
 #### JONY-ACTION L - §7 C2 system instantiation (tick-3852) - RESOLVED tick-3990 ✅
 - **Location:** Line 459 (§7 conclusion)
@@ -604,8 +605,8 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 | S | §6.3 line 417 | ✅ RESOLVED | tick-3899 - 'most' → 'many' (Leon et al. 2012) | - |
 | Abstract | Abstract | 🔴 CHI formatting | Open - ~261 words, limit ~150 | Trim before submission |
 
-**Open count:** 13 open JONY-ACTIONs (G, H, I, J, N, P, Q, R, [verification URL], Das, A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. (L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
+**Open count:** 13 open JONY-ACTIONs (G, H, I, J, N, P, Q, R, [verification URL], Das, A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. J ordering RESOLVED tick-3876 (E&S-first confirmed tick-3991); J awaiting Jony pre-CHI RETAIN confirmation (low-blocking). (L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
 
-**Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: resolve U→M, add Q (IRB), add R (mechanism), expand T (Invariant 1), add M2 label (V), add W cross-ref, add X cross-ref, decide L, confirm G/H, clear Das.
+**Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add Q (IRB), add R (mechanism), confirm G/H, clear Das; J (confirm W&T retain — recommendation in paper). O partially done.
 
-_Last updated: tick-3990 (2026-06-27). JONY-ACTION L RESOLVED tick-3990: added §7 C2 grounding sentence — 'The Aztec Private Voting instantiation (§3) demonstrates all three invariants in a live ZK deployment: receipt_id/vote_choice separation is enforced at the contract layer, and VoteReceipt.tsx renders the full four-component PIUP receipt structure.' Note block replaced with [Fixed tick-3990]. Consistent with §1.3 C2, §3, §2.1 four-component structure. Open: J, I, G, H, N, (Das), A, B, C, O, P, Q, R + [verification URL] (13 items). M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
+_Last updated: tick-3991 (2026-06-27). JONY-ACTION J analysis complete tick-3991: ordering CONFIRMED E&S-first at §2.1 (line 134) and §2.2 (line 146) — applied tick-3876. W&T retention analysis: W&T cited at 5 locations; dropping from §2.1/§2.2 while retaining at §1.1/§1.2/§6.1 would be inconsistent; RECOMMENDATION: RETAIN co-citation E&S-first. Note blocks replaced with [Fixed tick-3991] at both sites. J awaiting Jony pre-CHI confirmation of RETAIN (accept = no change needed). Low-blocking. Open: J (confirm W&T), I, G, H, N, (Das), A, B, C, O, P, Q, R + [verification URL] (13 items; J ordering done). L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
