@@ -167,7 +167,7 @@ Participants in the I2 conditions see the following two-question prompt before t
 >
 > 2. What is the main purpose of the [vote fingerprint / confirmation code] on the receipt?
 >    ○ To prove that you voted in this election  
->    ○ To confirm which candidate you voted for  
+>    ○ To confirm which voting option you chose  
 >    ○ To let you verify later that your ballot was counted  
 >    ○ To identify you to the election organizer
 
@@ -193,10 +193,12 @@ The two questions are drawn from Study 1's Q2 and Q3 (adapted for open-world com
 
 Q-AC is a new question, not in Study 1:
 
-> "Looking at this receipt: does it show which candidate you voted for?"
+> "Looking at this receipt: does it show which voting option you chose?"
 > ○ Yes, my vote choice is shown  
 > ○ No, my vote choice is not shown  
 > ○ It's not clear from what I see
+
+[Fixed tick-4023: Q-AC stem updated from 'which candidate you voted for' to 'which voting option you chose' — resolves stem–option mismatch (stem used 'candidate'; options used 'my vote choice'). Parallel fix to tick-4021 correction in the CHI paper §5.4. 'Voting option you chose' aligns with Study 1 Q2 phrasing and the DAO governance terminology used throughout the paper; also aligns with the answer options ('my vote choice'). If Study 2 is fielded with a political-election Prolific frame that uses 'candidate' intentionally, update both stem and answer options consistently: 'which candidate you voted for' / 'Yes, my candidate is shown' / 'No, my candidate is not shown'.]
 
 Correct answer: "No." This is an observational rather than inferential question — the receipt is on screen; the participant is asked to report what they see. Study 1's Q2 asked about proof ("does this prove how you voted?"); Q-AC asks about content ("is your vote shown?"). Q-AC has a lower inference barrier and tests a more basic absent-content interpretation. If users still fail Q-AC at high rates in E2 conditions, it indicates that absent content is being interpreted as a display failure, not a design decision.
 
@@ -236,7 +238,7 @@ Expected direction: E1 conditions (explanation present) will produce higher enga
 
 **M6 — Open-text absent-choice explanation (Q-OE)**
 
-"In your own words, why doesn't this receipt show which candidate you voted for?"
+"In your own words, why doesn't this receipt show which voting option you chose?" [Fixed tick-4023: 'candidate' → 'voting option you chose' — consistent with Q-AC stem and answer options fix above; and with Study 1 MQ1 / Q2 phrasing.]
 
 Scored 0–2 by two raters:
 - 2: Correct explanation of absent-content design ("to protect my privacy," "so it can't be used to prove my vote to others")
