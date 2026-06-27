@@ -12,8 +12,10 @@
 # R version:       >= 4.3
 #
 # Required packages:
-#   install.packages(c("PropCIs", "TOSTER", "multcomp", "irr", "dunn.test",
-#                      "effsize", "broom", "emmeans"))
+#   install.packages(c("PropCIs", "TOSTER", "irr", "dunn.test",
+#                      "broom", "emmeans"))
+# Note: effsize and multcomp not required — effect sizes computed via base-R
+# cramer_v_base() / TOSTER::tsum_TOST(); multcomp not called anywhere.
 #
 # Factors:
 #   L (Label):       L1 = "vote fingerprint"    / L2 = "confirmation code"
@@ -55,7 +57,6 @@ library(PropCIs)   # Wilson CIs for proportions
 library(TOSTER)    # Equivalence tests (TOST)
 library(irr)       # Cohen's kappa (inter-rater reliability)
 library(dunn.test) # Dunn's post-hoc for Kruskal-Wallis
-library(effsize)   # Cohen's d, h
 library(broom)     # tidy() for model output
 library(emmeans)   # emmeans for simple effects from ANOVA
 
