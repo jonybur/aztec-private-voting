@@ -179,6 +179,19 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 8 — MQ1 wording: label-substitution from 'this value' to '[LABEL]' form (pre-OSF deviation)
+
+**Status:** ✅ Ready to file  
+**OSF field:** Amendment log  
+**Category:** Instrument wording deviation  
+**Source:** §4.4 MQ1 note (tick-3835/3840); amendment gap identified tick-4022
+
+> _"Item MQ1 (mental model quality open-text question) wording updated from the pre-registered text 'In your own words, what does this value prove about your vote?' to: 'In your own words: what does your [LABEL] prove about your vote?' Changes: (1) 'this value' replaced with 'your [LABEL]' — condition-specific label name substituted throughout, consistent with the label-effect manipulation; (2) colon added after 'words:' (minor punctuation change). Correct answer construct (0–2 two-rater scoring; κ ≥ 0.70 required; pre-reg §5.2) is unchanged. Rationale: the '[LABEL]' form ensures the MQ1 question directly references the same identifier the participant received in the stimulus, consistent with the Q1 and Q2 label-substitution amendments (Amendments 6 and 7). No separate construct-validity concern: none of the four condition labels (vote fingerprint, confirmation code, nullifier, receipt ID) semantically hint at whether the identifier 'proves' anything specific; the '[LABEL]' substitution in MQ1 does not create a demand characteristic analogous to the Q1-Condition-C nullifier issue. This amendment was made before any data were collected. Note: Amendment 2 (VOID) addressed the two-part form question ('What does it NOT prove?') — that change was reverted; the present amendment documents the separately required '[LABEL]' substitution, which is a remaining deviation from the pre-reg 'this value' wording regardless of the two-part/single-part decision."_
+
+**Supporting documentation:** `piup-chi-paper-draft-2026-06-22.md` §4.4 MQ1 note (tick-3835/3840, tick-4022); `piup-study1-preregistration-2026-06-22.md` §5.2 line 171 ('this value' wording); `piup-study1-survey-instrument-2026-06-22.md` §7/MQ1 ('[LABEL]' wording). Parallel to Amendments 6 (Q1) and 7 (Q2).
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -201,6 +214,7 @@ Complete this before OSF upload.
 - [ ] Amendment 5 — CS/SE student screener extension
 - [ ] Amendment 6 — Q1 '[LABEL]' label-substitution (file this)
 - [ ] Amendment 7 — Q2 '[LABEL]' label-substitution (file this)
+- [ ] Amendment 8 — MQ1 '[LABEL]' label-substitution (file this)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)
