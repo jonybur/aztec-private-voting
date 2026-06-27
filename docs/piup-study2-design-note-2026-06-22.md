@@ -22,7 +22,7 @@ Study 2 addresses all four. It is the second of a three-study arc:
 | Study | Central question | Method | Status |
 |-------|-----------------|--------|--------|
 | 1 | Does label choice affect privacy mental model? | 4-condition between-subjects screenshot study (Prolific, N=280, n=70/cell; corrected from pre-registration N=200 after power analysis fix — see CHI paper §4.2) | Pre-registered; pending OSF upload + pilot |
-| **2** | **Does absent-choice explanation affect trust and save behavior? Can calibration interventions reduce over-confidence?** | **2×2 between-subjects interactive prototype study (Prolific, N=240)** | **This document** |
+| **2** | **Does absent-choice explanation affect trust and save behavior? Can calibration interventions reduce over-confidence?** | **2×2×2 between-subjects interactive prototype study (Prolific, N=240; L × E × I, 8 cells, n=30/cell)** | **This document** |
 | 3 | Do users actually return to verify? What predicts verification behavior? | Longitudinal field study in DAO deployment | Deferred until Study 2 complete |
 
 ---
@@ -73,7 +73,7 @@ Study 2's design is specified independently of Study 1 outcomes, but the emphasi
 | H4 supported (B highest confidence, moderate accuracy) | Calibration intervention: does accuracy feedback reduce confidence miscalibration without reducing save rate? | I factor × (confidence − accuracy residual) |
 | No significant differences (all ≈ 55%) | Explanation is load-bearing: test explanation-present vs. absent with a fixed label | E factor main effect on composite accuracy |
 
-In all cases, Study 2 runs the same 2×2 design. The contingency affects which pre-specified contrast is reported as the primary endpoint in the paper.
+In all cases, Study 2 runs the same 2×2×2 design (L × E × I). [Fixed tick-4026: '2×2' → '2×2×2' — parallel fix to §5.1 and the study arc table above; all three locations now consistent with the CHI paper's '2×2×2 factorial (L × E × I)' framing.] The contingency affects which pre-specified contrast is reported as the primary endpoint in the paper.
 
 ---
 
@@ -93,7 +93,7 @@ In all cases, Study 2 runs the same 2×2 design. The contingency affects which p
 
 ### 5.1 Design
 
-2×2 between-subjects factorial experiment.
+2×2×2 between-subjects factorial experiment (L × E × I; 8 cells). [Fixed tick-4026: prior text said '2×2' — but the design crosses three factors (L, E, I), creating 8 conditions (2³). The study arc table above and §5.1 heading both incorrectly said '2×2'; corrected to '2×2×2' to match the CHI paper §1.3 C4 ('A 2×2×2 factorial (L × E × I; 8 cells, n=30/cell)'), §5 ('2×2×2 factorial (Label × Explanation × Calibration Intervention)'), and the 8-cell count and N=240 total (30/cell × 8 = 240) described in this section.]
 
 **Factor L (Label):** 2 levels
 - L1: "vote fingerprint" — metaphor-activating, current production default
