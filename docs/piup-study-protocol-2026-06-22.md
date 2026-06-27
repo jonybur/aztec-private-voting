@@ -158,7 +158,7 @@ Context (1) is preferred: natural motivation to verify, real deadlines, lower de
 
 Target: **n = 80** (estimate; see power note). Inclusion: any voter in the partner election. No exclusion criteria beyond consent.
 
-**Power note:** RQ2 is exploratory; no strong prior for expected verification rate. If baseline verification is ~30% (analogous to receipt-checking behavior in e-commerce, Adida et al. 2008 participant behavior), and we expect behavioral intent to predict actual verification with an odds ratio of ~2.5, logistic regression power = 0.80 at n ≈ 65. n = 80 provides a buffer.
+**Power note:** RQ2 is exploratory; no strong prior for expected verification rate. If baseline verification is ~30% (analogous to receipt-checking behavior in e-commerce, Adida et al. 2009 participant behavior) [Fixed tick-4048: year 2008→2009; ADR-037/tick-4046 + pre-reg/tick-4040 propagation], and we expect behavioral intent to predict actual verification with an odds ratio of ~2.5, logistic regression power = 0.80 at n ≈ 65. n = 80 provides a buffer.
 
 ### Procedure
 
@@ -257,10 +257,10 @@ This is a feasible single-researcher thesis chapter, or a strong conference subm
 
 ## References
 
-- Adida, B., de Marneffe, O., Pereira, O., & Quisquater, J.-J. (2008). Electing a university president using open-audit voting: Analysis of real-world use of Helios. *EVT/WOTE 2008*.
+- Adida, B., de Marneffe, O., Pereira, O., & Quisquater, J.-J. (2009). Electing a university president using open-audit voting: Analysis of real-world use of Helios. *EVT/WOTE 2009*. [Fixed tick-4048: year 2008→2009, venue 2008→2009; same correction as pre-reg tick-4040 and ADR-037 tick-4046]
 - Bell, S., et al. (2013). STAR-Vote: A secure, transparent, auditable, and reliable voting system. *EVT/WOTE 2013*.
 - Benaloh, J., & Tuinstra, D. (1994). Receipt-free secret-ballot elections. *STOC 1994*.
-- Das, S., et al. (2014). Increasing security sensitivity with social proof: A large-scale experimental confirmation. *CCS 2014*.
+- Das, S., et al. (2014). Increasing security sensitivity with social proof: A large-scale experimental confirmation. *SOUPS 2014*. [Fixed tick-4048: venue CCS→SOUPS; same correction as pre-reg tick-4042 and ADR-037 tick-4046]
 - Green, D. P., & Gerber, A. S. (2002). Reclaiming the experimental tradition in political science. *Political Science: The State of the Discipline*.
 - Hargittai, E. (2009). An update on survey measures of web-oriented digital literacy. *Social Science Computer Review*.
 - Kulyk, O., et al. (2017). Does my vote count? Voter experience with verifiability in internet voting. *INTERACT 2017*.
