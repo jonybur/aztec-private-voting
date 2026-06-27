@@ -516,10 +516,10 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 #### JONY-ACTION Q - §4.2 IRB/ethics statement (tick-3882)
 - **Location:** Line 260 (§4.2 Power/participants)
-- **Status:** JONY-ACTION Q note present.
-- **Summary:** Paper has NO IRB/ethics statement. CHI requires one. Pre-registration §10 anticipates exemption under 45 CFR 46.104(d)(2). Before CHI submission: (a) confirm exemption with relevant IRB; (b) add brief ethics sentence to §4.2. Options documented in paper: if formal exemption sought, 'This study was determined exempt from full IRB review under 45 CFR 46.104(d)(2)...'; if no institutional IRB, 'No institutional IRB review was required under 45 CFR 46.104(d)(2); Prolific's standard participant protections and informed consent process apply.'
-- **Action:** Jony decides which statement applies and adds it to §4.2.
-- **Blocking:** Yes - CHI submission blocked without an ethics statement.
+- **Status:** ✅ RESOLVED tick-3998. IRB/ethics statement added to §4.2: 'No institutional IRB review was required under 45 CFR §46.104(d)(2); Prolific's standard participant protections and informed consent process apply.' JONY-ACTION Q block replaced with [Fixed tick-3998] annotation.
+- **Summary:** Paper had NO IRB/ethics statement. Added using the no-institutional-IRB option: fully online Prolific survey, no more than minimal risk, pre-reg §10 and study-protocol §IRB both anticipated 45 CFR 46.104(d)(2) exemption, no institutional IRB path documented. Conditional update note included: if institutional IRB determination obtained before CHI submission, update to the formal exemption statement.
+- **Action:** DONE (tick-3998).
+- **Blocking:** RESOLVED.
 
 #### JONY-ACTION R - §4.2 condition assignment mechanism (tick-3882)
 - **Location:** Line 260 (§4.2 Power/participants, alongside Q)
@@ -612,6 +612,6 @@ _Added tick-3928 (sixty-eighth-pass). CI check: working-notes/main → success �
 
 **Open count:** 10 open JONY-ACTIONs (G, I, J, P, Q, R, [verification URL], A, B, C + O partially done) + 3 Prolific launch + 4 post-upload/anytime. J ordering RESOLVED tick-3876 (E&S-first confirmed tick-3991); J awaiting Jony pre-CHI RETAIN confirmation (low-blocking). (Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984.)
 
-**Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add Q (IRB), add R (mechanism), confirm G; J (confirm W&T retain - recommendation in paper). O partially done. Das CLEARED.
+**Critical path (unchanged):** Contract deploy (#6) → [verification URL] filled → paper §2.1 + forum post unblocked. OSF decisions A-E (#I) → upload + amendments (#1) → OSF DOI → forum post + email Das. CHI submission sprint: add R (mechanism), confirm G; J (confirm W&T retain - recommendation in paper). O partially done. Q CLEARED.
 
-_Last updated: tick-3997 (2026-06-27). JONY-ACTION P RESOLVED tick-3997: power justification paragraph added to §5.2 ('Power (preliminary estimate).') with H2.1 84% power at n=30 (OR≈2.3, design note §10.1) and H2.2 80% power at N=240 (f≈0.22, design note §10.2). G re-verified tick-3997: no new pilot docs found; reframe intact; open pending Jony confirmation only. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O, Q, R + [verification URL] (9 items; P RESOLVED tick-3997). Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
+_Last updated: tick-3998 (2026-06-27). JONY-ACTION Q RESOLVED tick-3998: IRB/ethics statement added to §4.2 ('No institutional IRB review was required under 45 CFR §46.104(d)(2); Prolific's standard participant protections and informed consent process apply.') — no-institutional-IRB option, matching pre-reg §10 and study-protocol §IRB anticipation. Open: J (confirm W&T), I (A/B/C pending Jony + OSF), G (confirm option-b), A, B, C, O, R + [verification URL] (8 items; Q RESOLVED tick-3998). P RESOLVED tick-3997; Das RESOLVED tick-3996; N RESOLVED tick-3995; H RESOLVED tick-3994; L RESOLVED tick-3990; M RESOLVED tick-3989; U RESOLVED tick-3988; T RESOLVED tick-3987; X RESOLVED tick-3986; W RESOLVED tick-3985; V RESOLVED tick-3984._
