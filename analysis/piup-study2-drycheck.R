@@ -105,6 +105,7 @@ make_participant <- function(cond_code, id) {
     response_time_sec     = round(runif(1, 360, 900)),  # 6–15 min
     occupation_sw_eng     = rbinom(1, 1, 0.05),
     prior_receipt_study   = rbinom(1, 1, 0.02),
+    browser_fallback      = rbinom(1, 1, 0.03),  # ~3% static screenshot fallback (§9.3)
     age_group             = sample(c("18-24","25-34","35-44","45-54","55+"), 1),
     prior_voting          = rbinom(1, 1, 0.85),
     tech_efficacy_mean    = round(runif(1, 2.0, 5.0), 1)
@@ -145,7 +146,7 @@ expected_cols <- c(
   "qoe_rater1", "qoe_rater2",
   "attention_check_1", "attention_check_2",
   "response_time_sec", "occupation_sw_eng",
-  "prior_receipt_study",
+  "prior_receipt_study", "browser_fallback",
   "age_group", "prior_voting", "tech_efficacy_mean"
 )
 

@@ -131,6 +131,9 @@ COL_ATTN2      <- "attention_check_2"   # 1 = pass
 COL_RT_SEC     <- "response_time_sec"   # Total completion time in seconds
 COL_OCCUPATION <- "occupation_sw_eng"   # 1 = self-reported software engineer (exclude)
 COL_PRIOR_STUDY <- "prior_receipt_study" # 1 = completed a prior voting-receipt study
+COL_BROWSER_FALLBACK <- "browser_fallback"  # 1 = participant received static screenshot
+                                             # (browser could not render interactive prototype)
+                                             # NOT excluded; flagged as sensitivity covariate (§9.3)
 
 # Demographics (descriptive only)
 COL_AGE        <- "age_group"
@@ -208,7 +211,8 @@ generate_synthetic_data <- function(n_per_cell = 30) {
   attn2 <- rbinom(N, 1, 0.90)
   rt    <- round(rnorm(N, 700, 120))
   occ   <- rbinom(N, 1, 0.04)
-  prior <- rbinom(N, 1, 0.03)
+  prior  <- rbinom(N, 1, 0.03)
+  fbk    <- rbinom(N, 1, 0.03)  # ~3% browser-fallback rate (synthetic)
 
   # Demographics
   age   <- sample(c("18-24","25-34","35-44","45-54","55+"), N, replace = TRUE,
@@ -238,6 +242,7 @@ generate_synthetic_data <- function(n_per_cell = 30) {
     response_time_sec   = rt,
     occupation_sw_eng   = occ,
     prior_receipt_study = prior,
+    browser_fallback    = fbk,
     age_group           = age,
     prior_voting        = pvote,
     tech_efficacy_mean  = eff,
@@ -316,6 +321,20 @@ log_exclusion(df, "response time < 90 sec", n_before)
 n_before <- nrow(df)
 df <- df[!(df[[COL_ATTN1]] == 0 & df[[COL_ATTN2]] == 0), ]
 log_exclusion(df, "failed both attention checks", n_before)
+
+# Flag browser-fallback participants (§9.3 — NOT excluded; sensitivity covariate only)
+# These participants received a static screenshot when their browser could not render
+# the interactive React prototype. Per pre-registration §9.3, they are retained in the
+# analytic sample but flagged; H2.1 is re-run without them as a sensitivity check (§5).
+if (COL_BROWSER_FALLBACK %in% names(df)) {
+  n_browser_fallback <- sum(df[[COL_BROWSER_FALLBACK]] == 1, na.rm = TRUE)
+  cat(sprintf("  Browser fallback (static screenshot): n = %d flagged (NOT excluded; sensitivity covariate per §9.3)\n",
+              n_browser_fallback))
+} else {
+  cat("  Note: 'browser_fallback' column not found in data — COL_BROWSER_FALLBACK not in column map.\n")
+  cat("  Assuming all participants saw the interactive prototype (browser_fallback = 0 for all).\n")
+  df[[COL_BROWSER_FALLBACK]] <- 0L
+}
 
 cat(sprintf("\nFinal analytic N after exclusions: %d / %d (%.1f%% retained)\n\n",
             nrow(df), n_raw, 100 * nrow(df) / n_raw))
@@ -615,7 +634,7 @@ if (h22_interaction_sig) {
 
   h22_verdict <- sprintf(
     "H2.2 SUPPORTED: L × E interaction significant (F(1,%d) = %.3f, p = %.4f). E effect larger in L2 (%.2f) than L1 (%.2f): %s.",
-    as.integer(interaction_row$df.residual[nrow(m2_aov_tidy)]),
+    as.integer(m2_aov_tidy$df[m2_aov_tidy$term == "Residuals"]),  # residual df
     interaction_row$statistic, interaction_row$p.value,
     E_eff_L2, E_eff_L1,
     if (E_eff_L2 > E_eff_L1) "CONFIRMED" else "NOT CONFIRMED"
@@ -815,6 +834,35 @@ if (!PILOT) {
   print(tapply(df_I2$m4_residual, df_I2$L, function(x)
     sprintf("mean=%.3f, sd=%.3f, n=%d", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE), sum(!is.na(x)))))
   cat("Positive residual = over-confidence; H4 from Study 1 predicts L2 > L1.\n\n")
+}
+
+# --- Pre-specified sensitivity: H2.1 excluding browser-fallback participants (§9.3) ---
+if (!PILOT) {
+  cat("[SENSITIVITY] H2.1 re-run excluding browser-fallback participants (§9.3):\n")
+  df_no_fallback   <- df[df[[COL_BROWSER_FALLBACK]] == 0 | is.na(df[[COL_BROWSER_FALLBACK]]), ]
+  n_fbk_excluded   <- nrow(df) - nrow(df_no_fallback)
+  if (n_fbk_excluded > 0) {
+    E1_nb <- df_no_fallback$E == "explanation_present"
+    E2_nb <- df_no_fallback$E == "explanation_absent"
+    h21_nb <- two_prop_chisq_one_tailed(
+      sum(E1_nb, na.rm = TRUE),
+      sum(df_no_fallback$m1_qac[E1_nb], na.rm = TRUE),
+      sum(E2_nb, na.rm = TRUE),
+      sum(df_no_fallback$m1_qac[E2_nb], na.rm = TRUE),
+      direction = "greater"
+    )
+    cat(sprintf("  Excluding %d browser-fallback participant(s) (N=%d remaining):\n",
+                n_fbk_excluded, nrow(df_no_fallback)))
+    cat(sprintf("  %s\n", fmt_binary_result(h21_nb)))
+    cat(sprintf("  Sensitivity verdict: %s\n",
+                if (h21_nb$p_one < 0.05)
+                  "H2.1 SUPPORTED in full-prototype-only sample (result robust)"
+                else
+                  "H2.1 NOT SUPPORTED in full-prototype-only sample (browser-fallback may have affected primary result)"))
+  } else {
+    cat("  No browser-fallback participants detected — sensitivity check not applicable.\n")
+  }
+  cat("  *** PRE-SPECIFIED SENSITIVITY (§9.3) ***\n\n")
 }
 
 # =============================================================================
