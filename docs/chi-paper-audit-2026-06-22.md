@@ -3372,3 +3372,32 @@ JONY-ACTION Z (Felt et al. §1.1) option **(a2)** — revising the §1.1 sentenc
 - **Joint resolution path:** Z option (a2) resolves both Z and AA simultaneously — RECOMMENDED
 
 **JONY-ACTIONS open (tick-4142): 17 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA).**
+
+---
+
+## JONY-ACTION X — §1.4 Chaum et al. 'statistically significant fraction' — RESOLVED tick-4147
+
+### Location
+
+§1.4, body text: "they found a statistically significant fraction of voters verified online"
+
+Bibliography note for Chaum et al. (2010): "a statistically significant number verified online."
+
+### Diagnosis (tick-4138)
+
+The phrase 'statistically significant fraction' was traced to the 2009 mock election prediction paper (Rivest et al., future-tense prediction about what would happen in a real election). The actual 2010 USENIX deployment report (Carback/Chaum et al.) PDF was not extractable; no confirmed search snippet used 'statistically significant' for the real election verification rate.
+
+**Structural concern (independent of source-tracing):** The 2009 Takoma Park municipal election had 1,722 registered voters — this IS the entire electorate, not a sample from a larger population. Frequentist significance testing is only meaningful when generalizing from a sample to a population; a full-population deployment report documents raw rates, not sampling inference. Even if Chaum et al. (2010) used the phrase 'statistically significant,' the framing would be structurally unusual and potentially misleading for a CHI paper that should be precise about statistical concepts.
+
+### Fix applied (tick-4147)
+
+**No Jony confirmation required.** The fix removes an overclaim without asserting a new fact:
+
+- **§1.4 body text:** "they found a statistically significant fraction of voters verified online" → "they found that voters used the online verification affordance"
+- **Bibliography note:** "a statistically significant number verified online" → "voter use of the online verification affordance documented in the deployment report"
+
+Both changes are factually accurate: Chaum et al. (2010) DO document that verification occurred. The removed phrase was (a) sourced from a different paper and (b) structurally inappropriate for a full-population deployment report.
+
+### Status
+
+**JONY-ACTION X RESOLVED (tick-4147).** No open decisions. JONY-ACTIONS open drops from 17 to 16: (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA). Note: X removed from the open list; R/S pending Jony option (a) confirmation; Z/AA/Q pending Jony Z(a2) confirmation; P pending Jony option (a)/(b).
