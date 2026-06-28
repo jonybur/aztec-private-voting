@@ -40,7 +40,7 @@ export type {
 export type { AztecClient, AztecProviderProps, BrowserAztecOptions } from './aztec/context';
 export type { VoteEligibilityProofProps } from './components/VoteEligibilityProof';
 export type { PrivateBallotProps } from './components/PrivateBallot';
-export type { VoteReceiptProps } from './components/VoteReceipt';
+export type { VoteReceiptProps, ReceiptLabelVariant, ExplanationVariant } from './components/VoteReceipt';
 export type { VoteResultProps } from './components/VoteResult';
 export type { VoteAdminProps } from './components/VoteAdmin';
 export type { VoteFacilitatorProps } from './components/VoteFacilitator';

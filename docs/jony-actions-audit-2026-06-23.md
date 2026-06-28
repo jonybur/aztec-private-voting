@@ -863,3 +863,32 @@ Both descriptions are **inaccurate** relative to survey instrument §AC1/§AC2:
 ---
 
 **JONY-ACTIONS open (tick-4150): I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA** (16 open; batch decision memo jony-batch-decision-memo-2026-06-28.md awaiting Jony review; Amendment 14 added to JONY-ACTION T; X resolved tick-4147).
+
+---
+
+## tick-4154: bibliography pass 5 — E&S (2013) CLEAN + Chaum et al. (2010) AUTHOR LIST INCORRECT
+
+**JONY-ACTION BB: Chaum et al. (2010) bibliography entry — author list incorrect**
+
+**Source:** DBLP (conf/uss/CarbackCCCEHMPRSSV10), verified tick-4154 via DBLP JSON API.
+
+**Current bibliography entry (10 authors, Chaum first):**
+Chaum, D., Carback, R., Clark, J., Essex, A., Popoveniuc, S., Rivest, R.L., Ryan, P.Y.A., Shen, E., Sherman, A.T., and Vora, P.L.
+
+**DBLP-verified entry (12 authors, Carback first):**
+Carback, R., Chaum, D., Clark, J., Conway, J., Essex, A., Herrnson, P.S., Mayberry, T., Popoveniuc, S., Rivest, R.L., Shen, E., Sherman, A.T., and Vora, P.L.
+
+**Errors:**
+1. FIRST AUTHOR WRONG: Chaum listed first; DBLP and USENIX proceedings (PDF named Carback.pdf) have Carback first.
+2. MISSING AUTHORS (3): Conway, J.; Herrnson, P.S.; Mayberry, T.
+3. SPURIOUS AUTHOR: Ryan, P.Y.A. — not listed in DBLP for this paper.
+4. TOTAL WRONG: 10 in bibliography vs. 12 in DBLP.
+
+**In-text impact:** CHI paper currently cites 'Chaum et al. (2010)' at §1.4 and §1.2. If first author is Carback, in-text citations must become 'Carback et al. (2010)' throughout.
+
+**OPTION (a) [RECOMMENDED]:** Correct bibliography to DBLP-verified 12-author list (Carback first, remove Ryan P.Y.A., add Conway/Herrnson/Mayberry). Update in-text citations to 'Carback et al. (2010)'.
+**OPTION (b):** Verify USENIX Carback.pdf directly before correcting.
+
+**Do NOT submit current 10-author Chaum-first entry. Jony must confirm before CHI submission.**
+
+**JONY-ACTIONS open (tick-4154): I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA, BB** (17 open; batch memo awaiting Jony; X resolved tick-4147).

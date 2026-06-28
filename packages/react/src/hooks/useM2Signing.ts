@@ -233,7 +233,7 @@ async function rawSign(
 async function eip191Sign(
   challenge: Uint8Array,
 ): Promise<Pick<M2SigningOutput, 'pubkey_x' | 'pubkey_y' | 'sig_r' | 'sig_s'>> {
-  if (typeof window === 'undefined' || !(window as Record<string, unknown>).ethereum) {
+  if (typeof window === 'undefined' || !(window as unknown as Record<string, unknown>).ethereum) {
     throw new Error(
       'EIP-191 signing requires window.ethereum (MetaMask or compatible wallet)',
     );
@@ -265,9 +265,11 @@ async function eip191Sign(
   }
   const r = sigBytes.slice(0, 32);
   const s = sigBytes.slice(32, 64);
-  const v = sigBytes[64];
+  // noUncheckedIndexedAccess: v could be undefined in theory, but we've already
+  // thrown above if sigBytes.length !== 65, so index 64 is guaranteed to exist.
+  const v = sigBytes[64] ?? 0;
   // Normalise recovery bit: MetaMask returns v=27/28 (pre-EIP-155) or 0/1.
-  const recoveryBit = v >= 27 ? v - 27 : v;
+  const recoveryBit: number = v >= 27 ? v - 27 : v;
 
   // Reconstruct msg_hash to recover public key.
   const { keccak_256 } = await import('@noble/hashes/sha3');

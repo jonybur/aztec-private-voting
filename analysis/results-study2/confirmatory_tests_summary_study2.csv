@@ -1,5 +1,5 @@
 "family","description","p_value","significant","verdict"
-"H2.1","E main effect on Q-AC accuracy (E1 > E2, one-tailed chi-squared)",2e-04,TRUE,"H2.1 SUPPORTED: Explanation significantly increases absent-content accuracy (p=0.0002)."
-"H2.2","L × E interaction on M2 trust (two-way ANOVA; simple effects if F sig.)",0.4185,FALSE,"H2.2 NOT SUPPORTED: L × E interaction not significant (F = 0.657, p = 0.4185). Null result; 90% CI on interaction term reported above."
+"H2.1","E main effect on Q-AC accuracy (E1 > E2, one-tailed chi-squared)",0.1898,FALSE,"H2.1 NOT SUPPORTED: No significant E main effect on Q-AC (p=0.1898)."
+"H2.2","L × E interaction on M2 trust (two-way ANOVA; simple effects if F sig.)",0.0087,TRUE,"H2.2 SUPPORTED: L × E interaction significant (F(1,31) = 7.837, p = 0.0087). E effect larger in L2 (1.38) than L1 (0.58): CONFIRMED."
 "H2.3","I2 reduces M4 miscalibration residual in L2 [CONDITIONAL on Study 1 H4]",NA,NA,"H2.3 SKIPPED (conditional test; Study 1 H4 not supported)"
-"H2.4","M1 (Q-AC accuracy) predicts M3 download click (logistic regression)",6e-04,TRUE,"H2.4 SUPPORTED: Correct absent-content interpretation predicts higher download click (OR = 2.88, p = 0.0006)."
+"H2.4","M1 (Q-AC accuracy) predicts M3 download click (logistic regression)",0.5034,FALSE,"H2.4 NOT SUPPORTED: M1 does not significantly predict download click (OR = 1.67, p = 0.5034)."
