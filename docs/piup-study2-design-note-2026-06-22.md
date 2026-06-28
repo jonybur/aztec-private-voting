@@ -372,7 +372,7 @@ However, H2.4 (download_clicked ~ M1 logistic regression) is the hypothesis **mo
 
 ### 9.4 Open-text coding (M6 / Q-OE)
 
-Two independent coders (recruited via Prolific Academic researcher pool or RA) score Q-OE (0–2) before any other data are analyzed. If κ < 0.70, raters adjudicate disagreements and rescore. Q-OE analysis is supplementary (Kruskal-Wallis across 8 conditions; random 15 responses per condition published as illustrative examples).
+Two independent coders (recruited via Prolific Academic researcher pool or RA) score Q-OE (0–2; full rubric, tie-breaking rule, and `qoe_final` formula: §7.2) before any other data are analyzed. If κ < 0.70 on pilot data, raters adjudicate disagreements and rescore using the revised rubric. Log rubric revision as a protocol amendment. Q-OE analysis is supplementary (Kruskal-Wallis across 8 conditions; random 15 responses per condition published as illustrative examples). [Fixed tick-4076: κ < 0.70 clause updated to match §7.2 wording (tick-4075 expanded §7.2 but did not sync §9.4): added 'on pilot data', 'using the revised rubric', and 'Log rubric revision as a protocol amendment'. Added cross-reference to §7.2 for rubric, tie-breaking, and qoe_final formula.]
 
 ---
 
