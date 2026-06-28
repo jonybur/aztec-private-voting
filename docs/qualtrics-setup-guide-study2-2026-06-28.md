@@ -331,7 +331,7 @@ The Stimulus block embeds the interactive VoteReceipt prototype in an iframe. It
     </p>
     <img
       id="piup-fallback-img"
-      src="https://aztec-study2.vercel.app/static/fallback-${e://Field/label_factor}${e://Field/explanation_factor}.png"
+      src=""
       alt="Vote receipt prototype (static fallback)"
       style="width:100%; border-radius:8px; border:1px solid #e0e0e0;"
     />
@@ -342,6 +342,8 @@ The Stimulus block embeds the interactive VoteReceipt prototype in an iframe. It
   </p>
 </div>
 ```
+
+> **Fallback img src:** The `src` attribute is intentionally left empty in the HTML. The JavaScript fallback timer (§5b) sets it dynamically — using `"${e://Field/condition}".substring(0, 4)` — at the moment the 8-second timeout fires. This avoids an unnecessary browser pre-fetch of the fallback image on every survey page load, and ensures the URL is correct regardless of condition. Do not add a static src here.
 
 > **Fallback images:** Generate 4 static fallback screenshots (L1E1, L1E2, L2E1, L2E2) from the deployed Vercel host and add them to `study2-host/public/static/` before launch. Name them exactly `fallback-L1E1.png`, `fallback-L1E2.png`, `fallback-L2E1.png`, `fallback-L2E2.png`.
 
@@ -387,7 +389,14 @@ Qualtrics.SurveyEngine.addOnload(function() {
     var readyReceived = false;
     var fallbackTimeout = setTimeout(function() {
         if (!readyReceived) {
-            // Prototype failed to render — show static fallback
+            // Prototype failed to render — show static fallback.
+            // Set img src dynamically: truncate 6-char condition to 4-char LxEx prefix.
+            // Files are named fallback-L1E1.png etc. (I factor omitted; not needed for screenshots).
+            var cond = "${e://Field/condition}".substring(0, 4);
+            var fallbackImg = document.getElementById('piup-fallback-img');
+            if (fallbackImg) {
+                fallbackImg.src = 'https://aztec-study2.vercel.app/static/fallback-' + cond + '.png';
+            }
             document.getElementById('piup-prototype-frame').style.display = 'none';
             document.getElementById('piup-fallback').style.display = 'block';
             Qualtrics.SurveyEngine.setEmbeddedData("browser_fallback", "1");
