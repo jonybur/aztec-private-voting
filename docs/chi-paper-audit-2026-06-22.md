@@ -3528,3 +3528,61 @@ Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlati
 | McKnight et al. (2002) — Trust Measures for e-Commerce | ✅ CLEAN — all fields verified via CrossRef | None |
 
 **JONY-ACTIONS open (tick-4152): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA).** No change. Batch memo (docs/jony-batch-decision-memo-2026-06-28.md) still awaiting Jony review.
+
+---
+
+## Bibliography Pass 4 (tick-4153)
+
+**Citations verified:** Whitten and Tygar (1999) + Felt et al. (2012)
+
+**Paper bibliography entries:**
+- Whitten, A., and Tygar, J.D. (1999). "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." _USENIX Security 1999._
+- Felt, A.P., Ha, E., Egelman, S., Haney, A., Chin, E., and Wagner, D. (2012). "Android Permissions: User Attention, Comprehension, and Behavior." _SOUPS 2012._
+
+---
+
+### Check 1: Whitten and Tygar (1999) — CLEAN ✅
+
+**Source:** DBLP (dblp.org/rec/conf/uss/WhittenT99) — unique hit, all fields confirmed.
+
+| Field | Paper | Verified |
+|-------|-------|----------|
+| Authors | Whitten, A. and Tygar, J.D. | ✅ DBLP: Alma Whitten, J. Doug Tygar (A. = Alma; J.D. = J. Doug — standard initial abbreviation) |
+| Title | "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." | ✅ Exact match (DBLP: "Why Johnny Can&apos;t Encrypt: A Usability Evaluation of PGP 5.0.") |
+| Venue | USENIX Security 1999 | ✅ DBLP venue: "USENIX Security Symposium"; key: conf/uss/WhittenT99 (1999 confirmed) |
+| Year | 1999 | ✅ Confirmed |
+| DOI | — (not in paper bibliography) | USENIX open access link confirmed via DBLP ee field |
+
+**Note on author initials:** DBLP lists "J. Doug Tygar" (first initial only for given names). The paper uses "J.D." — both refer to J. Douglas Tygar. No discrepancy.
+
+**Status: CLEAN ✅ — all fields verified against DBLP ground truth.**
+
+---
+
+### Check 2: Felt et al. (2012) — CLEAN ✅
+
+**Source:** DBLP (dblp.org/rec/conf/soups/FeltHEHCW12) + CrossRef (DOI: 10.1145/2335356.2335360) — both confirm all fields.
+
+| Field | Paper | Verified |
+|-------|-------|----------|
+| Authors | Felt, A.P., Ha, E., Egelman, S., Haney, A., Chin, E., Wagner, D. | ✅ DBLP: Adrienne Porter Felt, Elizabeth Ha, Serge Egelman, Ariel Haney, Erika Chin, David A. Wagner — all 6 authors, correct order |
+| Title | "Android Permissions: User Attention, Comprehension, and Behavior." | ✅ DBLP: "Android permissions: user attention, comprehension, and behavior." (sentence case — DBLP convention; subtitle confirmed exact) |
+| Venue | SOUPS 2012 | ✅ DBLP venue: "SOUPS"; CrossRef container: "Proceedings of the Eighth Symposium on Usable Privacy and Security"; year 2012 ✅ |
+| Year | 2012 | ✅ Confirmed (CrossRef date-parts: [[2012, 7, 11]]) |
+| DOI | — (not in paper bibliography) | 10.1145/2335356.2335360 confirmed via both DBLP and CrossRef |
+| Pages | — (not in paper bibliography) | CrossRef: 1–14; DBLP article number: 3 |
+
+**Note on title casing:** The paper capitalises "Permissions", "User", "Attention", "Comprehension", "Behavior" (title case). DBLP uses sentence case ("Android permissions: user attention..."). The subtitle content matches exactly. No error.
+
+**Status: CLEAN ✅ — all fields verified against DBLP + CrossRef ground truth.**
+
+---
+
+### Bibliography Pass 4 Summary
+
+| Citation | Status | Action |
+|---------|--------|--------|
+| Whitten and Tygar (1999) — Why Johnny Can't Encrypt | ✅ CLEAN — all fields verified via DBLP | None |
+| Felt et al. (2012) — Android Permissions | ✅ CLEAN — all fields verified via DBLP + CrossRef | None |
+
+**JONY-ACTIONS open (tick-4153): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA).** No change. Batch memo (docs/jony-batch-decision-memo-2026-06-28.md) still awaiting Jony review.
