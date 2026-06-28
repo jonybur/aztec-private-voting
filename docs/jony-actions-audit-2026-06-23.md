@@ -657,3 +657,37 @@ Also confirmed no new structural issues in: §1.1 Named Limitation (consistent w
 No new JONY-ACTIONs introduced.
 
 **JONY-ACTIONS open (tick-4017): 6 (I, G, A, B, C, O) + [verification URL] — unchanged.**
+
+---
+
+## Update: tick-4143 (2026-06-28) — JONY-ACTION Y replacement verification
+
+**JONY-ACTION Y — §1.1 opening claim: Mango Markets October 2022 verified as replacement**
+
+Tick-4139 (commit a1300d1, VON-604) flagged three factual errors in the §1.1 KelpDAO opening claim and proposed three options: (a) correct the KelpDAO description, (b) replace with Mango Markets October 2022, or (c) generalize the opener. This tick verifies option (b) — whether Mango Markets October 2022 is a factually accurate replacement.
+
+**Verified facts (web search, 3 searches, sources: TRM Labs, BeInCrypto, CoinTelegraph, McMillan CA, CoinDesk, Unchained):**
+
+1. **Exploit**: October 11, 2022 — approximately $116–117M drained from Mango Markets (Solana DeFi protocol) via a price-feed oracle manipulation exploit by Avraham Eisenberg.
+2. **Governance vote**: October 12, 2022 — Eisenberg (the attacker) submitted a settlement proposal to the Mango DAO governance forum. The DAO community posted a counter-proposal. The resulting on-chain governance vote resolved with 98% of MNGO token holders voting to accept the settlement: Eisenberg returns ~$67M, keeps ~$47M, and Mango Markets treasury covers remaining bad debt.
+3. **Loss socialization**: The vote explicitly directed the Mango DAO treasury to cover "any remaining bad debt" after Eisenberg's return — i.e., protocol losses were socialized across the treasury (and implicitly its token-holder stakeholders). This IS a loss-socialization governance decision.
+4. **Public wallet addresses**: Mango Markets governance uses the Solana Realms platform. MNGO token holders deposit tokens to an on-chain governance contract and cast votes via on-chain transactions. Solana is a public blockchain; all governance votes record the voter wallet address on-chain, publicly and permanently. The paper's claim "every voter's wallet address was public on-chain" is accurate for this mechanism.
+5. **Contextual nuance**: The vote was proposed BY the attacker (Eisenberg held a large MNGO position and voted with it). This does not affect the paper's point about voter address exposure, but Jony may wish to note or omit this detail in the opener depending on how the example is framed.
+
+**Verdict: Mango Markets October 2022 IS a valid, factually accurate replacement for the KelpDAO opening example.**
+
+**Recommended replacement sentence (option b):**
+> "When Mango Markets put the loss-socialisation decision from a $116M protocol exploit to a governance vote in October 2022, every voter's wallet address was public on-chain."
+
+This is accurate on all four counts that the KelpDAO version failed: (1) amount ✅, (2) year/date ✅, (3) governance vote IS a loss-socialisation decision ✅, (4) governance vote structure IS an on-chain token-holder vote ✅.
+
+**Sources relied on** (all external/untrusted, Jony should verify before CHI submission):
+- TRM Labs blog: "the protocol's community allowed him to keep $47 million in a governance vote. Mango Markets lost around $116 million worth of funds in the exploit."
+- CoinTelegraph (Oct 12, 2022): attacker "proposing Treasury Liquidation Vote" same day as exploit; proposal directed DAO treasury to repay bad debts.
+- Unchained: "98% of voters agreeing to let the hacker keep $47 million"
+- McMillan CA legal analysis: "The funds sent by you and the mango DAO treasury will be used to cover any remaining bad debt" (from the proposal text)
+- CoinDesk (Oct 14, 2022): community counter-proposal requiring return within 12 hours of vote passing
+
+**JONY-ACTION Y status:** Replacement candidate verified. Option (b) is factually sound. Jony to confirm (a), (b), or (c) before CHI submission. Option (b) requires only one sentence change in §1.1.
+
+**JONY-ACTIONS open (tick-4143): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; see paper draft §1.1/§2 notes for detail on recent additions Z/AA). Y verification complete — awaiting Jony confirmation of option. 
