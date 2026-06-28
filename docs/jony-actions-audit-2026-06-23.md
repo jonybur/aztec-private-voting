@@ -719,4 +719,74 @@ Precision: W&T ✅ (absent PGP confirmation → error-attribution); Felt et al. 
 
 After Jony confirms Z(a2): Q, Z, AA resolved. Open count drops from 17 to 14. Remaining: I, G, A, B, C, O, P, R, S, T, U, W, X, Y.
 
-**JONY-ACTIONS open (tick-4144): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; Z/AA/Q pending Jony confirmation of Z option a2).  
+**JONY-ACTIONS open (tick-4144): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; Z/AA/Q pending Jony confirmation of Z option a2).
+
+---
+
+## Update: tick-4145 (2026-06-28) — JONY-ACTION P §6.1 cross-verification
+
+**JONY-ACTION P — §6.1 E&S mechanism precision: option (a) verified, Z(a2) independence confirmed**
+
+### Context
+
+JONY-ACTION P (tick-4113, commit c324610) flagged that §6.1 attributes 'error-attribution' to Egelman & Schechter (2013) — but that mechanism is W&T's (1999), not E&S's. E&S's actual mechanism is threat-model mismatch / bounded rationality (conscious dismissal of warnings as inapplicable). Tick-4144 confirmed Z(a2) scope is §1.1 only and explicitly noted: "Does NOT cascade to fix P (§6.1)."
+
+### Check 1: Z(a2) independence from P — CONFIRMED ✅
+
+Z(a2) revises the §1.1 trio sentence. JONY-ACTION P is about §6.1 — a completely separate paragraph. No interaction between these two fixes. After Z(a2) and P(a) are both applied:
+
+| Site | E&S description | Post-fix text | Consistent? |
+|------|----------------|--------------|-------------|
+| §1.1 (Z a2) | dismissing warnings as inapplicable | "dismissing warnings as inapplicable [Egelman and Schechter 2013]" | ✅ |
+| §6.1 (P a) | threat-model dismissal; conscientiously bypass | "dismiss unexpected security feedback when it does not align with their threat model — acting from bounded rationality, they conscientiously bypass it" | ✅ |
+
+Both descriptions accurately name E&S's mechanism. Both are consistent with each other and with the verified E&S (2013) abstract (Springer LNCS 7859, FC 2013). ✅
+
+### Check 2: Option (a) text precision — CONFIRMED ✅
+
+**Current §6.1 text (to be replaced):**
+> "Egelman and Schechter (2013) find that even security-aware users, when confronted with feedback that violates expected conventions, tend toward behavioral normalization: they attribute the unexpected signal to error rather than design and proceed as if the system had confirmed the usual thing."
+
+**Issue:** 'attribute to error rather than design' is W&T's contribution (documented in the prior sentence: 'users do not conclude that the system is protecting them — they conclude that something has gone wrong'). E&S's finding is conscious dismissal via threat-model mismatch.
+
+**Option (a) replacement:**
+> "Egelman and Schechter (2013) find that even security-aware users dismiss unexpected security feedback when it does not align with their threat model — acting from bounded rationality, they conscientiously bypass it and proceed as if the system had confirmed the usual thing."
+
+**Precision check:**
+- "dismiss unexpected security feedback" ✅ (E&S: users conscientiously ignored phishing warnings)
+- "when it does not align with their threat model" ✅ (E&S: 'misunderstandings about the threat model led participants to believe that the warnings did not apply to them')
+- "acting from bounded rationality" ✅ (E&S verbatim: 'acting out of bounded rationality')
+- "conscientiously bypass it" ✅ (E&S: 'made conscientious decisions to ignore the warnings')
+- "proceed as if the system had confirmed the usual thing" ✅ (E&S: users bypassed the warning and proceeded — the behavioral outcome the paper needs for its argument)
+- Drops: 'error rather than design' ✅ (this was the W&T mechanism, now correctly removed)
+- Preserves: 'even security-aware users' ✅ (E&S studied security-aware users who still bypassed warnings)
+
+### Check 3: Paragraph coherence after P(a) fix — CLEAN ✅
+
+§6.1 paragraph structure after applying P(a):
+
+1. W&T: absent indicator → error-attribution → "something has gone wrong" (absent-choice receipt context)
+2. "This failure mode is not limited to novice users."
+3. E&S [fixed]: security-aware users dismiss unexpected feedback via threat-model mismatch and proceed as if confirmed (extends W&T's point: bypass-of-security-feedback is not novice-only)
+4. "The security property is invisible precisely to the users who most need to understand it."
+
+After the fix: the paragraph correctly attributes error-attribution to W&T at step 1 and threat-model-dismissal-bypass to E&S at step 3. The bridge ('not limited to novice users') still works — E&S's participants were security-aware, yet still bypassed unexpected feedback. The concluding sentence ('invisible precisely to the users who most need to understand it') applies to both mechanisms. ✅
+
+**Minor note:** E&S studied unexpected PRESENCE of a warning; the §6.1 context is about ABSENT choice. The option (a) fix ('unexpected security feedback...does not align with their threat model') is slightly more general than E&S's specific scenario (present warning that doesn't fit threat model). This generalisation is consistent with the paper's HCI analogical citation practice at §2.1 (where E&S is used as 'borderline acceptable' for a similar analogical extension). Severity: LOW. No new JONY-ACTION required.
+
+### Summary
+
+**JONY-ACTION P — §6.1 E&S mechanism fix is ready to apply.**
+
+- Z(a2) independence: ✅ CONFIRMED (§1.1 fix and §6.1 fix are completely independent edits)
+- Option (a) text precision: ✅ CONFIRMED (all five E&S-attributed claims accurate; error-attribution removed)
+- Paragraph coherence: ✅ CONFIRMED (W&T + E&S mechanisms now correctly distinguished; concluding sentence valid)
+- Cross-consistency with Z(a2): ✅ CONFIRMED (§1.1 'inapplicable' and §6.1 'threat model mismatch' are compatible descriptions)
+
+**Jony to confirm option (a) or (b) before CHI submission.**
+
+Option (a) [RECOMMENDED]: Apply the fix — removes the W&T-attribution error; E&S described correctly as threat-model dismissal.
+Option (b): Keep as-is — risk that a CHI reviewer familiar with E&S notices the mechanism mismatch (moderate-severity issue).
+
+**JONY-ACTIONS open (tick-4145): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; Z/AA/Q pending Jony confirmation of Z option a2; P verification complete — awaiting Jony option a/b).
+  
