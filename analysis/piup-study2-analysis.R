@@ -865,6 +865,43 @@ if (!PILOT) {
   cat("  *** PRE-SPECIFIED SENSITIVITY (§9.3) ***\n\n")
 }
 
+# --- Pre-specified sensitivity: H2.4 excluding browser-fallback participants (§9.3) ---
+# download_clicked = 0 for fallback participants is an ARTIFACT of rendering failure:
+# static screenshots have no interactive button, so behavioural download click cannot be
+# observed. The H2.4 logistic regression (download_click ~ M1 + L + E + I) is therefore
+# contaminated if fallback participants are included. This sensitivity re-runs H2.4 excluding
+# them, and is the most important §9.3 sensitivity for H2.4.
+if (!PILOT) {
+  cat("[SENSITIVITY] H2.4 re-run excluding browser-fallback participants (§9.3):\n")
+  n_fbk_h24 <- sum(df[[COL_BROWSER_FALLBACK]] == 1, na.rm = TRUE)
+  if (n_fbk_h24 > 0) {
+    df_no_fbk_h24 <- df[df[[COL_BROWSER_FALLBACK]] == 0 | is.na(df[[COL_BROWSER_FALLBACK]]), ]
+    df_lr_nb <- df_no_fbk_h24[
+      !is.na(df_no_fbk_h24$m3_click) & !is.na(df_no_fbk_h24$m1_qac) &
+      !is.na(df_no_fbk_h24$L) & !is.na(df_no_fbk_h24$E) & !is.na(df_no_fbk_h24$I), ]
+    lr_nb_h24 <- glm(m3_click ~ m1_qac + L + E + I, data = df_lr_nb, family = binomial())
+    lr_nb_h24_tidy <- broom::tidy(lr_nb_h24, exponentiate = TRUE, conf.int = TRUE)
+    m1_nb_row <- lr_nb_h24_tidy[lr_nb_h24_tidy$term == "m1_qac", ]
+    cat(sprintf("  Excluding %d browser-fallback participant(s) (N=%d remaining in LR):\n",
+                n_fbk_h24, nrow(df_lr_nb)))
+    if (nrow(m1_nb_row) > 0) {
+      cat(sprintf("  M1 (Q-AC accuracy): OR = %.2f [%.2f, %.2f], p = %.4f\n",
+                  m1_nb_row$estimate, m1_nb_row$conf.low, m1_nb_row$conf.high, m1_nb_row$p.value))
+      cat(sprintf("  Sensitivity verdict: %s\n",
+                  if (m1_nb_row$p.value < 0.05 && m1_nb_row$estimate > 1)
+                    "H2.4 SUPPORTED in full-prototype-only sample (result robust)"
+                  else
+                    "H2.4 NOT SUPPORTED in full-prototype-only sample (browser-fallback contamination may have affected download_clicked)"))
+    } else {
+      cat("  m1_qac term not found in sensitivity LR — check factor levels.\n")
+    }
+  } else {
+    cat("  No browser-fallback participants detected — sensitivity check not applicable.\n")
+  }
+  cat("  NOTE: download_clicked = 0 for fallback Ps is an artefact (no interactive button in static screenshot).\n")
+  cat("  *** PRE-SPECIFIED SENSITIVITY (§9.3) ***\n\n")
+}
+
 # =============================================================================
 # 6. SUMMARY TABLE — ALL PRE-SPECIFIED CONFIRMATORY TESTS
 # =============================================================================

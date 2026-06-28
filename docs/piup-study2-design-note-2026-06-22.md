@@ -331,8 +331,31 @@ Consistent with Study 1:
 - Response time < 90 seconds (total study time; interactive prototype auto-timestamps)
 - Failed both attention checks
 
-**Additional exclusion for Study 2:**
-- Browser that does not support the interactive prototype rendering (fallback to static screenshot allowed, flagged in analysis as a sensitivity covariate)
+**Additional Study 2 criterion (sensitivity covariate — NOT an exclusion):**
+- Browser that does not support the interactive prototype rendering: participant is **retained** in the primary analytic sample but flagged (`browser_fallback = 1`). A static screenshot is shown as a fallback. The analysis script (tick-4062/4063) re-runs H2.1 and H2.4 excluding these participants as pre-specified sensitivity checks.
+
+#### 9.3.1 Qualtrics browser-fallback detection mechanism
+
+> **Gap (identified tick-4063):** The Qualtrics setup guide (`docs/qualtrics-setup-guide-2026-06-22.md`) covers Study 1 only (static screenshot stimuli). It has no Study 2 section and no instructions for detecting or logging whether the VoteReceipt interactive prototype rendered successfully.
+>
+> **Required implementation for Study 2 Qualtrics survey:**
+> In the Stimulus block JavaScript, after the iframe `onload` event fires, attempt to read a known postMessage acknowledgement from the VoteReceipt component (or check `iframe.contentDocument` access). If the prototype does not render within a timeout (e.g. 8 seconds), show a fallback static screenshot via a second `<img>` element and set:
+> ```javascript
+> Qualtrics.SurveyEngine.setEmbeddedData("browser_fallback", "1");
+> ```
+> If the prototype renders successfully:
+> ```javascript
+> Qualtrics.SurveyEngine.setEmbeddedData("browser_fallback", "0");
+> ```
+> The embedded data field `browser_fallback` must be declared in the Survey Flow Embedded Data element (before the Stimulus block) so that Qualtrics captures it in the export. The analysis script's `COL_BROWSER_FALLBACK <- "browser_fallback"` column map entry (tick-4062) expects this exact field name in the Prolific/Qualtrics CSV export.
+
+#### 9.3.2 Effect on §10 power analysis and H2.4 contamination
+
+The ~3% browser-fallback rate does **not** require an increase in the N=240 recruitment target:
+- Fallback participants are **retained** in the primary analysis; they are not excluded. The 20–25% exclusion headroom in §10.1 covers only the three exclusion criteria (SW engineers, RT < 90s, failed both ACs).
+- The sensitivity check uses the retained sample minus fallback participants (≈ 97% × analytic N), reducing H2.1 sensitivity-check power only marginally.
+
+However, H2.4 (download_clicked ~ M1 logistic regression) is the hypothesis **most directly contaminated** by browser-fallback. Fallback participants see a static screenshot with no interactive download button; their `download_clicked = 0` is an artefact of rendering failure, not a measure of save intention. The analysis script (tick-4063) therefore adds a pre-specified H2.4 browser-fallback sensitivity check parallel to the H2.1 check.
 
 ### 9.4 Open-text coding (M6 / Q-OE)
 
@@ -470,6 +493,7 @@ Study 2 has the following dependencies on Study 1:
 |------|---------------|-------------|---------------|
 | 2026-06-22 | Initial design note | First draft; not yet pre-registered | Jony Bursztyn |
 | 2026-06-27 | Status update — §14 item 3 | Interactive prototype (VoteReceipt study mode) marked complete: `studyMode`, `explanationVariant`, `onDownloadClick`, `onVerifyExpanded` props implemented (commit 039633f). 70 VoteReceipt tests pass. No further engineering needed for §14.3 before Study 2 launch. (tick-4061) | OpenClaw Agent |
+| 2026-06-28 | Gap analysis — §9.3 browser-fallback | (a) Identified gap: `qualtrics-setup-guide-2026-06-22.md` is Study 1-only — no Study 2 Qualtrics survey exists yet and no browser-fallback detection mechanism was specified. Added §9.3.1 with the required JavaScript/Embedded Data implementation for detecting prototype rendering failure and setting `browser_fallback = 1`. (b) Confirmed §10 N=240 is unaffected (fallback Ps retained; no exclusion headroom change needed). (c) Identified H2.4 contamination risk (fallback Ps cannot click download button; `download_clicked = 0` is artefact). Added §9.3.2. (d) Analysis script extended with pre-specified H2.4 browser-fallback sensitivity check parallel to H2.1 check. (tick-4063) | OpenClaw Agent |
 
 ---
 
