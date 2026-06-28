@@ -3164,3 +3164,49 @@ The opening paragraph's KelpDAO claim has three factual errors: (1) wrong year (
 Bracketed note added to §1.1 in paper draft. **Commit this tick.**
 
 **JONY-ACTIONS open (tick-4139): 15 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y).**
+
+---
+
+## §1.1 W&T Whitten & Tygar (1999) claim precision audit — CLEAN ✅ (tick-4140, VON-605)
+
+**Audit task (tick-4140):** Is the §1.1 attribution of "users interpret interface absence as system error" to W&T (1999) an over-attribution?
+
+**§1.1 text being audited:**
+> "Across usability-security research from Whitten and Tygar's foundational evaluation of PGP (1999) through Felt et al.'s work on Android permissions (2012) to Egelman and Schechter's framework for security warnings (2013), a consistent finding emerges: users interpret interface absence as system error unless the absence is explicitly marked as intentional."
+
+---
+
+### Check 1: Does W&T (1999) support "users interpret interface absence as system error"?
+
+**Evidence (precedent):** JONY-ACTION R (tick-4118) conducted a definitive §2.2 audit of the same underlying claim, co-citing W&T (1999) and E&S (2013) for "absent expected content as failure." The tick-4118 finding:
+> "W&T (1999) directly supports this claim: PGP users encountered system outputs they couldn't interpret and concluded the system had failed (error-attribution mechanism). CLEAN ✅."
+
+**Mechanism match:** The §1.1 claim ("users interpret interface absence as system error") is structurally identical to the §2.2 claim ("users interpret absent expected content as failure"). Both describe the absent-indicator → error-attribution pattern. W&T's PGP study documented users who — when facing absent or ambiguous encryption confirmation — concluded the system had failed. This is the "absence as error" mechanism the §1.1 sentence claims.
+
+**Verdict: W&T §1.1 — CLEAN ✅.** The W&T citation in §1.1 is accurate. W&T documents the error-attribution mechanism (absent security output → "system failed" inference). Consistent with JONY-ACTION R §2.2 verification.
+
+---
+
+### Check 2: Does the §1.1 "consistent finding" trio have other precision concerns?
+
+The §1.1 sentence attributes the "consistent finding" to three papers: W&T, Felt et al. (2012), and E&S (2013).
+
+- **W&T (1999):** CLEAN ✅ (this audit)
+- **E&S (2013):** JONY-ACTION Q (tick-4114) — wrong label "framework for security warnings." The E&S mechanism concern (does E&S support absence-as-failure?) is captured at §2.2 by JONY-ACTION R: E&S (unexpected *presence* of phishing warning, not absence) is a different mechanism. However, fixing JONY-ACTION Q (wrong label) is the priority for §1.1.
+- **Felt et al. (2012):** NOT YET SPECIFICALLY AUDITED for "absence as error" at §1.1. Felt et al. (2012) is a SOUPS paper on Android permissions user behaviour. Their finding that users don't read permission dialogs (17% attention rate) is not obviously about "interpreting absence as error." This requires a separate precision audit.
+
+**Pending: Felt et al. (2012) §1.1 claim precision audit** — does the Android permissions paper specifically support the "users interpret interface absence as system error" claim? This is the next §1.1 audit candidate.
+
+---
+
+### Summary (tick-4140)
+
+| Citation | §1.1 Use | Status |
+|---|---|---|
+| W&T (1999) | "users interpret interface absence as system error" | ✅ CLEAN |
+| Felt et al. (2012) | same "consistent finding" | ⏳ NOT YET AUDITED |
+| E&S (2013) | same "consistent finding" | JONY-ACTION Q (label), mechanism concern noted (R) |
+
+**Next audit candidate:** Felt et al. (2012) §1.1 precision — does the Android permissions paper support the absence-as-error claim? (tick-4141 candidate)
+
+**No JONY-ACTION required this tick.** W&T §1.1 CLEAN.
