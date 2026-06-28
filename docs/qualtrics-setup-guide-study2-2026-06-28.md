@@ -47,8 +47,8 @@ The host page decodes the condition string and maps it to `VoteReceipt` props:
 
 | Condition segment | VoteReceipt prop | Value |
 |-------------------|-----------------|-------|
-| L1 | `label` prop | `"vote fingerprint"` |
-| L2 | `label` prop | `"confirmation code"` |
+| L1 | `labelVariant` prop | `"fingerprint"` |
+| L2 | `labelVariant` prop | `"confirmation-code"` |
 | E1 | `explanationVariant` | `"explained"` |
 | E2 | `explanationVariant` | `"unexplained"` |
 | `studyMode` | always `true` | disables real download; routes to callbacks |
@@ -86,7 +86,7 @@ export default function App() {
   const params = new URLSearchParams(window.location.search);
   const condition = params.get('condition') ?? 'L1E1I1';
 
-  const label = condition.startsWith('L1') ? 'vote fingerprint' : 'confirmation code';
+  const labelVariant = condition.startsWith('L1') ? 'fingerprint' : 'confirmation-code';
   const explanationVariant = condition.includes('E1') ? 'explained' : 'unexplained';
 
   // Signal render-ready to Qualtrics parent
@@ -106,7 +106,7 @@ export default function App() {
     <div style={{ padding: '16px', maxWidth: '640px', margin: '0 auto' }}>
       <VoteReceipt
         receipt={FAKE_RECEIPT}
-        label={label}
+        labelVariant={labelVariant}
         explanationVariant={explanationVariant}
         studyMode={true}
         onDownloadClick={handleDownloadClick}
