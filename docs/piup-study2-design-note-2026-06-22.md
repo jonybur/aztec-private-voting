@@ -178,8 +178,10 @@ Participants in the I2 conditions see the following two-question prompt before t
 Immediately after submitting:
 
 > **Your answers:**  
-> Q1: The correct answer is **No** — the receipt does not include your vote choice. This is intentional: showing your vote would create a coercion risk.  
-> Q2: The correct answer is **To let you verify later that your ballot was counted** — it proves your ballot was included in the tally, not what you voted.
+> Q1: The correct answer is **No** — the receipt does not include your vote choice. This is intentional: showing your vote would create a risk of coercion.  
+> Q2: The correct answer is **To let you verify later that your ballot was counted** — the [LABEL_NOUN] proves your ballot was included in the tally, not what you voted.
+
+[Fixed tick-4126: Two wording deviations from instrument §5 (master source) corrected. (1) Q1 feedback: 'coercion risk' → 'risk of coercion' (minor word-order sync). (2) Q2 feedback: 'it proves' → 'the [LABEL_NOUN] proves' (label-conditioned wording sync). The instrument uses the condition-specific label noun in CAL-FEEDBACK Q2, not a generic pronoun. This means I2 participants see the label name repeated in the accuracy feedback (once in CAL2 question, once in CAL-FEEDBACK Q2). For L2 (confirmation code) conditions, the feedback sentence 'the confirmation code proves your ballot was included in the tally, not what you voted' directly contradicts the eCommerce schema, potentially amplifying the calibration effect for L2 vs. L1. See paper §5.3 JONY-ACTION W.]
 
 Participants then proceed to the receipt.
 
