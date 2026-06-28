@@ -3467,3 +3467,64 @@ Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlati
 | Lakens (2017) — TOST | ✅ CLEAN — all fields verified; issue (4) unconfirmed but consistent | None |
 
 **JONY-ACTIONS open (tick-4151): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA).** No change from tick-4150. Batch memo (docs/jony-batch-decision-memo-2026-06-28.md) still awaiting Jony review.
+
+---
+
+## Bibliography Pass 3 (tick-4152)
+
+**Citations verified:** McKnight et al. (2002) + Lee and See (2004)
+
+**Paper bibliography entries:**
+- Lee, J.D., and See, K.A. (2004). "Trust in Automation: Designing for Appropriate Reliance." *Human Factors 46(1):50-80.*
+- McKnight, D.H., Choudhury, V., and Kacmar, C. (2002). "Developing and Validating Trust Measures for E-Commerce: An Integrative Typology." *Information Systems Research 13(3):334-359.*
+
+---
+
+### Check 1: Lee and See (2004) — CLEAN ✅
+
+**Source:** DBLP (dblp.org/rec/journals/hf/LeeS04) — full match, unique hit.
+
+| Field | Paper | Verified |
+|-------|-------|----------|
+| Authors | Lee, J.D. and See, K.A. | ✅ DBLP: John D. Lee, Katrina A. See |
+| Title | "Trust in Automation: Designing for Appropriate Reliance." | ✅ Exact match |
+| Journal | Human Factors | ✅ DBLP: Hum. Factors |
+| Volume | 46 | ✅ Confirmed |
+| Issue | 1 | ✅ DBLP: number=1 |
+| Pages | 50-80 | ✅ Confirmed |
+| Year | 2004 | ✅ Confirmed |
+| DOI | — (not in paper bibliography) | 10.1518/HFES.46.1.50.30392 (confirmed) |
+
+**Status: CLEAN ✅ — all fields verified against DBLP ground truth.**
+
+---
+
+### Check 2: McKnight et al. (2002) — CLEAN ✅
+
+**Source:** CrossRef (DOI: 10.1287/isre.13.3.334.81) — exact hit, no ambiguity.
+
+| Field | Paper | Verified |
+|-------|-------|----------|
+| Authors | McKnight, D.H., Choudhury, V., and Kacmar, C. | ✅ CrossRef: McKnight, Choudhury, Kacmar |
+| Title | "Developing and Validating Trust Measures for E-Commerce: An Integrative Typology." | ✅ CrossRef: "Developing and Validating Trust Measures for e-Commerce: An Integrative Typology" (capitalisation variant only — E-Commerce vs e-Commerce; not an error) |
+| Journal | Information Systems Research | ✅ Confirmed |
+| Volume | 13 | ✅ Confirmed |
+| Issue | 3 | ✅ Confirmed |
+| Pages | 334-359 | ✅ Confirmed |
+| Year | 2002 | ✅ Confirmed (date-parts: [[2002, 9]]) |
+| DOI | — (not in paper bibliography) | 10.1287/isre.13.3.334.81 (confirmed) |
+
+**Note on capitalisation:** CrossRef records the title with "e-Commerce" (lowercase e); the paper uses "E-Commerce" (capitalised). Both forms appear in the literature; ISR itself uses various capitalisation conventions. This is a stylistic variant only — not a factual error.
+
+**Status: CLEAN ✅ — all fields verified against CrossRef ground truth.**
+
+---
+
+### Bibliography Pass 3 Summary
+
+| Citation | Status | Action |
+|---------|--------|--------|
+| Lee and See (2004) — Trust in Automation | ✅ CLEAN — all fields verified via DBLP | None |
+| McKnight et al. (2002) — Trust Measures for e-Commerce | ✅ CLEAN — all fields verified via CrossRef | None |
+
+**JONY-ACTIONS open (tick-4152): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA).** No change. Batch memo (docs/jony-batch-decision-memo-2026-06-28.md) still awaiting Jony review.
