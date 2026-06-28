@@ -78,7 +78,13 @@ After deploying:
 ## Status
 
 - [x] Scaffold created (tick-4066)
-- [ ] monorepo `npm install` verified
-- [ ] Vite build passes
+- [x] monorepo `npm install` verified (tick-4067: changed `workspace:*` → `*` in package.json)
+- [x] Vite build passes (tick-4067: 148 KB bundle, 906ms — added `@aztec/*` rollupOptions external)
 - [ ] Deployed to Vercel
 - [ ] Fallback screenshots generated
+
+### Build notes (tick-4067)
+
+**`workspace:*` → `*`**: npm does not support pnpm's `workspace:*` protocol. Changed to `"*"` (as `demo/` does) so `npm install` resolves `@aztec-private-voting/react` via the monorepo workspace symlink.
+
+**`@aztec/*` external**: The pre-built `react` dist contains dynamic `import("@aztec/aztec.js")` calls in hooks/context code. Rollup tries to resolve these statically and fails (non-standard exports field). Since `study2-host` only uses `VoteReceipt` (zero aztec runtime deps), all `@aztec/*`, `@noir-lang/*`, and `@noble/*` packages are marked external in `vite.config.js`. The two crypto warnings on `secp256k1-47LVE5GU.mjs` are benign — that module is dead code at runtime.
