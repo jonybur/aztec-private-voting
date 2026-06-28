@@ -3124,3 +3124,43 @@ No statistical result affected: Holm corrections unchanged (base-R `p.adjust()`)
 - Simplest safe fix (before verification): Replace "they found a statistically significant fraction of voters verified online" with "they reported that voters used the online verification affordance" — removes the uncertain statistical characterisation without losing the core point.
 
 **JONY-ACTIONS open (tick-4138): 14 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X).**
+
+---
+
+## §1.1 Opening Paragraph — KelpDAO Claim Audit (tick-4139, VON-604)
+
+**Claim in §1.1 (line 37):**
+> "When KelpDAO put the loss-socialisation decision from a $71M protocol exploit to a governance vote in 2023, every voter's wallet address was public on-chain."
+
+---
+
+### Check (1): KelpDAO exploit date — ❌ WRONG → JONY-ACTION Y
+
+**Evidence:** Multiple sources (CryptoTicker, Bitcoin Foundation, CoinCentral, Galaxy, DL News) confirm the KelpDAO exploit occurred **April 18, 2026**, not 2023. The paper draft was written June 22, 2026 — after the actual event — but states "2023."
+
+---
+
+### Check (2): "$71M protocol exploit" — ❌ IMPRECISE → JONY-ACTION Y
+
+**Evidence:** The total exploit was approximately **$292M** (KelpDAO/LayerZero bridge). The $71M figure is the amount frozen by the Arbitrum Security Council from attacker-held ETH — not the total exploit size. Characterising it as "a $71M protocol exploit" misrepresents the scale; the $71M was the recovery/frozen amount.
+
+---
+
+### Check (3): "KelpDAO put the loss-socialisation decision... to a governance vote" — ❌ INACCURATE → JONY-ACTION Y
+
+**Evidence:** The governance vote involving the $71M was an **Arbitrum governance vote** (ARB token holders deciding what to do with the frozen ETH), not a KelpDAO governance vote. KelpDAO separately stated it was "evaluating next steps on loss socialization and legal coordination" (April 21 reporting), but there is no confirmed KelpDAO-internal governance vote on loss socialization. These are two different processes: (a) Arbitrum governance vote on the frozen $71M; (b) KelpDAO's internal loss-socialization evaluation.
+
+---
+
+### Verdict: ❌ THREE ERRORS — JONY-ACTION Y REQUIRED
+
+The opening paragraph's KelpDAO claim has three factual errors: (1) wrong year (2023 vs. April 2026), (2) wrong amount ($71M as exploit total vs. $292M exploit / $71M frozen), (3) wrong governance structure (Arbitrum governance vote on frozen ETH vs. KelpDAO loss-socialization vote).
+
+**JONY-ACTION Y:** Before CHI submission, correct the opening paragraph. Options:
+- **Option (a):** Update to accurately describe the April 2026 KelpDAO event. Core point (voter wallet addresses public on-chain during on-chain governance) still holds, but framing needs fixing: "When the Arbitrum Security Council froze $71M in ETH from the $292M KelpDAO/LayerZero exploit (April 2026) — and put the fate of those funds to an Arbitrum governance vote — every ARB token holder's on-chain vote was traceable by design." This preserves the paragraph's thesis (public wallet addresses, coercive pseudonymity) with accurate details.
+- **Option (b):** Replace with a better-fit example — a DAO governance vote where the *loss-socialization decision itself* was voted on by token holders with public addresses. Mango Markets (October 2022) is closer: governance vote held about the exploiter's conditions for returning funds, with on-chain public voting.
+- **Option (c):** Generalize — remove the specific KelpDAO reference, use a generic description of DeFi governance coercion dynamics, cite a review paper.
+
+Bracketed note added to §1.1 in paper draft. **Commit this tick.**
+
+**JONY-ACTIONS open (tick-4139): 15 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y).**
