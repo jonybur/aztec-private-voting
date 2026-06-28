@@ -892,3 +892,35 @@ Carback, R., Chaum, D., Clark, J., Conway, J., Essex, A., Herrnson, P.S., Mayber
 **Do NOT submit current 10-author Chaum-first entry. Jony must confirm before CHI submission.**
 
 **JONY-ACTIONS open (tick-4154): I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA, BB** (17 open; batch memo awaiting Jony; X resolved tick-4147).
+
+---
+
+## tick-4155: bibliography pass 6 — Bell et al. (2013) Perez→Pereira fix + Adida et al. (2009) attempted
+
+**JONY-ACTION CC: Bell et al. (2013) bibliography entry — author name incorrect (Perez → Pereira)**
+
+**Source:** USENIX archived page (Wayback Machine 2024-12-05 snapshot) for EVT/WOTE 2013 presentation by Bell et al.
+
+**Error found:**
+- Current bibliography: "Perez, O." (position 11 of 14 authors)
+- Correct name: "Pereira, O." (Olivier Pereira, Université Catholique de Louvain)
+- Perez and Pereira are different people; Olivier Pereira (UCLouvain) is the confirmed co-author of STAR-Vote.
+
+**USENIX-verified 14-author list:**
+Susan Bell, Josh Benaloh, Michael D. Byrne, Dana DeBeauvoir, Bryce Eakin, Gail Fisher, Philip Kortum, Neal McBurnett, Julian Montoya, Michelle Parker, Olivier Pereira (UCLouvain), Philip B. Stark, Dan S. Wallach, Michael Winn.
+
+**Fix applied (tick-4155, commit 98851ad):** Bibliography entry corrected from "Perez, O." to "Pereira, O." with verification note.
+
+**No in-text citation impact:** In-text citations say "Bell et al. (2013)" — first author Bell is correct, no change needed in-text.
+
+**This is a bibliographic correction, not a contested decision — but flagged as JONY-ACTION CC for awareness before CHI submission.**
+
+---
+
+**Adida et al. (2009) verification status:**
+Verification attempted tick-4155. DBLP (both servers) unavailable due to maintenance (503/500). USENIX blocked by Cloudflare (403). Semantic Scholar rate-limited (429). Wayback Machine no cached PDF. 
+Training knowledge consistent with bibliography: Ben Adida, Olivier de Marneffe, Olivier Pereira, Jean-Jacques Quisquater (2009). "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." EVT/WOTE 2009. — **UNCONFIRMED externally; scheduled for re-verification in tick-4157 when DBLP stable.**
+
+---
+
+**JONY-ACTIONS open (tick-4155): I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA, BB, CC** (18 open; batch memo awaiting Jony; X resolved tick-4147; CC autonomous fix already committed).
