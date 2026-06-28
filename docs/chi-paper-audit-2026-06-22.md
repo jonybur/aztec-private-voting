@@ -3210,3 +3210,83 @@ The §1.1 sentence attributes the "consistent finding" to three papers: W&T, Fel
 **Next audit candidate:** Felt et al. (2012) §1.1 precision — does the Android permissions paper support the absence-as-error claim? (tick-4141 candidate)
 
 **No JONY-ACTION required this tick.** W&T §1.1 CLEAN.
+
+## §1.1 Felt et al. (2012) claim precision audit — JONY-ACTION Z (tick-4141, VON-606)
+
+**Audit task (tick-4141):** Does Felt et al. (2012) "Android Permissions: User Attention, Comprehension, and Behavior" (SOUPS 2012) support the §1.1 claim "users interpret interface absence as system error unless the absence is explicitly marked as intentional"?
+
+**Sentence under audit (§1.1):**
+> "Across usability-security research from Whitten and Tygar's foundational evaluation of PGP (1999) through Felt et al.'s work on Android permissions (2012) to Egelman and Schechter's framework for security warnings (2013), a consistent finding emerges: users interpret interface absence as system error unless the absence is explicitly marked as intentional."
+
+### Check 1: What does Felt et al. (2012) actually find?
+
+**Confirmed from UCB technical report UCB/EECS-2012-26 + ACM DL + ResearchGate:**
+
+The paper studied whether the Android permission system is effective at warning users during app installation. Two studies: an Internet survey of 308 Android users + a laboratory study of 25 Android users.
+
+**Primary findings:**
+- **Attention:** 17% of participants paid attention to permissions during a given installation (83% ignored PRESENT permission dialogs)
+- **Comprehension:** Only 3% of Internet survey respondents could correctly answer all three permission comprehension questions
+- **Conclusion:** "current Android permission warnings do not help most users make correct security decisions"
+
+**The mechanism documented:** LOW ATTENTION and LOW COMPREHENSION of PRESENT security indicators — indicators that ARE SHOWN to users during installation but are largely ignored.
+
+### Check 2: Does this mechanism match "absence as error"?
+
+**No. Categorically different failure mode.** ❌
+
+| Paper | Security indicator state | User failure mode |
+|-------|--------------------------|-------------------|
+| W&T (1999) | ABSENT (encryption confirmation not shown) | Error-attribution: "the system failed / encryption didn't happen" |
+| Felt et al. (2012) | PRESENT (permission dialog shown during install) | Non-attention: 83% ignore the PRESENT warning |
+| E&S (2013) | PRESENT (phishing warning shown) | Threat-model dismissal: warning dismissed as inapplicable |
+
+Felt et al. (2012) documents a failure mode where users **don't process PRESENT security indicators** — the permission dialogs are displayed, but users skip them. This is:
+- Not "absence as error" (W&T's mechanism)
+- Not even about inferring error from anything — users simply bypass the warning without reading it
+
+The "consistent finding" claim in §1.1 is false for Felt et al. (2012). The trio does NOT share a "consistent finding" of "absence as error." Only W&T (1999) directly supports that mechanism. Felt et al. (2012) and E&S (2013) each document different, non-equivalent failure modes.
+
+**Could any stretch interpretation connect Felt et al. (2012) to "absence as error"?**
+
+Possible stretch: If users ignore permission dialogs, they are effectively treating the security information as absent from their mental model, and might later infer errors when unexpected app behaviour occurs. But:
+1. The Felt et al. (2012) paper does not examine this — it studies installation-time behavior, not post-installation inference
+2. The paper does not document users concluding "the system failed" — it documents that users don't engage with the permission system at all
+3. This is an indirect inference chain not supported by the paper's actual findings
+
+**Verdict: ❌ PRECISION ISSUE — Felt et al. (2012) does NOT support "absence as error." → JONY-ACTION Z**
+
+### Severity assessment
+
+HIGH. The Felt et al. (2012) Android permissions paper is widely cited and well-known in the SOUPS/HCI-security community. A CHI reviewer familiar with it will immediately recognize that its core finding (83% of users ignore PRESENT permission dialogs) is about non-attention to present indicators, not about absent indicator → error inference. The mismatch is fundamental and checkable from the paper's abstract alone. The "consistent finding" framing further compounds the error — the three cited papers do NOT share a consistent mechanism.
+
+**Combined §1.1 trio precision status:**
+- W&T (1999): ✅ CLEAN — directly supports "absence as error" (tick-4140)
+- Felt et al. (2012): ❌ JONY-ACTION Z — non-attention to PRESENT indicators (this tick)
+- E&S (2013): ❌ JONY-ACTION Q (wrong label "framework") + JONY-ACTION R mechanism concern (unexpected PRESENCE of phishing warning, not absence)
+
+The §1.1 "consistent finding: absence as error" sentence currently has only one of three citations that directly supports its claim.
+
+### Options for Jony
+
+**Option (a) [RECOMMENDED]:** Replace the trio sentence's attribution structure. Two sub-options:
+
+- **(a1):** Keep W&T (1999) as the direct "absence as error" citation, and replace Felt et al. (2012) + E&S (2013) in §1.1 with citations that are actually about absent security indicators being interpreted as failure. Candidates: Sunshine et al. (2009) "Crying Wolf" (SSL warning habituation — partial fit); Akhawe & Felt (2013) "Alice in Warningland" (USENIX Security; browser warning non-attention). If no clean replacement is found, W&T alone is sufficient for §1.1.
+
+- **(a2):** Revise the §1.1 sentence to accurately describe what each paper found, rather than claiming a single "consistent finding": "Usability-security research documents multiple failure modes when users encounter unexpected security interface states: users infer system failure from absent confirmation [Whitten and Tygar 1999], ignore present permission warnings [Felt et al. 2012], and dismiss warning dialogs as inapplicable [Egelman and Schechter 2013]. In the receipt context — where the absent content is the most confirmation-relevant element — the operative failure mode is the first: absent vote-choice display reads as recording failure."
+
+**Option (b):** Drop Felt et al. (2012) from the §1.1 trio entirely. The sentence can stand with W&T (1999) alone for the "absence as error" claim, followed by E&S (2013) with the JONY-ACTION Q label fix. The trio structure is not essential — one clean citation is stronger than three imprecise ones.
+
+**Option (c):** Keep as-is. Risk HIGH: Felt et al. (2012) mismatch is detectable from the abstract. The "consistent finding" framing collapses if even one of the three papers doesn't support the claim.
+
+Jony must confirm option (a1), (a2), (b), or (c) before CHI submission.
+
+### Summary (tick-4141)
+
+| Citation | Claim | Status |
+|----------|-------|--------|
+| W&T (1999) | "users interpret interface absence as system error" | ✅ CLEAN (tick-4140) |
+| Felt et al. (2012) | Same "consistent finding" | ❌ JONY-ACTION Z — different mechanism (non-attention to present indicators) |
+| E&S (2013) | Same "consistent finding" | ❌ JONY-ACTION Q (wrong label) + JONY-ACTION R mechanism concern |
+
+**JONY-ACTIONS open (tick-4141): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z).**
