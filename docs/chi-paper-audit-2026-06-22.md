@@ -3088,3 +3088,39 @@ No statistical result affected: Holm corrections unchanged (base-R `p.adjust()`)
 **Sites 1–4 cross-reference verification (tick-4060):** Paper draft text at lines 90 (Site 1), 403 (Site 2), 441 (Site 4), 463 (Site 3) all confirmed to match the spec in `piup-study1-abc-paper-edits-2026-06-27.md` exactly. No drift since tick-4006/4031 audits. All four sites ready to apply when Jony confirms A/B/C.
 
 **JONY-ACTIONS open (tick-4060): 6 (I, G, A, B, C, O) — unchanged.**
+
+---
+
+## §1.4 Chaum et al. (2010) Claim Precision Audit (tick-4138, VON-603)
+
+**Claim in §1.4 (line 112):**
+> "Chaum et al.'s (2010) deployment of Scantegrity II in Takoma Park, the first binding governmental election with ballot privacy and end-to-end verifiability - evaluates whether voters *use* the verification affordance (they found a statistically significant fraction of voters verified online)"
+
+---
+
+### Check (1): "First binding governmental election with ballot privacy and end-to-end verifiability" — ✅ CLEAN
+
+**Evidence:** ACM DL abstract, ResearchGate abstract, MIT DSpace abstract, Brave search results all confirm verbatim: "the first time any end-to-end (E2E) voting system with ballot privacy has been used in a binding governmental election." This phrase appears in the paper's abstract / title per all independent sources. ✅
+
+---
+
+### Check (2): "They found a statistically significant fraction of voters verified online" — ⚠️ UNCERTAIN → JONY-ACTION X
+
+**Evidence gathered:**
+
+1. **Mock election prediction paper** (MIT Rivest SCCCx10.pdf, "Scantegrity Mock Election at Takoma Park," April 2009 mock election, 95 voters): Snippet from Brave web search confirms it says: *"A statistically significant number of voters **will** verify their votes online, and a statistically significant number of them **will** detect errors, if present, to produce high assurance in the..."* — **FUTURE TENSE.** This is a **hypothesis/prediction** about what the November 2009 binding election would produce, not a result.
+
+2. **Actual binding election report** (Carback/Chaum et al. USENIX Security 2010, November 2009 election, 1,722 voters): PDFs not extractable as text from any source. From search snippet, the paper notes: *"The number of voters who checked their ballots online before the Takoma Park complaint deadline (66)..."* — this "(66)" may be the actual count or a document reference. Crucially, no search snippet from the actual 2010 paper uses the phrase "statistically significant" about the verification rate.
+
+3. **Structural concern:** In a binding election, all 1,722 voters who cast ballots ARE the population, not a sample. The phrase "statistically significant" in the frequentist sense requires a null model (e.g., testing whether verification rate differs from some baseline). A real-election deployment paper typically reports raw verification counts, not p-values. If the 2010 paper says "N voters verified online" (raw count) rather than "the verification rate was statistically significantly above X%", then the CHI paper's "statistically significant fraction" claim imports hypothesis-testing language that the source doesn't use.
+
+4. **Risk for CHI reviewers:** A reviewer familiar with the Scantegrity II literature could (a) verify the paper does not use "statistically significant" for the verification rate, and (b) note that "statistically significant fraction" is a methodological characterisation not applicable to a census deployment, creating a credibility issue.
+
+**Status:** UNCERTAIN — cannot confirm "statistically significant" is the language used in the 2010 paper vs. only in the mock election prediction paper.
+
+**JONY-ACTION X:** Read Carback/Chaum et al. (2010) §6.3 ("After the Election") or §7 ("Surveys and Observations of Voter Experiences") to answer: (a) Does the paper use "statistically significant" to characterise the verification rate? (b) What is the exact number of voters who verified online? Then decide:
+- Option (a): Paper uses "statistically significant" — keep §1.4 text. CLEAN.
+- Option (b): Paper reports a raw count without "statistically significant" framing — replace with "they found that [N] voters used the online verification affordance" or "they found a notable fraction of voters verified online."
+- Simplest safe fix (before verification): Replace "they found a statistically significant fraction of voters verified online" with "they reported that voters used the online verification affordance" — removes the uncertain statistical characterisation without losing the core point.
+
+**JONY-ACTIONS open (tick-4138): 14 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X).**
