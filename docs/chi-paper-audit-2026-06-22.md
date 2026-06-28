@@ -3401,3 +3401,69 @@ Both changes are factually accurate: Chaum et al. (2010) DO document that verifi
 ### Status
 
 **JONY-ACTION X RESOLVED (tick-4147).** No open decisions. JONY-ACTIONS open drops from 17 to 16: (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA). Note: X removed from the open list; R/S pending Jony option (a) confirmation; Z/AA/Q pending Jony Z(a2) confirmation; P pending Jony option (a)/(b).
+
+---
+
+## Bibliography Completeness Pass 2 — Faul et al. (2009) + Lakens (2017) — CLEAN ✅ (tick-4151)
+
+### Scope
+
+Verification of two methodology citations central to the Study 1 analysis plan: the G*Power power analysis citation (Faul et al., 2009) and the TOST equivalence test citation (Lakens, 2017). Both are cited in §4.2 (power analysis) and §4.5/§5.5 (H2-tertiary equivalence test).
+
+---
+
+### Check 1: Faul et al. (2009) — G*Power 3.1 citation — CLEAN ✅
+
+**Citation in paper (bibliography line 482):**
+Faul, F., Erdfelder, E., Buchner, A., and Lang, A.-G. (2009). "Statistical power analyses using G*Power 3.1: Tests for correlation and regression analyses." *Behavior Research Methods*, 41(4), 1149-1160.
+
+**Verification sources:** Springer Nature Link (https://link.springer.com/article/10.3758/BRM.41.4.1149), Semantic Scholar.
+
+**Result:**
+| Field | Paper | Verified |
+|-------|-------|---------|
+| Authors | Faul, Erdfelder, Buchner, Lang (4) | ✅ Confirmed (Semantic Scholar: Franz Faul, Edgar Erdfelder, Axel Buchner, Albert-Georg Lang) |
+| Year | 2009 | ✅ Confirmed |
+| Title | "Statistical power analyses using G*Power 3.1: Tests for correlation and regression analyses" | ✅ Confirmed |
+| Journal | Behavior Research Methods | ✅ Confirmed |
+| Volume | 41 | ✅ Confirmed (Springer URL: BRM.41.4.1149) |
+| Issue | 4 | ✅ Confirmed (Springer URL: BRM.41.4.1149) |
+| Pages | 1149-1160 | ✅ Confirmed |
+
+**Status: CLEAN ✅ — no action required.**
+
+Note: The tick-4039 fix (removing spurious author 'Abt, A.-G.' and confirming 4-author list) is verified correct. The correct 4 authors (Faul, Erdfelder, Buchner, Lang) match Semantic Scholar and Springer exactly.
+
+---
+
+### Check 2: Lakens (2017) — TOST equivalence test citation — CLEAN ✅
+
+**Citation in paper (bibliography line 488):**
+Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses." *Social Psychological and Personality Science* 8(4):355-362.
+
+**Verification sources:** Semantic Scholar (DOI: 10.1177/1948550617697177), SAGE Journals, ScienceOpen PMC PDF.
+
+**Result:**
+| Field | Paper | Verified |
+|-------|-------|---------|
+| Author | Lakens, D. | ✅ Confirmed (Daniel Lakens, TU Eindhoven) |
+| Year | 2017 | ✅ Confirmed |
+| Title | "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses" | ✅ Confirmed |
+| Journal | Social Psychological and Personality Science | ✅ Confirmed (SAGE; ISSN 1948-5506) |
+| Volume | 8 | ✅ Confirmed (Semantic Scholar: volume={8}) |
+| Issue | 4 | ⚠️ NOT EXPLICITLY VERIFIED — consistent with pages 355-362 in a 2017 volume; no source contradicts (4) |
+| Pages | 355-362 | ✅ Confirmed (Semantic Scholar: pages={355 - 362}) |
+| DOI | 10.1177/1948550617697177 | ✅ Confirmed |
+
+**Status: CLEAN ✅ — no action required.** Issue number "(4)" is unverified but consistent with all other metadata; SAGE does not expose issue metadata through fetch. No error evidence found.
+
+---
+
+### Bibliography Pass 2 Summary
+
+| Citation | Status | Action |
+|---------|--------|--------|
+| Faul et al. (2009) — G*Power 3.1 | ✅ CLEAN — all fields verified | None |
+| Lakens (2017) — TOST | ✅ CLEAN — all fields verified; issue (4) unconfirmed but consistent | None |
+
+**JONY-ACTIONS open (tick-4151): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA).** No change from tick-4150. Batch memo (docs/jony-batch-decision-memo-2026-06-28.md) still awaiting Jony review.
