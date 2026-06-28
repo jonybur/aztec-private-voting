@@ -366,7 +366,11 @@ df$m4_residual[i2_rows] <- (df$m4_conf_raw[i2_rows] - 1) / 6 - df$m1_qac[i2_rows
 df$m5_expand <- df[[COL_VERIFY_EXPAND]]
 
 # M6 inter-rater mean
-df$m6_qoe <- rowMeans(df[, c(COL_QOE_RATER1, COL_QOE_RATER2)], na.rm = TRUE)
+# round() matches the instrument §16 formula: qoe_final = round((r1 + r2) / 2).
+# After the tie-breaking protocol (§16), both raters should agree on integer scores,
+# so round() will have no effect in practice — but is retained for consistency with
+# the pre-registered instrument.
+df$m6_qoe <- round(rowMeans(df[, c(COL_QOE_RATER1, COL_QOE_RATER2)], na.rm = TRUE))
 
 # Factor variables for ANOVA
 df$L <- factor(df[[COL_L]], levels = c("L1", "L2"),

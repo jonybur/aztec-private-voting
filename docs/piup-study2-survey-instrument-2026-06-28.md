@@ -259,9 +259,15 @@ Qualtrics.SurveyEngine.addOnload(function() {
             fallbackShown = true;
             Qualtrics.SurveyEngine.setEmbeddedData("browser_fallback", "1");
             // Show fallback static screenshot
+            // Truncate 6-char condition code to 4 chars (e.g. "L1E1I1" → "L1E1").
+            // Static files are named fallback-<LxEx>.png (I factor omitted; it does
+            // not affect the receipt visual). See packages/study2-host/public/static/.
             var cond = "${e://Field/condition}".substring(0, 4); // e.g. "L1E1"
             var fallbackImg = document.getElementById("piup-fallback-img");
-            if (fallbackImg) { fallbackImg.style.display = "block"; }
+            if (fallbackImg) {
+                fallbackImg.src = "https://aztec-study2.vercel.app/static/fallback-" + cond + ".png";
+                fallbackImg.style.display = "block";
+            }
             var frame = document.getElementById("piup-receipt-frame");
             if (frame) { frame.style.display = "none"; }
         }
@@ -306,13 +312,13 @@ Include a hidden `<img>` element below the iframe. The JavaScript above reveals 
 ```html
 <img
   id="piup-fallback-img"
-  src="https://aztec-study2.vercel.app/static/fallback-${e://Field/condition}.png"
-  style="display:none; max-width:600px; width:100%; margin:0 auto; display:none;"
+  src=""
+  style="display:none; max-width:600px; width:100%; margin:0 auto;"
   alt="Voting receipt static fallback"
 />
 ```
 
-*Note: Four fallback images are pre-generated for L1E1, L1E2, L2E1, L2E2 (condition code truncated to 4 chars). The I factor does not affect the receipt visual and does not require a separate fallback image. See `packages/study2-host/scripts/generate-fallback-screenshots.js` for generation instructions.*
+*Note: The `src` attribute is intentionally left empty in the HTML. The JavaScript fallback timer sets it dynamically to `https://aztec-study2.vercel.app/static/fallback-<LxEx>.png` (4-char prefix; I factor omitted) at the moment the fallback fires. This ensures the image URL is always correct regardless of condition. Four fallback images must be pre-generated: `fallback-L1E1.png`, `fallback-L1E2.png`, `fallback-L2E1.png`, `fallback-L2E2.png`. See `packages/study2-host/scripts/generate-fallback-screenshots.js` for generation instructions.*
 
 ### Transition screen (after stimulus)
 
@@ -453,7 +459,7 @@ Include a hidden `<img>` element below the iframe. The JavaScript above reveals 
 7-point Likert:  
 1 = *Not at all confident* … 4 = *Moderately confident* … 7 = *Completely confident*
 
-*Note: This item measures retrospective confidence in calibration probe answers, not post-receipt confidence. It is placed after the Comprehension and Trust blocks (§8–§9) so that seeing the receipt's actual content can inform the retrospective judgment. The analysis script computes calibration residual as `calibration_confidence` − Q-AC actual accuracy. Positive residual = over-confidence in the calibration probe; negative = under-confidence.*
+*Note: This item measures retrospective confidence in calibration probe answers, not post-receipt confidence. It is placed after the Comprehension and Trust blocks (§8–§9) so that seeing the receipt's actual content can inform the retrospective judgment. The analysis script computes the calibration residual as: `m4_residual = (calibration_confidence − 1) / 6 − qac_correct`. Confidence is first rescaled from its raw 1–7 range to a 0–1 scale using the `(x − 1) / 6` transform, so that it is on the same 0–1 metric as Q-AC binary accuracy before subtraction. Positive residual = over-confidence (confident but wrong on Q-AC); negative residual = under-confidence (answered Q-AC correctly but rated own calibration-probe answers poorly).*
 
 *Column name: `calibration_confidence` (`COL_CALIB_CONF`)*
 
@@ -702,6 +708,7 @@ Matches column map constants in `analysis/piup-study2-analysis.R`. Update those 
 | Date | Amendment type | Description | Authorized by |
 |------|---------------|-------------|---------------|
 | 2026-06-28 | Initial instrument draft | First complete draft of Study 2 survey instrument. Pre-pilot; not yet submitted to OSF. (tick-4069) | OpenClaw Agent |
+| 2026-06-28 | Three consistency fixes (tick-4070) | (1) §11 M4 residual formula: added `(conf − 1)/6` rescaling step that was present in the analysis script but missing from the instrument's verbal description. (2) §6 Fallback img src: changed from static `fallback-${condition}.png` (would 404 with 6-char code) to dynamically set by JS at fallback-fire time using 4-char `cond` prefix. (3) analysis.R M6: changed `rowMeans()` to `round(rowMeans())` to match instrument §16 formula. All pre-pilot; no protocol change, no change to question wording or hypotheses. | OpenClaw Agent |
 | (pending) | OSF registration | Upload this document, `piup-study2-analysis.R`, and `piup-study2-design-note-2026-06-22.md` to OSF before any data collection. | Jony Bursztyn |
 
 ---
