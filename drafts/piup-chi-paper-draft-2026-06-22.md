@@ -324,7 +324,7 @@ The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bo
 
 ### 4.6 Results
 
-_[To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT]. Pilot target: 2026-Q3; full launch conditional on instrument validation. Reporting structure: (1) Participant flow table - 4 conditions (A: fingerprint, B: confirmation code, C: nullifier, D: receipt ID), final N=280 (n=70/cell), demographics DM1 (age), DM2 (technology background), DM3 (prior voting experience), pre-specified exclusion protocol applied (software engineers, both attention checks failed, response time < 90 s); (2) omnibus chi-squared result; (3) per-hypothesis family in H1-H4 order; (4) Q5 open-text analysis; (5) exploratory comparisons.]_
+_[To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT]. Pilot target: 2026-Q3; full launch conditional on instrument validation. Reporting structure: (1) Participant flow table - 4 conditions (A: fingerprint, B: confirmation code, C: nullifier, D: receipt ID), final N=280 (n=70/cell), demographics DM1 (age), DM2 (technology background), DM3 (prior voting experience), pre-specified exclusion protocol applied (software engineers, both attention checks failed, response time < 90 s); (2) omnibus chi-squared result; (3) per-hypothesis family in H1-H4 order; (4) Q5 open-text analysis — when drafting this item: if any cross-study comparison to Study 2 M6 scores is included, apply the approximate-comparison qualifier established at §4.5 and §5.4 (tick-4078/4079): direct Q5/M6 score-level comparisons are approximate because the Part 2 criterion at score-2 differs by design (Q5 Part 2 = mechanism reason; M6 Part 2 = intentional-design OR harmful-consequence); (5) exploratory comparisons.]_
 
 ---
 
@@ -376,7 +376,7 @@ Study 2 is currently at design-note stage; it will be finalised and pre-register
 
 ## 6. Discussion
 
-_[§6.1-6.5 written from design framing (no Study 1 data required). §6.6 results discussion pending Study 1 data collection.]_
+_[§6.1-6.5 written from design framing (no Study 1 data required). §6.6 results discussion pending Study 1 data collection. When writing §6.6: (a) §7 conclusion checked tick-4079 — no cross-study Q5/M6 score comparison language present, no qualifier needed there. (b) If §6.6 makes any cross-study Q5 (Study 1) / M6 (Study 2) open-text comparison, apply the approximate-comparison qualifier established at §4.5 and §5.4 (tick-4078): the 0–2 scale structure is shared, but the Part 2 criterion at score-2 differs by design (Q5 Part 2 = mechanism reason; M6 Part 2 = intentional-design OR harmful-consequence), so direct score-level comparisons across studies are approximate. The qualifier language from §4.5 is: 'direct cross-study Q5/M6 score-level comparisons are approximate (see §5.4).']_
 
 ### 6.1 When does protective absence work?
 
