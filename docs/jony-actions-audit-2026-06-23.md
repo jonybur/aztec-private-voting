@@ -690,4 +690,33 @@ This is accurate on all four counts that the KelpDAO version failed: (1) amount 
 
 **JONY-ACTION Y status:** Replacement candidate verified. Option (b) is factually sound. Jony to confirm (a), (b), or (c) before CHI submission. Option (b) requires only one sentence change in §1.1.
 
-**JONY-ACTIONS open (tick-4143): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; see paper draft §1.1/§2 notes for detail on recent additions Z/AA). Y verification complete — awaiting Jony confirmation of option. 
+**JONY-ACTIONS open (tick-4143): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; see paper draft §1.1/§2 notes for detail on recent additions Z/AA). Y verification complete — awaiting Jony confirmation of option.
+
+---
+
+## Update: tick-4144 (2026-06-28) — Z/AA/Q three-action resolution memo
+
+**JONY-ACTIONS Z, AA, Q — §1.1 trio sentence: option Z(a2) resolves all three simultaneously**
+
+Tick-4144 (4th-tick audit + even CI tick). CI: aztec-private-voting none (expected), working-notes failure (known billing — not new). 4th-tick audit: meridian 0 commits/24h ✅, files CLEAN ✅, cron single 7am generate.py ✅, Multica todos 1 (VON-530 awaiting Jony) ✅.
+
+**Memo:** `docs/z-aa-q-resolution-memo-2026-06-28.md`
+
+**Finding:** JONY-ACTION Z option (a2) — revising §1.1 to name each paper's distinct mechanism — resolves three open JONY-ACTIONs with one sentence change:
+
+| Action | §1.1 Problem | Resolution |
+|--------|-------------|------------|
+| Q (tick-4114) | E&S labelled "framework for security warnings" — inaccurate | (a2) sentence names E&S by author+year only; "framework" label disappears |
+| Z (tick-4141) | Felt et al. (2012) attributed "absence as error" — their failure mode is non-attention to PRESENT warnings | (a2) names Felt et al.'s actual mechanism: "ignoring present permission warnings" |
+| AA (tick-4142) | E&S (2013) attributed "absence as error" — their failure mode is threat-model dismissal of PRESENT warnings | (a2) names E&S's actual mechanism: "dismissing warnings as inapplicable" |
+
+**Revised §1.1 sentence (option a2):**
+> "Usability-security research documents multiple failure modes when users encounter unexpected security interface states: inferring system failure from absent confirmation [Whitten and Tygar 1999], ignoring present permission warnings [Felt et al. 2012], and dismissing warnings as inapplicable [Egelman and Schechter 2013]. In the receipt context, the operative failure mode is the first."
+
+Precision: W&T ✅ (absent PGP confirmation → error-attribution); Felt et al. ✅ (83% ignored present Android dialog); E&S ✅ (threat-model dismissal = "did not apply to them").
+
+**Z(a2) scope:** §1.1 only. Does NOT cascade to fix P (§6.1), R (§2.2), or S (§2.1) — those E&S co-citation issues require separate edits per their own JONY-ACTION notes.
+
+After Jony confirms Z(a2): Q, Z, AA resolved. Open count drops from 17 to 14. Remaining: I, G, A, B, C, O, P, R, S, T, U, W, X, Y.
+
+**JONY-ACTIONS open (tick-4144): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; Z/AA/Q pending Jony confirmation of Z option a2).  
