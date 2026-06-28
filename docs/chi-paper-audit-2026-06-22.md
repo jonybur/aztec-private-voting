@@ -3290,3 +3290,85 @@ Jony must confirm option (a1), (a2), (b), or (c) before CHI submission.
 | E&S (2013) | Same "consistent finding" | ❌ JONY-ACTION Q (wrong label) + JONY-ACTION R mechanism concern |
 
 **JONY-ACTIONS open (tick-4141): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z).**
+
+---
+
+## §1.1 E&S (2013) mechanism precision audit — JONY-ACTION AA (tick-4142, VON-607)
+
+**Audit task (tick-4142):** Does Egelman & Schechter (2013) support the §1.1 claim "users interpret interface absence as system error unless the absence is explicitly marked as intentional"? Same question JONY-ACTION R resolved for §2.2 and JONY-ACTION S resolved for §2.1 — does the §1.1 site have the same precision issue?
+
+**Sentence under audit (§1.1):**
+> "Across usability-security research from Whitten and Tygar's foundational evaluation of PGP (1999) through Felt et al.'s work on Android permissions (2012) to Egelman and Schechter's framework for security warnings (2013), a consistent finding emerges: users interpret interface absence as system error unless the absence is explicitly marked as intentional."
+
+### Prior audit context for E&S (2013)
+
+E&S (2013) has been examined at three prior sites:
+
+| Site | JONY-ACTION | Findings |
+|------|-------------|----------|
+| §6.1 | P (tick-4113) | E&S 'attribute to error rather than design' is W&T's mechanism, not E&S's. E&S's mechanism: bounded rationality / threat-model mismatch. |
+| §2.1 | borderline (tick-4117) | E&S 'pattern-match from prior experience' — borderline acceptable as simplified description of bounded rationality; no JONY-ACTION created. |
+| §2.2 | R (tick-4118) | E&S doesn't support 'absent-content interpretation' — E&S studied unexpected PRESENCE, not absence. |
+| §2.1 co-citation | S (tick-4119) | E&S doesn't support 'default interpretation for absent confirmation content: error' — E&S users inferred inapplicability, not failure. |
+
+**E&S (2013) confirmed mechanism (Springer LNCS 7859, FC 2013, confirmed ticks 4113/4114/4117):**
+- Empirical laboratory study of phishing warning compliance
+- Studied: users encountering unexpected PRESENCE of a browser phishing warning
+- Key finding: 'misunderstandings about the threat model led participants to believe that the warnings did not apply to them; acting out of bounded rationality, participants made conscientious decisions to ignore the warnings'
+- User failure mode: **threat-model dismissal** — users decided the warning was irrelevant to them and bypassed it
+
+### Check: Does E&S support "absence as error" at §1.1?
+
+**No. Categorically different failure mode.** ❌
+
+| Paper | Security indicator state | User failure mode |
+|-------|--------------------------|-------------------|
+| W&T (1999) | ABSENT (encryption confirmation not shown) | Error-attribution: "the system failed / encryption didn't happen" ✅ |
+| Felt et al. (2012) | PRESENT (permission dialog shown) | Non-attention: 83% ignore PRESENT warning ❌ |
+| E&S (2013) | PRESENT (phishing warning shown unexpectedly) | Threat-model dismissal: "this warning doesn't apply to me" ❌ |
+
+E&S (2013):
+1. **Does not involve absent content** — the phishing warning is PRESENT (unexpected additional content, not missing expected content)
+2. **Does not document 'system error' inference** — E&S users concluded the warning was inapplicable, not that the system had failed
+3. **Documents a categorically different mechanism** — bounded rationality / threat-model mismatch vs. error-attribution
+
+The §1.1 'consistent finding' claim is therefore false for E&S (2013) at §1.1, for the same reason it was false for §2.2 (JONY-ACTION R) and §2.1 (JONY-ACTION S).
+
+### §1.1 trio precision summary (post tick-4142)
+
+| Citation | Mechanism documented | Supports "absence as error"? |
+|----------|---------------------|------------------------------|
+| W&T (1999) | Absent PGP confirmation → error-attribution inference | ✅ CLEAN |
+| Felt et al. (2012) | Non-attention to PRESENT permission warnings | ❌ JONY-ACTION Z |
+| E&S (2013) | Threat-model dismissal of PRESENT phishing warning | ❌ JONY-ACTION AA |
+
+**The §1.1 'consistent finding: absence as error' sentence has only one of three citations that supports its mechanism claim.**
+
+### Severity
+
+HIGH — same as JONY-ACTION Z. The E&S mismatch now appears at three sites (§1.1, §2.1 co-citation [S], §2.2 [R]), all involving the same core error: attributing the absent-content-as-error mechanism to a paper that studied unexpected-presence-of-warning. A CHI reviewer familiar with E&S (2013) will notice this is a phishing-warning compliance paper, not an absent-indicator study.
+
+### Relationship to JONY-ACTION Z
+
+JONY-ACTION Z (Felt et al. §1.1) option **(a2)** — revising the §1.1 sentence to name each paper's distinct failure mode — would also resolve JONY-ACTION AA in a single edit. Options for joint resolution:
+
+- **Z option (a2) [RECOMMENDED — resolves both Z and AA]:** Revise §1.1 to name each paper's mechanism: "Usability-security research documents multiple failure modes when users encounter unexpected security interface states: inferring system failure from absent confirmation [Whitten and Tygar 1999], ignoring present permission warnings [Felt et al. 2012], and dismissing warnings as inapplicable [Egelman and Schechter 2013]. In the receipt context, the operative failure mode is the first."
+
+- **Z option (a1) or (b) + AA option (a) [two separate edits]:** Keep W&T alone for §1.1 absence-as-error claim; remove Felt et al. (a1 = replace, b = drop) and remove E&S separately.
+
+- **Z option (a1) or (b) + AA option (b) [two separate edits]:** Replace both Felt et al. and E&S with citations that actually document absent-indicator → error inference. Candidates: Sunshine et al. (2009) 'Crying Wolf' (SSL warning habituation); Akhawe & Felt (2013) 'Alice in Warningland' (USENIX Security; browser warning non-attention).
+
+### Options for Jony
+
+- **(a) [if Z option a1/b chosen]:** Remove E&S from §1.1 'consistent finding' sentence — retain only W&T (1999) for the absence-as-error mechanism at §1.1.
+- **(b):** Replace E&S in §1.1 with a citation documenting absent-indicator → error inference.
+- **(c) [RESOLVES BOTH Z AND AA]:** Confirm JONY-ACTION Z option (a2) — the mechanism-naming revision covers E&S's threat-model dismissal as a distinct failure mode.
+- **(d):** Keep as-is — HIGH risk.
+
+### Summary
+
+- **JONY-ACTION AA:** E&S (2013) at §1.1 does NOT support 'absence as error' — same precision issue as R (§2.2) and S (§2.1)
+- **§1.1 trio final status:** W&T ✅ CLEAN; Felt et al. ❌ Z; E&S ❌ AA
+- **Joint resolution path:** Z option (a2) resolves both Z and AA simultaneously — RECOMMENDED
+
+**JONY-ACTIONS open (tick-4142): 17 (I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA).**
