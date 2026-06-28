@@ -790,3 +790,76 @@ Option (b): Keep as-is — risk that a CHI reviewer familiar with E&S notices th
 
 **JONY-ACTIONS open (tick-4145): I, G, A, B, C, O, P, Q, R, S, T, U, W, X, Y, Z, AA** (17 open; Z/AA/Q pending Jony confirmation of Z option a2; P verification complete — awaiting Jony option a/b).
   
+
+---
+
+## Update: tick-4150 (2026-06-28) — §4.2 attention-check cross-check + analysis script comment fix
+
+**Even tick; CI check; 4150 % 4 = 2 — NOT a 4th-tick audit.**
+
+**CI:** aztec-private-voting — none (expected; no CI configured). working-notes/main — failure (known billing issue; not a new breakage). No action required.
+
+### §4.2 Attention check / analysis script cross-check — FINDINGS
+
+**Cross-check targets:** Paper §4.2 exclusion criteria → pre-reg §3 → survey instrument §AC1/AC2 → analysis/piup-study1-analysis.R
+
+**Attention check exclusion logic — CLEAN ✅**
+- Paper §4.2: "failing both attention checks (single-check failure is not disqualifying)" ✅
+- Pre-reg §3: "Failing both attention checks (not just one)" ✅
+- Analysis script line 171: `df <- df[!(df[[COL_ATTN1]] == 0 & df[[COL_ATTN2]] == 0), ]` — AND logic; excludes only if BOTH checks failed ✅
+
+**Response-time exclusion — CLEAN ✅**
+- Paper §4.2: "fewer than 90 seconds" ✅
+- Pre-reg §3: "Exclude participants with response time < 90 seconds total" ✅
+- Analysis script line 177: `df <- df[df[[COL_RT_SEC]] >= 90, ]` — excludes < 90 sec ✅
+
+**SC2/professional exclusion — CLEAN ✅**
+- Paper §4.2: professionals AND CS/SE students screened at Prolific SC2 level ✅
+- Survey instrument §SC2: both "Computer science or software engineering (professional)" AND "Student in computer science or software engineering" → Screen out ✅
+- Analysis script Rule 3 (occupation_sw_eng != 1): belt-and-suspenders check; primary exclusion at Prolific SC2 ✅
+
+**Save intention (BI1) scale type — CLEAN ✅**
+- Paper §4.4: "5-point Likert" ✅
+- Survey instrument §BI1: 1–5 scale ✅
+- Analysis script COL_INTENT: `# 1–5 behavioral intent` ✅
+
+---
+
+### FINDING 1 (autonomous fix applied): COL_EFFICACY stale Hargittai comment — FIXED
+
+**Issue:** Analysis script line 114 had `COL_EFFICACY <- "tech_efficacy_mean" # Mean of 3-item Hargittai scale`. The pre-registration was corrected in tick-4044: DM2 is a SINGLE BINARY ITEM ("Have you ever written code professionally or as part of a degree?"), NOT a 3-item Hargittai scale.
+
+**Impact:** COL_EFFICACY is defined but NEVER used in any analysis computation. Comment-only stale reference; no analysis impact.
+
+**Fix applied (tick-4150):** Updated comment to accurately describe DM2 as a binary coding-background flag, not in confirmatory analysis. No Jony confirmation required (description precision; no analysis impact).
+
+**Commit:** (below)
+
+---
+
+### FINDING 2 (new JONY-ACTION T item — Amendment 14): Pre-reg §3 attention check wording inaccurate
+
+**Issue:** Pre-registration §3 line 182 describes attention check items as:
+> "Prolific attention checks: 2 items ('Which of the following is a fruit? / Please select 'strongly agree' for this item.')"
+
+Both descriptions are **inaccurate** relative to survey instrument §AC1/§AC2:
+
+| Check | Pre-reg §3 description | Actual instrument | Error |
+|-------|----------------------|-------------------|-------|
+| AC1 | "Please select 'strongly agree'" | "Please select 'Strongly Disagree'" | ❌ OPPOSITE direction |
+| AC2 | "Which of the following is a fruit?" | "Please select the third item from the list below" [Apple, Banana, Carrot, Dog, Elephant]; correct answer = Carrot (3rd item) | ❌ Wrong question; Carrot is a vegetable not a fruit |
+
+**Analysis impact:** NONE. The actual attention checks are correctly implemented in the instrument (§AC1: Strongly Disagree = pass; §AC2: Carrot = pass) and the analysis script (both-fail exclusion via COL_ATTN1/COL_ATTN2 binary columns coded by Qualtrics). Only the pre-reg §3 text description is inaccurate.
+
+**Fix required:** OSF Amendment 14 — correct pre-reg §3 attention check descriptions before CHI submission. Amend text to:
+> "Two in-survey attention checks: AC1 ('Please select Strongly Disagree as your response to this question, regardless of what it says' — pass = Strongly Disagree); AC2 ('Please select the third item from the list below' with options Apple, Banana, Carrot, Dog, Elephant — pass = Carrot). Participants failing both checks are excluded; single-check failure is not disqualifying."
+
+**Severity:** LOW — description-only error in pre-reg; no protocol or analysis impact. A CHI reviewer cross-checking the pre-reg against the instrument would notice the mismatch.
+
+**Classification:** Extends JONY-ACTION T (already batches OSF Amendments 12 and 13 for Q5 wording and MQ1 rubric clarification). Amendment 14 should be filed together with Amendments 12 and 13 by Jony before OSF pilot upload.
+
+**Note added:** Paper draft §4.2 — inline note at attention check mention pointing to Amendment 14 (tick-4150, commit below).
+
+---
+
+**JONY-ACTIONS open (tick-4150): I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA** (16 open; batch decision memo jony-batch-decision-memo-2026-06-28.md awaiting Jony review; Amendment 14 added to JONY-ACTION T; X resolved tick-4147).

@@ -111,7 +111,10 @@ COL_RT_SEC     <- "response_time_sec" # Total completion time in seconds
 COL_OCCUPATION <- "occupation_sw_eng" # 1 = self-reported software engineer (exclude)
 COL_AGE        <- "age_group"
 COL_PRIOR_VOTE <- "prior_voting"
-COL_EFFICACY   <- "tech_efficacy_mean"  # Mean of 3-item Hargittai scale
+COL_EFFICACY   <- "tech_efficacy_mean"  # DM2 binary: 1 = has written code professionally or as part of a degree
+                                          # (NOT a 3-item Hargittai scale; pre-reg DM2 description corrected tick-4044)
+                                          # Defined here for completeness; NOT used in any confirmatory analysis.
+                                          # Use for sensitivity descriptives only (see §6.5 exploratory notes).
 COL_INTENT     <- "download_intent"     # 1–5 behavioral intent
 COL_AFFECT     <- "label_affect"        # −3 to +3 valence slider
 
