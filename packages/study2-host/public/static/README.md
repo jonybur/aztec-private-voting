@@ -15,7 +15,35 @@ cannot render the interactive VoteReceipt prototype (§9.3 of design note;
 | fallback-L2E1.png   | L2E1      | Confirmation code + explained framing    |
 | fallback-L2E2.png   | L2E2      | Confirmation code + unexplained framing  |
 
-## How to generate
+## How to generate (automated — recommended)
+
+Use the Playwright script in `scripts/generate-fallback-screenshots.js`:
+
+```bash
+# From packages/study2-host/ directory:
+
+# 1. Install Playwright (one-time)
+npm install --save-dev playwright
+npx playwright install chromium
+
+# 2. Start the dev server in one terminal
+npm run dev    # runs on http://localhost:5174
+
+# 3. In another terminal, generate screenshots
+node scripts/generate-fallback-screenshots.js
+# → writes fallback-L1E1.png, fallback-L1E2.png, fallback-L2E1.png, fallback-L2E2.png
+
+# Or against the deployed Vercel URL (after step 1 of deploy):
+node scripts/generate-fallback-screenshots.js https://aztec-study2.vercel.app
+
+# 4. Redeploy with screenshots included
+npm run build && npx vercel --prod
+```
+
+The script waits for the `piup-ready` postMessage from the VoteReceipt component
+before taking each screenshot, ensuring React has fully rendered.
+
+## How to generate (manual — fallback)
 
 1. Deploy the study2-host to Vercel.
 2. Open each condition URL in a browser:

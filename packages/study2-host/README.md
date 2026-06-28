@@ -70,8 +70,15 @@ Expected URL: `https://aztec-study2.vercel.app`
 After deploying:
 1. Test all 8 condition URLs manually.
 2. Confirm `piup-ready` fires on load (DevTools → Console).
-3. Generate 4 fallback screenshots → `public/static/` (see `public/static/README.md`).
-4. Redeploy with screenshots included.
+3. Generate 4 fallback screenshots with the Playwright script (automated):
+   ```bash
+   npm install --save-dev playwright
+   npx playwright install chromium
+   # Optionally against deployed URL:
+   node scripts/generate-fallback-screenshots.js https://aztec-study2.vercel.app
+   ```
+   Or manually — see `public/static/README.md`.
+4. Redeploy with screenshots: `npm run build && npx vercel --prod`.
 
 ---
 
@@ -80,8 +87,9 @@ After deploying:
 - [x] Scaffold created (tick-4066)
 - [x] monorepo `npm install` verified (tick-4067: changed `workspace:*` → `*` in package.json)
 - [x] Vite build passes (tick-4067: 148 KB bundle, 906ms — added `@aztec/*` rollupOptions external)
+- [x] Playwright screenshot script created (tick-4068: `scripts/generate-fallback-screenshots.js`)
 - [ ] Deployed to Vercel
-- [ ] Fallback screenshots generated
+- [ ] Fallback screenshots generated and redeployed
 
 ### Build notes (tick-4067)
 
