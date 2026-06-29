@@ -156,7 +156,7 @@ The label token ("vote fingerprint" vs. "confirmation code") is inserted dynamic
 
 **No-explanation copy (E2):**
 
-The absent-choice design is not explained. The receipt shows the identifier value, the statement "Your ballot was counted," the download prompt, and the verification instructions. The privacy copy section is retained (to avoid a confound with privacy-awareness), but limited to: "Your vote is private and verifiable."
+The absent-choice design is not explained. The receipt shows the identifier value, the statement "Your vote was cast," the download prompt, and the verification instructions. The privacy copy section is retained (to avoid a confound with privacy-awareness), but limited to: "Your vote is private and verifiable."
 
 ### 6.2 Calibration intervention (I2)
 

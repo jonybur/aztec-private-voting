@@ -197,7 +197,7 @@ describe('VoteReceipt explanationVariant — Study 2 Factor E (APV-PIUP-02)', ()
     render(<VoteReceipt receipt={receipt} explanationVariant="unexplained" />);
     // E2 content: minimal statement
     expect(
-      screen.getByText(/your vote choice is not shown on this receipt/i),
+      screen.getByText(/your vote is private and verifiable/i),
     ).toBeInTheDocument();
     // Must NOT include "This is intentional"
     expect(screen.queryByText(/this is intentional/i)).toBeNull();
@@ -238,7 +238,7 @@ describe('VoteReceipt explanationVariant — Study 2 Factor E (APV-PIUP-02)', ()
       {
         variant: 'unexplained',
         // E2 has only the minimal statement; use a phrase not in the others
-        marker: /your vote choice is not shown on this receipt/i,
+        marker: /your vote is private and verifiable/i,
         absent: [
           /subpoenaed without revealing how you voted/i,
           /save it to verify after the vote closes/i,
@@ -355,7 +355,7 @@ describe('VoteReceipt studyMode — Study 2 behavioral logging (APV-PIUP-03)', (
     );
     // E2 minimal framing present
     expect(
-      screen.getByText(/your vote choice is not shown on this receipt/i),
+      screen.getByText(/your vote is private and verifiable/i),
     ).toBeInTheDocument();
     // Confirmation code heading
     expect(screen.getByText(/your confirmation code/i)).toBeInTheDocument();

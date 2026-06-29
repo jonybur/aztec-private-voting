@@ -118,7 +118,7 @@ function ExplainerParagraph({
     // correct absent-choice inference.
     return (
       <p className="apv-receipt__explainer apv-receipt__explainer--unexplained">
-        Your vote choice is not shown on this receipt.
+        Your vote is private and verifiable.
       </p>
     );
   }

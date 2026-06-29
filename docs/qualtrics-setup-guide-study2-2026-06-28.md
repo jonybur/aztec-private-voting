@@ -276,14 +276,7 @@ Click **Save Flow**.
 - Choices: same as Study 1 (see Study 1 guide §3 for full list).
 - Skip Logic on choices 1 (Software engineer) and 7 (CS student) → End of Survey.
 
-### SC3 — Prior receipt study exclusion
-
-- Question type: **Multiple Choice** (single select)
-- Text: `Have you participated in any online research study involving voting interfaces, voting receipts, or confirmation codes in the past 6 months?`
-- Choices: `Yes` | `No` | `Not sure`
-- Skip Logic on `Yes` → End of Survey (cross-study contamination exclusion — §11.4 of design note).
-
-> ⚠️ **JONY-ACTION GG (structural conflict): This guide adds SC3 to screen out prior-study participants before data collection (no data collected for them). The pre-registered instrument has no SC3 — it uses DM4 (demographics) to capture this group and excludes them post-hoc in R, with the Prolific "Previous Studies" filter as primary defence. These are incompatible: option (a) remove SC3 and use the instrument DM4 post-hoc approach (no amendment needed); option (b) keep SC3 and log it as a protocol amendment before OSF registration. Guide left unchanged pending Jony confirmation. Note: GG also affects DM3 wording — see below.**
+[Fixed tick-4225 — JONY-ACTION GG resolved, option (a): SC3 removed. The pre-registered instrument has no SC3; it captures prior-study participation via DM3 (`prior_receipt_study`) post-hoc in R. The Prolific "Previous Studies" filter (set to exclude Study 1 ID) and the Prolific custom screener are the primary defence. No in-survey screener question is needed. No OSF amendment required.]
 
 ---
 
@@ -553,7 +546,7 @@ Questions in fixed order (no question randomisation). Each question is on its ow
   1. `trust_integrity_1` — "I believe this receipt accurately reflects what happened with my vote."
   2. `trust_integrity_2` — "I trust that the ${e://Field/condition_label} is unique to my ballot."
   3. `trust_competence_1` — "I feel confident I could use this receipt to prove my ballot was counted."
-  4. `trust_competence_2` — "I understand what this receipt is for." ⚠️ **JONY-ACTION EE: guide previously had "I believe the voting system that produced this receipt is secure" — a different construct (security belief vs. comprehension). Instrument §9 specifies TC2 = "I understand what this receipt is for." Applied instrument wording but flagged for Jony confirmation.**
+  4. `trust_competence_2` — "I understand what this receipt is for."
 - Column labels: 1 (*Strongly Disagree*) through 7 (*Strongly Agree*).
 - No "N/A" option.
 - Variable name prefix: use **Export Tags** (question options → Export Tag) to force column names `trust_integrity_1`, `trust_integrity_2`, `trust_competence_1`, `trust_competence_2` in the CSV.
@@ -621,12 +614,10 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 
 ### DM3 — Prior receipt study
 - Variable name: `prior_receipt_study`
-- Text: `Have you participated in any online study involving voting interfaces in the past 12 months? (This is a follow-up to the screener question — please answer again.)`
-- Choices: `Yes` | `No` | `Not sure`
+- Text: `Have you participated in a previous study about voting receipts, voting confirmations, or post-vote screens in the past 6 months?`
+- Choices: `Yes` | `No` | `I'm not sure`
 
-> ⚠️ **JONY-ACTION GG (continued — wording conflicts in this question): (a) Time window: guide says "past 12 months" vs instrument §14 DM4 says "past 6 months". (b) Question text: guide says "voting interfaces" vs instrument says "voting receipts, voting confirmations, or post-vote screens". (c) The "(follow-up to screener question)" note is only valid if SC3 exists — if SC3 is removed per option (a) above, this note must also be removed and the phrasing revised. Confirm with GG resolution above.**
-
-> **Why ask again:** The screener version (SC3) captures exclusion; this demographics version feeds `prior_receipt_study` into the analysis script's exclusion logic (§2 of analysis script).
+[Fixed tick-4225 — JONY-ACTION GG resolved, option (a): question text corrected to match instrument §14 DM4 ('voting receipts, voting confirmations, or post-vote screens', not 'voting interfaces'); time window corrected from 'past 12 months' to 'past 6 months'; follow-up-to-screener note removed (SC3 no longer exists). This question feeds `prior_receipt_study` into the analysis script exclusion logic (§2 of analysis script); Prolific 'Previous Studies' filter is the primary defence.]
 
 ### DM4 — Prior voting
 - Variable name: `prior_voting`
@@ -687,7 +678,7 @@ https://[your-qualtrics-instance].qualtrics.com/jfe/form/SV_XXXX?PROLIFIC_PID={{
 In Survey Options → Survey Termination → End of Survey → enable redirect URL → paste Prolific screen-out URL:  
 `https://app.prolific.com/submissions/complete?cc=SCREENOUT`
 
-Apply to all SC1/SC2/SC3 skip-to-end-of-survey paths.
+Apply to all SC1/SC2 skip-to-end-of-survey paths.
 
 ### Over-quota redirect (for Quotas)
 
@@ -766,7 +757,7 @@ After building the survey, preview it end-to-end and download one test export. V
 - [ ] Preview end-to-end as an I1 condition (skip Calibration block) — verify condition assigned, prototype loads, behavioral data captured in Embedded Data.
 - [ ] Preview end-to-end as an I2 condition — verify Calibration block appears before Stimulus, feedback text correct.
 - [ ] Simulate browser-fallback: block Vercel domain in DevTools → Network, preview Stimulus block — verify fallback image appears after 8 seconds, `browser_fallback = "1"` in Embedded Data.
-- [ ] Test screen-out paths (fail SC1, SC2, SC3) — verify Prolific screen-out URL reached.
+- [ ] Test screen-out paths (fail SC1, SC2) — verify Prolific screen-out URL reached.
 - [ ] Test over-quota: manually fill quota for one condition, verify redirect fires.
 - [ ] Download one preview export — verify all 25 column names match the analysis script.
 - [ ] Confirm Randomizer distributes evenly across 8 conditions after 24 test previews (should be approximately 3 per condition).
