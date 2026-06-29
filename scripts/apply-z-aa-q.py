@@ -2,10 +2,12 @@
 """
 JONY-ACTIONs Z, AA, Q — §1.1 Trio Sentence commit-ready apply script
 Prepared: tick-4215 (2026-06-29)
+Fixed: tick-4233 (2026-06-29) — added --apply safety guard + dry-run mode
 
 Usage:
-    python3 apply-z-aa-q.py A    # Apply Option A (recommended)
-    python3 apply-z-aa-q.py B    # Apply Option B (W&T solo)
+    python3 apply-z-aa-q.py            # Dry-run: check + show what would change (NO WRITE)
+    python3 apply-z-aa-q.py --apply A  # Apply Option A (mechanism-naming revision, recommended)
+    python3 apply-z-aa-q.py --apply B  # Apply Option B (W&T solo)
 
 Run from aztec-private-voting/ root.
 
@@ -56,49 +58,78 @@ OPTION_B = (
 )
 
 
-def apply(option: str):
-    if option not in ("A", "B"):
-        print(f"Unknown option '{option}'. Use A or B.")
+def run(option: str | None, dry_run: bool):
+    """Run checks and optionally apply. option is 'A', 'B', or None (dry-run only)."""
+
+    if not dry_run and option not in ("A", "B"):
+        print(f"ERROR: --apply requires option A or B. Got: {repr(option)}")
         sys.exit(1)
 
     with open(PAPER, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # Find the broken opening sentence
+    # CHECK 1: broken opening sentence must exist
     if BROKEN_OPENING not in content:
-        print("ERROR: Broken opening sentence not found — was it already fixed?")
-        print(f"Looking for: {repr(BROKEN_OPENING[:80])}...")
+        print("  [FAIL] ZQ1: Broken opening sentence NOT found — already fixed or file changed?")
+        print(f"         Looking for: {repr(BROKEN_OPENING[:80])}...")
         sys.exit(1)
-
-    # Find the suffix anchor (comes after all three [Note] blocks)
     broken_start = content.index(BROKEN_OPENING)
+    print(f"  [PASS] ZQ1: Broken opening sentence found at char {broken_start}")
+
+    # CHECK 2: suffix anchor must exist after broken opening
     suffix_pos = content.find(SUFFIX_ANCHOR, broken_start + len(BROKEN_OPENING))
     if suffix_pos == -1:
-        print("ERROR: Suffix anchor not found after broken opening. File may have changed.")
+        print("  [FAIL] ZQ2: Suffix anchor not found after broken opening — file may have changed")
         sys.exit(1)
-
-    # The full block to replace = from broken_opening start up to (not including) suffix_anchor
     block_to_replace = content[broken_start:suffix_pos]
+    print(f"  [PASS] ZQ2: Suffix anchor found at char {suffix_pos} (block length: {len(block_to_replace)} chars)")
 
-    # Verify it starts correctly and ends with the last [Note AA] closing bracket
+    # CHECK 3: block starts correctly
     if not block_to_replace.startswith("Across usability-security research"):
-        print("ERROR: Block extraction mismatch — start check failed.")
+        print("  [FAIL] ZQ3: Block extraction mismatch — start check failed")
         sys.exit(1)
+    print(f"  [PASS] ZQ3: Block starts correctly")
 
+    # CHECK 4: idempotency — replacement not already present
+    resolved_marker = "Z/AA/Q RESOLVED"
+    if resolved_marker in content:
+        print(f"  [FAIL] ZQ4: Resolution marker already present — already applied?")
+        sys.exit(1)
+    print(f"  [PASS] ZQ4: Resolution marker not yet present (safe to apply)")
+
+    print()
+
+    if dry_run:
+        print("Dry-run complete — all 4 checks passed. No changes written.")
+        print()
+        print("Option A: mechanism-naming revision (recommended)")
+        print(f"  Replaces {len(block_to_replace)}-char block with {len(OPTION_A)}-char replacement")
+        print()
+        print("Option B: W&T solo")
+        print(f"  Replaces {len(block_to_replace)}-char block with {len(OPTION_B)}-char replacement")
+        print()
+        print("To apply:")
+        print("  python3 scripts/apply-z-aa-q.py --apply A")
+        print("  python3 scripts/apply-z-aa-q.py --apply B")
+        print("  git add drafts/piup-chi-paper-draft-2026-06-22.md")
+        print('  git commit -m "fix §1.1 trio: Z/AA/Q resolved — Option A/B applied"')
+        return
+
+    # Apply
     replacement = OPTION_A if option == "A" else OPTION_B
     new_content = content[:broken_start] + replacement + content[suffix_pos:]
 
-    # Safety check: verify the suffix was preserved
+    # Safety check: suffix preserved
     if SUFFIX_ANCHOR not in new_content:
-        print("ERROR: Suffix anchor lost after replacement — aborting.")
+        print("ERROR: Suffix anchor lost after replacement — aborting (no write).")
         sys.exit(1)
 
     with open(PAPER, "w", encoding="utf-8") as f:
         f.write(new_content)
 
-    chars_removed = len(block_to_replace) - len(replacement)
+    chars_diff = len(replacement) - len(block_to_replace)
     print(f"Option {option} applied.")
-    print(f"Replaced {len(block_to_replace)} chars with {len(replacement)} chars ({chars_removed:+d} net).")
+    print(f"Replaced {len(block_to_replace)} chars with {len(replacement)} chars ({chars_diff:+d} net).")
     print(f"File: {PAPER}")
     print()
     print("Next steps:")
@@ -113,7 +144,10 @@ def apply(option: str):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(__doc__)
-        sys.exit(1)
-    apply(sys.argv[1].upper())
+    args = sys.argv[1:]
+    dry_run = "--apply" not in args
+    option = None
+    remaining = [a for a in args if a != "--apply"]
+    if remaining:
+        option = remaining[0].upper()
+    run(option=option, dry_run=dry_run)
