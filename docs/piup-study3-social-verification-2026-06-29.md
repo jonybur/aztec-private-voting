@@ -3,7 +3,7 @@
 **Date:** 2026-06-29  
 **Status:** Design — pre-IRB  
 **Author:** @jonybur  
-**Connects to:** Das et al. (2014), `piup-study-protocol-2026-06-22.md`, `piup-study2-design-note-2026-06-22.md`
+**Connects to:** Das et al. (2014), `piup-study-protocol-2026-06-22.md`, `piup-study2-design-note-2026-06-22.md`, `piup-study3-power-analysis-2026-06-29.md`
 
 ---
 
@@ -64,7 +64,16 @@ The counter is updated every 15 minutes from on-chain `verify_vote_counted()` ca
 
 **Target:** n = 80 (matched to Study 2; participants may overlap). Study 3 can be run concurrently with Study 2 in the same election by adding a condition flag at randomization.
 
-**Power:** Das et al. (2014) report an odds ratio of approximately 2.0 for the social proof manipulation in the password manager context (baseline adoption ≈ 12%, treatment ≈ 23%). If verification rates in the PIUP context are similarly in the 10–30% range and we expect an OR of approximately 2.0, logistic regression power = 0.79 at n = 80 (α = .05, two-tailed). This is consistent with Study 2 target; the concurrent design means no additional recruitment cost.
+**Power:** ⚠️ **Study 3 as currently designed (n ≈ 40/condition, N ≈ 80 total) is underpowered for OR = 2.0.** Full power analysis: [`docs/piup-study3-power-analysis-2026-06-29.md`](piup-study3-power-analysis-2026-06-29.md).
+
+Key numbers: to detect OR = 2.0 (Das et al. 2014 estimate) at 80% power with α = .05, two-tailed:
+- Baseline p₁ = 0.10 (conservative ZK voting estimate) → **140/condition (N = 280)**
+- Baseline p₁ = 0.15 (PIUP-optimistic) → **103/condition (N = 206)**
+- Baseline p₁ = 0.20 (upper bound) → **86/condition (N = 172)**
+
+At n = 40/condition (Study 2 pool): power = 32–53% across plausible baselines (minimum detectable OR = 2.67–3.28). The original power estimate of 0.79 conflated total N with n per condition — at n = 80 *per condition* (N = 160 total), power ≈ 56–72%; still below 0.80 at realistic baselines.
+
+**Recommended design:** Run Study 3 embedded in Study 2 as a **pilot study** — pre-register as a pilot, report 90% CI for OR rather than NHST, and use results to calibrate a powered multi-election replication. See power analysis document for three replication options (pilot, sequential election deployment, platform partnership).
 
 ---
 
