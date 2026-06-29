@@ -326,16 +326,20 @@ Each of Q1–Q4 is on its own page with the confidence item on the same page.
 ### MQ1 — Mental model quality
 
 - Question type: **Text Entry** (long form)
-- Question text: `In your own words: what does your ${e://Field/condition_label} prove about your vote? What does it NOT prove?`
+- Question text: `In your own words: what does your ${e://Field/condition_label} prove about your vote?`
 - Minimum characters: 20
 - Variable name: `MQ1_text`
+
+> **[Updated 2026-06-25 — pilot decision Item D]** The two-part prompt "What does it NOT prove?" was removed from the pre-launch instrument. The demand characteristic inflates the non-leakage dimension of MQ_SCORE and reduces sensitivity to between-condition differences. Single-question wording is the pre-reg canonical form. Do NOT add the second part back.
 
 **Page break.**
 
 ### BI1 — Behavioral intent
 
 - Question type: **Multiple Choice** (single select)
-- Question text: `If this was a real election and you saw this screen after submitting your vote, how likely would you be to save your ${e://Field/condition_label} for future reference?`
+- Question text: `If this was a real election and you saw this screen after submitting your vote, how likely would you be to save this code for future reference?`
+
+> **[Updated 2026-06-25 — pilot decision Item E]** "your [LABEL]" replaced with "this code" — using the condition label in BI1 creates a demand characteristic (participants averse to their assigned label may understate save intention). "this code" is label-neutral and measures behavioral intent cleanly.
 - Choices (ordered high to low):
   - `Definitely would save it` → code 5
   - `Probably would save it` → code 4
