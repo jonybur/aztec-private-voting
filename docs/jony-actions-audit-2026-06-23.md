@@ -924,3 +924,82 @@ Training knowledge consistent with bibliography: Ben Adida, Olivier de Marneffe,
 ---
 
 **JONY-ACTIONS open (tick-4155): I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA, BB, CC** (18 open; batch memo awaiting Jony; X resolved tick-4147; CC autonomous fix already committed).
+
+---
+
+## tick-4156: bibliography pass 7 — Adida et al. (2009) author conflict (JONY-ACTION DD)
+
+**JONY-ACTION DD: Adida et al. (2009) — AUTHOR LIST CONFLICT**
+
+**Location:** Bibliography entry for 'Adida et al. (2009)'; in-text citations at §1.4 ('Helios (Adida et al. 2009)').
+
+**Current bibliography entry:**
+Adida, B., de Marneffe, O., Pereira, O., and Quisquater, J.-J. (2009). 'Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios.' EVT/WOTE 2009.
+
+**Conflict found (tick-4156):**
+- USENIX Wayback Machine snapshot (evtwote-09 programme page) BibTeX lists ONLY 3 UCLouvain authors: `{Olivier de Marneffe and Olivier Pereira and Jean-Jacques Quisquater}` — Adida, B. NOT present.
+- USENIX legacy proceedings URL for the paper: `usenix.org/legacy/event/evtwote09/tech/full_papers/adida.pdf` — filename `adida.pdf` = under USENIX legacy naming convention, the first/primary author's surname. Strongly implies Adida IS a co-author (and first author) on the proceedings PDF.
+- DBLP: 0 results for this paper (not indexed).
+
+**OPTIONS:**
+(a) Accept current bibliography (Adida first, 4 authors) — consistent with legacy URL naming convention; USENIX BibTeX on proceedings website likely incomplete for this 2009 entry.
+(b) Correct to 3-author UCL-only list (de Marneffe, O., Pereira, O., Quisquater, J.-J.) per USENIX BibTeX; update in-text to 'de Marneffe et al. (2009)'.
+(c) Jony supplies the paper PDF for direct title-page verification.
+
+**Do NOT submit without resolution. Jony must confirm.**
+
+Note: tick-4156 wrote conflict details into the bibliography entry in the draft (commit d3d4742). Tick-4158 adds further external evidence below.
+
+---
+
+## tick-4158: JONY-ACTION DD — additional external evidence (CI check, even tick; NOT 4th-tick audit)
+
+**CI check (tick-4158):**
+- aztec-private-voting: none (expected; no CI configured)
+- working-notes/main: failure (known billing issue — not a new breakage)
+
+**JONY-ACTION DD — Adida et al. (2009): new external evidence, confidence upgraded**
+
+Three new external sources located via web search (tick-4158):
+
+**Source 1: Caltech Election Updates (independent conference recap, 2009-08-12)**
+- URL: electionupdates.caltech.edu/2009/08/12/evtwote-09/
+- Quote: 'Electing a University President using Open-Audit Voting: Analysis of real-world use of Helios (EVT/WOTE '09 Best Paper Award) Authors: **Ben Adida, Olivier de Marneffe, Olivier Pereira and Jean-Jacques Quisquater**'
+- → 4 authors, Adida first. Real-time conference recap written at the time of EVT/WOTE 2009.
+
+**Source 2: USENIX official proceedings page (current, Cloudflare-blocked but snippet captured)**
+- URL: usenix.org/conference/evtwote-09/electing-university-president-...
+- Snippet from USENIX search result: `@inproceedings {267633, author = {Olivier de Marneffe and Olivier Pereira and Jean-Jacques Quisquater}, ...}`
+- → 3 authors (UCLouvain only), no Adida. This is the USENIX official current BibTeX.
+
+**Source 3: Springer book chapter citation**
+- URL: link.springer.com/chapter/10.1007/978-3-032-00495-6_15
+- Quote: 'Adida, B., De Marneffe, O., Pereira, O., Quisquater, J.J., et al.: Electing a university president using open-audit voting...'
+- → 4 authors, Adida first. Academic book (post-publication citation).
+
+**Source 4: NIST CSRC server paper**
+- URL: csrc.nist.gov/.../demarneffe_papere2e.pdf
+- Filename: `demarneffe_papere2e.pdf` — de Marneffe named first.
+- ASSESSMENT: This is a SEPARATE document (NIST E2E Voting Workshop, a different event from USENIX EVT/WOTE). Not the same proceedings paper. De Marneffe-first authorship on this NIST version does not contradict Adida-first on the EVT/WOTE proceedings version.
+
+**Synthesis (tick-4158):**
+
+| Source | Authors | First author |
+|---|---|---|
+| USENIX legacy PDF URL (`adida.pdf`) | implies 4, Adida first | Adida |
+| Caltech Elections blog (real-time 2009) | 4 (Adida, de Marneffe, Pereira, Quisquater) | Adida |
+| Springer book citation | 4 (Adida, de Marneffe, Pereira, Quisquater) | Adida |
+| USENIX current BibTeX | 3 (de Marneffe, Pereira, Quisquater) | de Marneffe |
+| NIST CSRC paper | de Marneffe (separate document) | de Marneffe |
+
+**Assessment:** 3 sources support 4-author Adida-first; 1 source (USENIX current BibTeX) supports 3-author de Marneffe-first. The NIST CSRC paper is a different document and not directly relevant. The Caltech Elections blog was written at the time of the conference by election-security researchers and explicitly names all 4 authors, making it a reliable independent confirmation. The USENIX current BibTeX for this 2009 paper may have database-entry errors (the URL naming convention directly contradicts it).
+
+**Revised recommendation: OPTION (a) — accept current 4-author Adida-first list with HIGH CONFIDENCE.** The weight of evidence (USENIX legacy URL naming convention, Caltech Elections real-time recap, Springer academic citation) strongly supports 4 authors with Adida first. The USENIX BibTeX discrepancy is the outlier.
+
+**In-text citations ('Helios (Adida et al. 2009)') are likely correct and should be retained.**
+
+Jony may still confirm option (a) before CHI submission as a precautionary final check — but this is now low-risk rather than a blocking conflict.
+
+**Bibliography note updated in draft (commit for tick-4158). Jony: please confirm option (a) to close DD.**
+
+**JONY-ACTIONS open (tick-4158): I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA, BB, CC, DD** (19 open — DD confidence upgraded to high; awaiting Jony final confirm on option (a)).
