@@ -264,6 +264,24 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 16 — BI1 scale direction: paper description inverted (paper text only, pre-data)
+
+**Type:** I (minor; paper text correction, pre-data, no protocol or analysis impact)
+
+**Detected:** tick-4171 (2026-06-29). Cross-check of §4.4 BI1 description vs. instrument §7 code table.
+
+**Description:** Paper §4.4 described the BI1 behavioral intent scale as '(5-point: Definitely would save it → Definitely would not save it)', implying that higher numeric codes corresponded to lower save intention (1 = save, 5 = not-save). The instrument §7 code table has the opposite mapping: 1 = Definitely would not save it, 5 = Definitely would save it (higher code = stronger save intention). The paper description was inverted. Corrected to '(5-point: 1 = Definitely would not save it, 5 = Definitely would save it; higher score = stronger save intention)'.
+
+**Impact:** No protocol or analysis impact. BI1 is exploratory with no pre-specified confirmatory test; descriptive means are reported as-is and are not affected by this text correction. No analysis script change required.
+
+**OSF amendment text to paste:**
+
+> _"BI1 scale direction description corrected in paper §4.4 (pre-data): Prior text '(5-point: Definitely would save it → Definitely would not save it)' implied higher codes = less save intention. Instrument §7 codes: 1 = Definitely would not save it, 5 = Definitely would save it (higher code = stronger save intention). Paper text corrected to reflect instrument coding. No protocol or analysis impact (BI1 is exploratory; no pre-specified confirmatory test). (Pre-data, pre-OSF upload.)"_
+
+**Supporting documentation:** `drafts/piup-chi-paper-draft-2026-06-22.md` §4.4 [Fixed tick-4171]; instrument §7 BI1 code table.
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -291,6 +309,7 @@ Complete this before OSF upload.
 - [ ] Amendment 10 — TOSTER package removal (file this; re-upload analysis.R)
 - [ ] Amendment 11 — multcomp removal + dunn.test addition (file this; no analysis.R re-upload needed — script already correct)
 - [ ] Amendment 15 — H2 reversed-verdict criterion p_one_tailed → p_two_tailed (file this; re-upload analysis.R)
+- [ ] Amendment 16 — BI1 scale direction corrected in paper §4.4 (text only; no analysis.R re-upload needed)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)

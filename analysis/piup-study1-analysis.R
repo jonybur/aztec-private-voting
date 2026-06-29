@@ -99,8 +99,20 @@ COL_Q3         <- "q3_correct"
 COL_Q4         <- "q4_correct"
 COL_Q5_RATER1  <- "q5_rater1"        # 0, 1, or 2 (per-rater score)
 COL_Q5_RATER2  <- "q5_rater2"
-COL_MM_RATER1  <- "mental_model_rater1"  # Open-text mental model, scored 0–2
+COL_MM_RATER1  <- "mental_model_rater1"  # Open-text mental model, scored 0–2 PER RATER
 COL_MM_RATER2  <- "mental_model_rater2"
+# DATA PREPARATION NOTE (tick-4171): The survey instrument (§13) stores MQ1 at the
+# dimension level: MQ1_inclusion_r1 (0/1), MQ1_leakage_r1 (0/1), MQ1_inclusion_r2 (0/1),
+# MQ1_leakage_r2 (0/1). This script expects PRE-AGGREGATED per-rater totals in
+# COL_MM_RATER1 and COL_MM_RATER2 (range 0–2 each). Before running this script,
+# compute these columns as:
+#   mental_model_rater1 = MQ1_inclusion_r1 + MQ1_leakage_r1
+#   mental_model_rater2 = MQ1_inclusion_r2 + MQ1_leakage_r2
+# The kappa check in §2 operates on these per-rater totals (0–2), not on the raw
+# per-dimension columns. MQ_SCORE (instrument §13 final column) is the post-adjudication
+# agreed score and CANNOT substitute for the per-rater totals needed by kappa.
+# If κ ≥ 0.70: mm_score = (rater1_total + rater2_total) / 2 (computed below).
+# If κ < 0.70: adjudicate, then re-score; re-run script with corrected per-rater columns.
 COL_CONF_Q1    <- "confidence_q1"    # 1–7 Likert
 COL_CONF_Q2    <- "confidence_q2"
 COL_CONF_Q3    <- "confidence_q3"
@@ -111,11 +123,21 @@ COL_RT_SEC     <- "response_time_sec" # Total completion time in seconds
 COL_OCCUPATION <- "occupation_sw_eng" # 1 = self-reported software engineer (exclude)
 COL_AGE        <- "age_group"
 COL_PRIOR_VOTE <- "prior_voting"
-COL_EFFICACY   <- "tech_efficacy_mean"  # DM2 binary: 1 = has written code professionally or as part of a degree
-                                          # (NOT a 3-item Hargittai scale; pre-reg DM2 description corrected tick-4044)
-                                          # Defined here for completeness; NOT used in any confirmatory analysis.
-                                          # Use for sensitivity descriptives only (see §6.5 exploratory notes).
-COL_INTENT     <- "download_intent"     # 1–5 behavioral intent
+COL_DM2        <- "DM2_code"            # DM2 binary flag: instrument §13 column name is 'DM2_code' (string).
+                                          # Values: 'Yes'/'No' (has written code professionally or as part of a degree).
+                                          # [FIXED tick-4171] Prior name 'tech_efficacy_mean' was misleading:
+                                          # DM2 is a binary 0/1 flag, NOT a multi-item scale mean (the '_mean' suffix
+                                          # was a legacy artifact from when DM2 was planned as a 3-item Hargittai
+                                          # scale; pre-reg DM2 corrected at tick-4044). Instrument §13 names this
+                                          # column 'DM2_code' (string); updated to match. NOT used in any
+                                          # confirmatory analysis. Use for sensitivity descriptives only (§6.5 exploratory).
+COL_INTENT     <- "BI1"                 # 1–5 behavioral intent (save receipt).
+                                          # [FIXED tick-4171] Prior placeholder 'download_intent' was stale:
+                                          # the item was updated 2026-06-25 from 'download this file' to 'save this
+                                          # code for future reference' (pilot-decisions §Item E). Instrument §13
+                                          # column is 'BI1'. [FIXED tick-4171] SCALE DIRECTION (instrument §7 code table):
+                                          # 1 = Definitely would NOT save it, 5 = Definitely would save it (higher mean = stronger
+                                          # save intention). Prior comment had direction inverted; fixed here + in paper §4.4.
 COL_AFFECT     <- "label_affect"        # −3 to +3 valence slider
 
 CONDITIONS <- c("A", "B", "C", "D")
