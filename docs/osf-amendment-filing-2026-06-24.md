@@ -339,3 +339,17 @@ Complete this before OSF upload.
 ---
 
 _Document prepared by heartbeat agent tick-3803. All amendment texts are drafts — Jony should review before filing._
+
+---
+
+### Tick-4173 fix — §4.5 H1 note: false attribution of "pivot hypothesis" to H1 (draft note only, no OSF amendment needed)
+
+**Type:** Paper draft note correction (not an OSF amendment — pre-registration text and protocol are unchanged)
+
+**Detected:** tick-4173 (2026-06-29). §4.1 RQ/hypothesis spec cross-check vs. pre-registration §H1–H4.
+
+**Description:** The §4.5 note for H1 incorrectly stated: "The OSF pre-registration designates H1 as a pivot hypothesis and states 'all three outcome patterns (supported / null / reversed) produce actionable production decisions' (pre-reg §H1)." This is factually wrong. The pre-reg §H1 section states only the directional prediction (Condition A outperforms D by ≥ 10 pp on Q2 and Q3) and the pre-registered test; it does not call H1 a pivot hypothesis and does not enumerate three named outcome patterns. The "pivot hypothesis" designation and "all three outcome patterns produce actionable production decisions" language appears ONLY in pre-reg §H2. The §4.5 note also self-contradicted the false opening claim by then saying "Unlike H2, the pre-registration decision table does not assign separate named rows to H1-null and H1-reversed" — which is consistent with H2 being the pivot, not H1.
+
+**Fix:** §4.5 H1 note corrected (tick-4173). Note now accurately states the pre-reg does NOT designate H1 as a pivot hypothesis; that designation is exclusive to §H2. The three H1 outcome patterns remain in the note, correctly labelled as logical design implications rather than pre-reg language.
+
+**No OSF amendment needed:** This was an error in the draft paper's internal annotation notes (bracketed [Note: ...] blocks that are stripped before submission). No body text, pre-registration, analysis script, or protocol was affected.
