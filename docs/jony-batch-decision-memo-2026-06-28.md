@@ -1,10 +1,12 @@
 # JONY Batch Decision Memo — CHI Paper
 
-**Generated:** tick-4148 (2026-06-28)  
-**Purpose:** All 16 open JONY-ACTIONs consolidated with recommendations. Resolve in one pass.  
-**Blocking CHI submission:** P, Q, R, S, Y, Z, AA (citation precision), U (Study 2 instrument), T (OSF amendments)  
+**Generated:** tick-4148 (2026-06-28) · **Updated:** tick-4160 (2026-06-29 — added BB, DD; noted CC resolved)  
+**Purpose:** All 18 active open JONY-ACTIONs consolidated with recommendations. Resolve in one pass.  
+**Already applied (no action needed):** CC (Bell et al. 2013 Perez→Pereira fix, commit 98851ad, tick-4155) ✅  
+**Blocking CHI submission:** P, Q, R, S, Y, Z, AA (citation precision), U (Study 2 instrument), T (OSF amendments), BB (bibliography)  
 **Not submission-blocking (but pre-pilot):** A, B, C, I, O, T, W  
-**Confirm design-rationale only:** G
+**Confirm design-rationale only:** G  
+**Confirm bibliography entry only:** DD (HIGH confidence — just say yes)
 
 ---
 
@@ -150,10 +152,77 @@ Full resolution memo at `docs/z-aa-q-resolution-memo-2026-06-28.md` (tick-4144, 
 
 ---
 
-## Summary table
+---
+
+## PART 5 — New bibliography items (found in bibliography passes 5-8, tick-4154 to tick-4158)
+
+### CC — Bell et al. (2013) 'Perez, O.' → 'Pereira, O.' ✅ ALREADY APPLIED
+
+**Status:** RESOLVED. Fix applied autonomously tick-4155, commit 98851ad. Verified against USENIX archived page (Wayback Machine snapshot 2024-12-05).  
+**No Jony action needed.** Author is Olivier Pereira (UCLouvain) — a different person from any 'Perez'. In-text citations say 'Bell et al. (2013)' — first author Bell is correct, no in-text change needed. This item has been removed from the active action list.
+
+---
+
+### DD — Adida et al. (2009) author list — CONFIRM CURRENT ENTRY (HIGH CONFIDENCE)
+
+**Current bibliography:** `Adida, B., de Marneffe, O., Pereira, O., and Quisquater, J.-J. (2009). 'Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios.' EVT/WOTE 2009.`  
+**Issue:** USENIX current BibTeX snippet lists only 3 authors (de Marneffe, Pereira, Quisquater — no Adida). Conflict with multiple other sources.
+
+**Evidence gathered (tick-4156 to tick-4158):**
+
+| Source | Authors | First author | Verdict |
+|--------|---------|--------------|--------|
+| USENIX legacy URL (`adida.pdf`) | 4 (implied by naming convention) | Adida | ✅ supports current entry |
+| Caltech Election Updates blog (2009-08-12) | 4 (Adida, de Marneffe, Pereira, Quisquater) explicit | Adida | ✅ supports current entry |
+| Springer book citation | 4 (Adida, de Marneffe, Pereira, Quisquater) | Adida | ✅ supports current entry |
+| USENIX current BibTeX (snippet) | 3 (de Marneffe, Pereira, Quisquater) | de Marneffe | ❌ outlier — contradicts its own URL |
+
+**Assessment:** 3 sources confirm 4-author Adida-first. The USENIX BibTeX (3-author) is the outlier, likely a database entry error — it contradicts USENIX's own URL naming convention. **CONFIDENCE: HIGH for current entry.**
+
+**Option (a) [RECOMMENDED — HIGH CONFIDENCE]:** Confirm current bibliography entry as correct. In-text 'Adida et al. (2009)' citations are correct. No paper change required; agent removes JONY-ACTION DD note block.
+
+**Option (b):** Jony supplies or checks the paper PDF title page to verify definitively.
+
+**Jony action:** Reply **"DD: option (a)"** to confirm current entry is correct and close the action.
+
+---
+
+### BB — Chaum et al. (2010) author list — ERROR CONFIRMED, CHOICE REQUIRED
+
+**Current bibliography:** `Chaum, D., Essex, A., Clark, J., Carback, R., Popoveniuc, S., Lundin, D., Vora, P., Sherman, A., and Voutier, P. (2010). 'Scantegrity II: End-to-end verifiability by voters of optical scan elections through confirmation codes.' IEEE TIFS.`
+
+**Issue (tick-4154):** This is a **10-author list with Chaum first**. DBLP (`conf/eVote/CarbackCSCLVSVP10`) for the EVT/WOTE 2009 deployment paper lists **12 authors, Carback first**:
+
+> Richard Carback, David Chaum, Jeremy Clark, John Conway, Aleksander Essex, Phill Herrnson, Travis Mayberry, Stefan Popoveniuc, Ronald L. Rivest, Emily Shen, Alan T. Sherman, Poorvi L. Vora
+
+**Discrepancies:**
+- 10 vs. 12 authors (2 missing: John Conway, Travis Mayberry; 1 spurious: Voutier; Phill Herrnson also missing from current entry)
+- First author: current entry Chaum-first vs. DBLP Carback-first
+- Venue: DBLP is EVT/WOTE 2009 (conference); current entry cites 'IEEE TIFS' (journal) — these may be different publications
+
+**Important note on venue:** 'IEEE TIFS' = IEEE Transactions on Information Forensics and Security. There IS a journal version of Scantegrity II published in IEEE TIFS. The DBLP entry is specifically the conference paper (EVT/WOTE 2009). The current bibliography may be citing the journal version (IEEE TIFS) which can have different authors/ordering from the conference version. The in-text uses 'Chaum et al. (2010)' which may be correct for the journal version.
+
+**Options:**
+
+**Option (a) [if citing conference paper]:** Correct to DBLP 12-author Carback-first list (EVT/WOTE 2009). Change venue to 'EVT/WOTE 2009'. Change in-text 'Chaum et al.' → 'Carback et al.'. This is a significant in-text citation change affecting all occurrences of 'Chaum et al. (2010)' in the paper.
+
+**Option (b) [if citing journal version]:** Verify the IEEE TIFS version of Scantegrity II (Chaum et al., IEEE TIFS 2010). If the journal version has Chaum as first author with the 10-author list in the current bibliography, the current entry may be correct for the journal version. Locate the IEEE TIFS paper (DOI: 10.1109/TIFS.2009.2038144 or similar) to confirm.
+
+**Option (c) [practical resolution]:** The paper currently describes 'Chaum et al.'s (2010) deployment of Scantegrity II in Takoma Park, the first binding governmental election...' (§1.4). This description matches the 2009 Takoma Park deployment, which is documented in the conference paper (EVT/WOTE 2009 / 2010 publication = the proceedings year). If the year '2010' in the bibliography refers to the proceedings year of the conference paper, the DBLP 12-author Carback-first entry is the correct citation and option (a) is correct.
+
+**Recommendation:** Check whether your citation note/Zotero/saved PDF identifies this as the conference paper (EVT/WOTE) or the journal article (IEEE TIFS). If EVT/WOTE → option (a). If IEEE TIFS → verify the IEEE TIFS author list and update the bibliography accordingly.
+
+**Jony action:** Reply **"BB: option (a) [conference paper]"** or **"BB: option (b) [journal version — will verify IEEE TIFS]"**.
+
+---
+
+## Summary table (updated tick-4160)
 
 | # | Action | Recommendation | What agent does after confirm |
 |---|--------|---------------|------------------------------|
+| CC | **ALREADY APPLIED** — Perez→Pereira (commit 98851ad) | No action ✅ | Already done |
+| DD | Confirm current 4-author Adida-first entry | **"DD: option (a)"** | Remove [JONY-ACTION DD] note block from bibliography |
+| BB | Chaum (2010) conf vs. journal — resolve venue | Pick (a) or (b) after checking source | Update bibliography; if (a): update in-text 'Chaum et al.' → 'Carback et al.' |
 | G | Confirm option (b) — design reframe CHI-safe | **YES** | Remove [JONY-ACTION G] block from paper |
 | A | Item A: Q3 instrument wording | **YES** | Update §4.4 Q3 note; draft Amendment 4 |
 | B | Item B: Q4 instrument wording | **YES** | Update §4.4 Q4 note |
@@ -162,12 +231,13 @@ Full resolution memo at `docs/z-aa-q-resolution-memo-2026-06-28.md` (tick-4144, 
 | W | Accept label-conditioned CAL-FEEDBACK | **YES** | Add §5.5 H2.3 design note |
 | P | §6.1 E&S → threat-model dismissal wording | option (a) ready | Apply option (a) edit to §6.1 |
 | Q | §1.1 E&S 'framework' label | option (a) or (b) | Apply edit; or resolved by Z(a2) |
-| T | File Amendments 12+13 on OSF | Jony OSF upload | — |
+| T | File Amendments 12+13+14 on OSF | Jony OSF upload | — |
 | U | E2 copy: fix impl. (a) or update spec (b) | option (a) recommended | Fix VoteReceipt.tsx or update spec |
 | Y | §1.1 opener: Mango Markets 2022 replacement | option (b) recommended | Apply opener edit to paper |
 | Z+AA | §1.1 trio: rename mechanisms | option (a2) recommended | Apply sentence replacement to §1.1 |
 | I | Items A/B/C OSF amendments + §4.2 block | After A/B/C confirmed | Remove [JONY-ACTION I] block |
 | O | CS/SE Amendment 5 | Jony OSF upload | — |
 
-**After Jony confirms the easy batch (G, A, B, C, R, S, W) + the three recommendations (P, Y, Z(a2)):**  
-Open JONY-ACTIONs drop from 16 → 4 (I, O, T — OSF uploads only; U — choice needed).
+**After Jony confirms the easy batch (G, A, B, C, R, S, W, DD) + recommendations (P, Y, Z(a2), BB(a)):**  
+Open JONY-ACTIONs drop from 18 → 4 (I, O, T — OSF uploads only; U — choice needed).  
+_T now includes Amendment 14 (attention check descriptions; tick-4150) in addition to Amendments 12+13._
