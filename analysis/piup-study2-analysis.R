@@ -683,9 +683,26 @@ if (!H4_SUPPORTED) {
 } else {
   cat("H4 supported — running H2.3 on L2 conditions only.\n\n")
 
-  # L2 participants with I2 (calibration) or I1 (no calibration)
-  df_L2     <- df[df$L == "confirmation_code" & !is.na(df$m4_residual), ]
-  df_L2_I1  <- df_L2[df_L2$I == "no_calibration", ]
+  # L2 participants
+  # NOTE — JONY-ACTION HH: The H2.3 specification (§9.1, design note §8) calls for a
+  # t-test comparing I1-L2 vs I2-L2 on M4 residual ("I1 > I2, one-tailed").  However,
+  # M4 (calibration_confidence) is collected ONLY in I2 conditions (NA for all I1
+  # participants — they answered no pre-receipt comprehension questions and have nothing
+  # to rate retrospective confidence about; see §7.2, column map COL_CALIB_CONF).
+  # Consequence: filtering by !is.na(m4_residual) removes all I1 participants, making
+  # df_L2_I1 empty (0 rows) and silently triggering the "insufficient observations"
+  # guard below — H2.3 is skipped every run despite n=30/cell being achieved.
+  # Resolution requires a design decision BEFORE OSF pre-registration:
+  #   Option (a): Instrument amendment — add a post-receipt confidence rating in I1
+  #               conditions (e.g. "How well do you think you understood the receipt?");
+  #               note wording must differ from the I2 M4 question (no CAL probes in I1).
+  #   Option (b): Respecify H2.3 as L1I2 vs L2I2 within-I2 comparison ("does
+  #               calibration reduce L2 miscalibration more than L1?" — pre-spec as
+  #               protocol amendment; retains M4 as I2-only; change the t-test below).
+  #   Option (c): Drop H2.3 from the pre-registration.
+  # Do NOT begin data collection until this is resolved.
+  df_L2     <- df[df$L == "confirmation_code" & !is.na(df$m4_residual), ]  # I2-only (see HH)
+  df_L2_I1  <- df_L2[df_L2$I == "no_calibration", ]  # Will be 0 rows — HH conflict (see above)
   df_L2_I2  <- df_L2[df_L2$I == "calibration", ]
 
   cat(sprintf("L2 analytic n: I1 = %d, I2 = %d\n", nrow(df_L2_I1), nrow(df_L2_I2)))
@@ -722,6 +739,22 @@ if (!H4_SUPPORTED) {
     cat("TOST result (M3 equivalence):\n")
     print(tost_h23)
 
+    # Version-agnostic TOST p-value extraction.
+    # TOSTER v0.3.x returned $TOST_p1 / $TOST_p2 directly on the list.
+    # TOSTER v0.4+ returns an object of class "TOSTt" whose $TOST slot is a
+    # data frame with a "p.value" column (two rows: lower and upper bound tests).
+    # Using !is.null(tost_h23$TOST_p1) as the only guard silently evaluates to
+    # FALSE on v0.4+, causing the equivalence verdict to always print
+    # "NOT ESTABLISHED" regardless of the actual test result.
+    tost_pmax <- if (!is.null(tost_h23$TOST_p1) && !is.null(tost_h23$TOST_p2)) {
+      max(tost_h23$TOST_p1, tost_h23$TOST_p2, na.rm = TRUE)      # TOSTER v0.3.x
+    } else if (!is.null(tost_h23[["TOST"]]) &&
+               "p.value" %in% names(tost_h23[["TOST"]])) {
+      max(tost_h23[["TOST"]][["p.value"]], na.rm = TRUE)           # TOSTER v0.4+
+    } else {
+      NA_real_  # Unknown structure — print() output above is the authoritative reference
+    }
+
     h23_mismatch_note <- if (nrow(df_L2_I1) < 30 || nrow(df_L2_I2) < 30) {
       sprintf(
         "\n*** POWER WARNING: L2 subgroup n < 30 per cell (I1=%d, I2=%d). Test may be underpowered. See §10.3 — consider Study 2b. ***",
@@ -732,7 +765,7 @@ if (!H4_SUPPORTED) {
       "H2.3: Calibration t-test p(one-tailed) = %.4f (%s); TOST equivalence on save intent: %s.%s",
       t_h23$p.value,
       if (t_h23$p.value < 0.05) "SUPPORTED — residual reduced" else "NOT SUPPORTED",
-      if (!is.null(tost_h23$TOST_p1) && max(tost_h23$TOST_p1, tost_h23$TOST_p2, na.rm = TRUE) < 0.05)
+      if (!is.na(tost_pmax) && tost_pmax < 0.05)
         "EQUIVALENT (save intent preserved)" else "NOT ESTABLISHED",
       h23_mismatch_note
     )
