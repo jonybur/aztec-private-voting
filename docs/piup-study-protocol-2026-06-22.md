@@ -193,7 +193,14 @@ Target: **n = 80** (estimate; see power note). Inclusion: any voter in the partn
 
 ---
 
-## Study 3 (optional, if time and IRB permit): Coercion surface
+## Study 4 (optional, if time and IRB permit): Coercion surface
+
+> **Numbering note (added 2026-06-29):** Study 3 is now the social verification extension
+> (social proof manipulation on deferred verification behavior; connects to Das et al. 2014).
+> Full design: `docs/piup-study3-social-verification-2026-06-29.md`.
+> The coercion surface vignette study is renumbered Study 4 to match the three-study agenda
+> described in the CMU research statement and cold-contact email to Sauvik Das.
+
 
 ### Design
 
