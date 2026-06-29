@@ -242,6 +242,28 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 15 — H2 reversed-verdict criterion: p_one_tailed → p_two_tailed (analysis script, pre-data)
+
+**Type:** I (minor; analysis-script bug fix, pre-data, no statistical conclusion affected)
+
+**Detected:** tick-4170 (2026-06-29). Cross-check of §4.5 H2 outcome classification text vs. `piup-study1-analysis.R`.
+
+**Description:** The H2 reversed-verdict criterion in `piup-study1-analysis.R` line 571 used `h2_reversed_test$p_one_tailed < 0.05` to test whether B > A on Q2 is significant. The pre-registration §6.5 and paper §4.5 both specify this post-hoc test should be evaluated at α = 0.05 **two-tailed**. Using `p_one_tailed` is equivalent to two-tailed α = 0.10, making the 'reversed' verdict systematically too easy to reach. Corrected to `h2_reversed_test$p_two_tailed < 0.05`.
+
+**Evidence of intent:** The script comment on the same line read "# Post-hoc reversed test (two-tailed; only if primary not significant)" — the developer's intent was two-tailed, but the implementation was wrong.
+
+**Impact:** No statistical results affected (pre-data correction). The 'reversed' verdict is now correctly guarded by two-tailed α = 0.05, consistent with the pre-registration.
+
+**Relationship to other amendments:** Parallel to Amendment 9 (TOST lower.tail bug fix, same analysis file, also pre-data).
+
+**OSF amendment text to paste:**
+
+> _"H2 reversed-verdict criterion corrected (pre-data): `piup-study1-analysis.R` line 571 used a one-tailed p-value (p_one_tailed < 0.05) for the post-hoc B > A reversed test, equivalent to two-tailed α = 0.10. Pre-registration §6.5 specifies two-tailed α = 0.05 for this post-hoc check. Corrected to p_two_tailed < 0.05. The script comment on the same line correctly stated 'two-tailed' — only the code was inconsistent with the stated intent. No statistical conclusion affected (pre-data correction). (Pre-data, pre-OSF upload.)"_
+
+**Supporting documentation:** `analysis/piup-study1-analysis.R` line 571 (fixed tick-4170); paper §4.5 H2 outcome classification [Fixed tick-4170 note]; pre-reg §6.5.
+
+---
+
 ## Section C — Filing checklist
 
 Complete this before OSF upload.
@@ -268,6 +290,7 @@ Complete this before OSF upload.
 - [ ] Amendment 9 — TOST lower.tail bug fix (file this; re-upload analysis.R)
 - [ ] Amendment 10 — TOSTER package removal (file this; re-upload analysis.R)
 - [ ] Amendment 11 — multcomp removal + dunn.test addition (file this; no analysis.R re-upload needed — script already correct)
+- [ ] Amendment 15 — H2 reversed-verdict criterion p_one_tailed → p_two_tailed (file this; re-upload analysis.R)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)

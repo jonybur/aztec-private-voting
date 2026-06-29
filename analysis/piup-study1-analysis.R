@@ -567,8 +567,13 @@ primary_sig <- h2_p_holm[1] < 0.05 && h2_primary$prop1 > h2_primary$prop2  # A >
 equiv_estab <- tost_result$equivalence_established
 
 # Post-hoc reversed test (two-tailed; only if primary not significant)
+# Pre-registration §6.5 and paper §4.5 specify: α = 0.05 TWO-TAILED for the reversed criterion.
+# [AMENDMENT tick-4170] Bug fix: was using p_one_tailed (equivalent to two-tailed α=0.10),
+# which made the 'reversed' verdict too easy to reach. Corrected to p_two_tailed < 0.05.
+# The comment above correctly said 'two-tailed' but the code was wrong. Statistical result
+# unchanged until real data arrives; no OSF amendment needed (pre-data correction).
 h2_reversed_test <- two_by_two_chisq(B_q2$x, B_q2$n, A_q2b$x, A_q2b$n, direction = "greater")
-reversed_sig <- (!primary_sig) && (h2_reversed_test$p_one_tailed < 0.05) && equiv_estab
+reversed_sig <- (!primary_sig) && (h2_reversed_test$p_two_tailed < 0.05) && equiv_estab
 
 h2_verdict <- if (primary_sig && equiv_estab) {
   "SUPPORTED: A > B on Q2 (primary) + composite equivalence established"
