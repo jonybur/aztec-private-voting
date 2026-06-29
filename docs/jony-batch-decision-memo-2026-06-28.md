@@ -1,6 +1,6 @@
 # JONY Batch Decision Memo — CHI Paper
 
-**Generated:** tick-4148 (2026-06-28) · **Updated:** tick-4164 (2026-06-29 — added EE, FF Study 2 instrument conflicts; updated to 20 active actions)  
+**Generated:** tick-4148 (2026-06-28) · **Updated:** tick-4211 (2026-06-29 — added GG, HH, II, JJ; updated to 24 active actions)  
 **Purpose:** All 20 active open JONY-ACTIONs consolidated with recommendations. Resolve in one pass.  
 **Already applied (no action needed):** CC (Bell et al. 2013 Perez→Pereira fix, commit 98851ad, tick-4155) ✅  
 **Blocking CHI submission:** P, Q, R, S, Y, Z, AA (citation precision), U (Study 2 instrument), T (OSF amendments), BB (bibliography)  
@@ -271,7 +271,103 @@ The variable name `calibration_confidence` in the guide refers to Q-AC post-rece
 
 ---
 
-## Summary table (updated tick-4164)
+## PART 7 — New actions since tick-4164 (GG, HH, II, JJ)
+
+These four actions were opened between ticks 4168 and 4201 and were not in the tick-4164 batch memo.
+
+---
+
+### JJ — Cover letter ¶2 "Coercion resistance" overclaim
+
+**File:** `docs/gt-hci-cover-letter-draft-2026-06-29.md` ¶2  
+**Severity:** HIGH — factual overclaim contradicting §3.3 L2 and §6.5 L2  
+**Annie Antón risk: HIGH** — she is a formal privacy-specification researcher who will notice  
+**Blocking:** Do NOT send cover letter or cold-contact email to Antón until ¶2 is fixed
+
+**Error:**
+> Cover letter ¶2: "zero-knowledge proofs can guarantee ballot privacy, individual verifiability, and **coercion resistance** simultaneously."
+
+**Correct (research statement ¶1):**
+> "zero-knowledge proofs can guarantee ballot privacy, individual verifiability, and **double-vote prevention** simultaneously."
+
+**Why wrong:** The contract does not implement a re-encryption mix. A voter who shares their `receipt_id` with a coercer allows reconstruction of vote choice from `record_vote` calldata. "Coercion-resistant" is explicitly withheld from user-facing copy (§3.3 L2; §6.5; VoteReceipt.tsx). The cover letter appears to have been drafted independently of the paper's final §3.3 L2 commitment.
+
+**Option (a) [RECOMMENDED — simple fix]:** Replace `"coercion resistance"` with `"double-vote prevention"` — exact match to research statement ¶1. Agent also searches cover letter file for any other "coercion resistance" occurrences.  
+**Option (b):** More informative: "…double-vote prevention simultaneously — but they cannot, alone, guarantee that a voter cannot voluntarily prove how they voted."  
+**Option (c):** Drop the three-property list: "zero-knowledge proofs handle the cryptographic half: ballot secrecy and individual verifiability without a central authority."
+
+**Jony action:** Reply **"JJ: option (a)"** — this is the easy fix and matches the research statement exactly.
+
+Full proposal: `docs/chi-cover-letter-coercion-resistance-proposal-tick-4201.md`
+
+---
+
+### HH — §6.5 L2 receipt-freeness paragraph absent
+
+**File:** `drafts/piup-chi-paper-draft-2026-06-22.md` §6.5  
+**CHI risk:** MODERATE  
+**Context:** §3.3 documents two design limitations — L1 (calldata exposure) and L2 (partial receipt-freeness, no re-encryption mix). §6.5 has a full "Protocol-layer exposure" entry for L1 but **no entry for L2**. A CHI reviewer familiar with e-voting receipt-freeness literature (Juels et al. 2005; Carback et al. 2010) may look for L2 in §6.5 and not find it.
+
+**Proposed paragraph** (insertion after "Protocol-layer exposure"):
+> **Partial receipt-freeness.** Receipt-freeness requires that a voter be unable to prove to a third party how they voted, even voluntarily (Juels et al. 2005). The current Aztec Private Voting instantiation does not achieve full receipt-freeness: a voter who shares their fingerprint identifier with a coercer provides a direct handle for that coercer to reconstruct the voter's choice from the on-chain `record_vote` calldata (§3.3, L1 privacy gap), because the `receipt_id → vote_choice` map is publicly constructible from calldata alone. Full receipt-freeness requires a protocol mechanism that severs the link between a voter's identifier and their recorded choice — such as a re-encryption mix — which the contract does not implement (§3.3, L2). PIUP addresses the coercion surface at the receipt-content layer (Invariant 3) and at the UX layer, but these do not prevent a voter from voluntarily producing verifiable coercion evidence by sharing their fingerprint. The term "coercion-resistant" is withheld from user-facing copy in `VoteReceipt.tsx` until a re-encryption mix is implemented. This limitation does not affect Study 1 or Study 2: the comprehension endpoints test absent-content inference, not receipt-freeness or threat-model comprehension.
+
+**Also requires:** New bibliography entry for Juels, A., Catalano, D., and Jakobsson, M. (2005). "Coercion-resistant electronic elections." WPES '05, pp. 61-70. ACM. (Authors + year confirmed DBLP tick-4198; pages need ACM DL verification.)
+
+**Option (a) [RECOMMENDED]:** Apply paragraph + add Juels et al. bibliography entry (verify pp. 61-70 via ACM DL first).  
+**Option (b):** Apply paragraph without Juels citation (remove the inline reference).  
+**Option (c) [Reject]:** §3.3's terse L2 note is sufficient; accept CHI risk MODERATE.
+
+**Jony action:** Reply **"HH: option (a)"** (or b or c).
+
+Full proposal: `docs/chi-paper-65-l2-receipt-freeness-proposal-tick-4198.md`
+
+---
+
+### II — §6.5 Study 2 ecological validity paragraph absent
+
+**File:** `drafts/piup-chi-paper-draft-2026-06-22.md` §6.5  
+**CHI risk:** LOW-MODERATE  
+**Context:** §6.5 has three paragraphs dedicated to Study 1 (EV, label-substitution contingency, Q1 demand characteristic) but only one paragraph for Study 2 (demand characteristics only), which makes a single passing mention of ecological validity without enumerating remaining bounds.
+
+**Four unaddressed Study 2 EV bounds:**
+1. Consequentially inert vote choice (no real stake in the DAO scenario).
+2. Prolific sample bound (US-based English-speaking online workers — same as Study 1 but unstated for Study 2).
+3. Immediate post-vote measurement only — delayed-verification interaction pattern (revisiting receipt days/weeks later) is untested; most relevant to H2.4 (save intention).
+4. H2.3 underpowering cross-reference (power ≈ 0.72 at d = 0.50, L2 n = 60; documented §5.5 but not §6.5).
+
+**Option (a) [RECOMMENDED]:** Insert a full Study 2 ecological validity paragraph (full proposed text in `docs/chi-paper-65-study2-ev-proposal-tick-4200.md`). H2.3 cross-reference absorbed into this paragraph.  
+**Option (b):** Apply the Study 2 EV paragraph but drop the H2.3 sentence (it's in §5.5 already).  
+**Option (c) [Reject]:** Asymmetric §6.5 treatment acceptable; accept CHI risk LOW-MODERATE.
+
+**Jony action:** Reply **"II: option (a)"** (or b or c).
+
+Full proposal: `docs/chi-paper-65-study2-ev-proposal-tick-4200.md`
+
+---
+
+### GG — Study 2 Qualtrics guide SC3 vs DM4 structural conflict
+
+**File:** `docs/qualtrics-setup-guide-study2-2026-06-28.md`  
+**CHI risk:** N/A (internal study protocol)  
+**Pre-reg impact:** Structural — the pre-registered instrument does NOT have SC3
+
+**Conflict 1 — SC3 screener vs DM4 post-hoc:**  
+The guide adds an SC3 screener question ("Have you participated in any previous sessions of this study?") to screen out prior-study participants during data collection. The pre-registered instrument has NO SC3 — it uses DM4 (demographics) to capture this group and excludes them post-hoc in R, with the Prolific "Previous Studies" filter as primary defence.
+
+- **Option (a):** Remove SC3 from the guide. Use instrument DM4 post-hoc approach (no OSF amendment needed).
+- **Option (b):** Keep SC3 in the guide. Log it as a protocol deviation and file an OSF amendment before registration.
+
+**Conflict 2 — DM3 wording (three sub-issues):**  
+DM3 asks about prior experience with voting systems.
+- (i) Time window: guide says "past 12 months" vs. instrument §14 DM4 says "past 6 months".
+- (ii) Question text: guide says "voting interfaces" vs. instrument says "voting receipts, voting confirmations, or post-vote screens".
+- (iii) "(follow-up to screener question)" note in guide is only valid if SC3 exists — if SC3 is removed per option (a), this note must also be removed and phrasing revised.
+
+**Jony action:** Reply **"GG: option (a)"** (remove SC3, use DM4 post-hoc) or **"GG: option (b)"** (keep SC3, file amendment). Agent resolves all three DM3 sub-issues in line with the chosen option.
+
+---
+
+## Summary table (updated tick-4211)
 
 | # | Action | Recommendation | What agent does after confirm |
 |---|--------|---------------|------------------------------|
@@ -294,7 +390,11 @@ The variable name `calibration_confidence` in the guide refers to Q-AC post-rece
 | O | CS/SE Amendment 5 | Jony OSF upload | — |
 | EE | TC2 construct: comprehension (a) vs security (b) | Need Jony's choice | Apply instrument or guide wording; update counterpart if (b) |
 | FF | calibration_confidence: I2 retrospective (a) vs all-N Q-AC (b) | Need Jony's choice | Update guide or instrument; scope change affects M4 sample size |
+| JJ | Cover letter ¶2 "coercion resistance" → "double-vote prevention" | **"JJ: option (a)"** | One-word replace in cover letter; search for other occurrences |
+| HH | §6.5 L2 receipt-freeness paragraph absent | option (a) recommended | Apply paragraph + add Juels et al. (2005) bib entry (verify pp.) |
+| II | §6.5 Study 2 EV paragraph absent (4 bounds not noted) | option (a) recommended | Insert Study 2 EV paragraph after Study 2 demand characteristics |
+| GG | SC3 vs DM4 structural conflict + DM3 wording (3 sub-issues) | Need Jony's choice | Remove SC3 or file OSF amendment; fix DM3 in line with chosen option |
 
-**After Jony confirms the easy batch (G, A, B, C, R, S, W, DD) + recommendations (P, Y, Z(a2), BB(a)):**  
-Open JONY-ACTIONs drop from 20 → 6 (I, O, T — OSF uploads only; U, EE, FF — choices needed).  
+**After Jony confirms the easy batch (G, A, B, C, R, S, W, DD, JJ) + recommendations (P, Y, Z(a2), BB(a), HH(a), II(a)):**  
+Open JONY-ACTIONs drop from 24 → 6 (I, O, T — OSF uploads only; U, EE, FF, GG — choices needed).  
 _T now includes Amendment 14 (attention check descriptions; tick-4150) in addition to Amendments 12+13._
