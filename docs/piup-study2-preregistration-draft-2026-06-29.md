@@ -295,7 +295,7 @@ Scored 0–2 by two independent raters:
 
 ### 6.3 Secondary analysis — H2.2
 
-**Test:** Two-way ANOVA (L × E, between-subjects; I collapsed or as covariate) on M2 composite.  
+**Test:** Two-way ANOVA (L × E, between-subjects; I **pooled/collapsed** — I is not included in the H2.2 model; all 8 cells contribute to L and E estimates with I treated as a nuisance factor by pooling across I levels) on M2 composite. [Fixed tick-4249: prior wording "I collapsed or as covariate" was ambiguous. The analysis script uses `aov(m2_trust ~ L * E, ...)` with no I term, confirming I is pooled/collapsed, consistent with CHI paper §5.5 "pooling across I".]  
 - If F_interaction significant (α = 0.05): simple effects of E within L1 and within L2 (Welch's t-test, `var.equal = FALSE`).  
 - If F_interaction not significant: report null with 90% CI on interaction term; report E main effect and L main effect descriptively.
 
@@ -305,7 +305,7 @@ Scored 0–2 by two independent raters:
 **Subset:** L2 conditions only (L2E1I1, L2E1I2, L2E2I1, L2E2I2 → I1 vs. I2 within L2; N_L2 = 60 if H4 supported and N = 240 design retained).
 
 1. **M4 residual (miscalibration):** Two-sample t-test (I1-L2 vs. I2-L2), one-tailed (I1 > I2), α = 0.05. Report Cohen's d + 95% CI.
-2. **M3 save intention (equivalence):** TOST on self-report M3 (I1-L2 vs. I2-L2), equivalence bounds ±0.5 SD, α = 0.05 per one-sided test (Lakens, 2017 z-test on proportions adapted for Likert; report as "equivalence established" if both p < 0.05). If equivalence not established, report M3 effect size (d) and CI.
+2. **M3 save intention (equivalence):** TOST on self-report M3 (I1-L2 vs. I2-L2), equivalence bounds ±0.5 SD in raw Likert units (bounds = 0.5 × observed M3 SD computed from pooled L2 data), α = 0.05 per one-sided test. **Method: Welch two one-sided t-tests (TOSTER::tsum_TOST, `var.equal = FALSE`; Lakens, 2017 TOST framework for means).** Equivalence established if max(p_lower, p_upper) < 0.05. If equivalence not established, report M3 Cohen's d and 90% CI. [Fixed tick-4249: prior wording "Lakens, 2017 z-test on proportions adapted for Likert" was methodologically incorrect. M3 is a 7-point Likert scale (continuous); the correct TOST uses the t-distribution based `tsum_TOST`, not a z-test for proportions. Contrast with Study 1 H2-tertiary which used a custom z-test for accuracy *proportions* — that is a different scale type requiring a different TOST implementation. Analysis script (piup-study2-analysis.R H2.3) confirmed: `TOSTER::tsum_TOST(..., var.equal = FALSE)`. No protocol impact — only the method description was wrong; bounds, alpha, and verdict logic are unchanged.]
 
 ### 6.5 Secondary analysis — H2.4
 
