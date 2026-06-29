@@ -283,6 +283,8 @@ Click **Save Flow**.
 - Choices: `Yes` | `No` | `Not sure`
 - Skip Logic on `Yes` → End of Survey (cross-study contamination exclusion — §11.4 of design note).
 
+> ⚠️ **JONY-ACTION GG (structural conflict): This guide adds SC3 to screen out prior-study participants before data collection (no data collected for them). The pre-registered instrument has no SC3 — it uses DM4 (demographics) to capture this group and excludes them post-hoc in R, with the Prolific "Previous Studies" filter as primary defence. These are incompatible: option (a) remove SC3 and use the instrument DM4 post-hoc approach (no amendment needed); option (b) keep SC3 and log it as a protocol amendment before OSF registration. Guide left unchanged pending Jony confirmation. Note: GG also affects DM3 wording — see below.**
+
 ---
 
 ## Step 4 — Welcome Block
@@ -512,7 +514,7 @@ Now, please review the voting receipt on the next screen.
 Place this block in Survey Flow between the Stimulus block and the Comprehension block.
 
 - Question type: **Multiple Choice** (single select)
-- Text: `This is an attention check to make sure you are reading carefully. Please select "Strongly Disagree" regardless of what this question says.`
+- Text: `This is an attention check to make sure you are reading carefully. Please select "Strongly Disagree" as your response to this question, regardless of what it says.`
 - Choices: `Strongly Agree` | `Agree` | `Neither Agree nor Disagree` | `Disagree` | **`Strongly Disagree`** (correct)
 - Variable name: `attention_check_1`
 - No skip logic — record all responses; exclusion applied in R per pre-registration.
@@ -527,8 +529,8 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 
 **Page 1:**
 - Question type: **Multiple Choice** (single select)
-- Text: `Looking at the voting interface you just saw: was your vote choice (which option you voted for) shown anywhere on the screen?`
-- Choices: `Yes — my vote choice was shown` | `No — my vote choice was not shown` | `I'm not sure`
+- Text: `Looking at that receipt: does it show which voting option you chose?`
+- Choices: `Yes, my vote choice is shown` | `No, my vote choice is not shown` | `It's not clear from what I see`
 - Variable name: `qac_correct`
 - **Correct answer:** `No`. Coded 1 = correct, 0 = incorrect in the analysis script.
 
@@ -545,6 +547,7 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 ### M2-Trust — Trust-in-receipt composite (4 items, 7-point Likert)
 
 **Page 2:**
+- Page heading: `Please rate your level of agreement with each statement about the receipt you just saw.`
 - Question type: **Matrix Table** (4 rows, 7 columns).
 - Rows (variable names in parentheses — set via Export Tag):
   1. `trust_integrity_1` — "I believe this receipt accurately reflects what happened with my vote."
@@ -606,25 +609,34 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 ## Step 10 — Demographics Block
 
 ### DM1 — Age range
+- Question type: **Multiple Choice** (single select)
+- Text: `What is your age?`
 - Variable name: `age_group`
 - Choices: `18–24` | `25–34` | `35–44` | `45–54` | `55–64` | `65 or older` | `Prefer not to say`
 
 ### DM2 — Technology background
 - Variable name: `occupation_sw_eng`
 - Text: `Have you ever written code professionally or as part of a degree?`
-- Choices: `Yes — as my main job` | `Yes — occasionally` | `No` | `Prefer not to say`
+- Choices: `Yes — as my main job` | `Yes — occasionally / as part of a degree` | `No` | `Prefer not to say`
 
 ### DM3 — Prior receipt study
 - Variable name: `prior_receipt_study`
 - Text: `Have you participated in any online study involving voting interfaces in the past 12 months? (This is a follow-up to the screener question — please answer again.)`
 - Choices: `Yes` | `No` | `Not sure`
 
+> ⚠️ **JONY-ACTION GG (continued — wording conflicts in this question): (a) Time window: guide says "past 12 months" vs instrument §14 DM4 says "past 6 months". (b) Question text: guide says "voting interfaces" vs instrument says "voting receipts, voting confirmations, or post-vote screens". (c) The "(follow-up to screener question)" note is only valid if SC3 exists — if SC3 is removed per option (a) above, this note must also be removed and the phrasing revised. Confirm with GG resolution above.**
+
 > **Why ask again:** The screener version (SC3) captures exclusion; this demographics version feeds `prior_receipt_study` into the analysis script's exclusion logic (§2 of analysis script).
 
 ### DM4 — Prior voting
 - Variable name: `prior_voting`
-- Text: `Which of the following have you participated in?` (multiple select)
-- Same choices as Study 1 DM3.
+- Text: `Which of the following have you participated in? (Select all that apply)` (multiple select)
+- Choices:
+  - `An online opinion poll or workplace survey`
+  - `A national or local government election (online or paper)`
+  - `A student body or organisational election (online or paper)`
+  - `I have never voted in any election or poll` *(log as inconsistent with SC1 pass; do not auto-exclude — apply sensitivity check in analysis)*
+  - `Prefer not to say`
 
 ### DM5 — Technology efficacy
 - Variable name: `tech_efficacy_mean`
@@ -645,13 +657,15 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 ```
 Thank you for your participation.
 
-This study examined how the design of a voting receipt screen — specifically the label given to a unique identifier, and whether it includes an explanation of what the identifier proves — affects people's trust and understanding.
+This study examined how the design of a voting receipt affects people's understanding and trust. Specifically, we looked at how different label names ("vote fingerprint" vs. "confirmation code") and explanatory text affect whether people correctly understand that the receipt does not show their vote choice.
 
-In real privacy-preserving voting systems, the identifier on a receipt proves that your vote was counted, but it does NOT reveal which option you voted for. This is an intentional privacy property: it means your receipt can be shown to others without disclosing your vote.
+In real private voting systems, the identifier — whether called a "vote fingerprint," a "confirmation code," or something else — proves only that your vote was counted, not which option you chose. This is an intentional privacy-preserving feature.
 
-The study is being conducted as part of research on privacy-preserving voting technology. If you have questions, contact the research team via Prolific.
+The study is being conducted as part of research on the usability of privacy-preserving voting technology. If you have questions, please contact the research team via Prolific.
 
-Compensation: You will receive payment regardless of your answers. There are no correct or incorrect answers from a payment perspective.
+Compensation: You will receive your Prolific payment regardless of your answers. There are no correct or incorrect answers from a payment perspective.
+
+Your completion code will appear on the next screen.
 ```
 
 Add completion redirect in **Survey Options → Survey Termination**: redirect to `https://app.prolific.com/submissions/complete?cc=YOURCODE`.
