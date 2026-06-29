@@ -4,8 +4,8 @@ JONY-ACTION P — §6.1 E&S mechanism precision — commit-ready apply script
 Prepared: tick-4216 (2026-06-29)
 
 Usage:
-    python3 apply-p.py          # Apply Option A (only option — recommended)
-    python3 apply-p.py --dry-run  # Validate without writing
+    python3 apply-p.py          # Dry run (validate without writing)
+    python3 apply-p.py --apply   # Apply Option A (only option — recommended)
 
 Run from aztec-private-voting/ root.
 
@@ -100,7 +100,7 @@ def apply_option_a(content: str) -> str:
 
 
 def main():
-    dry = "--dry-run" in sys.argv
+    dry = "--apply" not in sys.argv
 
     if not os.path.exists(PAPER):
         print(f"ERROR: Paper not found at {PAPER}")

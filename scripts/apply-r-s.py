@@ -19,8 +19,8 @@ ISSUE S (§2.1):
   W&T (1999) directly supports all three failure modes (error/incomplete/untrustworthy) for absent content.
 
 Usage:
-    python3 apply-r-s.py           # Apply (both R and S)
-    python3 apply-r-s.py --dry-run # Validate without writing
+    python3 apply-r-s.py           # Dry run (validate without writing)
+    python3 apply-r-s.py --apply   # Apply (both R and S)
 
 Run from aztec-private-voting/ root.
 
@@ -232,7 +232,7 @@ def verify_applied(content: str) -> bool:
 
 
 def main():
-    dry = "--dry-run" in sys.argv
+    dry = "--apply" not in sys.argv
 
     if not os.path.exists(PAPER):
         print(f"ERROR: Paper not found at {PAPER}")

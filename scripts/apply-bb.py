@@ -26,7 +26,7 @@ BB1_NOTE_NEW = "[Note (tick-4218 — JONY-ACTION BB RESOLVED — option (a) appl
 BB2_OLD = "- Chaum, D., Carback, R., Clark, J., Essex, A., Popoveniuc, S., Rivest, R.L., Ryan, P.Y.A., Shen, E., Sherman, A.T., and Vora, P.L. (2010)."
 BB2_NEW = "- Carback, R., Chaum, D., Clark, J., Conway, J., Essex, A., Herrnson, P.S., Mayberry, T., Popoveniuc, S., Rivest, R.L., Shen, E., Sherman, A.T., and Vora, P.L. (2010)."
 
-DRY_RUN = '--dry-run' in sys.argv
+DRY_RUN = '--apply' not in sys.argv
 
 with open(PAPER, 'r') as f:
     text = f.read()
