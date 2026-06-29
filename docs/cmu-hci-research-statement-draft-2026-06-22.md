@@ -63,6 +63,26 @@ I have a working implementation, a documented design rationale, a named pattern 
 - SPUD Lab page: https://sauvikdas.com/lab
 - CyLab directory: https://www.cylab.cmu.edu/directory/bios/das-sauvik.html
 
+### Cold-contact email template (for Sauvik Das)
+
+**Subject:** PhD application — ZK voting receipt UX + social verification behavior
+
+Professor Das,
+
+I'm applying to CMU HCII for Fall 2027 and wanted to reach out first. My research is on the UX design side of a problem your SOUPS 2014 social nudge work speaks to directly.
+
+I've spent the past two years building a private voting system on Aztec Network (a ZK rollup). The cryptographic privacy properties work: ZK proofs guarantee ballot privacy and individual verifiability simultaneously. What I found is that these properties don't produce correct user behavior unless the UX feedback is carefully designed. A receipt showing a vote summary creates a coercion vector; a receipt showing only cryptographic artifacts is read as a system failure. I designed a pattern — the Proof-of-Inclusion UX Pattern (PIUP) — that uses a randomized surrogate identifier ("fingerprint") and explicit absent-choice framing: *"Your vote was counted. This receipt does not contain your vote — that is the privacy feature, not a limitation."* The pattern generates falsifiable claims about comprehension, security behavior, and — most directly relevant to your work — deferred verification behavior.
+
+That last one is the connection I'd want to explore with you. Study 3 of my proposed agenda is a field study measuring whether users actually return to verify after a vote closes. From the verifiable voting literature, we have essentially no data on this. Your 2014 SOUPS work suggests the answer may be social: users may verify when they see others doing so, or when not verifying carries a visible social cost. The ZK contract I deployed exposes a public verification-rate measurement without de-anonymizing voters — which makes that field study tractable for the first time. Whether social context drives deferred security behavior in private systems is a question I don't think anyone has studied, and it sits squarely in the SPUD Lab's program.
+
+I have a working implementation on Aztec testnet, a pre-registered Study 1 ready for pilot, and a full three-study agenda in my research statement. Happy to share that or the OSF pre-registration.
+
+Best, Jony Bursztyn
+
+---
+
+_(~280 words. Send to: sauvik@cmu.edu — verify current address before sending. Link OSF pre-registration and GitHub repo optionally as footnotes. Do not mention Georgia Tech or Annie Antón.)_
+
 ---
 
 ## Related documents in this repo
