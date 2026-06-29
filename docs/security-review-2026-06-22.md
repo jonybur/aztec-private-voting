@@ -601,3 +601,35 @@ entrypoints. No critical or medium findings remain open.
 
 **Review closed:** 2026-06-22, tick-3650.
 **Reviewer:** Jony Burshtyn / OpenClaw agent working on `aztec-private-voting`.
+
+---
+
+## 10. Amendment: M2/M3 Milestone Terminology for L1 Resolution Path (tick-4181)
+
+**Context:** §3 (Known Limitations) originally stated that the L1 privacy gap is "on
+the M2 roadmap" and that "M2 Architecture A resolves this." The M2 milestone has since
+been disambiguated: **M2 is the EIP-191 secp256k1 ownership proof** (shipped; §3.5 of
+the CHI paper draft); the tally-privacy resolution path is **M3**.
+
+**Correction to §3:**
+
+_Original:_
+> These are correctly annotated in the source and are on the M2 roadmap:
+> - **L1 privacy gap**: ... → M2 Architecture A resolves this via encrypted ballots
+>   (see `docs/m2-tally-privacy-design-spike-2026-06-22.md`).
+
+_Corrected reading:_
+> These are correctly annotated in the source. The L1 privacy gap is on the **M3
+> roadmap** (tally-privacy milestone):
+> - **L1 privacy gap**: ... → **M3 tally-privacy architecture** resolves this via
+>   coordinator-encrypted BallotNote (design spike: `docs/m2-tally-privacy-design-spike-2026-06-22.md`
+>   §Architecture A; implementation spec: `docs/m3-tally-privacy-implementation-spec-2026-06-27.md`
+>   §5.3; pending go-decision).
+
+**Note:** The design spike file is named `m2-tally-privacy-design-spike-2026-06-22.md`
+because it was written under the old milestone naming. The file name is unchanged; only
+the milestone designation changed. The CHI paper body consistently uses "M3" for
+tally-privacy (§1.1, §3.3, §6.5 [Note tick-4013]).
+
+This amendment does not affect any security finding classifications. The L1 privacy gap
+remains an open design limitation of the pre-M3 instantiation. No code changes.
