@@ -264,6 +264,31 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 18 — H4 analysis script: ANOVA omnibus gate missing from verdict logic (pre-data)
+
+**Amendment type:** Type I (minor) — pre-data correction to analysis script; no change to pre-specified hypotheses, primary endpoint, or statistical procedures.
+
+**Detected:** tick-4178 (2026-06-29). Cross-check of CHI paper §6.1-§6.2 Discussion against pre-reg §H4 / §6.7 and analysis script.
+
+**Description:** The pre-registration §6.7 and paper §4.5 both specify that Tukey HSD post-hoc comparisons for H4 are performed only if the one-way ANOVA omnibus is significant (F test, α = 0.05). Paper §4.5 H4-null definition: 'the ANOVA is non-significant; no pairwise extractions are performed.' The analysis script (lines ~718-728) ran `TukeyHSD()` regardless of ANOVA significance — the else-branch when ANOVA was non-significant included a comment 'Pre-specified Tukey HSD comparisons reported regardless', and the verdict determination logic (`h4_support`) checked only whether all three Holm-corrected Tukey comparisons were significant (`h4_sig && h4_direction`) without first gating on ANOVA significance. This means a non-significant ANOVA could still (implausibly) produce an `h4_support = TRUE` verdict.
+
+**Fix (pre-data, pre-OSF upload):**
+1. Added `anova_sig <- f_pval < 0.05` flag.
+2. When ANOVA non-significant: Tukey HSD still computed and printed but clearly labelled 'descriptive/exploratory only; H4 verdict is H4-null per pre-reg §6.7'.
+3. `h4_support` gated on `anova_sig`: `h4_support <- anova_sig && h4_sig && h4_direction`.
+4. Verdict logic gains explicit H4-null branch: `if (!anova_sig) → "H4-NULL: ANOVA non-significant; no confirmatory pairwise extraction."`
+5. H4-partial branch added for ANOVA significant but ≤ 2/3 Tukey comparisons surviving — consistent with paper §4.5 H4-partial definition.
+
+**Impact:** No protocol, sample size, alpha level, or hypothesis change. All pre-specified tests unchanged. Script re-upload required at OSF filing.
+
+**OSF amendment text to paste:**
+
+> _"H4 analysis script: ANOVA omnibus gate added to verdict logic (pre-data). The script previously ran TukeyHSD() regardless of ANOVA significance and did not gate h4\_support on the omnibus p-value. Pre-reg §6.7 and paper §4.5 both require ANOVA significance before pairwise extraction. Fixed: h4\_support now requires anova\_sig (f\_pval < 0.05) AND all three Holm-corrected Tukey comparisons significant AND correct direction. H4-null verdict branch added when ANOVA non-significant. Tukey HSD still computed and printed descriptively when ANOVA non-significant; labelled exploratory. H4-partial branch added for ANOVA significant but ≤ 2/3 comparisons surviving. No protocol, sample size, alpha level, or hypothesis change. (Pre-data, pre-OSF upload.) Commit: see osf-amendment-filing-2026-06-24.md Amendment 18."_
+
+**Supporting documentation:** `analysis/piup-study1-analysis.R` H4 block (lines ~716-810); `drafts/piup-chi-paper-draft-2026-06-22.md` §4.5 H4-null definition.
+
+---
+
 ### Amendment 17 — SC1 wording + SC2 scope: pre-reg language differs from instrument (inclusion/exclusion criteria, pre-data)
 
 **Amendment type:** Type I (minor) — pre-data correction to inclusion/exclusion criterion descriptions; no change to protocol, analysis, or who is actually included/excluded (instrument is the master source and was implemented as-is).
@@ -327,6 +352,7 @@ Complete this before OSF upload.
 - [ ] Amendment 15 — H2 reversed-verdict criterion p_one_tailed → p_two_tailed (file this; re-upload analysis.R)
 - [ ] Amendment 16 — BI1 scale direction corrected in paper §4.4 (text only; no analysis.R re-upload needed)
 - [ ] Amendment 17 — SC1 wording (pre-reg 'vote/poll/election' → instrument 'election/poll/survey') + SC2 scope ('cryptography' removed as distinct criterion; not in SC2 screen-out; paper §4.2 updated tick-4172)
+- [ ] Amendment 18 — H4 ANOVA gate bug fix: `h4_support` now gates on `anova_sig`; H4-null verdict branch added; H4-partial branch added (analysis.R re-upload required)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)

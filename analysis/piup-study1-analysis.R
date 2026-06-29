@@ -715,14 +715,22 @@ cat("\n")
 
 f_pval <- conf_aov_summary[[1]][["Pr(>F)"]][1]
 
-if (f_pval < 0.05) {
+anova_sig <- f_pval < 0.05  # gate for H4 confirmatory pairwise; pre-reg §6.7 / paper §4.5
+
+if (anova_sig) {
   cat("ANOVA significant — proceed to Tukey HSD post-hoc comparisons\n\n")
   tukey_result <- TukeyHSD(conf_aov)
   print(tukey_result)
   cat("\n")
 } else {
-  cat("ANOVA not significant (p >= 0.05). Pre-specified Tukey HSD comparisons reported regardless.\n")
+  # Per pre-reg §6.7 and paper §4.5: ANOVA non-significant → H4-null;
+  # no confirmatory pairwise extractions. Tukey HSD reported below for
+  # descriptive/exploratory transparency only.
+  cat("ANOVA not significant (p >= 0.05). H4-null (pre-reg §6.7; paper §4.5 H4-null).\n")
+  cat("Tukey HSD reported descriptively below (exploratory only; not part of H4 confirmatory verdict).\n")
   tukey_result <- TukeyHSD(conf_aov)
+  print(tukey_result)
+  cat("\n")
 }
 
 # Extract B vs. A, B vs. C, B vs. D from Tukey table
@@ -786,23 +794,29 @@ for (cond in CONDITIONS) {
               cond, CONDITION_LABELS[cond], cor_result$estimate, cor_result$p.value))
 }
 
-# H4 support requires BOTH significance AND correct direction (B > others)
-# Tukey HSD is two-tailed; must verify direction explicitly.
+# H4 support requires: (1) ANOVA omnibus significant, (2) all 3 Holm-corrected
+# Tukey comparisons significant, (3) correct direction (B > others).
+# Per pre-reg §6.7 and paper §4.5: ANOVA gate is first; if ANOVA non-sig → H4-null.
 h4_sig       <- all(h4_p_holm  < 0.05,  na.rm = TRUE)
 h4_direction <- all(h4_diff_vals > 0, na.rm = TRUE)  # diff = B - other; must be positive
-h4_support   <- h4_sig && h4_direction
+h4_support   <- anova_sig && h4_sig && h4_direction  # Fixed tick-4178: gate on anova_sig first
 
 rho_B <- spearman_results[["B"]]$estimate
 rho_A <- spearman_results[["A"]]$estimate
 cat(sprintf("\n  ρ(B) = %.3f vs. ρ(A) = %.3f → calibration %s for B vs. A\n",
             rho_B, rho_A, ifelse(rho_B < rho_A, "LOWER (H4 calibration direction)", "higher")))
 
-h4_verdict <- if (h4_support) {
+# Fixed tick-4178: H4-null branch added; h4_support now gates on anova_sig.
+# Pre-reg §6.7: 'If significant (F test α = 0.05), Tukey HSD'; paper §4.5 H4-null:
+# 'ANOVA non-significant; no pairwise extractions performed.'
+h4_verdict <- if (!anova_sig) {
+  "H4-NULL: ANOVA non-significant (p >= 0.05); no confirmatory pairwise extraction; no confidence advantage established (pre-reg §6.7; paper §4.5)."
+} else if (h4_support) {
   "SUPPORTED: B confidence significantly > all other conditions (Holm-corrected, direction confirmed)"
 } else if (h4_sig && !h4_direction) {
   "DIRECTION FAILURE: B significantly DIFFERENT from others but NOT in predicted direction (B < some). H4 not supported."
 } else {
-  sprintf("NOT SUPPORTED: only %d/3 comparisons significant (and/or direction not consistently B > others)",
+  sprintf("H4-PARTIAL: ANOVA significant but only %d/3 Holm-corrected comparisons significant and/or direction not consistently B > others. Report effect sizes.",
           sum(h4_p_holm < 0.05, na.rm=TRUE))
 }
 cat(sprintf("\nH4 VERDICT: %s\n\n", h4_verdict))
