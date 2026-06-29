@@ -264,6 +264,22 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 17 — SC1 wording + SC2 scope: pre-reg language differs from instrument (inclusion/exclusion criteria, pre-data)
+
+**Amendment type:** Type I (minor) — pre-data correction to inclusion/exclusion criterion descriptions; no change to protocol, analysis, or who is actually included/excluded (instrument is the master source and was implemented as-is).
+
+**Summary:**
+1. **SC1 wording**: Pre-registration §3 inclusion criterion says 'Completed at least one online vote, poll, or election in the past 12 months.' Instrument §SC1 question text says 'Have you voted in an online election, poll, or survey in the past 12 months?' The instrument added 'survey' as an eligible activity type and restructured the phrasing ('voted in an online election, poll, or survey' vs. 'online vote, poll, or election'). 'Survey' is a meaningfully distinct inclusion category (a participant who has taken online surveys but not formal elections or polls passes SC1). The instrument is the deployed master source; the OSF pre-registration should be corrected to match.
+2. **SC2 scope**: Pre-registration §3 exclusion criterion says 'Self-reported software engineering professionals (computer science / software dev / cryptography as primary occupation).' Instrument §SC2 screen-out option for professionals is 'Software engineer, developer, or programmer' — 'cryptography' is not listed as a separate screen-out option (cryptographers selecting 'Other technology professional' are NOT screened). Analysis script uses `COL_OCCUPATION = 'occupation_sw_eng'` (the software engineer flag), confirming cryptography is not separately operationalised. Pre-registration's mention of 'cryptography as primary occupation' should be corrected to match the SC2 implementation.
+
+**No protocol or analysis impact:** The instrument SC1 and SC2 criteria are the implemented protocol; participants were enrolled per the instrument. This amendment corrects the pre-registration text to match what was actually deployed.
+
+**Paper fix:** §4.2 updated at tick-4172 — SC1 changed to 'online election, poll, or survey' (matching instrument §SC1); SC2 changed to 'software developer, engineer, or programmer by primary occupation' (matching instrument §SC2 screen-out option; 'cryptography' removed as a distinct criterion description).
+
+**Supporting documentation:** `docs/piup-study1-survey-instrument-2026-06-22.md` §SC1 (question text) and §SC2 (screen-out options); `analysis/piup-study1-analysis.R` line 123 (`COL_OCCUPATION = 'occupation_sw_eng'`).
+
+---
+
 ### Amendment 16 — BI1 scale direction: paper description inverted (paper text only, pre-data)
 
 **Type:** I (minor; paper text correction, pre-data, no protocol or analysis impact)
@@ -310,6 +326,7 @@ Complete this before OSF upload.
 - [ ] Amendment 11 — multcomp removal + dunn.test addition (file this; no analysis.R re-upload needed — script already correct)
 - [ ] Amendment 15 — H2 reversed-verdict criterion p_one_tailed → p_two_tailed (file this; re-upload analysis.R)
 - [ ] Amendment 16 — BI1 scale direction corrected in paper §4.4 (text only; no analysis.R re-upload needed)
+- [ ] Amendment 17 — SC1 wording (pre-reg 'vote/poll/election' → instrument 'election/poll/survey') + SC2 scope ('cryptography' removed as distinct criterion; not in SC2 screen-out; paper §4.2 updated tick-4172)
 - [ ] Amendment A — Q3 wording (if instrument wording chosen)
 - [ ] Amendment B — Q4 wording (if instrument wording chosen)
 - [ ] Amendment C — Q3 clarification resolution (if applicable)
