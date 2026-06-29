@@ -29,7 +29,7 @@
 #   M1 — Q-AC absent-content accuracy (binary)
 #   M2 — Trust-in-receipt composite (McKnight scale, 4 items, 1–7 Likert)
 #   M3 — Save intention (1–7 self-report) + download click (binary)
-#   M4 — Confidence miscalibration residual (I2 conditions only)
+#   M4 — Confidence miscalibration residual (all conditions; post-receipt Q-AC confidence)
 #   M5 — Verification instruction engagement (binary: expand click)
 #   M6 — Open-text Q-OE absent-choice explanation (0–2, two raters)
 #
@@ -114,9 +114,10 @@ COL_TC2        <- "trust_competence_2"  # "I understand what this receipt is for
 COL_SAVE_INTENT  <- "save_intention"   # 1–7 self-report ("how likely to save/screenshot")
 COL_DOWNLOAD_CLICK <- "download_clicked" # 1 = clicked download, 0 = did not
 
-# M4: Calibration confidence (I2 conditions only)
-COL_CALIB_CONF <- "calibration_confidence"  # 1–7 Likert ("how confident your answers were correct")
-                                             # NA for I1 conditions
+# M4: Calibration confidence (all conditions — post-receipt Q-AC confidence)
+# [Fixed tick-4246: FF resolved (a) — all conditions, not I2 only. Instrument §11 updated
+# to match: Q-AC-conf appears for all participants after the primary comprehension question.]
+COL_CALIB_CONF <- "calibration_confidence"  # 1–7 Likert ("How confident are you in your answer above?")
 
 # M5: Verification instruction engagement
 COL_VERIFY_EXPAND <- "verify_expanded"  # 1 = expanded "how to verify", 0 = did not
@@ -191,11 +192,14 @@ generate_synthetic_data <- function(n_per_cell = 30) {
   save_intent <- pmin(7, pmax(1, round(rnorm(N, save_mu, 1.5))))
   download_click <- rbinom(N, 1, plogis(save_intent - 4))
 
-  # M4: Calibration confidence (I2 only; positive residual for L2)
-  calib_conf <- rep(NA_real_, N)
-  i2_idx <- which(I_vec == "I2")
-  calib_conf_mu <- ifelse(L_vec[i2_idx] == "L2", 5.0, 4.5)
-  calib_conf[i2_idx] <- pmin(7, pmax(1, round(rnorm(length(i2_idx), calib_conf_mu, 1.3))))
+  # M4: Calibration confidence (all conditions — post-receipt Q-AC confidence)
+  # [Fixed tick-4246: FF resolved (a) — calib_conf collected for all N=240, not I2-only.
+  # Synthetic: L2 conditions expected to show higher confidence than L1 (over-confidence
+  # from eCommerce schema); I2 intervention expected to reduce L2 miscalibration.]
+  calib_conf_mu <- ifelse(L_vec == "L2",
+                          ifelse(I_vec == "I2", 4.5, 5.0),   # I2 reduces L2 over-confidence
+                          4.2)                                 # L1: correctly calibrated
+  calib_conf <- pmin(7, pmax(1, round(rnorm(N, calib_conf_mu, 1.3))))
 
   # M5: Verify expansion (higher in E1 conditions)
   p_expand <- ifelse(E_vec == "E1", 0.60, 0.35)
@@ -684,26 +688,13 @@ if (!H4_SUPPORTED) {
   cat("H4 supported — running H2.3 on L2 conditions only.\n\n")
 
   # L2 participants
-  # NOTE — JONY-ACTION HH: The H2.3 specification (§9.1, design note §8) calls for a
-  # t-test comparing I1-L2 vs I2-L2 on M4 residual ("I1 > I2, one-tailed").  However,
-  # M4 (calibration_confidence) is collected ONLY in I2 conditions (NA for all I1
-  # participants — they answered no pre-receipt comprehension questions and have nothing
-  # to rate retrospective confidence about; see §7.2, column map COL_CALIB_CONF).
-  # Consequence: filtering by !is.na(m4_residual) removes all I1 participants, making
-  # df_L2_I1 empty (0 rows) and silently triggering the "insufficient observations"
-  # guard below — H2.3 is skipped every run despite n=30/cell being achieved.
-  # Resolution requires a design decision BEFORE OSF pre-registration:
-  #   Option (a): Instrument amendment — add a post-receipt confidence rating in I1
-  #               conditions (e.g. "How well do you think you understood the receipt?");
-  #               note wording must differ from the I2 M4 question (no CAL probes in I1).
-  #   Option (b): Respecify H2.3 as L1I2 vs L2I2 within-I2 comparison ("does
-  #               calibration reduce L2 miscalibration more than L1?" — pre-spec as
-  #               protocol amendment; retains M4 as I2-only; change the t-test below).
-  #   Option (c): Drop H2.3 from the pre-registration.
-  # Do NOT begin data collection until this is resolved.
-  df_L2     <- df[df$L == "confirmation_code" & !is.na(df$m4_residual), ]  # I2-only (see HH)
-  df_L2_I1  <- df_L2[df_L2$I == "no_calibration", ]  # Will be 0 rows — HH conflict (see above)
-  df_L2_I2  <- df_L2[df_L2$I == "calibration", ]
+  # [Fixed tick-4246: JONY-ACTION HH resolved via FF option (a).
+  # M4 (calibration_confidence) is now collected for ALL conditions (post-receipt
+  # Q-AC confidence, instrument §11 updated). I1 participants are no longer NA;
+  # df_L2 filter no longer needs !is.na(m4_residual) — all L2 rows have M4.]
+  df_L2     <- df[df$L == "confirmation_code", ]
+  df_L2_I1  <- df_L2[df_L2$I == "no_calibration", ]  # n=30 target; has M4 (post-receipt)
+  df_L2_I2  <- df_L2[df_L2$I == "calibration", ]     # n=30 target; has M4 (post-receipt)
 
   cat(sprintf("L2 analytic n: I1 = %d, I2 = %d\n", nrow(df_L2_I1), nrow(df_L2_I2)))
 
@@ -866,8 +857,9 @@ if (!PILOT) {
   cat("  *** EXPLORATORY ***\n\n")
 
   # M4 residual descriptives across I conditions (all L)
-  cat("[EXPLORATORY] M4 Calibration residual by I (I2 only; all L):\n")
-  df_I2 <- df[df$I == "calibration" & !is.na(df$m4_residual), ]
+  cat("[EXPLORATORY] M4 Calibration residual by I (all conditions; all L):\n")
+  # [Fixed tick-4246: M4 now all conditions; no NA filter needed]
+  df_I2 <- df[!is.na(df$m4_residual), ]
   print(tapply(df_I2$m4_residual, df_I2$L, function(x)
     sprintf("mean=%.3f, sd=%.3f, n=%d", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE), sum(!is.na(x)))))
   cat("Positive residual = over-confidence; H4 from Study 1 predicts L2 > L1.\n\n")

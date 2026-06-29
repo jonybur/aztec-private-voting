@@ -533,7 +533,7 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 - Scale: 1 (*Not at all confident*) to 7 (*Completely confident*).
 - Variable name: `calibration_confidence`
 
-> ⚠️ **JONY-ACTION FF (structural conflict): This guide places `calibration_confidence` as Q-AC-conf for ALL conditions ("How confident are you in your answer above?"). However, instrument §11 (M4) restricts calibration_confidence to I2 only and asks a DIFFERENT question: "Before you saw the receipt, we asked you two quick questions. Looking back at your answers: how confident were you that they were correct at the time?" (retrospective confidence in CAL probe answers). These measure different constructs: (a) guide = post-receipt Q-AC confidence, all conditions; (b) instrument = retrospective CAL-probe confidence, I2 only. Which version is pre-registered? Jony must confirm: option (a) guide version (all conditions, Q-AC confidence) or option (b) instrument version (I2 only, CAL-probe retrospective confidence). Guide left unchanged pending confirmation.** Design note §9.3 / H2.3: `calibration_confidence` is the primary M4 variable. The residual analysis is computed in R.
+> Design note §9.3 / H2.3: `calibration_confidence` is the primary M4 variable (all conditions, N=240 — post-receipt Q-AC confidence). The residual analysis is computed in R.
 
 **Page break before next question.**
 

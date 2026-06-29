@@ -449,17 +449,17 @@ Include a hidden `<img>` element below the iframe. The JavaScript above reveals 
 
 ---
 
-## §11 Calibration Confidence (M4 — I2 conditions only)
+## §11 Calibration Confidence (M4 — all conditions)
 
-*Branch logic: Show this question only when `intervention = I2`.*
+*Branch logic: Show this question for all conditions (no branch restriction).*
 
 **Question text:**  
-*"Before you saw the receipt, we asked you two quick questions. Looking back at your answers: how confident were you that they were correct at the time?"*
+*"How confident are you in your answer above?"*
 
 7-point Likert:  
 1 = *Not at all confident* … 4 = *Moderately confident* … 7 = *Completely confident*
 
-*Note: This item measures retrospective confidence in calibration probe answers, not post-receipt confidence. It is placed after the Comprehension and Trust blocks (§8–§9) so that seeing the receipt's actual content can inform the retrospective judgment. The analysis script computes the calibration residual as: `m4_residual = (calibration_confidence − 1) / 6 − qac_correct`. Confidence is first rescaled from its raw 1–7 range to a 0–1 scale using the `(x − 1) / 6` transform, so that it is on the same 0–1 metric as Q-AC binary accuracy before subtraction. Positive residual = over-confidence (confident but wrong on Q-AC); negative residual = under-confidence (answered Q-AC correctly but rated own calibration-probe answers poorly).*
+*Note: This item measures post-receipt confidence in the Q-AC answer (M1). It is placed immediately after Q-AC on the same page. The analysis script computes the calibration residual as: `m4_residual = (calibration_confidence − 1) / 6 − qac_correct`. Confidence is first rescaled from its raw 1–7 range to a 0–1 scale using the `(x − 1) / 6` transform, so that it is on the same 0–1 metric as Q-AC binary accuracy before subtraction. Positive residual = over-confidence (confident but wrong on Q-AC); negative residual = under-confidence (answered Q-AC correctly but rated own calibration-probe answers poorly).*
 
 *Column name: `calibration_confidence` (`COL_CALIB_CONF`)*
 
@@ -684,7 +684,7 @@ Matches column map constants in `analysis/piup-study2-analysis.R`. Update those 
 | `trust_competence_2` | `COL_TC2` | 1–7 | Understands what receipt is for |
 | `save_intention` | `COL_SAVE_INTENT` | 1–7 | Likelihood to save/screenshot receipt |
 | `download_clicked` | `COL_DOWNLOAD_CLICK` | 0/1 | 1 = clicked download button in prototype |
-| `calibration_confidence` | `COL_CALIB_CONF` | 1–7 | Confidence in calibration probe answers (I2 only; NA for I1) |
+| `calibration_confidence` | `COL_CALIB_CONF` | 1–7 | Post-receipt Q-AC confidence (all conditions; N=240) |
 | `verify_expanded` | `COL_VERIFY_EXPAND` | 0/1 | 1 = expanded "how to verify" accordion |
 | `qoe_rater1` | `COL_QOE_RATER1` | 0/1/2 | Q-OE score from rater 1 |
 | `qoe_rater2` | `COL_QOE_RATER2` | 0/1/2 | Q-OE score from rater 2 |
