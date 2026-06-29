@@ -265,7 +265,7 @@ Click **Save Flow**.
 ### SC1 — Voting experience
 
 - Question type: **Multiple Choice** (single select)
-- Text: `Have you voted in an online election, poll, or survey in the past 12 months?`
+- Text: `Have you voted in an online election, poll, or survey in the past 12 months? (This includes workplace polls, student-body elections, and any official online ballots.)`
 - Choices: `Yes` | `No`
 - Skip Logic on `No` → End of Survey (Prolific screen-out URL).
 
@@ -290,15 +290,16 @@ Click **Save Flow**.
 - Question type: **Text / Graphic** (Descriptive Text, no response required).
 
 ```
-Welcome. Estimated time: 12–18 minutes.
+Welcome. Estimated time: 10–15 minutes.
 
-You are helping researchers evaluate a prototype voting interface. You will be shown a screen that appears immediately after you submit a vote in a digital election. Please interact with it naturally — you can click any buttons you see.
+You are helping researchers evaluate a prototype voting interface. You will interact with a screen that appears immediately after you submit a vote. Please read it carefully — you will be asked questions about it afterward.
 
-• The interface is a prototype only — there is no real election.
-• You are not required to enter any personal information.
-• After viewing the interface, you will be asked questions about what it shows and what it means.
+• The interface is a prototype only — there is no real election and no real votes are being collected.
+• You are not required to cast any vote or enter any personal information.
+• You may interact with the screen (for example, using any buttons shown), but you are not required to.
+• You will be asked questions about what the screen shows and what it means.
 
-Please do not use external resources (e.g. Google or Wikipedia) to answer the questions. We are interested in your natural understanding.
+Please do not use external resources (e.g., Google or Wikipedia) to answer the questions. We are interested in your natural understanding of the interface.
 ```
 
 ---
@@ -456,26 +457,30 @@ Add a **Page Break** before this question (question options → Add Page Break).
 
 This block appears in Survey Flow only for I2 participants (inside the Branch at §2d). It presents two comprehension questions *before* the receipt, then shows immediate feedback.
 
-### CAL1 — Pre-receipt comprehension probe 1
+### CAL1 — Pre-receipt comprehension probe 1 (screenshot coercion)
 
 - Question type: **Multiple Choice** (single select, vertical)
-- Text: `Before we show you the voting interface: when a digital election gives you a unique identifier after you vote, what does this identifier prove?`
+- Text: `If someone asked you to send them a screenshot of your voting receipt to prove how you voted, could they learn your vote choice from the screenshot?`
 - Choices:
-  - `(a) Which voting option I chose`
-  - `(b) That my vote was counted, but not which option I chose`
-  - `(c) My full voting record, including all elections I have voted in`
-  - `(d) Nothing — it is just a receipt number`
+  - `Yes, they could see my vote` → scored 0 (incorrect)
+  - `No, the receipt doesn't include my vote` → scored 1 (correct)
+  - `I'm not sure` → scored 0
 - Variable name: `CAL1`
-- **Randomise choices** (question options → Randomize Choices): yes — reduces order bias.
-- **Correct answer:** (b). Do not expose correct answer in the question text.
+- **Randomise choices**: no (binary + I'm not sure — fixed order avoids confusion).
+- **Correct answer:** `No, the receipt doesn't include my vote`. Do not expose correct answer in the question text.
 
-### CAL2 — Pre-receipt comprehension probe 2
+### CAL2 — Pre-receipt comprehension probe 2 (purpose of the identifier)
 
 - Question type: **Multiple Choice** (single select, vertical)
-- Text: `If you showed someone your voting identifier after the election, could they tell which way you voted from the identifier alone?`
-- Choices: `Yes` | `No` | `I'm not sure`
+- Text: `What is the main purpose of the ${e://Field/condition_label} on the receipt?`
+- Choices:
+  - `To prove that you voted in this election` → 0
+  - `To confirm which voting option you chose` → 0
+  - `To let you verify later that your ballot was counted` → 1 (correct)
+  - `To identify you to the election organizer` → 0
 - Variable name: `CAL2`
-- **Correct answer:** No.
+- **Randomise choices** (question options → Randomize Choices): yes — reduces order bias.
+- **Correct answer:** `To let you verify later that your ballot was counted`. Do not expose correct answer.
 
 **Page break after CAL2.**
 
@@ -485,13 +490,13 @@ This block appears in Survey Flow only for I2 participants (inside the Branch at
 - Paste:
 
 ```
-Here are the correct answers:
+Your answers:
 
-1. A voting identifier proves that your vote was counted — but it does NOT reveal which option you chose.
+Question 1: The correct answer is No — the receipt does not include your vote choice. This is intentional: showing your vote would create a risk of coercion.
 
-2. No — showing someone your voting identifier does not reveal how you voted. The identifier is designed to be shareable: it is proof of participation, not proof of choice.
+Question 2: The correct answer is To let you verify later that your ballot was counted — the ${e://Field/condition_label} proves your ballot was included in the tally, not what you voted.
 
-The interface you are about to see was designed with these properties in mind. Keep them in mind as you explore it.
+Now, please review the voting receipt on the next screen.
 ```
 
 > **Why this wording:** This matches the calibration feedback described in design note §6.2. It corrects both over-claiming ("it proves my choice") and under-claiming ("it proves nothing"). It does not yet show the receipt.
@@ -533,7 +538,7 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 - Scale: 1 (*Not at all confident*) to 7 (*Completely confident*).
 - Variable name: `calibration_confidence`
 
-> **Design note §9.3 / H2.3:** `calibration_confidence` is the primary M4 variable. It is collected for ALL conditions (I1 and I2). In I2 conditions the pre-receipt `CAL1`/`CAL2` probes provide the pre/post accuracy comparison. The residual `calibration_confidence − qac_correct` is computed in R.
+> ⚠️ **JONY-ACTION FF (structural conflict): This guide places `calibration_confidence` as Q-AC-conf for ALL conditions ("How confident are you in your answer above?"). However, instrument §11 (M4) restricts calibration_confidence to I2 only and asks a DIFFERENT question: "Before you saw the receipt, we asked you two quick questions. Looking back at your answers: how confident were you that they were correct at the time?" (retrospective confidence in CAL probe answers). These measure different constructs: (a) guide = post-receipt Q-AC confidence, all conditions; (b) instrument = retrospective CAL-probe confidence, I2 only. Which version is pre-registered? Jony must confirm: option (a) guide version (all conditions, Q-AC confidence) or option (b) instrument version (I2 only, CAL-probe retrospective confidence). Guide left unchanged pending confirmation.** Design note §9.3 / H2.3: `calibration_confidence` is the primary M4 variable. The residual analysis is computed in R.
 
 **Page break before next question.**
 
@@ -544,8 +549,8 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 - Rows (variable names in parentheses — set via Export Tag):
   1. `trust_integrity_1` — "I believe this receipt accurately reflects what happened with my vote."
   2. `trust_integrity_2` — "I trust that the ${e://Field/condition_label} is unique to my ballot."
-  3. `trust_competence_1` — "This receipt gives me enough information to verify my vote was counted."
-  4. `trust_competence_2` — "I believe the voting system that produced this receipt is secure."
+  3. `trust_competence_1` — "I feel confident I could use this receipt to prove my ballot was counted."
+  4. `trust_competence_2` — "I understand what this receipt is for." ⚠️ **JONY-ACTION EE: guide previously had "I believe the voting system that produced this receipt is secure" — a different construct (security belief vs. comprehension). Instrument §9 specifies TC2 = "I understand what this receipt is for." Applied instrument wording but flagged for Jony confirmation.**
 - Column labels: 1 (*Strongly Disagree*) through 7 (*Strongly Agree*).
 - No "N/A" option.
 - Variable name prefix: use **Export Tags** (question options → Export Tag) to force column names `trust_integrity_1`, `trust_integrity_2`, `trust_competence_1`, `trust_competence_2` in the CSV.
@@ -557,14 +562,18 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 
 **Page 3:**
 - Question type: **Multiple Choice** (single select)
-- Text: `If this was a real election and you saw this screen after submitting your vote, how likely would you be to save your ${e://Field/condition_label} for future reference?`
-- Choices (with numeric export codes):
-  - `Definitely would save it` → 5
-  - `Probably would save it` → 4
-  - `Might or might not` → 3
-  - `Probably would not save it` → 2
-  - `Definitely would not save it` → 1
+- Text: `How likely are you to save or screenshot this receipt before closing this page?`
+- Choices (with numeric export codes — 7-point likelihood scale):
+  - `Definitely will` → 7
+  - `Very likely` → 6
+  - `Somewhat likely` → 5
+  - `Neither likely nor unlikely` → 4
+  - `Somewhat unlikely` → 3
+  - `Very unlikely` → 2
+  - `Definitely will not` → 1
 - Variable name: `save_intention`
+
+> **Scale note:** This is a 7-point present-tense likelihood scale (not the 5-point "Definitely would / Probably would" scale used in Study 1 BI1). Study 2 uses the finer-grained scale because M3 save_intention is a primary secondary endpoint (H2.4). Do NOT pipe `${e://Field/condition_label}` into this item — instrument §10 uses "this receipt" (label-neutral).
 
 > **Behavioral proxy note:** `download_clicked` (M3 behavioral proxy) was already captured from the Stimulus block's postMessage listener. `save_intention` (M3 self-report) is the primary measure; `download_clicked` is secondary (§8.1 of design note).
 
@@ -574,7 +583,7 @@ Questions in fixed order (no question randomisation). Each question is on its ow
 
 **Page 4:**
 - Question type: **Text Entry** (paragraph)
-- Text: `In your own words: why might this voting system choose NOT to show you which option you voted for on this screen?`
+- Text: `In your own words, why doesn't this receipt show which voting option you chose?`
 - Minimum characters: 20.
 - Variable name: `qoe_rater1` (leave blank for rater 1 — this column is filled post-study by coders).
 
