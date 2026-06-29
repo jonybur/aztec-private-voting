@@ -1,10 +1,11 @@
 # JONY Batch Decision Memo — CHI Paper
 
-**Generated:** tick-4148 (2026-06-28) · **Updated:** tick-4160 (2026-06-29 — added BB, DD; noted CC resolved)  
-**Purpose:** All 18 active open JONY-ACTIONs consolidated with recommendations. Resolve in one pass.  
+**Generated:** tick-4148 (2026-06-28) · **Updated:** tick-4164 (2026-06-29 — added EE, FF Study 2 instrument conflicts; updated to 20 active actions)  
+**Purpose:** All 20 active open JONY-ACTIONs consolidated with recommendations. Resolve in one pass.  
 **Already applied (no action needed):** CC (Bell et al. 2013 Perez→Pereira fix, commit 98851ad, tick-4155) ✅  
 **Blocking CHI submission:** P, Q, R, S, Y, Z, AA (citation precision), U (Study 2 instrument), T (OSF amendments), BB (bibliography)  
 **Not submission-blocking (but pre-pilot):** A, B, C, I, O, T, W  
+**Study 2 instrument conflicts (pre-pilot blocking):** EE (TC2 construct conflict), FF (calibration_confidence scope)  
 **Confirm design-rationale only:** G  
 **Confirm bibliography entry only:** DD (HIGH confidence — just say yes)
 
@@ -216,7 +217,61 @@ Full resolution memo at `docs/z-aa-q-resolution-memo-2026-06-28.md` (tick-4144, 
 
 ---
 
-## Summary table (updated tick-4160)
+---
+
+## PART 6 — Study 2 instrument conflicts (pre-pilot blocking; found tick-4163)
+
+These arose from the Study 2 Qualtrics setup guide divergence audit (tick-4163). The survey instrument (piup-study2-survey-instrument-2026-06-28.md) is the authoritative pre-registered document. Both conflicts involve the guide and instrument specifying different psychological constructs — not agent-resolvable.
+
+---
+
+### EE — TC2 construct conflict (security vs. comprehension)
+
+**Item:** Trust/confidence scale item TC2 in the Study 2 Qualtrics setup guide vs. survey instrument.
+
+**Guide (pre-fix):** 'I believe the voting system that produced this receipt is **secure**.' → *security belief construct*  
+**Instrument §9 TC2:** 'I **understand** what this receipt is for.' → *comprehension construct*
+
+These are entirely different psychological constructs measuring different things. The divergence audit (tick-4163) applied the instrument wording to the guide provisionally (commit df4e112) and flagged for Jony confirmation.
+
+**Option (a) [instrument — confirmed current]:** 'I understand what this receipt is for.' (comprehension). Agent removes [JONY-ACTION EE] flag from guide.  
+**Option (b) [guide was correct]:** 'I believe the voting system that produced this receipt is secure.' (security belief). Agent reverts guide TC2 AND updates instrument §9 to match.
+
+**Implication if (a):** TC2 is a comprehension check, not a trust/security item. Consider whether the scale label 'TC' (Trust/Confidence) should be renamed or whether TC2 is intentionally a comprehension anchor in the trust battery.  
+**Implication if (b):** Instrument §9 requires amendment before pre-registration submission.
+
+**Jony action:** Reply **"EE: option (a)"** (instrument comprehension wording) or **"EE: option (b)"** (guide security wording — agent also updates instrument §9).
+
+---
+
+### FF — calibration_confidence scope and construct conflict
+
+**Item:** Post-CAL confidence item in the Study 2 Qualtrics setup guide vs. survey instrument.
+
+**Guide version (all conditions, N=240):**  
+Item: 'How confident are you in your answer above?' (Q-AC confidence — collected after Q-AC for ALL N=240 participants)  
+Variable: `calibration_confidence`
+
+**Instrument §11 version (I2 conditions only, N=120):**  
+Item: 'Before you saw the receipt, we asked you two quick questions. Looking back at your answers: how confident were you that they were correct at the time?' (retrospective CAL-probe confidence — I2 conditions only as measure M4)
+
+These measure different constructs at different points in the study and for different subsets:
+- Guide: *current* confidence in Q-AC answer, all conditions (post-receipt)
+- Instrument: *retrospective* confidence in the CAL-probe answers, I2 only (pre-receipt recall)
+
+The variable name `calibration_confidence` in the guide refers to Q-AC post-receipt confidence. In the instrument it refers to retrospective pre-receipt CAL-probe confidence. This is a substantive design conflict — both cannot be correct simultaneously.
+
+**Option (a) [instrument — I2 only, retrospective]:** Use instrument §11 version: retrospective confidence in CAL probes, collected only in I2 conditions (N=120). This means `calibration_confidence` drops to n=120 and measures calibration accuracy retrospection. Agent updates guide to explicitly scope to I2 and rephrase as retrospective.  
+**Option (b) [guide — all conditions, Q-AC]:** Use guide version: post-receipt Q-AC confidence, all N=240. Agent updates instrument §11 to match — changes M4 from retrospective CAL confidence to current Q-AC confidence, changes from I2-only to all conditions.
+
+**Implication if (a):** calibration_confidence (M4) becomes a secondary endpoint for the I2 calibration manipulation only. Sample size n=120. Hypothesis links: if H2.3 is also I2-only, this is consistent.  
+**Implication if (b):** calibration_confidence (M4) becomes a general post-receipt confidence measure across all N=240. May need to add to OSF pre-registration if not already covered.
+
+**Jony action:** Reply **"FF: option (a)"** (instrument I2-only retrospective) or **"FF: option (b)"** (guide all-conditions Q-AC).
+
+---
+
+## Summary table (updated tick-4164)
 
 | # | Action | Recommendation | What agent does after confirm |
 |---|--------|---------------|------------------------------|
@@ -237,7 +292,9 @@ Full resolution memo at `docs/z-aa-q-resolution-memo-2026-06-28.md` (tick-4144, 
 | Z+AA | §1.1 trio: rename mechanisms | option (a2) recommended | Apply sentence replacement to §1.1 |
 | I | Items A/B/C OSF amendments + §4.2 block | After A/B/C confirmed | Remove [JONY-ACTION I] block |
 | O | CS/SE Amendment 5 | Jony OSF upload | — |
+| EE | TC2 construct: comprehension (a) vs security (b) | Need Jony's choice | Apply instrument or guide wording; update counterpart if (b) |
+| FF | calibration_confidence: I2 retrospective (a) vs all-N Q-AC (b) | Need Jony's choice | Update guide or instrument; scope change affects M4 sample size |
 
 **After Jony confirms the easy batch (G, A, B, C, R, S, W, DD) + recommendations (P, Y, Z(a2), BB(a)):**  
-Open JONY-ACTIONs drop from 18 → 4 (I, O, T — OSF uploads only; U — choice needed).  
+Open JONY-ACTIONs drop from 20 → 6 (I, O, T — OSF uploads only; U, EE, FF — choices needed).  
 _T now includes Amendment 14 (attention check descriptions; tick-4150) in addition to Amendments 12+13._
