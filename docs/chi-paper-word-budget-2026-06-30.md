@@ -10,9 +10,11 @@
 |---|---|---|
 | tick-4273 | §6.5 Limitations: 1,807 → 594 words (draft ready to paste) | ~1,213 |
 | tick-4274 | §4.4 Measures: converted to table format, annotations archived | ~499 (stripped) |
+| tick-4275 | §4.5 Analysis plan: 1,096 → 670 words compressed | ~420 |
+| tick-4276 | §1.1 Named Limitation: 198 → 65 words; §1.4 Related Work: 191 → 82 words | ~242 |
 
-**Running total saved (clean text): ~1,712 words of estimated ~6,808 needed.**  
-**Next up: abstract swap (step 1) + §4.5 analysis plan compression (step 4).**
+**Running total saved (clean text): ~2,374 words of estimated ~6,808 needed.**  
+**Next up: abstract swap (step 1) + §6.1–§6.4 discussion compression (step 6).** Commit 361c268.
 
 ---
 ---
