@@ -1,4 +1,4 @@
-import type { ContractArtifact } from '@aztec/aztec.js';
+import type { ContractArtifact } from '@aztec/aztec.js/abi';
 
 let cached: ContractArtifact | null = null;
 

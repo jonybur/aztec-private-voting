@@ -147,10 +147,10 @@ describe('VoteReceipt labelVariant — Study 1 conditions (APV-PIUP-01)', () => 
     ];
     variants.forEach((variant, i) => {
       const { unmount } = render(<VoteReceipt receipt={receipt} labelVariant={variant} />);
-      expect(screen.getByText(headings[i])).toBeInTheDocument();
+      expect(screen.getByText(headings[i]!)).toBeInTheDocument();
       // Other three headings must not appear
       headings.forEach((h, j) => {
-        if (j !== i) expect(screen.queryByText(h)).toBeNull();
+        if (j !== i) expect(screen.queryByText(h!)).toBeNull();
       });
       unmount();
     });
@@ -247,7 +247,7 @@ describe('VoteReceipt explanationVariant — Study 2 Factor E (APV-PIUP-02)', ()
     ];
     cases.forEach(({ variant, marker, absent }) => {
       const { unmount } = render(
-        <VoteReceipt receipt={receipt} explanationVariant={variant} />,
+        <VoteReceipt receipt={receipt} {...(variant !== undefined ? { explanationVariant: variant } : {})} />,
       );
       expect(screen.getByText(marker)).toBeInTheDocument();
       absent.forEach((pattern) => {

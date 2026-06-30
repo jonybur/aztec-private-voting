@@ -55,7 +55,7 @@ type ConditionFactors = {
  * I  → not used here; handled by Qualtrics Calibration block
  */
 function decodeCondition(raw: string | string[] | undefined): ConditionFactors {
-  const code = (Array.isArray(raw) ? raw[0] : raw ?? 'L1E1I1').toUpperCase();
+  const code = (Array.isArray(raw) ? (raw[0] ?? 'L1E1I1') : (raw ?? 'L1E1I1')).toUpperCase();
 
   const labelVariant: ReceiptLabelVariant = code.startsWith('L2')
     ? 'confirmation-code'
