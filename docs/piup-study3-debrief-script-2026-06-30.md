@@ -159,19 +159,24 @@ This script should be submitted as **Attachment D: Debrief Procedure** in the IR
 
 ## Open Issues (from pre-IRB critique, 2026-06-30)
 
+_Updated tick-4319 (2026-06-30): all items verified against current document versions._
+
 Items resolved by this document:
 
-- **M4** ✅ Debrief script now specifies: what participants are told (two conditions, counter purpose, study goal), withdrawal opportunity, contact for follow-up, privacy clarification. IRB submission pathway via Attachment D specified.
+- **M4** ✅ Debrief script specifies: what participants are told (two conditions, counter purpose, study goal), withdrawal opportunity (Screen 3), contact for follow-up (Screen 4), privacy clarification, and IRB submission pathway via Attachment D.
 
-Items still open in other documents:
+All other pre-IRB critique items are also resolved in `piup-study3-social-verification-2026-06-29.md` as of tick-4319:
 
-- **H2** — Nissen et al. (2025) dangling citation: add to §7 coercion-surface discussion or remove (fix in social-verification doc)
-- **H3** — "Non-deception" heading overstated: rename to "Partial disclosure with debrief" (fix in social-verification doc)
-- **M1** — Negative social proof floor: counter activation threshold not yet pre-specified (fix in social-verification doc)
-- **M2** — Condition persistence across devices: needs one sentence in design doc (fix in social-verification doc)
-- **M3** — 90% CI justification: needs Lakens (2021) citation (fix in social-verification doc)
-- **L1** — T+7 reminder: needs a commitment (either pre-register as Arm 3, or explicitly defer to Study 3b)
-- **L2** — Comprehension context shift: T+14 Q-AC context update needed
-- **L3** — Study 2 ethics xref: needs tighter cross-reference
+- **H1** ✅ Das et al. (2014) citation correct in both docs (CCS '14, Kim et al.)
+- **H2** ✅ Nissen et al. (2025) cited in §7 of social-verification doc
+- **H3** ✅ Section heading is "Partial disclosure with debrief"
+- **M1** ✅ Counter floor ≥10 pre-specified in §3
+- **M2** ✅ Condition persistence documented in §3
+- **M3** ✅ Lakens (2021) justification in §6
+- **L1** ✅ T+7 reminder exclusion committed in §3
+- **L2** ✅ Comprehension context-shift caveat in §5
+- **L3** ⏳ Study 2 ethics xref: partially resolved (document + section named; no page number possible in Markdown; tighten at IRB submission time)
 
-**Next recommended tick:** Fix M1 (floor specification), M2 (device persistence), and M3 (90% CI justification) in `piup-study3-social-verification-2026-06-29.md` — all three are short, specific insertions that can be done in one pass.
+**Outstanding Jony actions before IRB submission:**
+- Fill placeholders: `[PI name]`, `[PI email]`, `[Institution]`, `[IRB protocol number]`, `[IRB contact]` in Screen 4 of this debrief script
+- Upload OSF pre-registration (JONY-ACTION O + T prerequisite)

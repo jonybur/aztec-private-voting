@@ -138,29 +138,32 @@ The questions themselves may be the same, but the *conditions* under which they'
 
 ## Pre-IRB readiness checklist
 
+_Updated tick-4319 (2026-06-30): all items verified against current document state._
+
 Before submitting to IRB, the following must be in place:
 
-- [ ] Das et al. (2014) citation corrected in both Study 3 documents (H1)
-- [ ] Nissen et al. (2025) cited in body text or removed from references (H2)
-- [ ] §7 reframed as "partial disclosure" not "non-deception" (H3)
-- [ ] Negative social proof floor specified and pre-registered (M1)
-- [ ] Condition persistence across devices documented (M2)
-- [ ] 90% CI choice explicitly justified with citation (M3)
-- [ ] Debrief script drafted (M4)
-- [ ] T+7 reminder inclusion/exclusion decision committed (L1)
-- [ ] Comprehension instrument labelled as exploratory due to context shift (L2)
-- [ ] Study 2 ethics note cross-reference made explicit (L3)
+- [x] Das et al. (2014) citation corrected in both Study 3 documents (H1) — ✅ **RESOLVED**: Both docs have correct citation (CCS '14, Kim et al.) at time of tick-4319 review.
+- [x] Nissen et al. (2025) cited in body text or removed from references (H2) — ✅ **RESOLVED**: Cited at §7 of social-verification doc ("consistent with the privacy-preserving design in Nissen et al. (2025) who found...").
+- [x] §7 reframed as "partial disclosure" not "non-deception" (H3) — ✅ **RESOLVED**: §7 heading is "Partial disclosure with debrief" in social-verification doc.
+- [x] Negative social proof floor specified and pre-registered (M1) — ✅ **RESOLVED**: Floor set at ≥10 verified participants; specified verbatim in §3 ("Counter floor (pre-registered, M1)").
+- [x] Condition persistence across devices documented (M2) — ✅ **RESOLVED**: Documented in §3 ("Condition persistence across devices (M2)").
+- [x] 90% CI choice explicitly justified with citation (M3) — ✅ **RESOLVED**: Lakens (2021) justification sentence in §6 of social-verification doc.
+- [x] Debrief script drafted (M4) — ✅ **RESOLVED**: Full script at `piup-study3-debrief-script-2026-06-30.md` with 5 screens, withdrawal pipeline, administration notes, IRB submission pathway.
+- [x] T+7 reminder inclusion/exclusion decision committed (L1) — ✅ **RESOLVED**: Explicit pre-registered exclusion in §3 ("No T+7 reminder (L1 — pre-registered exclusion commitment)").
+- [x] Comprehension instrument labelled as exploratory due to context shift (L2) — ✅ **RESOLVED**: L2 context-shift note added to §5 secondary measures ("adapted... L2 context-shift note").
+- [ ] Study 2 ethics note cross-reference made explicit (L3) — ⏳ **PARTIALLY RESOLVED**: §5 references `piup-study2-design-note-2026-06-22.md §7` by name; no page/anchor number possible in Markdown. Acceptable for internal doc; tighten when converting to IRB submission format.
 
-**Estimated work before IRB submission: 4–6 hours of drafting.** The study design is substantively sound; these are presentation and procedural issues, not conceptual flaws.
+**Revised estimated work before IRB submission: ~30 minutes** (L3 cross-reference only; all other items resolved). The study design is substantively sound.
 
 ---
 
 ## Summary verdict
 
-The Study 3 design is methodologically coherent and the pilot/feasibility framing is the correct pragmatic choice given the power constraints. The theoretical contribution (social proof for *deferred* security behaviour across a two-week gap) is genuine and publishable. The main risks before IRB are:
+The Study 3 design is methodologically coherent and the pilot/feasibility framing is the correct pragmatic choice given the power constraints. The theoretical contribution (social proof for *deferred* security behaviour across a two-week gap) is genuine and publishable.
 
-1. The Das et al. citation errors (will undermine credibility in peer review)
-2. The debrief underspecification (procedural IRB requirement)
-3. The negative-social-proof problem at low verification counts (design flaw if unaddressed)
+**Updated assessment (tick-4319):** All high-priority (H1–H3) and medium-priority (M1–M4) items identified in this critique are resolved in the current document versions. The original critique was generated against an in-progress version of the docs; the fixes were applied before the docs were finalised. The only remaining item (L3) is a minor cross-reference tightening that requires no structural change — only specific anchor syntax when the doc is converted to IRB submission format.
 
-None of these are fatal. They are addressable in one focused revision session.
+No significant revision session is needed. The social-verification and debrief-script docs are IRB-ready pending:
+1. OSF pre-registration upload (Jony action)
+2. IRB protocol number and PI contact fields in debrief script (Jony action)
+3. L3 cross-reference tightening at IRB submission time (trivial)

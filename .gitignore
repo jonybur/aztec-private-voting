@@ -33,3 +33,4 @@ baby-proof/out/
 # Playwright e2e artifacts
 demo/test-results/
 demo/playwright-report/
+analysis/results/
