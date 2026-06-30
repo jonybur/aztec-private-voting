@@ -505,18 +505,34 @@ The practical prescription follows from the boundary conditions. When designing 
 
 ## Submission notes (delete before submission)
 
-**Target venue:** CHI 2027 (submission deadline: ~September 2026 for abstract, ~September 2026 for full paper). Track: Technical/Empirical. Papers area: Privacy, Security, and Trust.
+**Target venue:** CHI 2027. Track: Technical/Empirical. Papers area: Privacy, Security, and Trust.
+
+**CHI 2027 confirmed deadlines** (verified tick-4271, 2026-06-30 from chi2027.acm.org/authors/papers/):
+- **Full paper deadline: Thursday, September 10, 2026** (no abstract pre-deadline; just submit the full paper)
+- Reviews released: November 5, 2026
+- Revise-and-resubmit phase: November 5 – December 3, 2026
+- Resubmission deadline: December 3, 2026
+- Final notification: December 17, 2026
+- TAPS upload: January 14, 2027
+- Conference: May 10-14, 2027 (Pittsburgh, PA)
+
+**CHI 2027 word limit** (confirmed tick-4271):
+- 5,000–8,000 words ENCOURAGED
+- Submissions under 5,000 words = short papers
+- Submissions above 12,000 words will be DESK-REJECTED if excessive length not justified
+
+**⚠️ WORD COUNT ALERT (tick-4271):** Body text (annotations stripped) currently ~15,000 words — 3,000 over the 12,000 desk-rejection threshold. Significant editing required before submission. §6 Discussion alone is ~5,005 clean words (too long). Target: get body to 8,000-10,000 before submission (the R&R process allows further cuts after reviews; aim for 10,000 at first submission with a justified-length note if needed).
 
 **Alternatively:** USENIX SOUPS 2027 (security + usability, more directly on-topic for the empirical studies). CHI is higher prestige and better for HCI PhD applications.
 
 **Required before submission:**
-1. Study 1 data (N=280; depends on OSF upload + Prolific launch)
+1. Study 1 data (N=280; depends on OSF upload + Prolific launch — CRITICAL PATH: OSF amendments O+T must be filed by Jony to unblock pilot launch; deadline is September 10, only 72 days away as of June 30, 2026)
 2. Sections 4.2-4.6 filled with actual results
 3. Section 5 updated with Study 2 pre-registration DOI (conditional on H4 in Study 1)
-4. Section 6 written from Study 1 data
+4. Section 6 written from Study 1 data; then CUT to <10,000 words total
 5. ✅ Kulyk et al. citation FIXED (tick-3765): year 2017→2015; venue USENIX VoteID→VoteID 2015 LNCS Springer. ✅ JONY-ACTION F RESOLVED (tick-3766): Marky et al. (2018) CHI added as correct citation for verifiable e-voting usability (95-participant Benaloh Challenge study). §1.4 paragraph updated: Marky et al. now cited for task-completion/workload focus (distinct from PIUP's privacy-mental-model focus); Kulyk et al. (2015) description confirmed accurate.
-6. CHI 2027 call for papers - confirm word limit and formatting requirements
+6. ✅ CHI 2027 word limit and formatting confirmed (tick-4271): 5,000-8,000 encouraged; 12,000 max. Body currently ~15,000 — needs cutting.
 
-**Submission-ready target date:** January 2027 (aligns with Study 1 full run completion; Study 2 data not required for initial submission - present as pre-analysis plan)
+**Submission-ready target date:** September 10, 2026 (CHI 2027 deadline) with Study 1 results if pilot + full study can complete by ~August 2026. If Study 1 data is not available by September 10, the R&R phase (reviews November 5, resubmission December 3) may allow filling in results. Jony must decide: (a) race for September 10 with data, (b) submit without data as a 'paper in preparation' + use R&R, or (c) target SOUPS 2027 for a less constrained timeline.
 
 **Writing sample use (before submission):** This draft (abstract + introduction) can be shared with potential PhD advisors from October 2026 onwards as a "paper in preparation." For Annie Antón (GT) and Sauvik Das (CMU), sharing the abstract + intro + the study arc blog post gives them both the technical framing and the accessible version. Do not share the incomplete sections (3-7 placeholders).
