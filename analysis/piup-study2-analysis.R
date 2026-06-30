@@ -311,10 +311,14 @@ n_before <- nrow(df)
 df <- df[df[[COL_OCCUPATION]] != 1, ]
 log_exclusion(df, "self-reported software engineer/cryptographer", n_before)
 
-# Exclude prior voting-receipt study participants (Prolific screener)
-n_before <- nrow(df)
-df <- df[is.na(df[[COL_PRIOR_STUDY]]) | df[[COL_PRIOR_STUDY]] != 1, ]
-log_exclusion(df, "prior voting-receipt study", n_before)
+# Flag prior voting-receipt study participants (§6.8 — NOT excluded; sensitivity flag only)
+# Pre-registration §5: "Prior-study sensitivity flag (not an exclusion)" — participants
+# flagged as prior_receipt_study = 1 are RETAINED in the primary analytic sample and
+# excluded only in the pre-specified §6.8 sensitivity check (see §6.8 section below).
+# [Fixed tick-4301/Amendment 17: was incorrectly excluded; pre-reg §5 says flag-not-exclude.]
+n_prior_study <- sum(!is.na(df[[COL_PRIOR_STUDY]]) & df[[COL_PRIOR_STUDY]] == 1)
+cat(sprintf("  Prior voting-receipt study: n = %d flagged (NOT excluded; sensitivity flag per §6.8)\n",
+            n_prior_study))
 
 # Exclude response time < 90 seconds
 n_before <- nrow(df)
@@ -485,6 +489,41 @@ if (nrow(rater_data_complete) > 0) {
   cat("No complete rater pairs found. Check COL_QOE_RATER1 / COL_QOE_RATER2 mapping.\n")
 }
 cat("\n")
+
+# =============================================================================
+# 3.5 Q-OE 15 RANDOM SAMPLES PER CONDITION (§6.7 — drawn before hypothesis testing)
+# =============================================================================
+# Pre-registration §6.7: "15 randomly sampled Q-OE responses per condition published
+# as illustrative examples (random sample drawn before hypothesis testing)."
+# Fixed seed ensures reproducibility; sample is drawn here before any hypothesis
+# outcome is computed so the choice of examples cannot be influenced by results.
+# [Added tick-4301/Amendment 18]
+
+COL_QOE_TEXT <- "qoe_open_text"  # raw open-text Q-OE column (confirm column name on data collection)
+
+if (COL_QOE_TEXT %in% names(df)) {
+  set.seed(20260901)  # fixed seed; pre-registered — do not change after data collection
+  cat("=============================================================\n")
+  cat("3.5 Q-OE RANDOM SAMPLE (§6.7 — drawn before hypothesis testing)\n")
+  cat("=============================================================\n\n")
+  for (cond in levels(df$condition_f)) {
+    cond_rows <- df[df$condition_f == cond &
+                    !is.na(df[[COL_QOE_TEXT]]) &
+                    nchar(trimws(as.character(df[[COL_QOE_TEXT]]))) > 0, ]
+    n_avail <- nrow(cond_rows)
+    sampled <- cond_rows[sample(seq_len(n_avail), min(15L, n_avail)), ]
+    cat(sprintf("Condition %s (n=%d available; sampling %d):\n",
+                cond, n_avail, nrow(sampled)))
+    for (i in seq_len(nrow(sampled))) {
+      cat(sprintf("  %2d. %s\n", i, as.character(sampled[[COL_QOE_TEXT]][i])))
+    }
+    cat("\n")
+  }
+  cat("  *** PRE-SPECIFIED (§6.7); drawn before hypothesis testing ***\n\n")
+} else {
+  cat(sprintf("[NOTE] Q-OE text column '%s' not found in data.\n", COL_QOE_TEXT))
+  cat("  Confirm column name on data collection; update COL_QOE_TEXT accordingly.\n\n")
+}
 
 # =============================================================================
 # 4. HYPOTHESIS TESTS (suppressed in PILOT mode)
@@ -954,6 +993,57 @@ if (!PILOT) {
   }
   cat("  NOTE: download_clicked = 0 for fallback Ps is an artefact (no interactive button in static screenshot).\n")
   cat("  *** PRE-SPECIFIED SENSITIVITY (§9.3) ***\n\n")
+}
+
+# =============================================================================
+# §6.8 PRE-SPECIFIED SENSITIVITY: PRIOR VOTING-RECEIPT STUDY PARTICIPANTS
+# =============================================================================
+# Pre-registration §6.8: "Re-run H2.1 and H2.4 excluding prior_receipt_study = 1
+# participants. Report both primary and sensitivity-check results."
+# [Added tick-4301/Amendment 17]
+
+if (n_prior_study > 0) {
+  df_no_prior <- df[is.na(df[[COL_PRIOR_STUDY]]) | df[[COL_PRIOR_STUDY]] != 1, ]
+  cat("[SENSITIVITY] §6.8 re-run excluding prior_receipt_study = 1 participants:\n")
+  cat(sprintf("  Excluding %d prior-study participant(s); N remaining = %d\n",
+              n_prior_study, nrow(df_no_prior)))
+
+  # H2.1 sensitivity: E main effect on Q-AC
+  E1_np <- df_no_prior$E == "explanation_present"
+  E2_np <- df_no_prior$E == "explanation_absent"
+  h21_np <- two_prop_chisq_one_tailed(
+    sum(E1_np, na.rm = TRUE),
+    sum(df_no_prior$m1_qac[E1_np], na.rm = TRUE),
+    sum(E2_np, na.rm = TRUE),
+    sum(df_no_prior$m1_qac[E2_np], na.rm = TRUE),
+    direction = "greater"
+  )
+  cat(sprintf("  H2.1 excl. prior-study: %s\n", fmt_binary_result(h21_np)))
+  cat(sprintf("  H2.1 sensitivity verdict: %s\n",
+              if (h21_np$p_one < 0.05)
+                "H2.1 SUPPORTED excl. prior-study (result robust)"
+              else
+                "H2.1 NOT SUPPORTED excl. prior-study (prior-study contamination may have affected primary result)"))
+
+  # H2.4 sensitivity: M1 predicts M3 download click
+  lr_np <- glm(m3_click ~ m1_qac + L + E + I, data = df_no_prior, family = binomial())
+  lr_np_tidy <- broom::tidy(lr_np, exponentiate = TRUE, conf.int = TRUE)
+  m1_np_row <- lr_np_tidy[lr_np_tidy$term == "m1_qac", ]
+  if (nrow(m1_np_row) > 0) {
+    cat(sprintf("  H2.4 excl. prior-study: OR = %.2f [%.2f, %.2f]; p = %.4f\n",
+                m1_np_row$estimate, m1_np_row$conf.low, m1_np_row$conf.high,
+                m1_np_row$p.value))
+    cat(sprintf("  H2.4 sensitivity verdict: %s\n",
+                if (m1_np_row$p.value < 0.05 && m1_np_row$estimate > 1)
+                  "H2.4 SUPPORTED excl. prior-study (result robust)"
+                else
+                  "H2.4 NOT SUPPORTED excl. prior-study (prior-study participants may have affected primary result)"))
+  } else {
+    cat("  H2.4: m1_qac term not found in sensitivity model — check factor levels.\n")
+  }
+  cat("  *** PRE-SPECIFIED SENSITIVITY (§6.8) ***\n\n")
+} else {
+  cat("[SENSITIVITY] §6.8: No prior-study participants in analytic sample — sensitivity not applicable.\n\n")
 }
 
 # =============================================================================
