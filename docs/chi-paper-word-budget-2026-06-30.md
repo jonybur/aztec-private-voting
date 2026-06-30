@@ -12,9 +12,15 @@
 | tick-4274 | §4.4 Measures: converted to table format, annotations archived | ~499 (stripped) |
 | tick-4275 | §4.5 Analysis plan: 1,096 → 670 words compressed | ~420 |
 | tick-4276 | §1.1 Named Limitation: 198 → 65 words; §1.4 Related Work: 191 → 82 words | ~242 |
+| tick-4277 | Abstract swapped to 152-word version (step 1 complete) | ~357 |
+| tick-4309 | §1.2 Naming: 461 → 155 words; §1.3 Contributions: 150 → 90 words (prose merge) | ~366 |
+| tick-4277–4279 | §6.1: ~707→~398; §6.2: ~913→~493; §6.3: ~648→~350; §6.4: ~936→~549 (all done — heartbeat state was stale) | ~1,414 |
+| tick-4310 | §1.1 PIUP pattern: 464 → 318 words (full invariant text moved to §2.1 cross-ref) | ~146 |
 
-**Running total saved (clean text): ~2,374 words of estimated ~6,808 needed.**  
-**Next up: abstract swap (step 1) + §6.1–§6.4 discussion compression (step 6).** Commit 361c268.
+**Running total saved (clean text): ~5,023 words of estimated ~6,808 needed.**  
+**§1 status: 1,379 → ~1,233 clean words (target 1,200; ~33 still to cut from §1.2 Notes/§1.4).**  
+**§6.1–6.4 status: DONE (ticks 4277–4279; were already at/below targets when audited tick-4310).**  
+**Next up: §2.1 Formal specification (525 → 400, −125); §3 trim (469 remaining); §5 Study 2 (−535).** Commit pending.
 
 ---
 ---
