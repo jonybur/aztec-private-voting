@@ -3586,3 +3586,43 @@ Lakens, D. (2017). "Equivalence Tests: A Practical Primer for t Tests, Correlati
 | Felt et al. (2012) — Android Permissions | ✅ CLEAN — all fields verified via DBLP + CrossRef | None |
 
 **JONY-ACTIONS open (tick-4153): 16 (I, G, A, B, C, O, P, Q, R, S, T, U, W, Y, Z, AA).** No change. Batch memo (docs/jony-batch-decision-memo-2026-06-28.md) still awaiting Jony review.
+
+---
+
+## Audit Resolution Note — tick-4333 (2026-06-30)
+
+Cross-checking JONY-ACTIONS L, M, N against current paper state.
+
+### JONY-ACTION L (§7 C2 sentence — Aztec Private Voting instantiation) — ✅ RESOLVED
+
+Previously flagged as open in tick-3862. Paper §7 paragraph 2 currently reads:
+> "The Aztec Private Voting instantiation (§3) demonstrates all three invariants in a live ZK deployment: receipt_id/vote_choice separation is enforced at the contract layer, and VoteReceipt.tsx renders the full four-component PIUP receipt structure."
+
+This sentence is present. JONY-ACTION L is resolved. Audit doc was stale.
+
+### JONY-ACTION M (§7 C4 sentence — Study 2 contribution) — ✅ RESOLVED (tick-4333)
+
+C4 was listed in §1.3 but absent from §7 conclusion. Added in commit 53fb1e5:
+> "Study 2's pre-registered 2×2×2 factorial design (§5) operationalises the uncertainty Study 1 leaves open: whether absent-choice explanation is the load-bearing element that determines whether a familiar label ("confirmation code") can be rehabilitated through protective framing without substitution."
+
+Placed at end of §7 para 3 (empirical boundary conditions paragraph), before "Second, the design problem generalised." JONY-ACTION M resolved.
+
+### JONY-ACTION N (Lee and See co-citation precision gap in §6.2) — ✅ RESOLVED
+
+The problematic co-citation ("Users who encounter interface patterns they recognise tend to extend more trust... McKnight et al., 2002; Lee and See, 2004") was removed by the §6.2 familiarity-tax trim in tick-4331. Lee and See (2004) now appears only in the over-reliance context (§6.2 para 2), which the audit previously marked as ✅ CLEAN. JONY-ACTION N is moot; no further action required.
+
+### JONY-ACTION H (Norman DOET paraphrase page number) — ⚠️ STILL OPEN
+
+Current paper text: "Norman's (1988) central feedback principle — that the system must send back to the user information about what action was done and what result was accomplished — is a design resource for most interface contexts." This paraphrase is accurate. Low risk: CHI-defensible without a page number. Jony to verify DOET p. 27 before submission if desired.
+
+### Summary of currently open Jony-only actions (as of tick-4333)
+
+| Action | Description | Priority |
+|--------|-------------|----------|
+| **O** | File OSF Amendment 5 — CS/SE student screener extension | 🔴 CRITICAL PATH |
+| **T** | File OSF Amendment 14 — correct attention check descriptions in pre-reg §3 | 🔴 CRITICAL PATH |
+| **H** | Verify Norman DOET p. 27 before submission | 🟡 Low risk |
+| Others | Batch memo (docs/jony-batch-decision-memo-2026-06-28.md) — I, G, A, B, C, P, Q, R, S, U, W, Y, Z, AA | 🟡 Pre-submission review |
+
+JONY-ACTIONS O and T are the **only blockers for pilot launch**. CHI deadline: September 10, 2026 (72 days from June 30, 2026).
+
