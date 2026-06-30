@@ -2,6 +2,11 @@
 """
 JONY-ACTION T — OSF Amendments 12+13+14 — commit-ready apply script
 Prepared: tick-4230 (2026-06-29)
+Updated: tick-4336 (2026-06-30) — retargeted after compression ticks 4309-4318 stripped
+  the old [Note (tick-4124):...] and [Note (tick-4150):...] blocks.
+  Amendments 12 (Q5 wording) and 13 (MQ1 rubric) note blocks were cleaned during
+  compression and are no longer in the paper. Only the inline Amendment 14 marker
+  remains. This script removes that marker after OSF filing.
 
 Background:
   JONY-ACTION T covers three OSF amendments that Jony must file before pilot launch:
@@ -10,12 +15,14 @@ Background:
     The instrument §6/Q5 has 4 deviations: (a) 'In your own words:' prefix;
     (b) 'the system' → 'this voting system'; (c) lowercase 'not' → emphasized 'NOT';
     (d) 'your vote choice' → 'which option you voted for'. Rubric unchanged.
+    Note: the Amendment 12 annotation block was removed during compression (tick-4318).
+    Filing Amendment 12 on OSF is still required before pilot; the paper prose is clean.
 
   Amendment 13 (tick-4124, item 2): MQ1 rubric clarification.
     Pre-reg §5.3 abbreviated rubric is ambiguous for non-leakage-only responses.
     Instrument §11 two-dimensional additive rubric is the operative operationalization.
-    Amendment 8 log entry 'scoring construct unchanged' is corrected to note the
-    two-dimensional rubric.
+    Note: the Amendment 13 annotation block was removed during compression (tick-4318).
+    Filing Amendment 13 on OSF is still required before pilot; the paper prose is clean.
 
   Amendment 14 (tick-4150): Attention check descriptions correction.
     Pre-reg §3 describes AC1 as 'select strongly agree' (WRONG — actual answer is
@@ -24,11 +31,18 @@ Background:
     Carrot, a vegetable). Both-fail exclusion criterion is correctly implemented;
     only the pre-reg description is inaccurate.
 
-  This script removes three pre-submission note blocks from the paper after Jony
-  files Amendments 12+13+14 on OSF.
+  After compression (ticks 4309-4318), the old multi-line Note blocks for Amendments
+  12 and 13 were stripped. Amendment 14's block was replaced with a compact inline
+  marker inside §4.2:
+    [JONY-ACTION T: File OSF Amendment 14 — correct attention check descriptions in
+    pre-reg §3 (AC1: select "Strongly Disagree"; AC2: select third item = Carrot)
+    before CHI submission]
+
+  This script removes that inline marker after Jony files Amendments 12, 13, and 14.
 
   PREREQUISITE: File OSF Amendments 12, 13, and 14 before running --apply.
   Amendment 12+13 language is in docs/jony-batch-decision-memo-2026-06-28.md §T.
+  Amendment 14 language is in docs/osf-amendment-filing-2026-06-24.md §Amendment 14.
 
 Usage:
     python3 scripts/apply-t.py            # Dry run (no changes written)
@@ -38,7 +52,7 @@ Run from aztec-private-voting/ root.
 
 After running:
     git add drafts/piup-chi-paper-draft-2026-06-22.md
-    git commit -m "fix §4.2/§4.4/§4.5: JONY-ACTION T resolved — Amendments 12+13+14 filed, note blocks removed"
+    git commit -m "fix §4.2: JONY-ACTION T resolved — Amendments 12+13+14 filed, inline T marker removed"
 """
 
 import sys
@@ -46,97 +60,62 @@ import os
 
 PAPER = "drafts/piup-chi-paper-draft-2026-06-22.md"
 
-# Unique anchors for the three T note blocks
-T_AMEND14_ANCHOR = "[Note (tick-4150 \u2014 JONY-ACTION T Amendment 14): Pre-registra"
-T_ITEM1_ANCHOR   = "[Note (tick-4124 \u2014 JONY-ACTION T, item 1): Q5 wording deviat"
-T_ITEM2_ANCHOR   = "[Note (tick-4124 \u2014 JONY-ACTION T, item 2): MQ1 rubric clarif"
-
-# Resolution markers
-T_AMEND14_RESOLUTION = (
-    "[T-AMEND14 RESOLVED \u2014 tick-4230: OSF Amendment 14 filed. "
-    "Pre-reg §3 attention check descriptions corrected (AC1 → 'Strongly Disagree'; "
-    "AC2 → third-item-from-list, correct answer Carrot). "
-    "Both-fail exclusion criterion unaffected. Closes Amendment 14 component of JONY-ACTION T.]"
-)
-T_ITEM1_RESOLUTION = (
-    "[T-AMEND12 RESOLVED \u2014 tick-4230: OSF Amendment 12 filed. "
-    "Q5 wording deviations documented: (a) 'In your own words:' prefix; "
-    "(b) 'this voting system'; (c) emphasized 'NOT'; (d) 'which option you voted for'. "
-    "Rubric unchanged. Closes Amendment 12 component of JONY-ACTION T.]"
-)
-T_ITEM2_RESOLUTION = (
-    "[T-AMEND13 RESOLVED \u2014 tick-4230: OSF Amendment 13 filed. "
-    "MQ1 two-dimensional additive rubric documented as operative operationalization. "
-    "Amendment 8 'unchanged construct' claim corrected. "
-    "MQ1 is exploratory; no confirmatory analysis affected. "
-    "Closes Amendment 13 component of JONY-ACTION T. Full JONY-ACTION T now closed.]"
+# Inline marker present after compression (Amendment 14 only — 12+13 blocks were cleaned)
+T_INLINE = (
+    '[JONY-ACTION T: File OSF Amendment 14 — correct attention check descriptions in '
+    'pre-reg §3 (AC1: select "Strongly Disagree"; AC2: select third item = Carrot) '
+    'before CHI submission]'
 )
 
+# Old header lines containing the T reference
+HEADER_OLD = (
+    "_Status: All sections written. §4.6 Results pending Study 1 data collection "
+    "(2026-Q3 pilot). Submission-clean pending OSF amendments O+T._"
+)
+HEADER_NEW_T_RESOLVED = (
+    "_Status: All sections written. §4.6 Results pending Study 1 data collection "
+    "(2026-Q3 pilot). Submission-clean pending OSF amendment O (Amendment 5). "
+    "Amendments 12+13+14 filed. ✅_"
+)
+HEADER_NEW_BOTH_RESOLVED = (
+    "_Status: All sections written. §4.6 Results pending Study 1 data collection "
+    "(2026-Q3 pilot). Submission-clean — OSF amendments O+T filed (Amendments 5 and 14). "
+    "OSF pre-registration upload required before pilot. ✅_"
+)
 
-def find_bracket_block(content: str, anchor: str):
-    """Find a bracket-delimited block starting at 'anchor'. Returns (start, end) exclusive."""
-    idx = content.find(anchor)
-    if idx == -1:
-        return None, None
-    depth = 0
-    i = idx
-    while i < len(content):
-        if content[i] == '[':
-            depth += 1
-        elif content[i] == ']':
-            depth -= 1
-            if depth == 0:
-                return idx, i + 1
-        i += 1
-    return idx, None
+ACTIONS_OLD = (
+    "_Word count: 9,262 body words (target 9,000–12,000; CHI cap). "
+    "Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendment 14)._"
+)
+ACTIONS_NEW_T_RESOLVED = (
+    "_Word count: 9,262 body words (target 9,000–12,000; CHI cap). "
+    "Open actions: JONY-ACTION O (OSF Amendment 5). JONY-ACTION T closed. ✅_"
+)
+ACTIONS_NEW_BOTH_RESOLVED = (
+    "_Word count: 9,262 body words (target 9,000–12,000; CHI cap). "
+    "No open agent-resolvable actions. OSF upload required before pilot. ✅_"
+)
+
+O_INLINE = "[JONY-ACTION O: File OSF Amendment 5"
 
 
 def check(content: str) -> bool:
     """Dry-run validation. Returns True if all checks pass."""
     ok = True
 
-    for label, anchor, resolution in [
-        ("T1a (Amendment 14)", T_AMEND14_ANCHOR, T_AMEND14_RESOLUTION),
-        ("T1b (Amendment 12)", T_ITEM1_ANCHOR,   T_ITEM1_RESOLUTION),
-        ("T1c (Amendment 13)", T_ITEM2_ANCHOR,   T_ITEM2_RESOLUTION),
-    ]:
-        start, end = find_bracket_block(content, anchor)
-        if start is None:
-            print(f"ERROR {label}: Note block anchor not found — already removed?")
-            ok = False
-        else:
-            block_len = end - start if end else 0
-            print(f"[OK]  {label}: Note block found at char {start} (length {block_len} chars)")
+    if T_INLINE not in content:
+        print("ERROR T1: Inline JONY-ACTION T marker not found — already removed?")
+        print(f"  Looking for: {T_INLINE[:80]}...")
+        ok = False
+    else:
+        print(f"[OK]  T1: Inline JONY-ACTION T (Amendment 14) marker found")
 
-        if resolution in content:
-            print(f"WARNING {label}: Resolution marker already present — may already be applied.")
-            ok = False
-        else:
-            print(f"[OK]  {label}: Resolution marker not yet present (safe to apply)")
+    # Note: Amendments 12+13 note blocks were stripped during compression — no check needed.
+    print("[INFO] T2: Amendment 12 (Q5 wording) and Amendment 13 (MQ1 rubric) note blocks")
+    print("       were cleaned during compression (ticks 4309-4318). Paper prose is clean.")
+    print("       File Amendments 12+13 on OSF before running --apply.")
 
     return ok
-
-
-def apply_script(content: str) -> str:
-    """Remove the three JONY-ACTION T note blocks (in reverse order to preserve offsets)."""
-    # Collect all blocks first, then replace in reverse order of position
-    blocks = []
-    for anchor, resolution in [
-        (T_AMEND14_ANCHOR, T_AMEND14_RESOLUTION),
-        (T_ITEM1_ANCHOR,   T_ITEM1_RESOLUTION),
-        (T_ITEM2_ANCHOR,   T_ITEM2_RESOLUTION),
-    ]:
-        start, end = find_bracket_block(content, anchor)
-        if start is None or end is None:
-            raise ValueError(f"Could not locate T block for anchor: {anchor[:60]}")
-        blocks.append((start, end, resolution))
-
-    # Sort by start position descending (apply last-first to preserve earlier offsets)
-    blocks.sort(key=lambda x: x[0], reverse=True)
-    for start, end, resolution in blocks:
-        content = content[:start] + resolution + content[end:]
-
-    return content
 
 
 def main():
@@ -150,12 +129,13 @@ def main():
     with open(PAPER, "r", encoding="utf-8") as f:
         content = f.read()
 
-    print("=== JONY-ACTION T apply script (OSF Amendments 12+13+14 note blocks) ===")
+    print("=== JONY-ACTION T apply script (OSF Amendments 12+13+14 inline marker removal) ===")
     print(f"Paper: {PAPER}")
     print(f"Mode:  {'APPLY' if do_apply else 'DRY RUN'}")
     print()
     print("PREREQUISITE: File OSF Amendments 12, 13, and 14 before running --apply.")
-    print("  Amendment language: docs/jony-batch-decision-memo-2026-06-28.md §T")
+    print("  Amendment 12+13 language: docs/jony-batch-decision-memo-2026-06-28.md §T")
+    print("  Amendment 14 language: docs/osf-amendment-filing-2026-06-24.md §Amendment 14")
     print()
 
     ok = check(content)
@@ -169,47 +149,50 @@ def main():
         print("All checks passed. Run with --apply to write changes.")
         print()
         print("This script will:")
-        print("  - Remove [Note (tick-4150 — JONY-ACTION T Amendment 14): ...] from §4.2 (1,284 chars)")
-        print("  - Remove [Note (tick-4124 — JONY-ACTION T, item 1): ...] from §4.4 (954 chars)")
-        print("  - Remove [Note (tick-4124 — JONY-ACTION T, item 2): ...] from §4.5 (1,865 chars)")
-        print("  - Insert resolution markers for Amendments 12+13+14")
+        print(f"  - Remove inline JONY-ACTION T bracket from §4.2 ({len(T_INLINE)} chars)")
+        print("  - Update paper header to reflect T closed")
+        print("  Note: Amendment 12+13 note blocks were already cleaned by compression.")
+        print("        File them on OSF before running this script.")
         sys.exit(0)
 
-    new_content = apply_script(content)
+    # Remove inline T marker
+    new_content = content.replace(T_INLINE, "", 1)
+
+    # Clean up any double-semicolon or trailing space left by removal
+    new_content = new_content.replace("; and participants", "; and participants")  # no-op guard
+
+    # Update header based on whether O is also resolved
+    o_resolved = O_INLINE not in new_content
+    if o_resolved:
+        new_content = new_content.replace(HEADER_OLD, HEADER_NEW_BOTH_RESOLVED, 1)
+        new_content = new_content.replace(ACTIONS_OLD, ACTIONS_NEW_BOTH_RESOLVED, 1)
+    else:
+        new_content = new_content.replace(HEADER_OLD, HEADER_NEW_T_RESOLVED, 1)
+        new_content = new_content.replace(ACTIONS_OLD, ACTIONS_NEW_T_RESOLVED, 1)
 
     # Post-apply verification
-    errors = []
-    for anchor in [T_AMEND14_ANCHOR, T_ITEM1_ANCHOR, T_ITEM2_ANCHOR]:
-        if anchor in new_content:
-            errors.append(f"Block still present: {anchor[:60]}")
-    for resolution in [T_AMEND14_RESOLUTION, T_ITEM1_RESOLUTION, T_ITEM2_RESOLUTION]:
-        if resolution not in new_content:
-            errors.append(f"Resolution marker missing: {resolution[:60]}")
-
-    if errors:
-        print("ERROR: Post-apply verification failed:")
-        for e in errors:
-            print(f"  {e}")
-        print("Aborting write.")
+    if T_INLINE in new_content:
+        print("ERROR: Inline T marker still present after replacement. Aborting write.")
         sys.exit(1)
 
     with open(PAPER, "w", encoding="utf-8") as f:
         f.write(new_content)
 
+    o_status = "also resolved" if o_resolved else "still open"
     print()
     print("[DONE] JONY-ACTION T applied successfully.")
     print()
     print("Changes made:")
-    print("  - Removed Amendment 14 note block from §4.2 (1,284 chars)")
-    print("  - Removed Amendment 12 note block from §4.4 (954 chars)")
-    print("  - Removed Amendment 13 note block from §4.5 (1,865 chars)")
-    print("  - Inserted [T-AMEND12/13/14 RESOLVED ...] markers")
+    print(f"  - Removed inline [JONY-ACTION T:...] marker from §4.2 ({len(T_INLINE)} chars)")
+    print(f"  - Updated paper header (JONY-ACTION O {o_status})")
     print()
     print("Next steps:")
     print("  git add drafts/piup-chi-paper-draft-2026-06-22.md")
-    print('  git commit -m "fix §4.2/§4.4/§4.5: JONY-ACTION T resolved — Amendments 12+13+14 filed, note blocks removed"')
-    print()
-    print("Closes JONY-ACTION T. Open JAs: 24 \u2192 23.")
+    print('  git commit -m "fix §4.2: JONY-ACTION T resolved — Amendments 12+13+14 filed, inline T marker removed"')
+    if not o_resolved:
+        print()
+        print("Remaining: JONY-ACTION O (OSF Amendment 5)")
+        print("  File Amendment 5 on OSF, then: python3 scripts/apply-o.py --apply")
 
 
 if __name__ == "__main__":
