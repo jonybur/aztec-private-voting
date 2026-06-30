@@ -130,7 +130,7 @@ COL_DM2        <- "DM2_code"            # DM2 binary flag: instrument §13 colum
                                           # was a legacy artifact from when DM2 was planned as a 3-item Hargittai
                                           # scale; pre-reg DM2 corrected at tick-4044). Instrument §13 names this
                                           # column 'DM2_code' (string); updated to match. NOT used in any
-                                          # confirmatory analysis. Use for sensitivity descriptives only (§6.5 exploratory).
+                                          # confirmatory analysis. Use for sensitivity descriptives only (§7 exploratory).
 COL_INTENT     <- "BI1"                 # 1–5 behavioral intent (save receipt).
                                           # [FIXED tick-4171] Prior placeholder 'download_intent' was stale:
                                           # the item was updated 2026-06-25 from 'download this file' to 'save this
@@ -689,12 +689,18 @@ h3_verdict <- if (h3_q1_sig_count >= 2) {
 }
 cat(sprintf("\nH3 VERDICT: %s\n\n", h3_verdict))
 
-# Ethics clause check
+# Ethics clause check (pre-reg §3)
 C_q1_prop <- C_q1$x / C_q1$n
 if (C_q1_prop < 0.30) {
   cat(sprintf("*** ETHICS CLAUSE TRIGGERED: Condition C Q1 accuracy = %.1f%% < 30%% ***\n",
               C_q1_prop * 100))
-  cat("    Consider substituting Condition C label before full study launch (see §3 ethics clause)\n\n")
+  cat("    Pre-reg §3: the full study may substitute a fifth label for Condition C.\n")
+  cat("    This is an ETHICS DECISION, not a data-driven stopping rule.\n")
+  cat("    It does NOT affect the alpha level for H3 in the full study.\n")
+  cat("    Action: Jony to review Condition C label before Prolific launch.\n\n")
+} else {
+  cat(sprintf("Ethics clause check: Condition C Q1 accuracy = %.1f%% >= 30%% — no substitution required.\n\n",
+              C_q1_prop * 100))
 }
 
 # =============================================================================
@@ -882,6 +888,26 @@ D_comp2_x <- sum(df[df$condition=="D", "composite_hi"], na.rm=TRUE)
 t_exp <- two_by_two_chisq(A_comp2_x, A_comp_n, D_comp2_x, D_comp_n, direction="greater")
 cat("  ", format_test(t_exp, one_tailed=TRUE), "\n")
 cat("  *** This is EXPLORATORY — not pre-registered. Interpret with caution. ***\n\n")
+
+# [EXPLORATORY] DM2 sensitivity descriptives (pre-reg §5.4 — coding-background flag)
+# DM2 is a binary yes/no item (coded 'Yes'/'No' by instrument §13). It is a sensitivity
+# flag, not a validated scale, and is NOT used in any confirmatory analysis.
+# This section reports DM2 breakdown by condition for transparency only (pre-reg §5.4).
+cat("[EXPLORATORY] DM2 coding-background sensitivity descriptives (pre-reg §5.4):\n")
+if (COL_DM2 %in% colnames(df)) {
+  dm2_tab <- table(df$condition, df[[COL_DM2]], useNA = "ifany")
+  cat("  Condition × DM2 (coding background) cross-tabulation:\n")
+  print(dm2_tab)
+  dm2_pcts <- prop.table(dm2_tab, margin = 1) * 100
+  cat("  Row proportions (%):\n")
+  print(round(dm2_pcts, 1))
+  cat("  NOTE: DM2 is a single binary sensitivity flag (not a validated scale).\n")
+  cat("  SC2 screener already excludes coding professionals/students before survey entry.\n")
+  cat("  DM2 captures residual self-report; no confirmatory test is pre-registered.\n\n")
+} else {
+  cat(sprintf("  *** DM2 column '%s' not found in data — sensitivity descriptives skipped. ***\n", COL_DM2))
+  cat("  Check instrument §13 column naming. No confirmatory analysis affected.\n\n")
+}
 
 # =============================================================================
 # 8. SUMMARY TABLE — ALL 14 PRE-SPECIFIED CONFIRMATORY TESTS
