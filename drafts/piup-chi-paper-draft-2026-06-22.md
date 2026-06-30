@@ -132,6 +132,8 @@ The contract is structured as a single `PrivateVoting` Noir program with four pr
 
 **`verify_vote_counted(receipt_id: Field) → bool`** - public view; returns `receipts[receipt_id]`. Any receipt holder can confirm their ballot was counted without revealing vote content.
 
+**Execution model.** Aztec separates private and public execution phases; this split is the mechanism underlying the wallet-to-ballot unlinkability guarantee (§3.3, Row 1). `cast_vote` is a private function: it executes entirely client-side on the voter's device. The Noir circuit generates a zkSNARK proof that the caller satisfies all casting constraints — eligibility (in gated modes), double-vote prevention via `SingleUseClaim`, and timing bounds — without revealing which wallet signed the transaction. The voter's device submits an opaque proof and nullifier hash to the Aztec sequencer; the sequencer verifies proof validity and executes the enqueued `record_vote` in the public phase. Because the public transaction contains no wallet identifier — only a receipt ID, vote choice, and nullifier hash — network observers cannot link a public tally increment to a specific wallet. The `SingleUseClaim` nullifier is derived from the voter's secret key and the contract address via the Aztec private kernel; inserting it into the kernel's nullifier tree prevents a second proof from the same key without exposing key material or voting history to any third party, including the contract deployer.
+
 The contract is deployed on the Aztec v5 testnet (`docs/v5-upgrade-runbook.md`).
 
 ### 3.2 Eligibility modes
@@ -171,7 +173,7 @@ Three findings were resolved before the study - one HIGH severity and two LOW:
 
 Two design limitations are documented and not resolved at the prototype stage:
 
-*L1 privacy gap.* `vote_choice` and `receipt_id` are plaintext public arguments in `record_vote`; an observer can build a `receipt_id → vote_choice` map. The receipt UI warns against sharing until vote close. The M3 architecture resolves this at the application layer (M3 spec §5.3); this limitation applies to the current pre-M3 deployment.
+*L1 privacy gap.* `vote_choice` and `receipt_id` are plaintext public arguments in `record_vote`; an observer can build a `receipt_id → vote_choice` map. The threat vector is the public Aztec mempool and archive nodes: any observer with sequencer or archiver access can read `record_vote` calldata before vote close and construct the per-receipt map. After `is_finalized = true`, the aggregate tally is public and per-receipt correlation is harmless — a voter sharing a receipt after close reveals only that they participated, not their choice (which the tally already discloses at the aggregate level). The UI therefore scopes the privacy warning to the pre-finalization window: voters are advised to keep receipts private until the vote closes, at which point sharing for auditability purposes is safe. The M3 architecture resolves the underlying gap by moving `vote_choice` out of calldata: under M3, only a committed or encrypted form is submitted publicly, and the per-receipt map cannot be constructed without the tally key (M3 spec §5.3). This limitation applies only to the current pre-M3 prototype.
 
 *Receipt-freeness is partial.* No re-encryption mix is implemented; "coercion-resistant" is withheld from user-facing copy until resolved.
 
