@@ -62,8 +62,8 @@ make_participant <- function(cond, id) {
     occupation_sw_eng    = rbinom(1, 1, 0.05),   # ~5% exclude
     age_group            = sample(c("18-24","25-34","35-44","45-54","55+"), 1),
     prior_voting         = rbinom(1, 1, 0.85),
-    tech_efficacy_mean   = round(runif(1, 2, 5), 1),
-    download_intent      = sample(1:5, 1),
+    DM2_code             = sample(c("Yes", "No"), 1),  # [FIXED tick-4294] was tech_efficacy_mean (continuous); DM2 is binary Yes/No per tick-4044/4171
+    BI1                  = sample(1:5, 1),  # [FIXED tick-4294] was download_intent; column renamed BI1 per Amendment 3 + tick-4171
     label_affect         = sample(-3:3, 1)
   )
 }
@@ -95,7 +95,7 @@ expected_cols <- c(
   "confidence_q1", "confidence_q2", "confidence_q3", "confidence_q4",
   "attention_check_1", "attention_check_2",
   "response_time_sec", "occupation_sw_eng",
-  "age_group", "prior_voting", "tech_efficacy_mean", "download_intent", "label_affect"
+  "age_group", "prior_voting", "DM2_code", "BI1", "label_affect"  # [FIXED tick-4294] tech_efficacy_mean→DM2_code, download_intent→BI1
 )
 present <- expected_cols %in% colnames(df_raw)
 for (i in seq_along(expected_cols)) {
