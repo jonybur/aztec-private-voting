@@ -9,6 +9,32 @@ This is a click-by-click implementation guide for building the PIUP Study 1 surv
 
 ---
 
+> ⚠️ **PRE-REGISTRATION COMPLIANCE — THREE OSF AMENDMENTS PENDING (tick-4335, 2026-06-30)**
+>
+> This guide already implements the **instrument wording** for Q3 and Q4 (recommended by pilot decisions Items A, B, C in `docs/piup-study1-pilot-decisions-2026-06-25.md`). However, the corresponding OSF amendments have **NOT yet been filed** — Decisions A, B, and C in `docs/osf-amendment-filing-2026-06-24.md` are all unchecked `[ ]`.
+>
+> | Item | Pre-reg baseline | This guide (instrument wording) | OSF amendment status |
+> |------|------------------|---------------------------------|---------------------|
+> | **Q3 wording** | "If a coercive employer asked you to send them a screenshot..." | "Imagine your employer tells you...If you showed a third party your screen and your [LABEL], could they tell which voting option you chose?" | ❌ Decision A — NOT filed |
+> | **Q3 clarification** | "Assume they can only see what is on this screen" appended at baseline | Optional sub-text only | ❌ Decision C — NOT filed |
+> | **Q4 wording + foils** | "What would happen if you lost this value?" | "If you closed this screen without saving your [LABEL], what would happen?" | ❌ Decision B — NOT filed |
+>
+> **Q3 is a primary endpoint for H1 (H1-Q3) and H2-secondary. Q4 is part of composite accuracy (all four hypotheses). Running the study with unregistered Q3+Q4 wording would be an unregistered deviation on two primary endpoints.**
+>
+> **Required before pilot launch:**
+> 1. Jony decides on Decisions A, B, C (expected decision: use instrument wording)
+> 2. File OSF Amendments 19 (Q3 wording), 20 (Q4 wording + foils), 21 (Q3 clarification removal)
+> 3. Update §14 of `docs/piup-study1-preregistration-2026-06-22.md` with the three new amendment entries
+> 4. Mark Decisions A, B, C as `[x]` in `docs/osf-amendment-filing-2026-06-24.md`
+> 5. Update instrument `docs/piup-study1-survey-instrument-2026-06-22.md` to clear the PENDING status on Q3
+>
+> If the decision is to **keep pre-reg wording** instead: update Steps 7 (Q3) and 7 (Q4) below to use the pre-reg baseline wording, and align `osf-amendment-filing-2026-06-24.md` Decisions A/B/C with the "keep pre-reg" checkbox.
+
+---
+
+
+---
+
 ## Prerequisites
 
 Before starting:
@@ -280,6 +306,8 @@ Each of Q1–Q4 is on its own page with the confidence item on the same page.
 
 ### Q3 — Privacy mental model
 
+> ⚠️ **OSF AMENDMENT PENDING — Decision A + C (tick-4335):** This Q3 wording is the **instrument wording** (recommended by pilot decisions Items A and C), which deviates from the pre-reg baseline. Decision A (Q3 wording) and Decision C (Q3 clarification removal) in `docs/osf-amendment-filing-2026-06-24.md` are unchecked. File OSF Amendments 19 and 21 before pilot launch. H1-Q3 and H2-secondary both use this question.
+
 **Page 3:**
 - Question type: **Multiple Choice** (single select)
 - Question text: `Imagine your employer tells you they want to verify how you voted, and asks you to show them this screen as proof. If you showed a third party your screen and your ${e://Field/condition_label}, could they tell which voting option you chose?`
@@ -293,6 +321,8 @@ Each of Q1–Q4 is on its own page with the confidence item on the same page.
 **Page break before Q4.**
 
 ### Q4 — Receipt utility
+
+> ⚠️ **OSF AMENDMENT PENDING — Decision B (tick-4335):** This Q4 wording and foil set is the **instrument wording** (recommended by pilot decision Item B), which deviates from the pre-reg baseline ("What would happen if you lost this value?"). Decision B in `docs/osf-amendment-filing-2026-06-24.md` is unchecked. File OSF Amendment 20 before pilot launch. Q4 is part of composite accuracy (all four hypotheses).
 
 **Page 4:**
 - Question type: **Multiple Choice** (single select)
@@ -554,4 +584,4 @@ If κ < 0.70 on pilot: revise the rubric, log the amendment in `docs/piup-study1
 
 ---
 
-*This guide implements the survey exactly as specified in the pre-registered instrument. Do not change question wording after OSF upload without logging an amendment in both documents.*
+*This guide implements the survey instrument (`docs/piup-study1-survey-instrument-2026-06-22.md`). Q3 and Q4 wording in this guide deviates from the pre-registration baseline — OSF Amendments 19, 20, 21 must be filed and the pre-reg §14 updated before pilot launch. See the ⚠️ notice at the top of this document. Do not change question wording after OSF upload without logging an amendment in both documents.*
