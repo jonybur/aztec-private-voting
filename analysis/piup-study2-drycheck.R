@@ -80,8 +80,11 @@ make_participant <- function(cond_code, id) {
   # Trust items: 1–7 Likert, correlated around m2_mu
   make_trust_item <- function(mu) max(1, min(7, round(rnorm(1, mu, 1.0))))
 
-  # Calibration confidence (I2 only; NA for I1)
-  calib_conf <- if (factors$intervention == "I2") sample(3:7, 1) else NA
+  # Calibration confidence (all conditions — post-receipt Q-AC confidence)
+  # [Fixed tick-4259: Amendment 7 changed M4 from I2-only to all-conditions.
+  #  Dry-check synthetic data previously generated NA for I1; corrected to match
+  #  the analysis script (conf_rows covers all N=240 rows).]
+  calib_conf <- sample(3:7, 1)
 
   list(
     participant_id        = paste0("SYNTH_", cond_code, "_", sprintf("%02d", id)),
@@ -320,12 +323,24 @@ cat(sprintf("  Either pass:  %d/%d (%.1f%%) %s\n",
             n_pass_either, n_raw, 100 * n_pass_either / n_raw,
             if (n_pass_either / n_raw >= 0.80) "✓" else "*** WARNING: < 80% ***"))
 
-# I2-condition calibration confidence check
-cat("\nM4 calibration_confidence (I2 conditions only — should be NA for I1):\n")
-i1_na_ok <- all(is.na(df$calibration_confidence[df$intervention == "I1"]))
-cat(sprintf("  I1 cells all NA: %s\n", if (i1_na_ok) "✓" else "*** WARNING: I1 cells have non-NA values ***"))
-i2_mean <- mean(df$calibration_confidence[df$intervention == "I2"], na.rm = TRUE)
-cat(sprintf("  I2 mean confidence: %.2f (1–7 scale)\n\n", i2_mean))
+# M4 all-conditions calibration confidence check
+# [Fixed tick-4259: Amendment 7 changed M4 from I2-only retrospective CAL-probe to
+#  all-conditions post-receipt Q-AC confidence. Dry-check previously checked that
+#  I1 cells were NA (old design); now asserts ALL N rows have non-NA M4.]
+cat("\nM4 calibration_confidence (all conditions — Amendment 7; should be non-NA for all rows):\n")
+m4_complete <- sum(!is.na(df$calibration_confidence))
+m4_missing  <- sum(is.na(df$calibration_confidence))
+m4_ok       <- m4_missing == 0
+cat(sprintf("  Non-NA rows: %d / %d %s\n", m4_complete, nrow(df),
+            if (m4_ok) "✓" else sprintf("*** WARNING: %d rows have NA M4 ***", m4_missing)))
+if (!m4_ok) {
+  cat("  *** FAIL: I1 or I2 rows missing M4 — check Amendment 7 propagation ***\n")
+}
+all_mean <- mean(df$calibration_confidence, na.rm = TRUE)
+i1_mean  <- mean(df$calibration_confidence[df$intervention == "I1"], na.rm = TRUE)
+i2_mean  <- mean(df$calibration_confidence[df$intervention == "I2"], na.rm = TRUE)
+cat(sprintf("  All-conditions mean confidence: %.2f (1–7 scale)\n", all_mean))
+cat(sprintf("  I1 mean: %.2f | I2 mean: %.2f\n\n", i1_mean, i2_mean))
 
 # =============================================================================
 # PACKAGE AVAILABILITY CHECK
