@@ -23,7 +23,7 @@ The design I arrived at — the **Proof-of-Inclusion UX Pattern (PIUP)** — is 
 
 The connection to Professor Antón's program is direct. Her work asks: given a privacy regulation or requirement, how do we produce software behavior that is provably complete and correct? The PIUP work is the adjacent question on the output side: given a system that has *correctly implemented* a privacy property at the protocol layer, how do we design the feedback that produces correct mental models of that property in non-technical users? The two questions are load-bearing for each other. A formally correct private voting system is not *fully* correct if users behave in ways that defeat its privacy property — sharing a receipt under coercion, misreading an absent vote summary as an error, failing to retain the identifier for deferred verification. What "correct" user behavior looks like is determined precisely by the formal privacy specification; and whether a UX design achieves it is an empirical question. That connection — between formal privacy specifications and the user behaviors they presuppose — is the intellectual project I would want to pursue at GT IC.
 
-I have a working ZK voting system deployed on Aztec Network v5 testnet, a documented design pattern with stated invariants, a pre-registered Study 1 ready for pilot, and a three-study evaluation agenda described in my research statement. I am ready to begin empirical work and would welcome the opportunity to discuss this with Professor Antón.
+I have a working ZK voting system implemented in Noir on Aztec Network — compiled against v5 and with testnet deployment ready pending credential setup — a documented design pattern with stated invariants, a pre-registration for Study 1 complete and ready for OSF upload, and a three-study evaluation agenda described in my research statement. I am ready to begin empirical work and would welcome the opportunity to discuss this with Professor Antón.
 
 Sincerely,  
 Jony Bursztyn
@@ -49,6 +49,10 @@ The argument in ¶4 is the load-bearing connection: Antón specifies privacy-cor
 
 ### When to send this
 - After completing the online application form.
+- **⚠️ Pre-send checklist:** Before sending ANY version of this letter or the cold-contact email:
+  1. Upload Study 1 pre-registration to OSF → note the DOI. Only then is it accurate to say "pre-registered Study 1."
+  2. Deploy contract to v5 testnet (needs DEPLOYER_SECRET_KEY + DEPLOYER_SIGNING_KEY). Only then is it accurate to say "deployed on testnet."
+  Until both are done, use: "pre-registration complete, pending OSF upload" and "compiled for v5, testnet deployment pending."
 - Most GT IC PhD applications require a Statement of Purpose (= research statement above), not a separate cover letter. However:
   - **Emailing Antón directly before applying is recommended.** The cover letter body ¶¶1-4 (minus the salutation to the committee) can be repurposed as a cold-contact email to Antón. Send a concise 3-paragraph version with: who you are, the PIUP project, and the formal-spec-to-UX-behavior bridge. Keep email under 300 words.
   - If the application portal has a "personal statement" field separate from "statement of purpose," use this letter body there.
@@ -64,7 +68,7 @@ Professor Antón,
 
 I'm applying to GT IC for Fall 2027 and wanted to reach out before submitting. My research is on the UX side of a problem your work addresses from the specification side.
 
-I've spent the past two years building a private voting system on Aztec Network (ZK rollup). The cryptographic privacy properties are formally specified and implemented; what I found is that they don't produce correct privacy behavior in non-technical users unless the UX feedback is carefully designed. A receipt that includes a vote summary creates a coercion vector; a receipt with only cryptographic artifacts reads as an error. I designed a pattern — the Proof-of-Inclusion UX Pattern (PIUP) — to resolve this: a randomized surrogate identifier ("fingerprint") paired with explicit absent-choice framing. The claim is falsifiable and untested; I have a pre-registered Study 1 ready for pilot.
+I've spent the past two years building a private voting system on Aztec Network (ZK rollup). The cryptographic privacy properties are formally specified and implemented; what I found is that they don't produce correct privacy behavior in non-technical users unless the UX feedback is carefully designed. A receipt that includes a vote summary creates a coercion vector; a receipt with only cryptographic artifacts reads as an error. I designed a pattern — the Proof-of-Inclusion UX Pattern (PIUP) — to resolve this: a randomized surrogate identifier ("fingerprint") paired with explicit absent-choice framing. The claim is falsifiable and untested; I have a pre-registration document for Study 1 complete and ready for OSF upload, with pilot launch planned once the OSF filing is confirmed.
 
 The connection to your program: your work asks whether software behavior is provably complete and correct against a privacy requirement. The PIUP work asks whether UX feedback produces user behavior that is correct against that same requirement. What "correct" user behavior looks like is determined by the formal spec; whether a UI design achieves it is an empirical question. That bridge is what I want to study.
 
