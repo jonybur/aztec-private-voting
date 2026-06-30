@@ -100,6 +100,20 @@ Three alternative designs were explored during system development and rejected o
 
 **Alternative 3: Omit the protective framing, rely on user inference from absence.** Prior work on absent-content interpretation [Whitten and Tygar 1999] finds that users interpret absent expected content as failure unless absence is explicitly marked as intentional. In the receipt context, a voter who sees no vote choice and no explanation will conclude their vote was not recorded or that the transaction failed - a worse outcome than a coercible receipt, which at least confirms participation while revealing choice. The protective framing is a load-bearing component, not decorative copy.
 
+**Alternative 4: Selective disclosure — allow the voter to prove their choice to trusted parties using a zero-knowledge proof of content.** This extends the receipt with a cryptographic mechanism: the voter holds a witness that, combined with the submission token, generates a ZK proof of the specific vote content, disclosed only to chosen recipients. Rejected on coercion-resistance grounds: selective disclosure reintroduces the coercion surface it appears to remove. If the voter *can* prove their choice to a trusted party, they can prove it to a coercer on demand. The *capacity* to prove is itself coercive; the only coercion-resistant receipt is one from which vote content cannot be proved at all — which is exactly what Invariant 1 requires. Selective disclosure achieves *deniability* (the voter claims inability) but not coercion-resistance (the voter cannot provide genuine technical inability). PIUP enforces the harder property: not that revealing is socially implausible, but that the receipt is technically incapable of proving choice.
+
+### 2.3 Pattern scope and generalization
+
+PIUP applies to any submission system satisfying the three conditions in §2.1. Three domains beyond e-voting share the same constraint structure:
+
+**Sealed-bid auctions.** After submitting a bid, the participant receives a confirmation. The confirmation must prove the bid was received without revealing the bid amount before reveal time — a direct instantiation of conditions (1)–(3). The submission token is the bid commitment; the protective framing names the amount as intentionally absent; the verification affordance enables post-reveal inclusion checking.
+
+**Whistleblower submissions.** Systems such as SecureDrop confirm that a document was received without revealing content, source identity, or submission metadata to unauthorized parties. The PIUP pattern applies directly: the submission token is a channel pseudonym or intake reference; the protective framing names content as intentionally absent to distinguish successful submission from silent failure.
+
+**Anonymous peer review.** Submission acknowledgement should not allow back-inference of reviewer identity through timing, acknowledgement sequence, or metadata correlation. Condition (3) is weaker here — authors do not strongly expect submission content in a confirmation — but conditions (1) and (2) apply, making PIUP a relevant template for double-blind review systems with active metadata-privacy guarantees.
+
+Across these domains, the three invariants translate directly: the token must not be derivable from submission content (Invariant 1), must remain private until the coercion window closes (Invariant 2), and the receipt must contain only token and verification endpoint (Invariant 3). The protective framing component is most load-bearing where absent content was most strongly expected by users based on prior experience — making the voting receipt the most demanding design target and the strongest test case for the pattern.
+
 ---
 
 ## 3. System: Aztec Private Voting
