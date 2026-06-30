@@ -402,7 +402,7 @@ Power for f = 0.22, α = 0.05, df = 1 (interaction), N = 240: power ≈ 0.80. Su
 
 ### 10.3 Conditional calibration test (H2.3)
 
-If run (conditional on H4 in Study 1), the test uses L2 conditions only (n = 30 per I level within L2 = 60 participants). For d = 0.50 (medium calibration residual reduction), α = 0.05, one-tailed: power ≈ 0.72. Slightly underpowered; tolerated because this is a conditional secondary test. If underpowered, note as a limitation and plan for a calibration-focused Study 2b (N = 80 in L2 only).
+If run (conditional on H4 in Study 1), the test uses L2 conditions only (n = 60 per I level within L2 = 120 participants; each I level pools E1+E2 within L2: n = 30+30 = 60). For d = 0.50 (medium calibration residual reduction), α = 0.05, one-tailed: power ≈ 0.86. Adequately powered (≥ 0.80). [Fixed tick-4268 (Amendment 11 propagation): prior wording stated n = 30 per I level (N = 60) and power ≈ 0.72, which conflated per-cell n with per-I-level n. Each I level pools across the two E conditions within L2, giving n = 60 per group, not 30. Power is ≈ 0.86, not 0.72. No design or analysis logic changed; only the documentation of sample size and power for H2.3 was wrong. Amendment 11 (tick-4261) corrected the pre-reg §4.2 and §6.4; Amendment 12 (tick-4262) corrected the simulation script and CSVs; this completes the propagation to the design note.] If the TOST is inconclusive, note as a limitation and plan for a calibration-focused Study 2b (N = 80 in L2 only).
 
 ---
 
