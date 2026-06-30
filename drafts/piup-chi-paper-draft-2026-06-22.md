@@ -206,7 +206,7 @@ M2 adds in-circuit secp256k1 signature verification (EIP-191 personal_sign), clo
 
 **H1 (pre-registered confirmatory; m = 2):** A > D on Q2 and Q3 (fingerprint > neutral baseline on the privacy-model questions; pre-registered directional magnitude: ≥ 10 pp on each).
 **H2 (pre-registered confirmatory; m = 3; primary endpoint):** A > B on Q2 (primary endpoint) and Q3 (secondary); A ≈ B on overall accuracy composite (TOST, ±10 pp). Q2(A>B) is the single pre-specified primary endpoint for the study; pre-registered directional magnitudes: ≥ 10 pp on Q2 (primary), ≥ 8 pp on Q3 (secondary) (pre-reg §H2).
-**H3 (pre-registered confirmatory; m = 6):** C < all others on Q1 ("does this prove your vote was counted?") and on overall accuracy composite - reversal risk from "nullified" reading; 6 pre-registered tests (Q1(C<A), Q1(C<B), Q1(C<D), composite C<each); pre-registered directional magnitudes: Cond C < 45% on Q1, Cond A ≥ 65% on Q1.
+**H3 (pre-registered confirmatory; m = 6):** C lower than ≥ 2 of {A, B, D} on Q1 ("does this prove your vote was counted?") after Holm correction — reversal risk from "nullified" reading; 6 pre-registered tests (Q1(C<A), Q1(C<B), Q1(C<D), composite C<each; composite pairings conditional on omnibus significance); pre-registered directional magnitudes: Cond C < 45% on Q1, Cond A ≥ 65% on Q1.
 **H4 (pre-registered confirmatory; m = 3):** Confidence(B) > Confidence(A), B > C, B > D — confirmation code borrows perceived competence from eCommerce familiarity. A secondary pre-registered calibration analysis (Spearman accuracy-confidence correlation, not Holm-corrected) is described in §4.5.
 
 ### 4.2 Study design
@@ -226,7 +226,7 @@ All other receipt elements (status line, protective framing, identifier value, c
 
 Target sample: n = 70 per condition (N = 280 total), preceded by an instrument-validation pilot of n = 10 per condition (N = 40). No institutional IRB review was required under 45 CFR §46.104(d)(2); Prolific's standard participant protections and informed consent process apply.
 
-**Power.** For the H2 primary confirmatory endpoint (Q2 accuracy, A vs. B, one-tailed, p1 = 0.65 vs. p2 = 0.50, expected difference 15 pp), α = 0.05, power = 0.80 requires n = 67 per cell (G\*Power 3.1.9.7, Faul et al., 2009; test: "Proportion: Inequality of two independent proportions", Cohen's h = 0.30). The target sample is n = 70 per cell (N = 280), providing approximately 82% power for the H2 primary endpoint. *Pre-registration note: original pre-reg computed n = 49 using McNemar (within-subjects); corrected pre-data to n = 67/cell (independent proportions, G\*Power). [Amendment 1: osf-amendment-filing-2026-06-24.md; all 14 hypotheses unchanged.]* For the omnibus chi-squared (df = 3, w ≈ 0.18), 80% power requires n ≈ 82/cell; at n = 70, omnibus power ≈ 0.67 (H2 pairwise is the primary test; omnibus is descriptive-secondary). If pilot Q2 effect < 15 pp, n expands to 75/cell before full launch. No interim stopping rules; pilot (N = 40) is for instrument validation only.
+**Power.** For the H2 primary confirmatory endpoint (Q2 accuracy, A vs. B, one-tailed, p1 = 0.65 vs. p2 = 0.50, expected difference 15 pp), α = 0.05, power = 0.80 requires n = 67 per cell (G\*Power 3.1.9.7, Faul et al., 2009; test: "Proportion: Inequality of two independent proportions", Cohen's h = 0.30). The target sample is n = 70 per cell (N = 280), providing approximately 82% power for the H2 primary endpoint. *Pre-registration note: original pre-reg computed n = 49 using McNemar (within-subjects); corrected pre-data to n = 67/cell (independent proportions, G\*Power). [Amendment 1: osf-amendment-filing-2026-06-24.md; all 14 hypotheses unchanged.]* For the omnibus chi-squared (df = 3, w ≈ 0.18), 80% power requires n ≈ 82/cell; at n = 70, omnibus power ≈ 0.67 (H2 pairwise is the primary test; omnibus is descriptive-secondary). If pilot Q2 effect < 15 pp, n expands to 75/cell before full launch. No interim hypothesis testing is conducted during or after the pilot; the pilot serves instrument validation and, if the Q2 pilot effect is below 15 pp, triggers a pre-specified sample size expansion to n = 75/cell (§4.2) — this expansion is a pre-registered adaptive rule, not an interim stopping rule.
 
 ### 4.3 Stimuli
 
@@ -313,7 +313,7 @@ After Holm–Bonferroni correction (m = 3): **H2 outcome: [SLOT: "supported (Q2 
 | composite: C < B | [SLOT] | [SLOT] | [SLOT] | [SLOT] |
 | composite: C < D | [SLOT] | [SLOT] | [SLOT] | [SLOT] |
 
-**H3 outcome: [SLOT: "supported (C lower than ≥ 2 of {A, B, D} after Holm)" | "partial (C lower than 1)" | "null"]**. [Ethics-clause note: if Q1 accuracy in condition C falls below 30%, a label-substitution recommendation is triggered per §4.2.]
+**H3 outcome: [SLOT: "supported (C lower than ≥ 2 of {A, B, D} on Q1 after Holm)" | "partial (C lower than 1 of {A, B, D} on Q1 after Holm)" | "null"]**. [Ethics-clause note: if Q1 accuracy in condition C falls below 30%, a label-substitution recommendation is triggered per §4.2.]
 
 **H4 — Confirmation code and confidence miscalibration (m = 3).** One-way ANOVA on confidence composite across four conditions: F([SLOT: df_between], [SLOT: df_within]) = [SLOT: h4_F], p = [SLOT: h4_p], η² = [SLOT: h4_eta2]. [If significant:] Tukey HSD post-hoc comparisons (B versus A, C, D; Holm correction m = 3):
 
