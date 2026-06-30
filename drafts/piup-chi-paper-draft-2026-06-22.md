@@ -272,7 +272,50 @@ The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bo
 
 ### 4.6 Results
 
-_[To be written after Study 1 data collection. Pre-registration OSF DOI: [INSERT]. Pilot target: 2026-Q3; full launch conditional on instrument validation. Reporting structure: (1) Participant flow table - 4 conditions (A: fingerprint, B: confirmation code, C: nullifier, D: receipt ID), final N=280 (n=70/cell), demographics DM1 (age), DM2 (technology background), DM3 (prior voting experience), pre-specified exclusion protocol applied (software engineers, both attention checks failed, response time < 90 s); (2) omnibus chi-squared result; (3) per-hypothesis family in H1-H4 order; (4) Q5 open-text analysis - when drafting this item: if any cross-study comparison to Study 2 M6 scores is included, apply the approximate-comparison qualifier established at §4.5 and §5.4 (tick-4078/4079): direct Q5/M6 score-level comparisons are approximate because the Part 2 criterion at score-2 differs by design (Q5 Part 2 = mechanism reason; M6 Part 2 = intentional-design OR harmful-consequence); (5) exploratory comparisons.]_
+_[§4.6 pre-written structural narrative: fill [SLOT] markers from piup-study1-analysis.R output once data collected. Full slot-to-variable mapping in docs/chi-paper-s1-results-fill-template-2026-06-30.md. OSF DOI: [INSERT before submission]. JONY-ACTION O+T must be filed before data collection. Q5/M6 cross-study comparisons: apply approximate-comparison qualifier (§4.5, §5.4) — Part 2 criterion differs by design.]_
+
+**Participants.** We recruited [SLOT: n_recruited] participants via Prolific. After applying pre-registered exclusions — [SLOT: n_excluded_sc2] excluded for CS or SE background (SC2), [SLOT: n_excluded_attn] excluded for failing both attention checks, [SLOT: n_excluded_rt] excluded for response time under 90 s — the analytic sample comprised [SLOT: n_final] participants ([SLOT: n_A]/[SLOT: n_B]/[SLOT: n_C]/[SLOT: n_D] per condition; pre-registered target: n = 70 per condition). [SLOT: n_browser_fallback] participants triggered the browser-fallback flag and were retained in the primary sample; sensitivity analyses excluding them are reported below where pre-specified. [SLOT: n_prior_study] participants reported prior receipt-study participation and were retained in the primary sample with a pre-specified sensitivity check. Demographics: median age [SLOT: age_median] (IQR [SLOT: age_iqr]); [SLOT: pct_tech_bg]% reported a technology background (DM2); [SLOT: pct_prior_vote]% reported prior online election participation.
+
+**Inter-rater reliability.** Q5 (open-ended reasoning): κ = [SLOT: kappa_Q5]. MQ1 (mental model quality): κ = [SLOT: kappa_MQ1]. [If either κ < 0.70: insert adjudication note and post-adjudication κ here.] Both measures require κ ≥ 0.70 before entering the primary analysis.
+
+**Overall accuracy.** Table 3 shows composite Q1–Q4 accuracy by condition. The omnibus chi-squared test across all four conditions was [SLOT: omnibus_significant_or_not]: χ²([SLOT: df_omnibus]) = [SLOT: omnibus_stat], p = [SLOT: omnibus_p] (Cramér's V = [SLOT: omnibus_V]). [Note: omnibus at 80% power requires n ≈ 82/cell; at the pre-registered n = 70, power is approximately 0.67. A non-significant omnibus does not affect the pre-specified pairwise families H2 and H3.]
+
+**H1 — Fingerprint versus receipt ID on privacy items (m = 2).** Q2 accuracy (choice-blindness scenario): [SLOT: pct_Q2_A]% (condition A: fingerprint) versus [SLOT: pct_Q2_D]% (condition D: receipt ID); χ²(1) = [SLOT: h1_q2_stat], p (one-tailed) = [SLOT: h1_q2_p]; OR = [SLOT: h1_q2_or] [SLOT: h1_q2_ci]. Q3 accuracy (coercion scenario): [SLOT: pct_Q3_A]% (A) versus [SLOT: pct_Q3_D]% (D); χ²(1) = [SLOT: h1_q3_stat], p (one-tailed) = [SLOT: h1_q3_p]; OR = [SLOT: h1_q3_or] [SLOT: h1_q3_ci]. After Holm–Bonferroni correction (m = 2): [SLOT: H1_verdict — "both survive (H1 supported)" | "H1-Q2 survives only (partial)" | "neither survives (H1 null)" | "H1-reversed"].
+
+**H2 — Fingerprint versus confirmation code dissociation (m = 3; primary endpoint).** H2 is the primary pre-registered endpoint. H2-primary (Q2 accuracy, absent-content inference): [SLOT: pct_Q2_A]% (A: fingerprint) versus [SLOT: pct_Q2_B]% (B: confirmation code); difference [SLOT: h2_q2_diff] percentage points; χ²(1) = [SLOT: h2_q2_stat], p (one-tailed) = [SLOT: h2_q2_p]; OR = [SLOT: h2_q2_or] [SLOT: h2_q2_ci]. H2-secondary (Q3 accuracy, coercion scenario): [SLOT: pct_Q3_A]% (A) versus [SLOT: pct_Q3_B]% (B); χ²(1) = [SLOT: h2_q3_stat], p (one-tailed) = [SLOT: h2_q3_p]; OR = [SLOT: h2_q3_or] [SLOT: h2_q3_ci]. H2-tertiary (TOST, composite accuracy equivalence): composite A [SLOT: pct_acc_A]% versus composite B [SLOT: pct_acc_B]%; difference [SLOT: h2_tost_diff] pp (pre-registered equivalence bounds: ±10 pp); TOST p = [SLOT: h2_tost_p]; equivalence [SLOT: "established" | "not established — Cohen's h = [SLOT: h2_cohen_h], 90% CI [SLOT: h2_ci_90_lo] to [SLOT: h2_ci_90_hi]"].
+
+After Holm–Bonferroni correction (m = 3): **H2 outcome: [SLOT: "supported (Q2 A > B significant AND composite equivalent)" | "null (Q2 non-significant AND equivalent)" | "reversed (B > A significant AND equivalent/B composite higher)" | "inconclusive (report Cohen's h and 90% CI)"]**. The H2 outcome determines the recommended receipt label in deployment (§6.2); all four possible verdicts are actionable without instrument redesign.
+
+**H3 — Nullifier underperforms on inclusion inference (m = 6).** Q1 accuracy (inclusion recognition) by condition: A [SLOT: pct_Q1_A]%, B [SLOT: pct_Q1_B]%, C [SLOT: pct_Q1_C]%, D [SLOT: pct_Q1_D]%. Pre-specified unconditional pairwise tests (C versus A, B, D; one-tailed; Holm correction across m = 6 family):
+
+| Comparison | χ²(1) | _p_ (one-tailed) | OR [95% CI] | Holm corrected |
+|---|---|---|---|---|
+| Q1: C < A | [SLOT] | [SLOT] | [SLOT] | [SLOT: sig / ns] |
+| Q1: C < B | [SLOT] | [SLOT] | [SLOT] | [SLOT: sig / ns] |
+| Q1: C < D | [SLOT] | [SLOT] | [SLOT] | [SLOT: sig / ns] |
+| composite: C < A | [SLOT — conditional on omnibus significant] | [SLOT] | [SLOT] | [SLOT] |
+| composite: C < B | [SLOT] | [SLOT] | [SLOT] | [SLOT] |
+| composite: C < D | [SLOT] | [SLOT] | [SLOT] | [SLOT] |
+
+**H3 outcome: [SLOT: "supported (C lower than ≥ 2 of {A, B, D} after Holm)" | "partial (C lower than 1)" | "null"]**. [Ethics-clause note: if Q1 accuracy in condition C falls below 30%, a label-substitution recommendation is triggered per §4.2.]
+
+**H4 — Confirmation code and confidence miscalibration (m = 3).** One-way ANOVA on confidence composite across four conditions: F([SLOT: df_between], [SLOT: df_within]) = [SLOT: h4_F], p = [SLOT: h4_p], η² = [SLOT: h4_eta2]. [If significant:] Tukey HSD post-hoc comparisons (B versus A, C, D; Holm correction m = 3):
+
+| Comparison | Mean diff | 95% CI | _p_ (Tukey) | Holm corrected |
+|---|---|---|---|---|
+| B > A | [SLOT] | [SLOT] | [SLOT] | [SLOT] |
+| B > C | [SLOT] | [SLOT] | [SLOT] | [SLOT] |
+| B > D | [SLOT] | [SLOT] | [SLOT] | [SLOT] |
+
+Mean confidence composite per condition: A [SLOT: conf_mean_A] (SD [SLOT]), B [SLOT: conf_mean_B] (SD [SLOT]), C [SLOT: conf_mean_C] (SD [SLOT]), D [SLOT: conf_mean_D] (SD [SLOT]). **H4 outcome: [SLOT: "supported (ANOVA sig AND all 3 Tukey survive Holm)" | "partial (ANOVA sig, ≤2 Tukey survive)" | "null"]**. [H4 outcome gates Study 2 H2.3 (calibration secondary): if H4 supported, H2.3 is live; if H4 null, H2.3 is dropped and Study 2 reduces to N = 160.]
+
+Calibration analysis (pre-registered secondary, not in Holm family): Spearman ρ between accuracy score (0–4) and confidence composite per condition: A ρ = [SLOT], B ρ = [SLOT], C ρ = [SLOT], D ρ = [SLOT]. Reported descriptively; no NHST verdict.
+
+**Q5 — Open-ended reasoning (pre-registered secondary).** [Conditional on κ ≥ 0.70:] Mean Q5 score (0–2 rubric) by condition: A [SLOT] (SD [SLOT]), B [SLOT] (SD [SLOT]), C [SLOT] (SD [SLOT]), D [SLOT] (SD [SLOT]). Kruskal–Wallis: H([SLOT]) = [SLOT: KW_stat], p = [SLOT: KW_p]. [If significant: Dunn's post-hoc (Holm correction): [SLOT: surviving pairs].] A random sample of 25 responses per condition is included in OSF supplementary materials. [Any cross-study comparison to Study 2 M6 scores applies the approximate-comparison qualifier: Q5 Part 2 = mechanism reason; M6 Part 2 = intentional-design or harmful-consequence.]
+
+**Exploratory analyses.** MQ1 (mental model quality, κ = [SLOT]): distribution of 0/1/2 per condition reported descriptively; no pre-specified NHST. BI1 (save intention, 1–5): mean per condition A [SLOT], B [SLOT], C [SLOT], D [SLOT]; previews Study 2 RQ4, no pre-registered test in Study 1. Label affect (valence −3 to +3): mean per condition A [SLOT], B [SLOT], C [SLOT], D [SLOT].
+
+**Sensitivity analyses.** [If n_browser_fallback > 0:] Replication of H2-primary excluding browser-fallback participants (n = [SLOT] excluded): χ²(1) = [SLOT], p (one-tailed) = [SLOT]; verdict [SLOT: unchanged / changed]. [If n_prior_study > 0:] Replication of H2-primary excluding prior-study participants (n = [SLOT] excluded): χ²(1) = [SLOT], p = [SLOT]; verdict [SLOT].
 
 ---
 
