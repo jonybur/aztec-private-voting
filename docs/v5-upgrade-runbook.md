@@ -3,6 +3,7 @@
 **Upgrade completed:** June 17–18, 2026. **State reset confirmed June 18, 2026.**  
 v4 contract `0x1a8efeffe...` is gone. v5.0.0-rc.1 is the live testnet RC.  
 **v5 endpoint confirmed live 2026-06-22 (block 5620):** `https://v5.testnet.rpc.aztec-labs.com`  
+**Testnet health re-verified 2026-06-30 (block 14,273):** +2,473 blocks since 2026-06-27 confirmation. Active block production confirmed. ✅  
 
 > **Status as of 2026-06-22:** Skip Step 1 (upgrade already done) and Step 2 (old contract confirmed gone). Go directly to **Step 3** to deploy fresh on v5.
 
@@ -43,6 +44,8 @@ curl -s -X POST https://v5.testnet.rpc.aztec-labs.com \
 ```
 
 Confirmed live 2026-06-22 at block 5620. Block number should be > 5620 and incrementing.
+
+**Re-confirmed 2026-06-30 (tick-4285):** `{"result":14273}` — testnet active, 2,473 new blocks since 2026-06-27.
 
 ### 3b. Install v5 CLI
 
