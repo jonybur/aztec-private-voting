@@ -3,6 +3,18 @@
 **Deadline:** September 10, 2026 (72 days)  
 **Status:** URGENT — body text exceeds 12,000-word desk-rejection threshold
 
+
+## Progress log
+
+| Tick | Action | Word saving |
+|---|---|---|
+| tick-4273 | §6.5 Limitations: 1,807 → 594 words (draft ready to paste) | ~1,213 |
+| tick-4274 | §4.4 Measures: converted to table format, annotations archived | ~499 (stripped) |
+
+**Running total saved (clean text): ~1,712 words of estimated ~6,808 needed.**  
+**Next up: abstract swap (step 1) + §4.5 analysis plan compression (step 4).**
+
+---
 ---
 
 ## Current state
