@@ -75,6 +75,16 @@ At n = 40/condition (Study 2 pool): power = 32–53% across plausible baselines 
 
 **Recommended design:** Run Study 3 embedded in Study 2 as a **pilot study** — pre-register as a pilot, report 90% CI for OR rather than NHST, and use results to calibrate a powered multi-election replication. See power analysis document for three replication options (pilot, sequential election deployment, platform partnership).
 
+**Target n for powered replication (secondary planning parameter):**
+
+| Baseline p₁ (control) | n/condition needed | N total | Recruitment path |
+|---|---|---|---|
+| 0.10 (conservative) | 140 | 280 | 3–4 DAO elections or Prolific field panel |
+| 0.15 (PIUP-optimistic) | 103 | 206 | 3 elections or Vocdoni partnership |
+| 0.20 (upper bound) | 86 | 172 | 3 elections minimum |
+
+The pilot (N ≈ 80) provides the point estimate and 90% CI for OR needed to select the row above and pre-register the powered replication. The multi-election or platform-partnership paths in the power analysis document are the recommended routes to the required n.
+
 ---
 
 ## 5. Measures
@@ -96,13 +106,18 @@ At n = 40/condition (Study 2 pool): power = 32–53% across plausible baselines 
 
 ## 6. Analysis
 
-**Primary:** Logistic regression with condition (treatment vs. control), T0 intent, technology self-efficacy, and their interactions as predictors of binary verification at T+14. Report OR, 95% CI, and χ² for condition coefficient.
+**Primary (pilot framing — NOT confirmatory NHST):** This study is pre-registered as a **feasibility pilot**. The primary analysis is the point estimate and **90% CI for the odds ratio** of the condition effect on verification at T+14, using logistic regression with condition (treatment vs. control), T0 intent, and technology self-efficacy as predictors. The 90% CI is the pre-specified inferential summary; no NHST threshold is applied to the primary endpoint.
 
-**Moderation:** Test condition × self-efficacy interaction; stratify by self-efficacy tertile if significant.
+Interpretation rule (pre-specified):
+- If the 90% CI lower bound ≥ 1.5: social proof effect is plausible, consistent with Das et al. (2014); proceed to powered replication.
+- If the 90% CI includes 1.0: effect is uncertain; use CI width and baseline rate to calibrate powered replication.
+- If the 90% CI upper bound < 1.0: social proof counter may suppress verification; investigate before replication.
 
-**Comprehension:** χ² on Q1–Q4 composite accuracy across conditions. Predicted null.
+**Moderation (exploratory):** Test condition × self-efficacy interaction; stratify by self-efficacy tertile if coefficient p < .10 (exploratory threshold). No primary inference drawn from interaction term (would require n ≈ 560/condition to be confirmatory; see power analysis §5.1).
 
-**Time-to-verify (if log opt-in n ≥ 40):** Survival analysis (Kaplan-Meier) comparing treatment vs. control on time from T0 to first `verify_vote_counted()` call. Log-rank test. Visual inspection for an early-surge pattern (social proof may primarily accelerate early adopters rather than convert non-verifiers).
+**Comprehension (exploratory):** χ² on Q1–Q4 composite accuracy across conditions. Predicted null. Labelled exploratory; underpowered for any non-trivial effect at pilot n.
+
+**Time-to-verify (if log opt-in n ≥ 40, descriptive):** Survival analysis (Kaplan-Meier) comparing treatment vs. control on time from T0 to first `verify_vote_counted()` call. Log-rank test reported descriptively. Visual inspection for an early-surge pattern (social proof may primarily accelerate early adopters rather than convert non-verifiers). Labelled descriptive; n too small for confirmatory survival analysis at pilot scale.
 
 ---
 
@@ -155,6 +170,20 @@ The barrier is intrinsic — participants' mental model of verification as perso
 
 **If technology self-efficacy moderates the effect:**  
 Social proof targets low-efficacy users. The design implication is a **segmented** receipt: show the social proof counter only to users who fail an early indicator of intent (e.g., did not download the receipt at T0). This avoids cluttering the receipt for high-intent verifiers while providing normative scaffolding for those who are uncertain whether verification is "for people like me."
+
+---
+
+## 11. Future directions: powered replication paths
+
+The pilot is designed to feed into one of three replication options (full analysis: `docs/piup-study3-power-analysis-2026-06-29.md`, §2).
+
+**Option A — Sequential election deployment (preferred, 12–18 months):** Recruit 3–4 DAO or institutional elections as future deployment sites for the Aztec private voting contract. Aggregate participants across elections using a random-effects logistic regression (site as clustering variable). Use the pilot OR estimate and CI to set the per-election recruitment target. Pre-register the powered replication as a registered report at CHI, CSCW, or TOCHI.
+
+**Option B — Vocdoni API partnership (opportunistic, faster):** Vocdoni (app.vocdoni.io) has 1,000+ elections and a public vote-verification API. A platform partnership would allow Study 3 to scale to the required N without building a new voter pool from scratch. Prerequisites: confirm that Vocdoni's verification event log is accessible and supports the `verify_vote_counted()` equivalent; negotiate a research agreement. The social proof counter is implementation-neutral — it does not require the Aztec contract — but the privacy-preserving properties of the count are strongest on Aztec (ZK verification events, pseudonymous receipt IDs).
+
+**Option C — Prolific field panel supplement:** If DAO election recruitment is insufficient, Prolific can supply participants for a simulated election scenario (loss of ecological validity but faster n accrual). Use only as a secondary robustness check alongside field data, not as the primary replication vehicle.
+
+**Registered report target:** Use Study 3 pilot data + Study 1 outcome measures to submit a Stage 1 registered report with one of: CSCW 2027, CHI 2028 LBW, or *Behaviour & Information Technology* (no annual deadline). Stage 1 acceptance is blind to results and insulates the powered replication from publication bias.
 
 ---
 
