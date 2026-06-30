@@ -71,7 +71,7 @@ The current system proves a voter's *membership* in a snapshot (their (address, 
 
 M2 closes this: `cast_vote_babylon_v2` in `main.nr` adds an in-circuit `std::ecdsa_secp256k1::verify_signature` — any witness without valid secp256k1 key ownership is rejected. The nullifier is now `hash_bytes_as_field(sha256(sig))` — not computable from public snapshot data.
 
-**Status (2026-06-22):** 10/11 checklist items complete. The snapshot generator (`synthetic-snapshot.ts --version 2`), deploy-script Merkle root encoding, and `useM2Signing` React hook are all done. One item remaining: production proving-time measurement on browser hardware.
+**Status (2026-06-27):** 11/11 checklist items complete. EIP-191 benchmark: **339 ACIR opcodes + 348 Brillig opcodes** (`nargo info` on `m2-sig-tests/` standalone binary — see `docs/m2-benchmark-2026-06-27.md`); 7/7 Noir unit tests pass including full EIP-191 end-to-end path (sha256 challenge + keccak256 EIP-191 wrapping + secp256k1 verify). The snapshot generator (`synthetic-snapshot.ts --version 2`), deploy-script Merkle root encoding, `useM2Signing` React hook, and `useVoteBabylonV2` hook are all complete. Circuit witness solved under `nargo execute` with EIP-191 test vectors. **M2 is complete.**
 
 **Signing path resolved (ADR-036 Path C):** M2 signing uses EIP-191 `personal_sign` (MetaMask/Ledger/WalletConnect) as the primary wallet path. The circuit now verifies `keccak256(EIP-191(challenge))` — ~10 additional Noir lines vs. ~100 for the Cosmos ADR-036 path, and works out of the box with any EVM wallet. Keplr/ADR-036 support is documented as a named extension (Path A) for Cosmos-native voter populations. See `docs/adr-036-m2-wallet-signing-path.md` for the full decision record.
 
