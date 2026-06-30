@@ -633,3 +633,242 @@ tally-privacy (§1.1, §3.3, §6.5 [Note tick-4013]).
 
 This amendment does not affect any security finding classifications. The L1 privacy gap
 remains an open design limitation of the pre-M3 instantiation. No code changes.
+
+---
+
+## 11. Amendment: Babylon entrypoint audit + cross-path analysis (tick-4272, 2026-06-30)
+
+**Scope:** `cast_vote_babylon`, `cast_vote_babylon_v2`, `get_final_tally` view —
+not covered by the original §8 extended review (which covered generic paths + TOKEN +
+ALLOWLIST). Babylon paths excluded from original scope per CLAUDE.md (separate
+review scope). This amendment covers the structural/design observations only; the
+EIP-191 signature scheme and secp256k1 circuit correctness were reviewed separately
+in `docs/m2-front-running-security-analysis-2026-06-27.md`.
+
+**Status note:** This amendment does NOT cover Babylon governance deployment specifics
+(no live Babylon holder data; CLAUDE.md Frozen Decisions). Findings are generic circuit
+structure observations valid for any deployment using the Babylon entrypoints.
+
+---
+
+### N-F8 — DESIGN: No `ELIGIBILITY_MODE_BABYLON` constant; Babylon votes deploy as TOKEN mode
+
+**Location:** `eligibility.nr` (global constants), `main.nr` (all Babylon entrypoints)
+
+**Finding:** Three eligibility mode constants are defined:
+
+```rust
+pub global ELIGIBILITY_MODE_OPEN: u8 = 0;
+pub global ELIGIBILITY_MODE_TOKEN: u8 = 1;
+pub global ELIGIBILITY_MODE_ALLOWLIST: u8 = 2;
+```
+
+There is no `ELIGIBILITY_MODE_BABYLON = 3`. Babylon governance votes
+(`cast_vote_babylon`, `cast_vote_babylon_v2`) are deployed with
+`eligibility_mode = ELIGIBILITY_MODE_TOKEN = 1`. The `eligibility_mode` field therefore
+does not distinguish between:
+
+- An **Aztec token snapshot** vote (TOKEN mode, intended entrypoint: `cast_vote_token`,
+  leaf format: `sha256(address_bytes[32] || balance_be[8])`)
+- A **Cosmos BABY snapshot** vote (TOKEN mode, intended entrypoints:
+  `cast_vote_babylon`/`cast_vote_babylon_v2`, leaf formats:
+  `sha256(address_bytes[45] || balance_be[8])` v1 /
+  `sha256(hash160_bytes[20] || balance_be[8])` v2)
+
+An off-chain deployer who inspects `config.eligibility_mode` cannot determine which
+entrypoint the vote was intended to use. There is no on-chain assertion that prevents
+a caller from trying `cast_vote_token` on a BABY-snapshot contract (the Merkle
+verification fails at the circuit layer, but no mode assertion fires first).
+
+**Impact:** DESIGN — no exploitable vulnerability. The distinct leaf formats prevent
+cross-path forgery (see N-F10 cross-path analysis below). The missing constant is a
+code quality and deployability concern: tooling, UIs, and indexers that inspect
+`eligibility_mode` cannot distinguish BABY votes from Aztec token votes without
+out-of-band knowledge.
+
+**Recommendation:** Add `pub global ELIGIBILITY_MODE_BABYLON: u8 = 3;` and guard both
+Babylon entrypoints with:
+
+```rust
+assert(
+    config.eligibility_mode == ELIGIBILITY_MODE_BABYLON,
+    "cast_vote_babylon: contract not in babylon mode",
+);
+```
+
+Mirror the pattern from `cast_vote_token` (asserts `ELIGIBILITY_MODE_TOKEN`) and
+`cast_vote_allowlist` (asserts `ELIGIBILITY_MODE_ALLOWLIST`).
+
+**Status:** Open — DESIGN. No code changes in this amendment; recommendation noted for
+M1 redeploy or M2 upgrade planning.
+
+---
+
+### N-F9 — DESIGN: Babylon entrypoints lack eligibility mode guards
+
+**Location:** `main.nr` — `cast_vote_babylon` (~line 278), `cast_vote_babylon_v2` (~line 310)
+
+**Finding:** `cast_vote_token` and `cast_vote_allowlist` both open with an eligibility
+mode assertion:
+
+```rust
+// cast_vote_token:
+assert(
+    config.eligibility_mode == ELIGIBILITY_MODE_TOKEN,
+    "cast_vote_token: contract not in token mode",
+);
+
+// cast_vote_allowlist:
+assert(
+    config.eligibility_mode == ELIGIBILITY_MODE_ALLOWLIST,
+    "cast_vote_allowlist: contract not in allowlist mode",
+);
+```
+
+Neither `cast_vote_babylon` nor `cast_vote_babylon_v2` contains an equivalent
+assertion. Both proceed directly to Merkle verification (and signature verification
+for v2) without first asserting the contract's eligibility mode.
+
+**Impact:** DESIGN. In practice, the Merkle verification provides the gatekeeping:
+the distinct leaf formats (see N-F10) make cross-path forgery infeasible.
+However, the absence of explicit mode guards:
+
+1. Violates the established pattern (generic-path guard → Merkle proof → enqueue);
+2. Means that on a correctly deployed BABYLON contract, a caller can invoke
+   `cast_vote_token` (which does assert TOKEN mode → will fail) but not have
+   `cast_vote_babylon` fail-fast on an incorrectly typed contract;
+3. Slightly increases circuit analysis complexity for future reviewers who expect
+   the mode assertion at the entrypoint boundary.
+
+**Recommendation:** Add mode assertion at the top of both Babylon entrypoints,
+consistent with N-F8 (once `ELIGIBILITY_MODE_BABYLON` is defined):
+
+```rust
+assert(
+    config.eligibility_mode == ELIGIBILITY_MODE_BABYLON,
+    "cast_vote_babylon: contract not in babylon mode",
+);
+```
+
+**Status:** Open — DESIGN. Blocked on N-F8 (ELIGIBILITY_MODE_BABYLON constant).
+
+---
+
+### N-F10 — DESIGN: `get_final_tally` does not validate `option_index < options_count`
+
+**Location:** `main.nr` — `get_final_tally` (~line 490)
+
+```rust
+#[external("public")]
+#[view]
+fn get_final_tally(option_index: u8) -> pub u64 {
+    assert(self.storage.is_finalized.read(), "not finalized");
+    self.storage.tally.at(option_index).read()
+}
+```
+
+**Finding:** The function asserts `is_finalized` but does not validate
+`option_index < config.options_count`. For `option_index >= options_count`,
+the storage map returns the default value (0 in PublicMutable<u64>), silently
+returning a zero tally.
+
+**Impact:** DESIGN — view function, no state changes. An off-chain client that
+iterates `for i in 0..8` (using `MAX_OPTIONS`) rather than
+`for i in 0..config.options_count` receives zero tally values for unused option
+slots with no error indication. This could produce misleading tally summaries
+(e.g., "3 options with non-zero tallies; 5 options with zero tallies" rather than
+"3 options total").
+
+**Recommendation:** Add a bounds assertion:
+
+```rust
+assert(
+    (option_index as u32) < (config.options_count as u32),
+    "option_index out of range",
+);
+```
+
+This mirrors the bounds check in `record_vote`:
+`assert((vote_choice as u32) < (config.options_count as u32), "invalid choice");`
+
+**Status:** Open — DESIGN. Low priority (view-only; client-side iteration is the
+correct mitigation; off-chain indexers should use `config.options_count` not
+`MAX_OPTIONS`). Document expected client pattern in `docs/deployment.md`.
+
+---
+
+### Cross-path double-vote analysis — confirmed NOT exploitable
+
+**Question:** Can a voter cast two valid ballots in the same vote by using different
+entrypoints (e.g., once via `cast_vote_token` and once via `cast_vote_babylon`)?
+
+**Analysis:**
+
+Both `cast_vote_token` and `cast_vote_babylon` verify Merkle membership against
+`config.token_address` (the same field). However, their leaf hash preimages are
+structurally distinct:
+
+| Entrypoint | Leaf preimage | Size |
+|---|---|---|
+| `cast_vote_token` (TOKEN mode) | `sha256(address_bytes[32] ‖ balance_be[8])` | 40 bytes |
+| `cast_vote_babylon` v1 | `sha256(address_bytes[45] ‖ balance_be[8])` | 53 bytes |
+| `cast_vote_babylon_v2` | `sha256(hash160_bytes[20] ‖ balance_be[8])` | 28 bytes |
+
+A single SHA-256 Merkle tree cannot simultaneously satisfy all three leaf schemes with
+the same root (the distinct preimage sizes prevent collision by construction). A
+cross-path Merkle proof using one leaf format against a root built with a different
+format will fail at `verify_merkle_path`.
+
+Additionally:
+- On a **TOKEN mode contract** (Aztec token snapshot): `cast_vote_token` uses
+  `SingleUseClaim` (one vote per wallet); `cast_vote_babylon` would fail the Merkle
+  proof (wrong leaf format); `cast_vote_allowlist` fails the mode assertion.
+- On a **BABYLON contract** (TOKEN mode, BABY snapshot): `cast_vote_babylon` uses a
+  deterministic leaf-derived nullifier (v1) or signature-derived nullifier (v2);
+  `cast_vote_token` would fail the Merkle proof; `cast_vote_allowlist` fails mode
+  assertion.
+
+**Verdict:** Cross-path double-vote is not exploitable. Leaf format specialisation is
+the correct separation mechanism. The recommended N-F8/N-F9 mode guards would make
+this defense explicit at the assertion layer rather than relying on Merkle proof failure.
+
+---
+
+### Zero-nullifier in `cast_vote_babylon_v2` — negligible risk, consistency gap
+
+**Finding:** `cast_vote_babylon_v2` derives the holder nullifier as:
+
+```rust
+let holder_nullifier = hash_bytes_as_field(sha256_var(sig, 64));
+```
+
+No assertion `holder_nullifier != 0` is present. Compare `cast_vote`, `cast_vote_token`,
+and `cast_vote_allowlist`, which all assert `receipt_id != 0` on the client-supplied field.
+
+**Analysis:** The field value is zero only if `sha256_var(sig, 64)` is the field's zero
+element. The BN254 scalar field has order `r ≈ 2^254`; the probability that a random
+32-byte value falls in `{0}` mod r is ≈ 2^-254 — negligible in practice.
+
+However, the absence breaks the pattern established by the three other guarded
+entrypoints. A future maintainer may not notice the missing assertion.
+
+**Recommendation:** Add `assert(holder_nullifier != 0, "nullifier must be non-zero");`
+after the nullifier derivation, for consistency and defence against any future
+`hash_bytes_as_field` implementation that might behave unexpectedly.
+
+**Status:** Open — LOW (negligible practical risk). Consistency fix recommended.
+
+---
+
+**Summary of N-F8–N-F10:**
+
+| Finding | Severity | Status |
+|---|---|---|
+| N-F8: No `ELIGIBILITY_MODE_BABYLON` constant | DESIGN | Open |
+| N-F9: Babylon entrypoints lack mode guards | DESIGN | Open (blocked on N-F8) |
+| N-F10: `get_final_tally` no bounds check | DESIGN | Open |
+| Cross-path double-vote | — | NOT exploitable (confirmed) |
+| Zero-nullifier in v2 | LOW | Open (negligible; consistency fix) |
+
+No critical or high findings in this amendment. All prior findings (F1–F5, N-F1–N-F7)
+remain resolved as documented in §1–§10.
