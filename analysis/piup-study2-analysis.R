@@ -704,12 +704,27 @@ if (!H4_SUPPORTED) {
   if (nrow(df_L2_I1) > 1 && nrow(df_L2_I2) > 1) {
     t_h23 <- t.test(df_L2_I1$m4_residual, df_L2_I2$m4_residual,
                     alternative = "greater", var.equal = FALSE)
+    # Cohen's d for M4 t-test (pre-reg §6.4: "Report Cohen's d + 95% CI"; Amendment 15)
+    m4_n1   <- nrow(df_L2_I1); m4_n2 <- nrow(df_L2_I2)
+    m4_sd1  <- sd(df_L2_I1$m4_residual, na.rm = TRUE)
+    m4_sd2  <- sd(df_L2_I2$m4_residual, na.rm = TRUE)
+    m4_sp   <- sqrt(((m4_n1 - 1) * m4_sd1^2 + (m4_n2 - 1) * m4_sd2^2) / (m4_n1 + m4_n2 - 2))
+    m4_diff <- mean(df_L2_I1$m4_residual, na.rm = TRUE) - mean(df_L2_I2$m4_residual, na.rm = TRUE)
+    m4_d    <- m4_diff / m4_sp
+    # Two-sided 95% CI on Cohen's d: Hedges & Olkin (1985) SE approximation
+    m4_se_d    <- sqrt(1/m4_n1 + 1/m4_n2 + m4_d^2 / (2 * (m4_n1 + m4_n2 - 2)))
+    m4_d_ci_lo <- m4_d - qt(0.975, df = t_h23$parameter) * m4_se_d
+    m4_d_ci_hi <- m4_d + qt(0.975, df = t_h23$parameter) * m4_se_d
     cat(sprintf("M4 residual (I1 vs. I2, L2 only): t(%s) = %.3f, p(one-tailed) = %.4f\n",
                 round(t_h23$parameter, 1), t_h23$statistic, t_h23$p.value))
-    cat(sprintf("  I1 mean residual = %.3f; I2 mean residual = %.3f; diff = %.3f [%.3f, %.3f]\n",
+    # [Fixed tick-4297: diff in sprintf incorrectly used t_h23$conf.int[1] (CI lower bound)
+    # instead of the actual mean difference; conf.int[1] was also printed twice. Fixed:
+    # compute m4_diff directly. Cohen's d + two-sided 95% CI added per pre-reg §6.4
+    # (Amendment 15). No hypothesis, test, or verdict change.]
+    cat(sprintf("  I1 mean = %.3f; I2 mean = %.3f; diff = %.3f; Cohen's d = %.3f [%.3f, %.3f]\n",
                 mean(df_L2_I1$m4_residual, na.rm = TRUE),
                 mean(df_L2_I2$m4_residual, na.rm = TRUE),
-                t_h23$conf.int[1], t_h23$conf.int[1], t_h23$conf.int[2]))
+                m4_diff, m4_d, m4_d_ci_lo, m4_d_ci_hi))
 
     # M3 save intention equivalence test: I1 ≈ I2 in L2 (TOST, bounds ±0.5 SD)
     save_sd <- sd(df_L2$m3_save, na.rm = TRUE)
