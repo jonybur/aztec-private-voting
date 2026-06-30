@@ -650,21 +650,29 @@ if (h22_interaction_sig) {
     if (E_eff_L2 > E_eff_L1) "CONFIRMED" else "NOT CONFIRMED"
   )
 } else {
-  # Report 90% CI on interaction term per pre-registration §9.1
+  # Report 90% CI on interaction term per pre-registration §6.3
   cat("Interaction not significant. Reporting 90% CI on interaction term (pre-specified):\n")
 
-  m2_lm     <- lm(m2_trust ~ L * E, data = df_anova)
-  int_ci90  <- confint(m2_lm, level = 0.90)
-  int_term  <- "Lfingerprintconfirmation_code:Eexplanation_presentexplanation_absent"
-  # Use emmeans to get interaction contrast reliably
+  m2_lm <- lm(m2_trust ~ L * E, data = df_anova)
+  # Use emmeans to get interaction contrast + 90% CI reliably
   emm <- emmeans::emmeans(m2_lm, ~ L * E)
   int_contrast <- emmeans::contrast(emm, interaction = "pairwise")
-  cat("Interaction contrast (emmeans):\n")
+  cat("Interaction contrast (emmeans, 90% CI):\n")
   print(summary(int_contrast, infer = TRUE, level = 0.90))
   cat("\n")
 
+  # Descriptive main effects — pre-registration §6.3:
+  # "report E main effect and L main effect descriptively"
+  cat("Descriptive marginal means — E main effect (pooled across L):\n")
+  emm_E <- emmeans::emmeans(m2_lm, ~ E)
+  print(summary(emm_E))
+  cat("\nDescriptive marginal means — L main effect (pooled across E):\n")
+  emm_L <- emmeans::emmeans(m2_lm, ~ L)
+  print(summary(emm_L))
+  cat("\n")
+
   h22_verdict <- sprintf(
-    "H2.2 NOT SUPPORTED: L × E interaction not significant (F = %.3f, p = %.4f). Null result; 90%% CI on interaction term reported above.",
+    "H2.2 NOT SUPPORTED: L × E interaction not significant (F = %.3f, p = %.4f). Null result; 90%% CI on interaction term reported above. E and L marginal means reported descriptively.",
     ifelse(is.na(interaction_row$statistic), NA, interaction_row$statistic),
     ifelse(is.na(interaction_row$p.value), NA, interaction_row$p.value)
   )
