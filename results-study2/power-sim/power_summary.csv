@@ -1,0 +1,5 @@
+"hypothesis","description","effect_size","N","power_sim","gpower_analytical","note"
+"H2.1","E main on Q-AC (chi-sq, 1-tail)","h=0.358 (p_E1=0.70, p_E2=0.50)",240,0.934,0.84,""
+"H2.2","L×E interaction on M2 (ANOVA)","f=0.22 (interaction contrast)",240,0.4,0.8,""
+"H2.3","I effect on M4 residual (t, 1-tail; CONDITIONAL)","d=0.50 (I1-L2 vs I2-L2)",120,0.867,0.86,"CONDITIONAL on Study 1 H4; M4 all-conditions (tick-4246 FF fix); n=60/group — Amendment 11 (tick-4261+tick-4262)"
+"H2.4","M1 predicts M3 click (logistic, 1-tail)","OR=2.0 (P_click=0.30→0.46)",240,0.815,NA,""

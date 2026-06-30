@@ -322,7 +322,8 @@ cat(sprintf("\n  H2.2 CSV saved: %s\n\n", file.path(out_dir, "h22_power_curve.cs
 # =============================================================================
 # CONDITIONAL test: run only if Study 1 H4 is supported.
 # Tests: L2-I1 vs L2-I2 on M4 calibration residual (overcalibration).
-# N: 60 (L2 only: I1 n=30, I2 n=30, pooled across E-levels).
+# N: 120 (L2 only: I1 n=60, I2 n=60; each I level pools E1+E2 within L2: 30+30=60).
+# Amendment 11 (tick-4261/tick-4262): corrected from n=30 to n=60 per I level.
 #
 # RESOLVED — tick-4246 FF fix:
 #   M4 (calibration_confidence) is the post-receipt Q-AC confidence question,
@@ -340,7 +341,7 @@ cat(sprintf("\n  H2.2 CSV saved: %s\n\n", file.path(out_dir, "h22_power_curve.cs
 cat("=== SECTION 4: H2.3 — Calibration intervention on M4 residual (conditional) ===\n\n")
 cat("[NOTE] M4 is measured in ALL conditions (tick-4246 FF fix). I1-L2 vs I2-L2 test is valid.\n\n")
 
-n_h23 <- n_per_cell   # 30 per I level within L2
+n_h23 <- n_per_cell * 2L  # 60 per I level (pools E1+E2 within L2: 30+30=60; Amendment 11 tick-4262)
 d_grid <- c(0.20, 0.35, 0.50, 0.65, 0.80)
 
 h23_results <- data.frame(
@@ -504,7 +505,7 @@ cat(sprintf("H2.2 (L×E interaction on M2, ANOVA):        power = %.3f  [N=%d, f
 
 cat(sprintf("H2.3 (I effect on M4 residual, t one-tail): power = %.3f  [n=%d/group, d=0.50] [CONDITIONAL on H4]\n",
             h23_results$power_sim[h23_results$cohens_d == 0.50],
-            n_per_cell))
+            n_per_cell * 2L))
 
 cat(sprintf("H2.4 (M1→click logistic, one-tailed):       power = %.3f  [N=%d, OR=2.0]\n",
             h24_results$power_sim[h24_results$OR == 2.0],
@@ -512,7 +513,8 @@ cat(sprintf("H2.4 (M1→click logistic, one-tailed):       power = %.3f  [N=%d, 
 
 cat("\n")
 cat("Design note §10 analytical estimates (G*Power):\n")
-cat("  H2.1: ~0.84  |  H2.2: ~0.80  |  H2.3: ~0.72  |  H2.4: (not reported)\n")
+cat("  H2.1: ~0.84  |  H2.2: ~0.80  |  H2.3: ~0.86  |  H2.4: (not reported)\n")
+cat("  [H2.3 corrected: n=60/group, not 30; Amendment 11 tick-4261+tick-4262]\n")
 cat("\n")
 cat("Simulation CI half-widths are ≤ ±0.014 at 95% confidence (nsim = 5000).\n\n")
 
@@ -527,7 +529,7 @@ summary_df <- data.frame(
                   "f=0.22 (interaction contrast)",
                   "d=0.50 (I1-L2 vs I2-L2)",
                   "OR=2.0 (P_click=0.30→0.46)"),
-  N           = c(n_analytic, n_analytic, n_per_cell * 2, n_analytic),
+  N           = c(n_analytic, n_analytic, n_per_cell * 4L, n_analytic),  # H2.3: N_L2=120 (4 cells * 30)
   power_sim   = c(
     h21_results$power_sim[h21_results$p_E1 == 0.70],
     h22_results$power_sim[h22_results$cohens_f == 0.22],
