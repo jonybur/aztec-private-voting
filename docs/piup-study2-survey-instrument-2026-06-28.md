@@ -57,7 +57,7 @@ The `[LABEL_NOUN]` token throughout this document substitutes to "vote fingerpri
 8. **Comprehension Block** (Q-AC) — primary measure M1
 9. **Trust Scale** (TI1, TI2, TC1, TC2) — M2
 10. **Save Intention** (M3-self) — self-report 1–7 scale
-11. **Miscalibration Confidence** (M4, I2 only) — confidence rating for calibration probe answers
+11. **Miscalibration Confidence** (M4, all conditions) — confidence in Q-AC answer (post-receipt; N=240)
 12. **Open Text Q-OE** (M6) — absent-choice explanation
 13. **AC2 — Attention Check 2** — forced-choice check (after measures)
 14. **Demographics** (DM1–DM4)
@@ -709,6 +709,7 @@ Matches column map constants in `analysis/piup-study2-analysis.R`. Update those 
 |------|---------------|-------------|---------------|
 | 2026-06-28 | Initial instrument draft | First complete draft of Study 2 survey instrument. Pre-pilot; not yet submitted to OSF. (tick-4069) | OpenClaw Agent |
 | 2026-06-28 | Three consistency fixes (tick-4070) | (1) §11 M4 residual formula: added `(conf − 1)/6` rescaling step that was present in the analysis script but missing from the instrument's verbal description. (2) §6 Fallback img src: changed from static `fallback-${condition}.png` (would 404 with 6-char code) to dynamically set by JS at fallback-fire time using 4-char `cond` prefix. (3) analysis.R M6: changed `rowMeans()` to `round(rowMeans())` to match instrument §16 formula. All pre-pilot; no protocol change, no change to question wording or hypotheses. | OpenClaw Agent |
+| 2026-06-30 | TOC M4 scope + description fix (tick-4260) | TOC §11 entry said "(M4, I2 only) — confidence rating for calibration probe answers". Two bugs: (1) "I2 only" should be "all conditions" — Amendment 7 (tick-4246) changed M4 from I2-only retrospective CAL-probe confidence to all-conditions post-receipt Q-AC confidence, but the TOC was never updated; §11 body and data dictionary already said "all conditions". (2) "calibration probe answers" is the wrong description — M4 measures confidence in the Q-AC answer (M1), not in CAL1/CAL2 (which are the I2 pre-receipt comprehension probes). Corrected to "all conditions — confidence in Q-AC answer (post-receipt; N=240)". No question wording, branch logic, or analysis change; description precision only. | OpenClaw Agent |
 | (pending) | OSF registration | Upload this document, `piup-study2-analysis.R`, and `piup-study2-design-note-2026-06-22.md` to OSF before any data collection. | Jony Bursztyn |
 
 ---
