@@ -358,13 +358,15 @@ df$m3_save <- df[[COL_SAVE_INTENT]]
 # M3 download click (binary factor)
 df$m3_click <- df[[COL_DOWNLOAD_CLICK]]
 
-# M4 calibration confidence residual (Q-AC binary used as accuracy for I2 conditions)
+# M4 calibration confidence residual (all conditions — tick-4246 FF fix).
+# [Fixed tick-4246: M4 was I2-only retrospective CAL-probe; changed to all-conditions
+# post-receipt Q-AC confidence so H2.3 t-test (I1-L2 vs. I2-L2) is testable.]
 # Residual = confidence (1–7 scaled to 0–1) − Q-AC accuracy
 df$m4_conf_raw <- df[[COL_CALIB_CONF]]
 df$m4_residual <- NA_real_
-i2_rows <- !is.na(df$m4_conf_raw)
+conf_rows <- !is.na(df$m4_conf_raw)  # Should be all N=240 rows after tick-4246 fix
 # Scale confidence to 0–1 (1→0.0, 7→1.0)
-df$m4_residual[i2_rows] <- (df$m4_conf_raw[i2_rows] - 1) / 6 - df$m1_qac[i2_rows]
+df$m4_residual[conf_rows] <- (df$m4_conf_raw[conf_rows] - 1) / 6 - df$m1_qac[conf_rows]
 
 # M5 verify expansion
 df$m5_expand <- df[[COL_VERIFY_EXPAND]]
