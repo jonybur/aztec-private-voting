@@ -68,9 +68,11 @@ struct Storage<Context> {
     // M3: coordinator Aztec address (set at constructor; receives BallotNotes)
     coordinator: PublicImmutable<AztecAddress, Context>,
 
-    // M3: encrypted ballot note storage — coordinator is the implicit recipient
-    // BallotNote contains: vote_choice (u8), randomness (Field), nullifier_hint (Field)
-    ballots: PrivateSet<BallotNote, Context>,
+    // M3: encrypted ballot note storage — notes emitted to coordinator's address.
+    // BallotNote contains: vote_choice (u8), randomness (Field), receipt_id (Field).
+    // Use Owned<PrivateSet<...>> so notes are indexed by recipient address;
+    // coordinator reads their notes via .at(coordinator_address).
+    ballots: Owned<PrivateSet<BallotNote, Context>, Context>,
 
     // M3: running tally is no longer public during the vote window.
     // Replace: tally: Map<u8, PublicMutable<u64, Context>, Context>
@@ -165,9 +167,12 @@ fn cast_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field) {
         receipt_id,
         header: NoteHeader::empty(),
     };
-    // emit_encrypted_log sends the note to coordinator's incoming viewing key.
+    // Insert the note into the coordinator's slot and deliver it on-chain.
+    // Aztec v4.3.1 API: .at(recipient).insert(note).deliver(delivery_mode)
+    // — confirmed in aztec-nr v4.3.1 docs (NFT bridge tutorial).
     // vote_choice does NOT appear in public calldata.
-    self.storage.ballots.insert_and_emit_encrypted_log(note, coordinator);
+    use aztec::messages::message_delivery::MessageDelivery;
+    self.storage.ballots.at(coordinator).insert(note).deliver(MessageDelivery.ONCHAIN_CONSTRAINED);
 
     // Enqueue the (now vote_choice-free) public accounting step.
     self.enqueue_self.record_vote_m3(receipt_id);
@@ -233,17 +238,19 @@ fn finalize_tally(max_notes: u32) {
 
     // Read up to max_notes BallotNotes from the coordinator's PrivateSet.
     // Aztec PXE automatically decrypts these for the coordinator.
+    // Coordinator reads their own note slot.
+    // .at(coordinator) scopes to the coordinator's address; .pop_notes() nullifies
+    // each returned note to prevent double-tally.
+    let coordinator_addr = self.storage.coordinator.read_private();
     let options = NoteGetterOptions::new()
-        .set_limit(max_notes)
-        .select(BallotNote::properties().receipt_id, 0, Option::none()); // no filter
-    let notes = self.storage.ballots.get_notes(options);
+        .set_limit(max_notes);
+    let notes = self.storage.ballots.at(coordinator_addr).pop_notes(options);
 
+    // pop_notes already nullifies each returned note — no explicit .remove() needed.
     for i in 0..max_notes {
         let note_option = notes[i];
         if note_option.is_some() {
             let note = note_option.unwrap_unchecked();
-            // Nullify the note to prevent double-tally.
-            self.storage.ballots.remove(note);
             // Enqueue public tally increment.
             self.enqueue_self.record_tally_increment(note.vote_choice);
         }
@@ -384,24 +391,31 @@ closes the gap, the cross-reference changes to "previously open, closed by M3."
 
 ## 9. Implementation challenges and open questions
 
-### 9.1 PrivateSet owned by coordinator vs contract
+### 9.1 PrivateSet recipient — RESOLVED (tick-4269)
 
-The `ballots: PrivateSet<BallotNote>` slot is part of the **contract's** storage.
-In standard Aztec usage, `PrivateSet` notes are readable by the contract deployer's
-PXE (or whoever controls the contract's outgoing key). To make notes readable by
-an external `coordinator` address, we need to emit notes to the coordinator's
-**incoming viewing key** rather than the contract's outgoing key.
+**Confirmed API (Aztec v4.3.1 / aztec-nr nightly.20260429):**
+```rust
+Owned<PrivateSet<BallotNote, Context>, Context>
+// emit:
+self.storage.ballots.at(coordinator).insert(note).deliver(MessageDelivery.ONCHAIN_CONSTRAINED);
+// read (coordinator's PXE):
+self.storage.ballots.at(coordinator_addr).pop_notes(options);
+```
 
-In Aztec Noir v5, this is done via `emit_encrypted_log_with_keys(note, encryption_pub_key)`.
-The coordinator's encryption public key must be known at cast_vote time. This is
-derivable from the coordinator's Aztec address via the registry contract — but
-requires a read of the `AztecAddressRegistry` or an equivalent mechanism.
+The `Owned<PrivateSet<...>>` pattern allows notes to be indexed by recipient address.
+`emit_encrypted_log_with_keys` is **not needed** — the `.at(recipient)` scope handles
+recipient-keyed delivery natively. Confirmed from Aztec v4.3.1 NFT bridge tutorial
+(source: docs.aztec.network/developers/nightly/docs/tutorials/js_tutorials/token_bridge):
 
-**Open question:** Does the current Aztec v5 testnet support `emit_encrypted_log_with_keys`
-for arbitrary recipient addresses, or is it limited to the context account? If
-limited — the fallback is to store a hash commitment in public state and have the
-coordinator provide the choice off-chain with a membership proof (less clean but
-deployable now).
+```rust
+// Aztec v4.3.1 pattern for recipient-addressed notes:
+owners: Owned<PrivateSet<NFTNote, Context>, Context>,
+// ...
+self.storage.owners.at(to).insert(new_nft).deliver(MessageDelivery.ONCHAIN_CONSTRAINED);
+```
+
+The storage type in §3 and the emission call in §5.2 have been corrected accordingly.
+**No open question remains for §9.1.**
 
 ### 9.2 finalize_tally pagination
 
@@ -462,13 +476,13 @@ the receipt artifact AND the L1 transaction record.
 |------|------|-----------|-------------|
 | 1 | Add `BallotNote` type + `compute_nullifier` | Low | — |
 | 2 | Add `coordinator` to `VoteConfig` / constructor | Low | — |
-| 3 | Add `ballots: PrivateSet<BallotNote>` to Storage | Low | Steps 1-2 |
+| 3 | Add `ballots: Owned<PrivateSet<BallotNote, Context>>` to Storage | Low | Steps 1-2 |
 | 4 | Replace `record_vote` with `record_vote_m3` (remove vote_choice arg) | Low | — |
 | 5 | Update all `cast_vote*` variants to store note + call `record_vote_m3` | Medium | Steps 1-4 |
 | 6 | Implement `record_tally_increment` (public, only_self) | Low | — |
 | 7 | Implement `finalize_tally` (coordinator-private) | Medium | Steps 5-6 |
 | 8 | Update `finalize_vote` with tally-completeness guard | Low | Step 7 |
-| 9 | Verify `emit_encrypted_log_with_keys` is available in Aztec v5 | Low | Aztec docs |
+| 9 | ~~Verify `emit_encrypted_log_with_keys`~~ — **RESOLVED**: use `.at(coordinator).insert(note).deliver(...)` | Done | — |
 | 10 | Update `m2-sig-tests` for new `cast_vote_babylon_v2` signature | Low | Step 5 |
 | 11 | Update CHI paper Named Limitation text | Low | Steps above |
 | 12 | Update `GRANT.md` privacy claims to reflect M3 | Low | Steps above |
