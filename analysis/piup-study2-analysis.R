@@ -810,6 +810,31 @@ if (!H4_SUPPORTED) {
       NA_real_  # Unknown structure — print() output above is the authoritative reference
     }
 
+    # If equivalence not established: report M3 Cohen's d + 90% CI (pre-reg §6.4)
+    # [Fixed tick-4303/Amendment 19: this fallback was missing; pre-reg §6.4 specifies
+    # "If equivalence not established, report M3 Cohen's d and 90% CI."]
+    if (is.na(tost_pmax) || tost_pmax >= 0.05) {
+      cat("Equivalence not established — reporting M3 Cohen's d + 90% CI (pre-reg §6.4):\n")
+      m3_n1   <- nrow(df_L2_I1); m3_n2 <- nrow(df_L2_I2)
+      m3_m1   <- mean(df_L2_I1$m3_save, na.rm = TRUE)
+      m3_m2   <- mean(df_L2_I2$m3_save, na.rm = TRUE)
+      m3_sd1  <- sd(df_L2_I1$m3_save, na.rm = TRUE)
+      m3_sd2  <- sd(df_L2_I2$m3_save, na.rm = TRUE)
+      m3_sp   <- sqrt(((m3_n1 - 1) * m3_sd1^2 + (m3_n2 - 1) * m3_sd2^2) /
+                      (m3_n1 + m3_n2 - 2))
+      m3_d    <- (m3_m1 - m3_m2) / m3_sp
+      # Welch df for 90% CI (from independent t.test on M3 save)
+      t_m3    <- t.test(df_L2_I1$m3_save, df_L2_I2$m3_save, var.equal = FALSE)
+      m3_se_d <- sqrt(1/m3_n1 + 1/m3_n2 + m3_d^2 / (2 * (m3_n1 + m3_n2 - 2)))
+      # 90% two-sided CI: ±t(0.95, df_welch) × SE
+      m3_d_ci_lo <- m3_d - qt(0.95, df = t_m3$parameter) * m3_se_d
+      m3_d_ci_hi <- m3_d + qt(0.95, df = t_m3$parameter) * m3_se_d
+      cat(sprintf("  M3 save intent Cohen's d = %.3f [90%% CI: %.3f, %.3f]\n",
+                  m3_d, m3_d_ci_lo, m3_d_ci_hi))
+      cat(sprintf("  (I1 mean=%.2f, SD=%.2f; I2 mean=%.2f, SD=%.2f)\n",
+                  m3_m1, m3_sd1, m3_m2, m3_sd2))
+    }
+
     h23_mismatch_note <- if (nrow(df_L2_I1) < 30 || nrow(df_L2_I2) < 30) {
       sprintf(
         "\n*** POWER WARNING: L2 subgroup n < 30 per cell (I1=%d, I2=%d). Test may be underpowered. See §10.3 — consider Study 2b. ***",
