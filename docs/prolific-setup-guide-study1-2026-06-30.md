@@ -127,13 +127,28 @@ This gives an implied hourly rate of £10.00/hour — above Prolific's minimum (
 
 ## Step 3 — Eligibility Filters (Prolific built-in)
 
+> ⚠️ **PRE-REGISTRATION DISCREPANCY — READ BEFORE SETTING FILTERS**
+>
+> The OSF pre-registration (§2, Participants) specifies: **"US-resident adults, age 18+"**
+> The CHI paper §4.2 states the same: **"US-resident adults (18+)"**
+>
+> This guide's original country filter (UK + US + Canada + Australia) and age cap (18–65) **deviate from the pre-registration**. Using them without an OSF amendment would be an unregistered deviation — a CHI reviewer could flag this.
+>
+> **You have two compliant options before data collection:**
+> - **Option A (no amendment needed):** Set country = **United States only**, age = **18 or older** (no upper bound). Matches pre-reg exactly.
+> - **Option B (file amendment first):** File an OSF amendment updating §2 Participants to allow UK + US + Canada + Australia and removing the age upper bound. Then set filters as originally listed below. Amendment must be live **before any data collection**.
+>
+> Recommendation: Option A is lower-friction. The US Prolific pool is large enough for N=280 at £2/participant. Only choose Option B if you have a specific reason to want UK/CA/AU participants (e.g. DAO governance participant demographics).
+
 Set the following filters on the **Participant eligibility** page:
 
-| Filter | Setting | Rationale |
-|--------|---------|-----------|
-| **Fluent languages** | English | Pre-registration inclusion criterion: "English-speaking (English as first language or fluent)" |
-| **Country of residence** | United Kingdom, United States, Canada, Australia | English-speaking countries; broadens pool. Adjust if response rate is too slow. |
-| **Age** | 18–65 | No specific age restriction in pre-reg; this is a reasonable practical range |
+| Filter | Pre-reg compliant setting (Option A) | Original guide setting (Option B — requires amendment) | Rationale |
+|--------|--------------------------------------|-------------------------------------------------------|-----------|
+| **Fluent languages** | English | English | Pre-registration inclusion criterion: "English-speaking" |
+| **Country of residence** | **United States only** | United Kingdom, United States, Canada, Australia | Pre-reg specifies US-resident; multi-country requires amendment |
+| **Age** | **18 or older (no upper bound)** | 18–65 | Pre-reg specifies 18+; no upper bound |
+
+**Use Option A unless you have filed an OSF amendment.**
 
 > **Do NOT set a CS/SE employment filter.** The SC2 screener inside Qualtrics handles the software engineering exclusion with more precision than Prolific's sector categories. Using Prolific's "IT sector" filter would over-exclude (e.g. product managers, data analysts who are eligible). Let SC2 handle it.
 
@@ -319,8 +334,8 @@ Run `piup-study1-drycheck.R` → then `piup-study1-analysis.R` on the cleaned fi
 | Places per study (pilot) | 10 |
 | Places per study (full) | 70 |
 | Language filter | English (fluent) |
-| Country filter | UK, US, Canada, Australia |
-| Age filter | 18–65 |
+| Country filter | US only (pre-reg compliant) — or file OSF amendment for UK+US+CA+AU |
+| Age filter | 18+ no upper bound (pre-reg compliant) — or file OSF amendment for 18-65 |
 | CS/SE exclusion | SC2 in-survey (not a Prolific filter) |
 | Voting experience inclusion | SC1 in-survey (not a Prolific filter) |
 | Cross-study dedup | Enabled across all 4 studies |
