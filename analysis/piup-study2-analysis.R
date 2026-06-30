@@ -330,10 +330,13 @@ n_before <- nrow(df)
 df <- df[!(df[[COL_ATTN1]] == 0 & df[[COL_ATTN2]] == 0), ]
 log_exclusion(df, "failed both attention checks", n_before)
 
-# Flag browser-fallback participants (§9.3 — NOT excluded; sensitivity covariate only)
+# Flag browser-fallback participants (design note §9.3 — NOT excluded; sensitivity covariate only)
 # These participants received a static screenshot when their browser could not render
-# the interactive React prototype. Per pre-registration §9.3, they are retained in the
-# analytic sample but flagged; H2.1 is re-run without them as a sensitivity check (§5).
+# the interactive React prototype. Per design note §9.3 (pre-registration §4.1), they are
+# retained in the analytic sample but flagged; H2.1 is re-run without them as a sensitivity
+# check (§5).
+# [Amendment 21 (pre-data): "pre-registration §9.3" corrected to "design note §9.3" — the
+# pre-registration §9 has no §9.3 subsection; §9.3 is a design note section number.]
 if (COL_BROWSER_FALLBACK %in% names(df)) {
   n_browser_fallback <- sum(df[[COL_BROWSER_FALLBACK]] == 1, na.rm = TRUE)
   cat(sprintf("  Browser fallback (static screenshot): n = %d flagged (NOT excluded; sensitivity covariate per §9.3)\n",
@@ -643,7 +646,9 @@ cat("Prediction: Interaction F significant; E effect larger for L2 than L1\n")
 cat("=============================================================\n\n")
 
 # Two-way ANOVA (L × E, between-subjects) — main effects + interaction
-# Exclude I factor for this analysis (pool across I per pre-registration §9.1)
+# Exclude I factor for this analysis (pool across I per design note §9.1 / pre-registration §6.3)
+# [Amendment 21 (pre-data): "pre-registration §9.1" corrected — §9 of pre-reg is Open Science
+# Commitments; the H2.2 pooling spec is design note §9.1 / pre-registration §6.3.]
 df_anova <- df[!is.na(df$m2_trust) & !is.na(df$L) & !is.na(df$E), ]
 
 m2_aov <- aov(m2_trust ~ L * E, data = df_anova)
@@ -1217,7 +1222,9 @@ if (nrow(rater_pilot_complete) > 2) {
               else "Acceptable for pilot"))
 }
 
-cat("\n*** PILOT MODE: Hypothesis tests SUPPRESSED per pre-registration §9. ***\n")
+cat("\n*** PILOT MODE: Hypothesis tests SUPPRESSED per pre-registration §7.1. ***\n")
+# [Amendment 21 (pre-data): §9 corrected to §7.1 — pre-reg §9 is Open Science Commitments;
+# pilot HT suppression is specified in pre-registration §7.1: "NOT used for hypothesis testing".]
 cat("*** Pilot data will NOT be combined with full-study data. ***\n\n")
 
 }
@@ -1236,6 +1243,9 @@ cat(sprintf("Results written to: %s/\n", RESULTS_DIR))
 cat("Files: descriptives_study2.csv, confirmatory_tests_summary_study2.csv\n\n")
 cat("Design note: docs/piup-study2-design-note-2026-06-22.md\n")
 cat("Study 1 reference: docs/piup-study1-preregistration-2026-06-22.md\n")
-cat("Pre-register this script on OSF before Study 2 data collection.\n")
+cat("Upload this script (piup-study2-analysis.R) and piup-study2-drycheck.R to OSF before\n")
+cat("pilot launch (pre-registration §9). Remove synthetic data generator block first.\n")
+# [Amendment 21 (pre-data): added piup-study2-drycheck.R upload requirement (pre-reg §9
+# lists both scripts); changed "data collection" to "pilot launch" to match §9 wording.]
 cat("Set H4_SUPPORTED to match Study 1 verdict before final run.\n")
 cat("Any deviation from the pre-registration must be documented in the amendments log.\n")
