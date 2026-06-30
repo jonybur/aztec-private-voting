@@ -54,17 +54,18 @@ The `[LABEL_NOUN]` token throughout this document substitutes to "vote fingerpri
 5. **Calibration Block** (I2 conditions only) — two pre-receipt comprehension probes + accuracy feedback
 6. **Stimulus Block** — interactive VoteReceipt prototype in iframe (90 s minimum), browser-fallback static screenshot
 7. **AC1 — Attention Check 1** — follow-instruction check (before measures)
-8. **Comprehension Block** (Q-AC) — primary measure M1
+8. **Comprehension Block** (Q-AC + Calibration Confidence, same page) — primary measure M1, followed immediately on the same page by M4 ("How confident are you in your answer above?")
 9. **Trust Scale** (TI1, TI2, TC1, TC2) — M2
 10. **Save Intention** (M3-self) — self-report 1–7 scale
-11. **Miscalibration Confidence** (M4, all conditions) — confidence in Q-AC answer (post-receipt; N=240)
-12. **Open Text Q-OE** (M6) — absent-choice explanation
-13. **AC2 — Attention Check 2** — forced-choice check (after measures)
-14. **Demographics** (DM1–DM4)
-15. **Debrief**
-16. **Prolific Completion Code**
+11. **Open Text Q-OE** (M6) — absent-choice explanation
+12. **AC2 — Attention Check 2** — forced-choice check (after measures)
+13. **Demographics** (DM1–DM4)
+14. **Debrief**
+15. **Prolific Completion Code**
 
 _Note: M5 (verification expansion click) is logged automatically by the interactive prototype's postMessage event; it does not correspond to a survey question. The Qualtrics Stimulus block JavaScript captures this into the `verify_expanded` Embedded Data field._
+
+_Note on M4 position (Amendment 23 fix): M4 (Calibration Confidence) is placed on the same page as Q-AC, immediately after the Q-AC item, so that "How confident are you in your answer above?" unambiguously refers to Q-AC — consistent with pre-registration §5.3 and §11. A prior version of this survey flow incorrectly listed M4 at position 11 (after Save Intention). That was a stale ordering not updated when Amendment 7 repositioned M4. Corrected tick-4321._
 
 ---
 
@@ -521,7 +522,7 @@ Include a hidden `<img>` element below the iframe. The JavaScript above reveals 
 | No | Reference group |
 | Prefer not to say | Include |
 
-*Note: SC2 (screener) excludes practising software engineers before they enter. DM2 is a secondary cross-check for sensitivity analysis — it does not trigger exclusion. Compare results with and without DM2-flagged participants as an exploratory analysis.*
+*Note: SC2 (screener) excludes practising software engineers and CS/SE students before they enter. DM2 is a secondary cross-check: it does not independently trigger exclusion as a screener question, but the analysis script (`piup-study2-analysis.R`) uses `occupation_sw_eng == 1` as a hard pre-registered exclusion (pre-registration §4.1 and §6.1 step 3) to catch any participants who may have misrepresented their occupation in SC2 or slipped through. Separately, results may be compared with and without DM2-flagged participants as an exploratory sensitivity analysis. [Clarified tick-4321/Amendment 23.]*
 
 *Column name: `occupation_sw_eng` (`COL_OCCUPATION`) — 1 if main-job or degree-level coding*
 
@@ -697,7 +698,8 @@ Matches column map constants in `analysis/piup-study2-analysis.R`. Update those 
 | `age_group` | `COL_AGE` | ordinal | Age range bucket (18–24, 25–34, …) |
 | `prior_voting` | `COL_PRIOR_VOTE` | multi-select | Voting experience types |
 | `tech_efficacy_mean` | `COL_EFFICACY` | float | Optional: 3-item Hargittai tech efficacy scale mean (if included in final survey) |
-| `stimulus_shown` | — | 0/1 | 1 = participant confirmed seeing stimulus (set by Stimulus block JS) |
+| `qoe_open_text` | `COL_QOE_TEXT` (analysis script §3.5) | free text | Raw open-text Q-OE response before rater scoring; used for illustrative random-sample draw (§6.7, Amendment 18). Confirm exact Qualtrics export column name on data collection and update `COL_QOE_TEXT` accordingly. [Added tick-4321/Amendment 23.] |
+| `stimulus_shown` | — | 0/1 | 1 = participant confirmed seeing stimulus (set by Stimulus block JS; QC only, not used in any pre-specified analysis) |
 
 *`tech_efficacy_mean` (`COL_EFFICACY`): This item is optional in Study 2. If tech efficacy items (3-item Hargittai scale) are added as a demographics supplement to match Study 1's DM2 coding, compute the mean here. If not included, `COL_EFFICACY` is unused by the analysis script (it is referenced only in exploratory sections).*
 
@@ -710,6 +712,7 @@ Matches column map constants in `analysis/piup-study2-analysis.R`. Update those 
 | 2026-06-28 | Initial instrument draft | First complete draft of Study 2 survey instrument. Pre-pilot; not yet submitted to OSF. (tick-4069) | OpenClaw Agent |
 | 2026-06-28 | Three consistency fixes (tick-4070) | (1) §11 M4 residual formula: added `(conf − 1)/6` rescaling step that was present in the analysis script but missing from the instrument's verbal description. (2) §6 Fallback img src: changed from static `fallback-${condition}.png` (would 404 with 6-char code) to dynamically set by JS at fallback-fire time using 4-char `cond` prefix. (3) analysis.R M6: changed `rowMeans()` to `round(rowMeans())` to match instrument §16 formula. All pre-pilot; no protocol change, no change to question wording or hypotheses. | OpenClaw Agent |
 | 2026-06-30 | TOC M4 scope + description fix (tick-4260) | TOC §11 entry said "(M4, I2 only) — confidence rating for calibration probe answers". Two bugs: (1) "I2 only" should be "all conditions" — Amendment 7 (tick-4246) changed M4 from I2-only retrospective CAL-probe confidence to all-conditions post-receipt Q-AC confidence, but the TOC was never updated; §11 body and data dictionary already said "all conditions". (2) "calibration probe answers" is the wrong description — M4 measures confidence in the Q-AC answer (M1), not in CAL1/CAL2 (which are the I2 pre-receipt comprehension probes). Corrected to "all conditions — confidence in Q-AC answer (post-receipt; N=240)". No question wording, branch logic, or analysis change; description precision only. | OpenClaw Agent |
+| 2026-06-30 | Cross-check fixes — 4 items (tick-4321) | (1) §2 survey flow corrected: M4 (Calibration Confidence) was listed at position 11 (after Save Intention), contradicting §11 and pre-registration §5.3 which specify M4 immediately after Q-AC before Trust Scale. M4 absorbed into item 8 (same page as Q-AC). Items renumbered 8–16 → 8–15. Root cause: §2 was not updated when Amendment 7 repositioned M4. (2) §18 codebook: added `qoe_open_text` row (raw open-text Q-OE column, used by analysis script §3.5 random-sample draw; Amendment 18). (3) §14 DM2 note: clarified that while DM2 is primarily a secondary cross-check, the analysis script uses `occupation_sw_eng` as a hard exclusion for SC2 slipthrough (consistent with pre-registration §4.1, §6.1 step 3). (4) §20 checklist: split pilot item into two steps — structural pipeline check (5/cell = N=40) and full pre-registered pilot (10/cell = N=80 per pre-registration §7). No hypothesis, endpoint, alpha, question wording, or scoring change. | OpenClaw Agent |
 | (pending) | OSF registration | Upload this document, `piup-study2-analysis.R`, and `piup-study2-design-note-2026-06-22.md` to OSF before any data collection. | Jony Bursztyn |
 
 ---
@@ -723,7 +726,8 @@ Matches column map constants in `analysis/piup-study2-analysis.R`. Update those 
 - [ ] Four static fallback screenshots generated and deployed (`/static/fallback-L1E1.png`, etc.)
 - [ ] Qualtrics survey built per `qualtrics-setup-guide-study2-2026-06-28.md`
 - [ ] All 8 condition URLs tested end-to-end: Randomizer → correct condition → prototype → questions → Prolific completion
-- [ ] Pilot dry-run: 5 participants per condition (N = 40) via Prolific; verify column structure with `piup-study2-drycheck.R`
+- [ ] Structural pipeline check: 5 participants per condition (N = 40) via Prolific to verify Qualtrics → R export column mapping with `piup-study2-drycheck.R` (structural check only, not instrument validation)
+- [ ] Full pre-registered pilot (n = 10/condition, N = 80 per pre-registration §7) for instrument validation (floor/ceiling, completion time, attention check rate, IRR pilot)
 - [ ] IRR pilot: two raters score all N = 40 pilot Q-OE responses; κ ≥ 0.70 confirmed
 - [ ] This document, `piup-study2-analysis.R`, and `piup-study2-design-note-2026-06-22.md` uploaded to OSF
 - [ ] OSF DOI obtained and inserted into CHI paper §5 "Study 2 pre-registration" placeholder

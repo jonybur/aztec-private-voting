@@ -3,7 +3,7 @@
 "H1","H1-Q3","Q3 accuracy A > D (one-tailed)",0.3028,0.3291,FALSE
 "H2","H2-primary","Q2 accuracy A > B (one-tailed) [PRIMARY ENDPOINT]",0.1646,0.3291,FALSE
 "H2","H2-secondary","Q3 accuracy A > B (one-tailed)",0.0339,0.1018,FALSE
-"H2","H2-tertiary","Composite equivalence A ≈ B, bounds ±0.10 (TOST)",0.9562,0.9562,FALSE
+"H2","H2-tertiary","Composite equivalence A ≈ B, bounds ±0.10 (TOST)",0.7444,0.7444,FALSE
 "H3","H3-Q1(C<A)","Q1 accuracy C < A (one-tailed)",0.2051,1,FALSE
 "H3","H3-Q1(C<B)","Q1 accuracy C < B (one-tailed)",0.2051,1,FALSE
 "H3","H3-Q1(C<D)","Q1 accuracy C < D (one-tailed)",0.8286,1,FALSE

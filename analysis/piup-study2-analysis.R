@@ -645,6 +645,25 @@ cat("4.2 H2.2 — L × E INTERACTION ON M2 TRUST COMPOSITE (§9.1)\n")
 cat("Prediction: Interaction F significant; E effect larger for L2 than L1\n")
 cat("=============================================================\n\n")
 
+# M2 α gate: if Cronbach's α < 0.70, H2.2 ANOVA on composite is compromised.
+# Pre-registration §5.3: "α ≥ 0.70 required; if not met, items reported individually."
+# [Amendment 23 (pre-data): warning block added — prior code printed *** BELOW THRESHOLD ***
+# in the descriptives section but then ran H2.2 ANOVA on the composite unconditionally.
+# No hypothesis, alpha level, or verdict criterion change; result is still computed for
+# descriptive reference but is clearly flagged as exploratory when α < 0.70.]
+if (exists("alpha_raw") && !is.na(alpha_raw) && alpha_raw < 0.70) {
+  cat("*** WARNING: M2 Cronbach's α = ", round(alpha_raw, 3), " < 0.70 ***\n")
+  cat("*** Per pre-registration §5.3: composite cannot be used; items should be reported ***\n")
+  cat("*** individually. H2.2 ANOVA results below are EXPLORATORY (composite reliability ***\n")
+  cat("*** insufficient). Do not treat as confirmatory evidence. ***\n\n")
+  cat("[EXPLORATORY — α < 0.70] Individual M2 item means by L × E cell:\n")
+  for (item_col in trust_cols) {
+    cat(sprintf("  %s:\n", item_col))
+    print(tapply(df[[item_col]], list(df$L, df$E), mean, na.rm = TRUE))
+  }
+  cat("\n")
+}
+
 # Two-way ANOVA (L × E, between-subjects) — main effects + interaction
 # Exclude I factor for this analysis (pool across I per design note §9.1 / pre-registration §6.3)
 # [Amendment 21 (pre-data): "pre-registration §9.1" corrected — §9 of pre-reg is Open Science
