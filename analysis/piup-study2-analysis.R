@@ -474,6 +474,10 @@ cat("=============================================================\n\n")
 rater_data <- df[, c(COL_QOE_RATER1, COL_QOE_RATER2)]
 rater_data_complete <- rater_data[complete.cases(rater_data), ]
 
+# kappa_ok gates ALL M6 analysis (pre-reg §6.7: κ ≥ 0.70 required before any Q-OE analysis).
+# [Amendment 20 (pre-data): flag was missing — KW ran unconditionally even when κ < 0.70.]
+kappa_ok <- FALSE
+
 if (nrow(rater_data_complete) > 0) {
   kappa_result <- irr::kappa2(rater_data_complete, weight = "unweighted")
   cat(sprintf("Cohen's kappa (unweighted): κ = %.3f, z = %.2f, p = %.4f, n = %d\n",
@@ -482,11 +486,14 @@ if (nrow(rater_data_complete) > 0) {
   if (kappa_result$value < 0.70) {
     cat("*** κ < 0.70 — raters must adjudicate disagreements before proceeding (§9.4). ***\n")
     cat("*** Pause analysis at this point; do not proceed to confirmatory tests. ***\n")
+    cat("*** M6 Q-OE analysis skipped — re-run after rater adjudication and rescoring (§6.7). ***\n")
   } else {
     cat("κ ≥ 0.70 — inter-rater agreement adequate. Proceed to hypothesis tests.\n")
+    kappa_ok <- TRUE
   }
 } else {
   cat("No complete rater pairs found. Check COL_QOE_RATER1 / COL_QOE_RATER2 mapping.\n")
+  cat("M6 Q-OE analysis skipped — cannot compute kappa without rater data.\n")
 }
 cat("\n")
 
@@ -927,24 +934,32 @@ cat("[EXPLORATORY] M5 Verify expansion rate by L × E cell:\n")
 print(100 * round(tapply(df$m5_expand, list(df$L, df$E), mean, na.rm = TRUE), 3))
 cat("\n")
 
-# M6: Open-text quality by E
-cat("[EXPLORATORY] M6 Q-OE mean rater score by E:\n")
-print(tapply(df$m6_qoe, df$E, function(x)
-  sprintf("mean=%.2f, sd=%.2f, n=%d", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE), sum(!is.na(x)))))
-cat("\n")
+# M6: Open-text quality — GATED on κ ≥ 0.70 (pre-reg §6.7: required before any Q-OE analysis).
+# [Amendment 20 (pre-data): previously ungated — KW and descriptives ran even if κ < 0.70.]
+if (kappa_ok) {
+  cat("[EXPLORATORY] M6 Q-OE mean rater score by E:\n")
+  print(tapply(df$m6_qoe, df$E, function(x)
+    sprintf("mean=%.2f, sd=%.2f, n=%d", mean(x, na.rm=TRUE), sd(x, na.rm=TRUE), sum(!is.na(x)))))
+  cat("\n")
+
+  if (!PILOT) {
+    # Kruskal-Wallis on M6 across all 8 conditions (pre-specified supplementary, §6.7)
+    kw_m6 <- kruskal.test(m6_qoe ~ condition_f, data = df)
+    cat("[EXPLORATORY] Kruskal-Wallis M6 across 8 conditions:\n")
+    print(kw_m6)
+    if (kw_m6$p.value < 0.05) {
+      cat("Significant — Dunn post-hoc (Holm):\n")
+      dunn_m6 <- dunn.test::dunn.test(df$m6_qoe, df$condition_f,
+                                       method = "holm", kw = FALSE, label = TRUE)
+    }
+    cat("  *** EXPLORATORY ***\n\n")
+  }
+} else {
+  cat("[M6 Q-OE analysis skipped — κ < 0.70 threshold not met.\n")
+  cat("  Score/rescore Q-OE data after rater adjudication and re-run (§6.7, pre-reg).\n\n")
+}
 
 if (!PILOT) {
-  # Kruskal-Wallis on M6 across all 8 conditions
-  kw_m6 <- kruskal.test(m6_qoe ~ condition_f, data = df)
-  cat("[EXPLORATORY] Kruskal-Wallis M6 across 8 conditions:\n")
-  print(kw_m6)
-  if (kw_m6$p.value < 0.05) {
-    cat("Significant — Dunn post-hoc (Holm):\n")
-    dunn_m6 <- dunn.test::dunn.test(df$m6_qoe, df$condition_f,
-                                     method = "holm", kw = FALSE, label = TRUE)
-  }
-  cat("  *** EXPLORATORY ***\n\n")
-
   # M4 residual descriptives across I conditions (all L)
   cat("[EXPLORATORY] M4 Calibration residual by I (all conditions; all L):\n")
   # [Fixed tick-4246: M4 now all conditions; no NA filter needed]
