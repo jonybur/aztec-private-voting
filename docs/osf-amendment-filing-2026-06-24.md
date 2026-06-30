@@ -242,6 +242,87 @@ These amendments are finalized. Paste into OSF amendment log at upload time. Upd
 
 ---
 
+### Amendment 12 — Q5 wording: 4 deviations from pre-reg §5.2 (instrument §6/Q5, pre-data)
+
+**Amendment type:** Type I (minor) — pre-data correction; Q5 stem wording deviates from pre-registration in four places. Scoring rubric unchanged.
+
+**Detected:** tick-4124 (2026-06-28). Cross-check of instrument §6/Q5 against pre-reg §5.2.
+
+**Description:** Pre-registration §5.2 specifies Q5 wording as: 'Why might the system choose not to show you your vote choice on this screen?' The deployed instrument §6/Q5 has four deviations:
+
+1. **Prefix added:** 'In your own words:' added before the stem.
+2. **'the system' → 'this voting system':** more specific referent, matches the stimulus frame.
+3. **'not' → 'NOT':** lowercase emphasis changed to uppercase emphasis (demand characteristic neutralised).
+4. **'your vote choice' → 'which option you voted for':** plainer English, avoids jargon.
+
+Deployed Q5 wording: _'In your own words: why might this voting system choose NOT to show you which option you voted for on this screen?'_
+
+Scoring rubric (0–2), two-rater requirement (κ ≥ 0.70), and hypothesis tests are unchanged. Amendment 12 is parallel to Amendments 6 (Q1), 7 (Q2), and 8 (MQ1).
+
+**No protocol, analysis, or exclusion criterion change.** Script re-upload not required.
+
+**OSF amendment text to paste:**
+
+> _“Q5 wording corrected in survey instrument (instrument §6/Q5; pre-data): 4 deviations from pre-reg §5.2 wording. (a) 'In your own words:' prefix added. (b) 'the system' → 'this voting system'. (c) 'not' → 'NOT' (emphasis). (d) 'your vote choice' → 'which option you voted for'. Deployed Q5: 'In your own words: why might this voting system choose NOT to show you which option you voted for on this screen?' Scoring rubric (0–2) and κ ≥ 0.70 requirement unchanged. Parallel to Amendments 6, 7, 8. No protocol or analysis change. (Pre-data, pre-OSF upload.)”_
+
+**Supporting documentation:** `docs/piup-study1-survey-instrument-2026-06-22.md` §6 Q5; pre-reg §5.2 Q5 entry.
+
+---
+
+### Amendment 13 — MQ1 scoring rubric clarification: two-dimensional additive rubric is operative (pre-data)
+
+**Amendment type:** Type I (minor) — pre-data clarification of operationalization; no change to scoring logic, rater instructions, or confirmatory analyses.
+
+**Detected:** tick-4124 (2026-06-28). Review of instrument §11 MQ1 rubric vs. pre-reg §5.3.
+
+**Description:** Pre-registration §5.3 describes the MQ1 open-text scoring rubric as:
+
+> '0 = no correct element; 1 = correctly states inclusion without choice; 2 = explicitly states choice is hidden from system.'
+
+This abbreviated rubric is the reporting summary. The operative operationalization is the **two-dimensional additive rubric** in instrument §11:
+
+- **Dim 1 (Inclusion):** 0 or 1 — does the response reference that the ballot was counted/included?
+- **Dim 2 (Non-leakage):** 0 or 1 — does the response correctly state the choice is hidden/private?
+- **Total = D1 + D2** (range 0–2)
+
+Critically, **non-leakage-only responses** (correctly states choice is hidden but does not mention inclusion) score Dim 1=0 + Dim 2=1 = **1**. Under the abbreviated rubric, a naïve reading of 'correctly states inclusion without choice' (score 1) might incorrectly exclude non-leakage-only responses. The two-dimensional rubric resolves this ambiguity. The final 0–2 scale and interpretation are unchanged.
+
+Amendment 8 log entry stated 'scoring construct unchanged' — corrected here: the two-dimensional rubric is the operative operationalization; the abbreviated scale in §5.3 is the reporting summary. MQ1 is exploratory; no confirmatory analysis affected.
+
+**No protocol, analysis, or exclusion criterion change.** Script re-upload not required.
+
+**OSF amendment text to paste:**
+
+> _“MQ1 scoring rubric clarification (pre-data): pre-reg §5.3 abbreviated rubric (0=no correct element; 1=inclusion without choice; 2=choice hidden) is operationalized by the two-dimensional additive rubric in instrument §11: Dim 1 (Inclusion, 0/1) + Dim 2 (Non-leakage, 0/1), total = D1+D2. Non-leakage-only responses score Dim 1=0 + Dim 2=1 = 1. Amendment 8 'scoring construct unchanged' corrected: the two-dimensional rubric is operative; the abbreviated 0–2 scale is the reporting summary. MQ1 is exploratory; no confirmatory analysis affected. (Pre-data, pre-OSF upload.)”_
+
+**Supporting documentation:** `docs/piup-study1-survey-instrument-2026-06-22.md` §11 MQ1 rubric; pre-reg §5.3; Amendment 8 log entry.
+
+---
+
+### Amendment 14 — Attention check descriptions: pre-reg §3 descriptions both wrong (pre-data)
+
+**Amendment type:** Type I (minor) — pre-data correction to attention check descriptions in pre-reg §3. Both-fail exclusion criterion and analysis script implementation are correct.
+
+**Detected:** tick-4150 (2026-06-28). Cross-check of pre-reg §3 attention check descriptions against survey instrument.
+
+**Description:** Pre-registration §3 describes the two Prolific attention checks as: 'Which of the following is a fruit? / Please select “strongly agree” for this item.' Both descriptions are wrong:
+
+1. **AC1 (‘select strongly agree’):** The instrument AC1 item asks participants to select a specified option. The correct answer is **'Strongly Disagree'** (not 'strongly agree'). The item was designed so that participants who attend to instructions select the counter-intuitive option.
+
+2. **AC2 (‘which is a fruit’):** The instrument AC2 item does **not** ask 'which of the following is a fruit?' It presents a list and asks participants to select **the third item from the list**. The correct answer is **Carrot** (a vegetable). The pre-reg description of both the question and the correct answer type is wrong.
+
+**The both-fail exclusion criterion is correctly implemented** in the analysis script (participants failing AC1 AND AC2 are excluded; single-fail participants are retained). Only the pre-registration's text description of the checks is wrong.
+
+**No protocol, analysis, or exclusion criterion change.** Script re-upload not required.
+
+**OSF amendment text to paste:**
+
+> _“Attention check descriptions corrected in pre-reg §3 (pre-data): Both descriptions were inaccurate. AC1 correct answer is 'Strongly Disagree' (not 'strongly agree'). AC2 does not ask 'which of the following is a fruit?' — it presents a list and asks participants to select the third item; the correct answer is Carrot (a vegetable). The both-fail exclusion criterion and analysis script implementation are correct. Only the pre-registration text description is corrected here. (Pre-data, pre-OSF upload.)”_
+
+**Supporting documentation:** `docs/piup-study1-survey-instrument-2026-06-22.md` §AC1 and §AC2; `analysis/piup-study1-analysis.R` exclusion logic.
+
+---
+
 ### Amendment 15 — H2 reversed-verdict criterion: p_one_tailed → p_two_tailed (analysis script, pre-data)
 
 **Type:** I (minor; analysis-script bug fix, pre-data, no statistical conclusion affected)
@@ -349,6 +430,9 @@ Complete this before OSF upload.
 - [ ] Amendment 9 — TOST lower.tail bug fix (file this; re-upload analysis.R)
 - [ ] Amendment 10 — TOSTER package removal (file this; re-upload analysis.R)
 - [ ] Amendment 11 — multcomp removal + dunn.test addition (file this; no analysis.R re-upload needed — script already correct)
+- [ ] Amendment 12 — Q5 wording: 4 deviations from pre-reg §5.2 ('In your own words:' prefix; 'the system'→'this voting system'; 'NOT' emphasis; 'which option you voted for') (file this; no analysis.R re-upload needed)
+- [ ] Amendment 13 — MQ1 rubric clarification: two-dimensional additive rubric (instrument §11) is operative operationalization (file this; no analysis.R re-upload needed)
+- [ ] Amendment 14 — Attention check descriptions corrected: AC1 answer is 'Strongly Disagree'; AC2 asks for third list item (Carrot) (file this; no analysis.R re-upload needed)
 - [ ] Amendment 15 — H2 reversed-verdict criterion p_one_tailed → p_two_tailed (file this; re-upload analysis.R)
 - [ ] Amendment 16 — BI1 scale direction corrected in paper §4.4 (text only; no analysis.R re-upload needed)
 - [ ] Amendment 17 — SC1 wording (pre-reg 'vote/poll/election' → instrument 'election/poll/survey') + SC2 scope ('cryptography' removed as distinct criterion; not in SC2 screen-out; paper §4.2 updated tick-4172)
