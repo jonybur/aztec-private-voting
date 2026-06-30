@@ -92,9 +92,22 @@ M2 closes this: `cast_vote_babylon_v2` in `main.nr` adds an in-circuit `std::ecd
 
 ### Horizon PRD alignment
 
-This directly implements the [Private Voting Module for DAOs PRD](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md). Admin flow, voter flow, eligibility proofs, encrypted ballots, receipts, quorum rules — all implemented.
+This project directly implements the [Private Voting Module for DAOs PRD](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md) — Aztec's own specification for the ecosystem application it wants built. Section-by-section:
 
-The PRD listed the receipt as an open question. The receipt design is this project's answer.
+| PRD section | Status |
+|---|---|
+| §4.1 Admin flow (configure, publish, monitor, finalize) | ✅ Full |
+| §4.2 Voter flow (eligibility proof, private vote, verify inclusion) | ✅ Full |
+| §4.3 Auditor flow | ⚠️ Partial — per-voter receipt delivered; auditor proof pack (post-grant) |
+| §5 MVP eligibility templates (token weight, one-person-one-vote, role lists) | ✅ Full — 3 modes shipped |
+| §5 MVP encrypted ballot lifecycle (commit, tally, finalize) | ⚠️ Named Limitation — anonymous but unencrypted pre-M3; M3 spec complete |
+| §11 Open question: *"Default receipts content voters expect"* | ✅ Answered — PIUP (`docs/proof-of-inclusion-ux-pattern-2026-06-22.md`) + empirical Study 1 (pre-registered) |
+
+Two notes on the Named Limitation:
+- **What it is:** `vote_choice` is a public argument of `record_vote` (the public half of each Aztec transaction). An observer with the full call log can correlate `receipt_id → vote_choice`.
+- **Why PIUP is the right response:** The receipt is engineered around *surrogate independence* — it contains the vote fingerprint (receipt ID) but never the vote choice. A coercer who can see calldata still cannot coerce from the receipt alone; the receipt proves participation, not direction. M3 closes the calldata exposure entirely.
+
+The gap that matters for the grant: every other system (MACI, Shutter, NounsDAO/Aztec) ignores the open question entirely. PIUP is the first documented, empirically-tested design answer.
 
 ### Competitive landscape
 
