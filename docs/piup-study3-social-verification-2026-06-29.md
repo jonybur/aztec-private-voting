@@ -62,6 +62,8 @@ The counter is updated every 15 minutes from on-chain `verify_vote_counted()` ca
 
 **Blinding:** Participants are told the study is about "how voters use their receipts." They are not told there are two versions of the receipt. Debrief at T+14 discloses the manipulation and its purpose.
 
+**No T+7 reminder (L1 — pre-registered exclusion commitment):** The current pilot does **not** include a T+7 social proof reminder notification. The manipulation is delivered exclusively at T0 via the receipt artifact. The T+7 reminder described in §8 is pre-specified as a future follow-up study only and is outside the scope of the current protocol. Pre-specified exclusion criterion: any participant who independently receives an unsolicited T+7 reminder from the deployment platform (i.e., not delivered by the study) will be flagged and analysed separately in a sensitivity analysis; they will be retained in the primary intent-to-treat analysis. The absence of a T+7 reminder in the current study is pre-registered verbatim before data collection begins.
+
 ---
 
 ## 4. Participants
@@ -100,11 +102,11 @@ The pilot (N ≈ 80) provides the point estimate and 90% CI for OR needed to sel
 **Secondary:**
 - Technology self-efficacy × condition interaction (moderation hypothesis: social proof may matter more for participants with lower self-efficacy, for whom ambiguity about correct action is higher)
 - Stated initial intent (T0) × condition interaction (social proof may be redundant for high-intent participants)
-- Comprehension at T+14 (same Q1–Q4 rubric from Study 1): does social proof exposure affect mental model quality? (Predicted null; social proof should not change what participants understand about what verification proves, only whether they attempt it)
+- Comprehension at T+14 (Q1–Q4 rubric **adapted** from Study 1; **L2 context-shift note:** in Study 1, Q1–Q4 measured comprehension of *receipt label* — which term best describes what the receipt proves. In Study 3, the same rubric is applied to measure comprehension of *verification purpose* — whether social proof exposure alters what participants understand about why verification matters. These are related but distinct constructs; the rubric application is labelled 'adapted' in all study materials and the pre-registration): does social proof exposure affect mental model quality? (Predicted null; social proof should not change what participants understand about what verification proves, only whether they attempt it)
 - Affect toward receipt: does the social proof display change how the receipt is perceived (e.g., more trustworthy, more legitimate)?
 
 **Process measure:**
-- Passive log: `verify_vote_counted()` calls by receipt ID, stratified by condition (opt-in only; see Study 2 ethics note). This provides ground-truth behavioral data independent of self-report and allows time-to-verify analysis: does social proof accelerate verification (more early verifiers) as well as increasing total verification rate?
+- Passive log: `verify_vote_counted()` calls by receipt ID, stratified by condition (opt-in only; see `piup-study2-design-note-2026-06-22.md` §7 — Ethical considerations, which establishes the opt-in log consent framework and deletion pipeline). This provides ground-truth behavioral data independent of self-report and allows time-to-verify analysis: does social proof accelerate verification (more early verifiers) as well as increasing total verification rate?
 
 ---
 
