@@ -167,6 +167,6 @@ Study 3 includes a comprehension check at T+14 to test whether social proof expo
 ## References
 
 - Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd ed.). LEA. §6.2 (arcsine transformation for proportions).
-- Das, S., Kim, T. H.-J., Dabbish, L. A., & Hong, J. I. (2014). Increasing security sensitivity with social proof: A large-scale experimental confirmation. In *Proceedings of the 21st ACM Conference on Computer and Communications Security (CCS '14)* (pp. 739–749). ACM. https://doi.org/10.1145/2660267.2660271
+- Das, S., Kramer, A. D. I., Dabbish, L. A., & Hong, J. I. (2014). Increasing security sensitivity with social proof: A large-scale experimental confirmation. In *Proceedings of the 21st ACM Conference on Computer and Communications Security (CCS '14)* (pp. 739–749). ACM. https://doi.org/10.1145/2660267.2660271
 - Adida, B., de Marneffe, O., Pereira, O., & Quisquater, J.J. (2009). Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios. *EVT/WOTE 2009*.
 - Ryan, P.Y.A., & Bismark, D. (2009). The Prêt à Voter Verifiable Voting System. *IEEE Security & Privacy*, 7(5), 32–37.

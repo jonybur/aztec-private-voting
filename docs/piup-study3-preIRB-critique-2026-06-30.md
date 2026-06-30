@@ -11,24 +11,23 @@ This document records open questions, methodological vulnerabilities, and items 
 
 ## 🔴 High priority — must fix before IRB submission
 
-### H1: Citation error — Das et al. (2014) venue
+### H1: Citation error — Das et al. (2014) venue [CORRECTION tick-4340]
 
-Both Study 3 documents contain errors in the Das et al. (2014) citation.
+**⚠️ This section was itself incorrect. It has been superseded by the tick-4340 web-verified finding below.**
 
-**Social verification doc** (`piup-study3-social-verification-2026-06-29.md`, §2 References):
-- Listed venue: *Proceedings of the Symposium on Usable Privacy and Security (SOUPS 2014)*. USENIX.
-- Correct venue: *Proceedings of the 21st ACM Conference on Computer and Communications Security (CCS '14)*, pp. 739–749. ACM.
-- DOI: 10.1145/2660267.2660271
+Both the original H1 assessment (tick-4287) and the tick-4319 "fix" introduced errors. The final verified state is:
 
-**Power analysis doc** (`piup-study3-power-analysis-2026-06-29.md`, §5 References):
-- Listed authors: Das, S., **Kramer, A.D.I.**, Dabbish, L.A., & Hong, J.I.
-- "Kramer, A.D.I." (Adam D.I. Kramer) is the first author of the *Facebook emotional contagion study* (Kramer, Guillory & Hancock, 2014, PNAS). He is not an author on the Das et al. CCS paper.
-- Correct authors: Das, S., **Kim, T. H.-J.**, Dabbish, L. A., & Hong, J. I.
-- The power analysis doc has the correct venue (CCS 2014) but the wrong author list.
+**Correct canonical citation (verified via socialcybersecurity.org and ACM DL third-party citations):**
 
-**Fix required:** Update both documents. The correct canonical citation is:
+> Das, S., Kramer, A. D. I., Dabbish, L. A., & Hong, J. I. (2014). Increasing security sensitivity with social proof: A large-scale experimental confirmation. In *Proceedings of the 21st ACM Conference on Computer and Communications Security (CCS '14)* (pp. 739–749). ACM. https://doi.org/10.1145/2660267.2660271
 
-> Das, S., Kim, T. H.-J., Dabbish, L. A., & Hong, J. I. (2014). Increasing security sensitivity with social proof: A large-scale experimental confirmation. In *Proceedings of the 21st ACM Conference on Computer and Communications Security (CCS '14)* (pp. 739–749). ACM. https://doi.org/10.1145/2660267.2660271
+**Error history:**
+- Original study docs (pre-tick-4287): had wrong venue (SOUPS 2014) and wrong author (Kim T. H.-J.).
+- This critique (tick-4287): correctly identified SOUPS venue as wrong; **incorrectly** concluded that Kramer was not a co-author and that Kim T. H.-J. was correct.
+- Tick-4319 "fix": changed both study docs to use Kim T. H.-J. — introduced wrong author.
+- Tick-4340 web verification: confirmed Kramer IS the correct second author. The SOUPS 2014 paper by Das et al. is a *different* paper ("The Effect of Social Influence on Security Sensitivity"; Das, Kim H.J., Dabbish, Hong; USENIX SOUPS 2014) and was cited in another context.
+
+**Status: ✅ RESOLVED (tick-4340)** — Both study docs now use the correct author (Kramer). Both use correct venue (CCS '14). H1 is closed.
 
 ---
 
@@ -142,7 +141,7 @@ _Updated tick-4319 (2026-06-30): all items verified against current document sta
 
 Before submitting to IRB, the following must be in place:
 
-- [x] Das et al. (2014) citation corrected in both Study 3 documents (H1) — ✅ **RESOLVED**: Both docs have correct citation (CCS '14, Kim et al.) at time of tick-4319 review.
+- [x] Das et al. (2014) citation corrected in both Study 3 documents (H1) — ✅ **RESOLVED (tick-4340, supersedes tick-4319)**: Both docs now have correct citation: CCS '14, **Kramer** et al. (tick-4319 incorrectly substituted Kim T. H.-J.; tick-4340 web-verified and reverted to Kramer).
 - [x] Nissen et al. (2025) cited in body text or removed from references (H2) — ✅ **RESOLVED**: Cited at §7 of social-verification doc ("consistent with the privacy-preserving design in Nissen et al. (2025) who found...").
 - [x] §7 reframed as "partial disclosure" not "non-deception" (H3) — ✅ **RESOLVED**: §7 heading is "Partial disclosure with debrief" in social-verification doc.
 - [x] Negative social proof floor specified and pre-registered (M1) — ✅ **RESOLVED**: Floor set at ≥10 verified participants; specified verbatim in §3 ("Counter floor (pre-registered, M1)").
