@@ -335,7 +335,7 @@ All proportions: Wilson 95% CI. All means: 95% CI from t-distribution. All ORs: 
 
 ### 6.10 Software
 
-R (v ≥ 4.3). Planned packages: `stats`, `PropCIs` (Wilson CIs), `irr` (Cohen's κ), `dunn.test` (Kruskal-Wallis post-hoc). TOST implemented as custom z-test (tost_prop(); Lakens 2017 framework) — not TOSTER (which requires means). Full analysis script: `analysis/piup-study2-analysis.R`. Dry-run with synthetic data: `analysis/piup-study2-drycheck.R`.
+R (v ≥ 4.3). Planned packages: `stats`, `PropCIs` (Wilson CIs), `irr` (Cohen's κ), `dunn.test` (Kruskal-Wallis post-hoc), `TOSTER` (TOST equivalence tests for means), `emmeans` (simple-effects contrasts from ANOVA models), `broom` (tidy model output). **TOST for H2.3 M3 equivalence:** `TOSTER::tsum_TOST` (Welch-based two one-sided t-tests on group means and SDs; Lakens 2017). Note: Study 1 uses a custom `tost_prop()` z-test for Q-AC *proportion* equivalence — a different measure type requiring a different TOST implementation. [Fixed tick-4249: §6.10 previously said "custom z-test (tost_prop()) — not TOSTER"; that described the wrong test. H2.3 M3 is a 7-point Likert scale (continuous mean), correctly tested with `tsum_TOST`, not a z-test for proportions. Analysis script confirmed: `TOSTER::tsum_TOST(..., var.equal = FALSE)`. Prior wording resolved by §6.4 fix same tick; §6.10 now consistent.] Full analysis script: `analysis/piup-study2-analysis.R`. Dry-run with synthetic data: `analysis/piup-study2-drycheck.R`.
 
 ---
 
@@ -455,6 +455,7 @@ Reduction if H2.3 dropped (N = 160): full study ~$400; total ~$730.
 | 2026-06-28 | 6 | M6/Q-OE rubric expanded | §7.2 M6 rubric expanded to full two-part score-2 criterion, score-1 feature-recognition clause, score-0 examples, tie-breaking rule, and `qoe_final` formula. Matches instrument §16 exactly. | OpenClaw Agent |
 | 2026-06-29 | 7 | M4 scope: I2-only → all-conditions (JONY-ACTION FF resolved) | M4 confidence rating changed from I2-only retrospective CAL-probe to all-conditions post-receipt Q-AC confidence (placed immediately after Q-AC, before trust scale). Rationale: H2.3 t-test (I1-L2 vs. I2-L2 on M4 residual) requires M4 for both I1 and I2 cells; I2-only M4 made H2.3 silently untestable. Analysis script updated: synthetic data covers all N=240; H2.3 df_L2 filter fixed. Commit 5304b3f. | OpenClaw Agent |
 | 2026-06-29 | 8 | Pre-registration DRAFT written | `docs/piup-study2-preregistration-draft-2026-06-29.md` created (this document). DRAFT status; not for OSF upload until Study 1 H4 resolved. | OpenClaw Agent |
+| 2026-06-29 | 9 | §6.10 Software — TOST method corrected, packages list updated | §6.10 previously said "custom z-test (tost_prop()) — not TOSTER"; now correctly states `TOSTER::tsum_TOST` for H2.3 M3 equivalence (Likert scale = continuous means test, not proportion z-test). Packages list expanded: added `TOSTER`, `emmeans`, `broom` (all used in analysis script). Consistent with §6.4 fix from tick-4249 and analysis script `TOSTER::tsum_TOST(..., var.equal = FALSE)`. No hypothesis, bound, alpha, or verdict changes. Commit tick-4250. | OpenClaw Agent |
 
 ---
 
