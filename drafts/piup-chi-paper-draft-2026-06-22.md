@@ -476,8 +476,8 @@ The practical prescription follows from the boundary conditions. When designing 
 
 ## References
 
-- Adida, B., de Marneffe, O., Pereira, O., and Quisquater, J.-J. (2009). "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." _EVT/WOTE 2009._
-- Bell, S., Benaloh, J., Byrne, M., DeBeauvoir, D., Eakin, B., Fisher, G., Kortum, P., McBurnett, N., Montoya, J., Parker, M., Pereira, O., Stark, P., Wallach, D., and Winn, M. (2013). "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." _EVT/WOTE 2013._
+- Adida, B., de Marneffe, O., Pereira, O., and Quisquater, J.-J. (2009). "Electing a University President Using Open-Audit Voting: Analysis of Real-World Use of Helios." _Electronic Voting Technology Workshop / Workshop on Trustworthy Elections (EVT/WOTE '09)._ USENIX Association.
+- Bell, S., Benaloh, J., Byrne, M., DeBeauvoir, D., Eakin, B., Fisher, G., Kortum, P., McBurnett, N., Montoya, J., Parker, M., Pereira, O., Stark, P., Wallach, D., and Winn, M. (2013). "STAR-Vote: A Secure, Transparent, Auditable, and Reliable Voting System." _Electronic Voting Technology Workshop / Workshop on Trustworthy Elections (EVT/WOTE '13)._ USENIX Association.
 - Egelman, S., and Schechter, S. (2013). "The Importance of Being Earnest [In Security Warnings]." _Financial Cryptography and Data Security (FC 2013)_, LNCS vol. 7859, pp. 52-59. Springer. DOI: 10.1007/978-3-642-39884-1_5.
 - Carback, R., Chaum, D., Clark, J., Conway, J., Essex, A., Herrnson, P.S., Mayberry, T., Popoveniuc, S., Rivest, R.L., Shen, E., Sherman, A.T., and Vora, P.L. (2010). "Scantegrity II Municipal Election at Takoma Park: The First E2E Binding Governmental Election with Ballot Privacy." _19th USENIX Security Symposium (USENIX Security 2010)_, pp. 291-306. USENIX Association.
 - Faul, F., Erdfelder, E., Buchner, A., and Lang, A.-G. (2009). "Statistical power analyses using G\*Power 3.1: Tests for correlation and regression analyses." _Behavior Research Methods_, 41(4), 1149-1160. DOI: 10.3758/brm.41.4.1149
@@ -491,7 +491,7 @@ The practical prescription follows from the boundary conditions. When designing 
 - Lee, J.D., and See, K.A. (2004). "Trust in Automation: Designing for Appropriate Reliance." _Human Factors 46(1):50-80._ DOI: 10.1518/hfes.46.1.50.30392
 - McKnight, D.H., Choudhury, V., and Kacmar, C. (2002). "Developing and Validating Trust Measures for E-Commerce: An Integrative Typology." _Information Systems Research 13(3):334-359._ DOI: 10.1287/isre.13.3.334.81
 - Norman, D.A. (1988). _The Design of Everyday Things._ Basic Books.
-- Whitten, A., and Tygar, J.D. (1999). "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." _USENIX Security 1999._
+- Whitten, A., and Tygar, J.D. (1999). "Why Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0." _8th USENIX Security Symposium (USENIX Security '99)_, pp. 169-184. USENIX Association.
 
 ---
 
