@@ -363,7 +363,7 @@ H2.1–H2.4 are independent pre-specified predictions; no cross-hypothesis corre
 
 ### 5.6 Status
 
-Study 2 is at design-note stage; finalisation and OSF pre-registration require (a) Study 1 pilot data (N = 40) to validate the instrument and calibrate baseline Q-AC accuracy estimates for H2.1 power (design note §10.1), and (b) Study 1 H4 outcome from the full launch (N = 280) to resolve the H2.3 conditional secondary dependency (design note §11). Full design specification: `docs/piup-study2-design-note-2026-06-22.md`. [Compressed tick-4281]
+Study 2 pre-registration DRAFT is complete (`docs/piup-study2-preregistration-draft-2026-06-29.md`, 14 design amendments incorporated as of 2026-06-30). The DRAFT is OSF-ready pending two gates: (a) Study 1 pilot data (N = 40) to calibrate baseline Q-AC accuracy estimates for H2.1 power (pre-reg §4 sampling plan), and (b) Study 1 H4 outcome from the full launch (N = 280) to resolve the H2.3 conditional secondary dependency and set final N (240 if H4 supported; 160 if not). Until OSF upload, Study 2 contribution (C4) is described as a "pre-analysis plan" (§1). If Study 2 is uploaded to OSF before CHI submission, update C4 heading to "Pre-registered study design (Study 2, N=240)" with OSF DOI, and update §5.6, §6.2, and §7 accordingly. Full design specification: `docs/piup-study2-design-note-2026-06-22.md`. [Updated tick-4293: status advanced from design-note stage to pre-registration DRAFT complete (14 amendments, 2026-06-30); OSF gates unchanged.]
 
 ---
 
