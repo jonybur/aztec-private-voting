@@ -112,13 +112,13 @@ The contract is structured as a single `PrivateVoting` Noir program with four pr
 
 **`cast_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — private entrypoint; generates a ZK proof enforcing double-vote prevention via a `SingleUseClaim` nullifier in the private kernel, then enqueues `record_vote`.
 
-**`record_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — public entrypoint (`#[only_self]`). Increments the tally for `vote_choice`, validates `receipt_id` uniqueness, marks `receipts[receipt_id] = true`. The `receipt_id` is the content-independent vote fingerprint: `Fr.random()` in the standard path; a deterministic field element derived from the holder's snapshot leaf or signing-key signature in the Babylon eligibility paths (§3.5). [Fixed ticks 3879/3880: 'deterministic nullifier' corrected — the Babylon receipt_id is not an Aztec protocol nullifier; it is the voter's receipt identifier, distinct from the SingleUseClaim nullifier. Description confirmed accurate against implementation. Compressed tick-4280.]
+**`record_vote(vote_choice: u8, eligibility_proof: Field, receipt_id: Field)`** — public entrypoint (`#[only_self]`). Increments the tally for `vote_choice`, validates `receipt_id` uniqueness, marks `receipts[receipt_id] = true`. The `receipt_id` is the content-independent vote fingerprint: `Fr.random()` in the standard path; a deterministic field element derived from the holder's snapshot leaf or signing-key signature in the Babylon eligibility paths (§3.5).
 
 **`finalize_vote()`** — callable after `end_time` if `vote_count >= quorum`; sets `is_finalized = true`, gating `get_final_tally` visibility. Callers poll `is_finalized()` or `verify_vote_counted()` for state.
 
 **`verify_vote_counted(receipt_id: Field) → bool`** — public view; returns `receipts[receipt_id]`. Any receipt holder can confirm their ballot was counted without revealing vote content.
 
-The contract runs on the Aztec v5 testnet. Deployment configuration is detailed in `docs/v5-upgrade-runbook.md`.
+The contract is deployed on the Aztec v5 testnet (`docs/v5-upgrade-runbook.md`).
 
 ### 3.2 Eligibility modes
 
@@ -126,15 +126,15 @@ The system supports three eligibility configurations, deployed as separate contr
 
 **Open (`cast_vote`).** Any Aztec wallet can vote. The `eligibility_proof` parameter is ignored; the only constraint is that the wallet has not previously voted (enforced by `SingleUseClaim`). Suitable for governance votes where access is defined by token holdership at a snapshot date, enforced off-chain by DAO tooling.
 
-**Token-gated (`cast_vote_token`).** The caller must prove in-circuit token balance above a configured minimum at a committed snapshot, via a Merkle membership proof against a depth-20 `sha256`-keyed balance tree (leaf: `sha256([0x00] || address_field_bytes[31] || balance_be[8])`). The Merkle root is encoded into the `tokenAddress` deployment parameter (top-byte-drop scheme; `docs/deployment.md`).
+**Token-gated (`cast_vote_token`).** The caller must prove in-circuit token balance above a configured minimum at a committed snapshot, via a depth-20 sha256-keyed Merkle membership proof; root encoded in the `tokenAddress` deployment parameter (`docs/deployment.md`).
 
-**Allowlist (`cast_vote_allowlist`).** The caller must prove membership in a committed eligible-address set via depth-20 SHA-256 Merkle proof (leaf: `sha256([0x00] || address_field_bytes[31])`); root encoding mirrors the token-gated mode. Suitable for known-participant governance.
+**Allowlist (`cast_vote_allowlist`).** The caller must prove membership in a committed eligible-address set via depth-20 SHA-256 Merkle proof; root encoding mirrors the token-gated mode. Suitable for known-participant governance.
 
 Separate deployments prevent cross-mode eligibility bypass: on TOKEN/ALLOWLIST contracts, `cast_vote` asserts `eligibility_mode == OPEN`, forcing callers onto gated entrypoints where in-circuit Merkle proof is required. Gated entrypoints also assert their expected mode, preventing wrong-mode invocation.
 
 ### 3.3 Security properties
 
-A static circuit analysis and trust-boundary audit was conducted across the generic voting paths (`main.nr`, `eligibility.nr`). Eight properties were confirmed sound:
+Circuit analysis and trust-boundary audit across `main.nr` and `eligibility.nr` confirmed eight sound properties:
 
 | Property | Enforcement mechanism |
 |---|---|
@@ -151,34 +151,30 @@ Three findings were resolved before the study - one HIGH severity and two LOW:
 
 *F1-RESIDUAL (HIGH — gated vote bypass).* On TOKEN/ALLOWLIST contracts, the generic `cast_vote` entrypoint could be called with `eligibility_proof = 1`, bypassing the Merkle gate. Resolved by asserting `eligibility_mode == OPEN` in `cast_vote`; gated entrypoints perform the in-circuit Merkle proof before enqueuing `record_vote`.
 
-*F2 (Quorum bypass).* A `quorum = 0` deployment would allow `vote_count >= 0` to be vacuously true, permitting finalization with zero ballots. Resolved by adding `assert(config.quorum > 0)` in the constructor.
+*F2 (Quorum bypass).* `quorum = 0` allows vacuous finalization; resolved by `assert(config.quorum > 0)` in the constructor.
 
-*F3 (Receipt-ID collision).* A `receipt_id = 0` submission would silently block any subsequent voter using the same ID. Resolved by asserting `receipt_id != 0` in all three generic entrypoints and the React hooks. [Note tick-3845: guard verified at lines 110, 167, 234 of main.nr.]
+*F3 (Receipt-ID collision).* `receipt_id = 0` would block subsequent voters; resolved by `assert(receipt_id != 0)` in all entrypoints and React hooks.
 
 Two design limitations are documented and not resolved at the prototype stage:
 
-*L1 privacy gap.* `vote_choice` and `receipt_id` are plaintext public arguments in `record_vote`; an observer can build a `receipt_id → vote_choice` map. The receipt UI warns against sharing until vote close. The M3 tally-privacy architecture resolves this at the application layer (storing `vote_choice` in a coordinator-encrypted private BallotNote; `docs/m3-tally-privacy-implementation-spec-2026-06-27.md` §5.3); this limitation applies to the current pre-M3 deployment. [Note tick-4014: M2 = secp256k1 ownership proof (§3.5); M3 = tally-privacy resolution. Compressed tick-4280.]
+*L1 privacy gap.* `vote_choice` and `receipt_id` are plaintext public arguments in `record_vote`; an observer can build a `receipt_id → vote_choice` map. The receipt UI warns against sharing until vote close. The M3 architecture resolves this at the application layer (M3 spec §5.3); this limitation applies to the current pre-M3 deployment.
 
-*Receipt-freeness is partial.* The contract does not implement a re-encryption mix. The commitment not to use the term "coercion-resistant" in user-facing copy until this is resolved is maintained in the receipt component.
+*Receipt-freeness is partial.* No re-encryption mix is implemented; "coercion-resistant" is withheld from user-facing copy until resolved.
 
 ### 3.4 React component library and `VoteReceipt.tsx`
 
 The system ships a React component library (`packages/react/`) providing the voter-facing UI including the PIUP instantiation. The key component is `VoteReceipt.tsx`, which renders the four PIUP components described in Section 2.1, listed in their actual rendering order:
 
 - The status line: *"Your vote was cast"*
-- The vote fingerprint (rendered as an abbreviated hex string - `shortenHex(receipt.receiptId, 6, 4)` produces `0x{first-6-chars}...{last-4-chars}` for display readability; the copy button copies the full identifier value via `navigator.clipboard.writeText(receipt.receiptId)`) [Note (tick-3843): Prior text said 'formatted hex string' which implies the full 64-char hex value is shown on screen. The actual display is abbreviated; the full value is available only via copy. Fixed.]
-- The protective framing: *"Your vote choice is not shown on this receipt. This is intentional — this fingerprint proves your ballot was counted without revealing what you voted for. Save it to verify after the vote closes, and keep it private until then."* [Fixed tick-4168: prior text used a regular hyphen ('This is intentional - this fingerprint') but VoteReceipt.tsx uses an em-dash ('This is intentional — this {identifierNoun}'). Quote corrected to match implementation typography. Also corrected in the §2.1 VERIFIED note. No protocol or study impact — typography-only fix in quoted production copy.]
+- The vote fingerprint (abbreviated hex: `shortenHex(receipt.receiptId, 6, 4)`; full value accessible via copy button)
+- The protective framing: *"Your vote choice is not shown on this receipt. This is intentional — this fingerprint proves your ballot was counted without revealing what you voted for. Save it to verify after the vote closes, and keep it private until then."*
 - The verification affordance: a collapsed *"How to verify"* section with a three-step explainer and a link to the `verify_vote_counted` endpoint
 
-[Note (tick-3843): VoteReceipt.tsx additionally renders implementation-specific vote metadata - a `<dl>` with vote title and formatted timestamp - between the status line and the fingerprint section. This metadata is not a PIUP-pattern-specified component; the four PIUP components listed above appear in correct relative order in the rendered output. A reader reconstructing the full component layout from this description should be aware that additional UI is present between the status line and the fingerprint.]
-
-The component also provides a primary download action that writes a JSON receipt file. The file is produced by `serializeReceipt()` in `receipt.ts`, which spreads the `VoteReceipt` object - containing the fingerprint (`receiptId`), vote ID, vote title, transaction hash (`txHash`), timestamp, and contract address - after two format envelope fields (`version: 1`, `kind: "aztec-private-voting-receipt"`). The receipt file does not contain the vote choice. This follows Invariant 3 at the content layer: a voter who saves their receipt holds a file that does not encode their choice. Note that the transaction hash field names the on-chain `record_vote` transaction; per the L1 privacy limitation noted in §3.3, an observer who holds both the receipt and access to on-chain calldata can, in principle, use the transaction hash to look up the corresponding `record_vote` call and recover the choice. Voters should treat the receipt as private until vote close, consistent with the privacy guidance in the receipt's protective framing.
-
-The fingerprint is generated by `generateReceiptId()` in `packages/react/src/aztec/receipt-id.ts`, which calls `Fr.random()` to produce a 254-bit random field element. The value is not derived from the voter's wallet, the vote ID, or the vote choice, satisfying Invariant 1 at the client layer.
+The component's download action writes a JSON receipt file via `serializeReceipt()`; the file contains the fingerprint, vote metadata, and transaction hash but not the vote choice (Invariant 3). Per §3.3, calldata observers can recover the choice via `txHash`; voters should treat receipts as private until vote close. The fingerprint (`Fr.random()`, 254-bit field element) is independent of wallet, vote ID, and choice — satisfying Invariant 1.
 
 ### 3.5 M2 ownership proof (defense-in-depth)
 
-M2 adds in-circuit secp256k1 ownership verification (EIP-191 personal_sign) for Babylon-compatible governance, ensuring the eligibility-asserting wallet holds the required token and preventing eligibility-transfer attacks. The M2 path does not change the receipt design; `VoteReceipt.tsx` handles all eligibility modes identically. [Note tick-4012: full proof path (SHA-256 challenge + keccak256 EIP-191 wrapping + secp256k1 verify) compiles to 339 ACIR + 348 Brillig opcodes; 7/7 Noir tests pass. Full benchmark: `docs/m2-benchmark-2026-06-27.md`. Compressed tick-4280.]
+M2 adds in-circuit secp256k1 signature verification (EIP-191 personal_sign), closing the pre-computation attack surface (ADR-036). The proof compiles to 339 ACIR + 348 Brillig opcodes; 7/7 Noir tests pass. `VoteReceipt.tsx` handles all eligibility modes identically.
 
 ---
 
