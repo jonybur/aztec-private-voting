@@ -54,7 +54,11 @@ The theoretical connection is direct: Das et al. (2014) operationalized social p
 
 The counter is updated every 15 minutes from on-chain `verify_vote_counted()` call logs. It shows the raw count — not a percentage, not a ratio — to avoid base-rate anchoring problems when n is small early in the verification window. (A count of 12 out of 80 reads as "few people have verified"; 12 out of 80 voters = 15% reads as "a specific low rate." The raw count is more interpretively neutral when the denominator is known to participants through other channels.)
 
+**Counter floor (pre-registered, M1):** To avoid negative social proof effects at low verification counts (Cialdini, 1984) — e.g., "0 voters have verified" may actively demotivate verification — the social proof counter activates only after **≥ 10 participants have verified**. Before this floor is reached, the treatment receipt displays "Verification is open until [date]" without a count. The floor value (10) is pre-registered verbatim before data collection begins and will be reported in the pre-registration document as a design parameter.
+
 **Assignment:** Random assignment at T0 (vote cast). The receipt endpoint is parameterized by voter session; conditions are indistinguishable at the network level and from the contract. This is essential for coercion resistance: the condition flag must not be observable by a third party.
+
+**Condition persistence across devices (M2):** The condition flag is encoded in the receipt artifact delivered at T0 (a downloadable file or parameterised URL). A participant who accesses their receipt from a different device (e.g., voted on laptop, checks receipt on phone) sees the same condition, because the condition is resolved from the receipt artifact rather than browser session state. The social proof counter value will increase over the 14-day verification window; participants in the treatment condition who return to their receipt at T+7 or T+14 will see a higher count than at T0. This is by design, not a confound: the counter provides updated social context at the moment of verification decision, which may reinforce the T0 exposure. The time-varying nature of the counter is noted as a construct-validity consideration and labelled exploratory in the analysis plan (§6).
 
 **Blinding:** Participants are told the study is about "how voters use their receipts." They are not told there are two versions of the receipt. Debrief at T+14 discloses the manipulation and its purpose.
 
@@ -106,7 +110,7 @@ The pilot (N ≈ 80) provides the point estimate and 90% CI for OR needed to sel
 
 ## 6. Analysis
 
-**Primary (pilot framing — NOT confirmatory NHST):** This study is pre-registered as a **feasibility pilot**. The primary analysis is the point estimate and **90% CI for the odds ratio** of the condition effect on verification at T+14, using logistic regression with condition (treatment vs. control), T0 intent, and technology self-efficacy as predictors. The 90% CI is the pre-specified inferential summary; no NHST threshold is applied to the primary endpoint.
+**Primary (pilot framing — NOT confirmatory NHST):** This study is pre-registered as a **feasibility pilot**. The primary analysis is the point estimate and **90% CI for the odds ratio** of the condition effect on verification at T+14, using logistic regression with condition (treatment vs. control), T0 intent, and technology self-efficacy as predictors. The 90% CI is the pre-specified inferential summary; no NHST threshold is applied to the primary endpoint. A 90% CI is chosen (rather than 95%) consistent with pilot-study convention (Lakens, 2021) and to reflect the exploratory nature of the estimate; the interval is used to calibrate a future powered study, not as a confirmatory inferential test.
 
 Interpretation rule (pre-specified):
 - If the 90% CI lower bound ≥ 1.5: social proof effect is plausible, consistent with Das et al. (2014); proceed to powered replication.
@@ -195,3 +199,4 @@ The pilot is designed to feed into one of three replication options (full analys
 - Hargittai, E. (2009). An update on survey measures of web-oriented digital literacy. *Social Science Computer Review, 27*(1), 130–137.
 - Nissen, C., Hilt, T., Budurushi, J., Volkamer, M., and Kulyk, O. (2025). Voting under pressure: Perceptions of counter-strategies in internet voting. *E-VOTE-ID 2025*. LNCS vol. 16028, pp. 158–174.
 - Ryan, P. Y. A., & Bismark, D., Heather, J., Schneider, S., & Xia, Z. (2009). Prêt à Voter: A voter-verifiable voting system. *IEEE Transactions on Information Forensics and Security, 4*(4), 662–673.
+- Lakens, D. (2021). *Improving your statistical inferences*. Open Educational Resources. https://lakens.github.io/statistical_inferences/
