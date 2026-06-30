@@ -695,8 +695,8 @@ if (!H4_SUPPORTED) {
   # Q-AC confidence, instrument §11 updated). I1 participants are no longer NA;
   # df_L2 filter no longer needs !is.na(m4_residual) — all L2 rows have M4.]
   df_L2     <- df[df$L == "confirmation_code", ]
-  df_L2_I1  <- df_L2[df_L2$I == "no_calibration", ]  # n=30 target; has M4 (post-receipt)
-  df_L2_I2  <- df_L2[df_L2$I == "calibration", ]     # n=30 target; has M4 (post-receipt)
+  df_L2_I1  <- df_L2[df_L2$I == "no_calibration", ]  # n=60 target (pools E1+E2 within L2); has M4 (post-receipt)
+  df_L2_I2  <- df_L2[df_L2$I == "calibration", ]     # n=60 target (pools E1+E2 within L2); has M4 (post-receipt)
 
   cat(sprintf("L2 analytic n: I1 = %d, I2 = %d\n", nrow(df_L2_I1), nrow(df_L2_I2)))
 
