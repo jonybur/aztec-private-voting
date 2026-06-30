@@ -259,7 +259,7 @@ Covariates (collected; not pre-specified as primary analyses): age (DM1, categor
 
 ### 4.5 Analysis plan
 
-The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bonferroni sequential correction is applied within each family independently; no cross-family correction is applied.
+The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bonferroni correction applied within each family; no cross-family correction.
 
 | Family | Pre-registered tests | m |
 |--------|----------------------|---|
@@ -268,19 +268,19 @@ The study pre-registers 14 confirmatory tests across four Holm families. Holm-Bo
 | H3 (nullifier underperforms) | Q1(C<A), Q1(C<B), Q1(C<D), composite(C<A), composite(C<B), composite(C<D) [composite pairings conditional on omnibus significance; pre-reg §6.6] | 6 |
 | H4 (confirmation code overconfidence) | confidence(B>A), confidence(B>C), confidence(B>D) | 3 |
 
-**H1** (m = 2). Two one-tailed chi-squared tests on Q2 and Q3 accuracy, A vs. D. Both must survive Holm correction within the family. Pre-registered directional magnitude: ≥ 10 pp on each question (see §4.1; pre-reg §H1).
+**H1** (m = 2). Two one-tailed chi-squared tests on Q2 and Q3 accuracy, A vs. D; both must survive Holm correction.
 
-**H2** (m = 3; primary endpoint). H2-primary: Q2 accuracy, A vs. B, one-tailed chi-squared (α = 0.05); this is the single pre-specified primary endpoint. H2-secondary: Q3 accuracy, A vs. B, one-tailed. H2-tertiary: TOST (Lakens, 2017) on composite accuracy (Q1-Q4), A vs. B; equivalence bounds ±10 pp on the proportion difference (α = 0.05 per one-sided test; pre-reg §6.5). If equivalence not established: Cohen's h and 90% CI of (p_A - p_B) reported (pre-reg §6.5). Directional magnitudes: ≥ 10 pp Q2, ≥ 8 pp Q3 (pre-reg §H2). H2 outcome: **supported** if Q2(A > B) significant AND composite equivalent; **null** if Q2 non-significant AND equivalent; **reversed** if Q2 non-significant AND post-hoc Q2(B > A) significant (two-tailed, α = 0.05) AND equivalent (or B > A composite). All three pre-registered H2 patterns are actionable production decisions, not success/failure dichotomies (see §6.2).
+**H2** (m = 3; primary endpoint). H2-primary: Q2 accuracy, A vs. B, one-tailed chi-squared (α = 0.05). H2-secondary: Q3 accuracy, A vs. B, one-tailed. H2-tertiary: TOST (Lakens, 2017) on composite accuracy (Q1-Q4), A vs. B; equivalence bounds ±10 pp (α = 0.05 per one-sided test; pre-reg §6.5); if equivalence not established, Cohen's h and 90% CI reported. All three pre-registered H2 outcome patterns are actionable (§6.2).
 
-**H3** (m = 6). Three unconditional one-tailed chi-squared tests on Q1 accuracy (C vs. A, B, D; pre-reg §6.6) plus a 4-condition composite-accuracy omnibus ; if omnibus significant, Holm-corrected composite pairings for C proceed. Support criterion: C lower than at least 2 of {A, B, D} on Q1 after Holm correction. Directional magnitudes: C < 45%, A ≥ 65% on Q1 (pre-reg §H3). An ethics clause pre-specifies that if the pilot shows < 30% Q1 accuracy in Condition C, a fifth label may substitute for C before the full launch; label substitution does not alter the m = 6 Holm family or the H3 alpha level (§6.5).
+**H3** (m = 6). Three unconditional one-tailed chi-squared tests on Q1 accuracy (C vs. A, B, D; pre-reg §6.6) plus a 4-condition composite-accuracy omnibus ; if omnibus significant, Holm-corrected composite pairings for C proceed. Support criterion: C lower than ≥ 2 of {A, B, D} on Q1 after Holm correction. An ethics clause (§6.5) allows a fifth label to substitute for C if pilot Q1(C) < 30%; the m = 6 Holm family and α level are unchanged.
 
-**H4** (m = 3). One-way ANOVA on confidence composite; if significant, Tukey HSD for B vs. A, C, D. **Calibration analysis (secondary/descriptive; not Holm-corrected):** Spearman r between Q1-Q4 accuracy (0-4) and confidence composite, per condition; H4 predicts Condition B shows lower calibration (weaker accuracy-confidence r) than A. H4 outcome: **supported** if ANOVA significant AND all three Tukey comparisons (B > A, C, D) survive Holm correction; **null** if ANOVA non-significant; **partial** if ≤ 2 comparisons survive; **direction reversal** if B < at least one condition. H4-supported triggers calibration note in PIUP documentation and co-primary I-factor analysis in Study 2 (pre-reg §13).
+**H4** (m = 3). One-way ANOVA on confidence composite; if significant, Tukey HSD for B vs. A, C, D. **Calibration analysis (secondary; not Holm-corrected):** Spearman ρ(accuracy, confidence) per condition; H4 predicts r_B < r_A. H4 outcome: **supported** if ANOVA significant AND all three Tukey comparisons (B > A, C, D) survive Holm correction; **null** if ANOVA non-significant; **partial** if ≤ 2 comparisons survive; **direction reversal** if B < at least one condition. H4-supported triggers calibration note in PIUP documentation and co-primary I-factor analysis in Study 2 (pre-reg §13).
 
 **Q5 (pre-registered secondary; pre-reg §6.8).** Kruskal-Wallis across 4 conditions; if significant, Dunn's post-hoc (Holm); κ ≥ 0.70 required (raters adjudicate below threshold). 25-response random sample per condition included in write-up. Q5/M6 cross-study comparisons are approximate (§5.4).
 
-**Mental model quality (exploratory).** Mean score and distribution (0/1/2) by condition; κ ≥ 0.70 required. Not part of the composite accuracy score; all comparisons exploratory.
+**Mental model quality (exploratory).** Mean score and distribution (0/1/2) by condition; κ ≥ 0.70 required; all comparisons exploratory.
 
-**Behavioral intent (descriptive).** Mean BI1 score and distribution (5 = Definitely would save → 1 = Definitely would not) per condition; all comparisons descriptive. Study 1 BI1 provides a preview; save behaviour is a primary confirmatory endpoint in Study 2 (RQ4; §5.1).
+**Behavioral intent (descriptive).** Mean BI1 score and distribution (5 = Definitely would save → 1 = Definitely would not) per condition; all comparisons descriptive (Study 2 RQ4, §5.1, is the confirmatory endpoint).
 
 **Label affect (exploratory).** Mean valence (-3 to +3) and distribution by condition; all comparisons exploratory.
 
@@ -517,7 +517,7 @@ The practical prescription follows from the boundary conditions. When designing 
 - Submissions under 5,000 words = short papers
 - Submissions above 12,000 words will be DESK-REJECTED if excessive length not justified
 
-**📏 WORD COUNT — UPDATED tick-4331 (2026-06-30):** Body text (annotations + submission notes stripped, refs included): **~11,715 words** (consistent measurement baseline) — UNDER the 12,000 desk-rejection threshold. §6.2 familiarity-tax prose trimmed ~171 words at tick-4331 (488 → 322 words in §6.2). §4.6 contains ~145 [SLOT] markers; when filled with actual data, word count will rise by an estimated +245–405 words → final: ~11,960–12,120 words. **~200-word additional trim still advisable before submission** to stay safely under 12,000 after slot fill-in. Remaining target: **§4.4 analysis plan (~200 words)** — H3 (m=6) and H4 descriptions are detailed; condensable once results known. DO NOT cut §6.1 (core design argument), §6.2 (now trimmed), §6.3 (feedback inversion), §7 (conclusion).
+**📏 WORD COUNT — UPDATED tick-4332 (2026-06-30):** Body text (annotations + submission notes stripped, refs included): **~11,535 words** (tick-4332 estimate: 11,715 − 180) — UNDER the 12,000 desk-rejection threshold. §6.2 trimmed −171w (tick-4331). §4.5 analysis plan trimmed ~180w (tick-4332): H1 directional magnitude removed; H2 outcome patterns condensed to §6.2 forward-ref; H3 directional magnitudes + ethics clause condensed; H4 calibration tightened. §4.6 contains ~145 [SLOT] markers; when filled, word count rises +245–405 → final: ~11,780–11,940 words. **Paper is now comfortably under 12,000 after projected slot fill-in.** Additional trim no longer critical; preserve all remaining sections. DO NOT cut §6.1 (core design argument), §6.2 (trimmed), §6.3 (feedback inversion), §7 (conclusion), §4.5 (now at ~440 words — done).
 
 **Alternatively:** USENIX SOUPS 2027 (security + usability, more directly on-topic for the empirical studies). CHI is higher prestige and better for HCI PhD applications.
 
