@@ -519,7 +519,7 @@ The practical prescription follows from the boundary conditions. When designing 
 - Submissions under 5,000 words = short papers
 - Submissions above 12,000 words will be DESK-REJECTED if excessive length not justified
 
-**⚠️ WORD COUNT ALERT (tick-4271):** Body text (annotations stripped) currently ~15,000 words - 3,000 over the 12,000 desk-rejection threshold. Significant editing required before submission. §6 Discussion alone is ~5,005 clean words (too long). Target: get body to 8,000-10,000 before submission (the R&R process allows further cuts after reviews; aim for 10,000 at first submission with a justified-length note if needed).
+**📏 WORD COUNT — UPDATED tick-4330 (2026-06-30):** Body text (annotations + submission notes stripped, refs included): **11,727 words** — UNDER the 12,000 desk-rejection threshold. The tick-4271 alert (~15,000) was stale; editing since has brought the paper under the limit. However: §4.6 contains ~145 [SLOT] markers; when filled with actual data, word count will rise by an estimated +245–405 words → final: ~11,950–12,130 words. **~400-word trim advisable before submission to stay safely under 12,000 after slot fill-in.** Best targets: §6 Discussion (2,308 words — largest single section; trim §6.2 familiarity-tax prose by ~200 words), §4 methods (3,188 words — §4.4 analysis plan is detailed; trim ~200 words). DO NOT cut §6.1 (core design argument), §6.3 (feedback inversion), §7 (conclusion). Confirmed: §6 Discussion is 2,308 words (not 5,005; that estimate was wrong).
 
 **Alternatively:** USENIX SOUPS 2027 (security + usability, more directly on-topic for the empirical studies). CHI is higher prestige and better for HCI PhD applications.
 
@@ -529,7 +529,7 @@ The practical prescription follows from the boundary conditions. When designing 
 3. Section 5 updated with Study 2 pre-registration DOI (conditional on H4 in Study 1)
 4. Section 6 written from Study 1 data; then CUT to <10,000 words total
 5. ✅ Kulyk et al. citation FIXED (tick-3765): year 2017→2015; venue USENIX VoteID→VoteID 2015 LNCS Springer. ✅ JONY-ACTION F RESOLVED (tick-3766): Marky et al. (2018) CHI added as correct citation for verifiable e-voting usability (95-participant Benaloh Challenge study). §1.4 paragraph updated: Marky et al. now cited for task-completion/workload focus (distinct from PIUP's privacy-mental-model focus); Kulyk et al. (2015) description confirmed accurate.
-6. ✅ CHI 2027 word limit and formatting confirmed (tick-4271): 5,000-8,000 encouraged; 12,000 max. Body currently ~15,000 - needs cutting.
+6. ✅ CHI 2027 word limit and formatting confirmed (tick-4271): 5,000-8,000 encouraged; 12,000 max. Body currently **11,727 words (under limit)** [updated tick-4330]. After §4.6 slot fill-in: ~12,000 — reserve ~400-word trim for post-data editing.
 
 **Submission-ready target date:** September 10, 2026 (CHI 2027 deadline) with Study 1 results if pilot + full study can complete by ~August 2026. If Study 1 data is not available by September 10, the R&R phase (reviews November 5, resubmission December 3) may allow filling in results. Jony must decide: (a) race for September 10 with data, (b) submit without data as a 'paper in preparation' + use R&R, or (c) target SOUPS 2027 for a less constrained timeline.
 
