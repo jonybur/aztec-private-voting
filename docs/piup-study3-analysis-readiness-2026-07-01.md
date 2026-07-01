@@ -13,11 +13,11 @@
 
 **Option A applied.** Pre-reg updated to floor=5 in §3.2, §7.7, and registration checklist. Analysis script already uses floor=5. No script change needed. Pre-reg commit: see tick-4408.
 
-| Document | Counter floor | Location |
-|---|---|---|
-| `piup-study3-osf-prereg-2026-07-01.md` | **≥10** verifications | §3.2 and §7.7 |
-| `piup-study3-analysis.R` | **≥5** verifications | Lines 119, 124, 431–438 |
-| `piup-study3-drycheck.R` | **≥5** verifications (implied by drycheck data design) | — |
+| Document | Counter floor (PRE-fix) | Counter floor (POST-fix tick-4408) | Location |
+|---|---|---|---|
+| `piup-study3-osf-prereg-2026-07-01.md` | ≥10 | **≥5** ✅ aligned | §3.2 and §7.7 |
+| `piup-study3-analysis.R` | ≥5 | **≥5** ✅ (unchanged) | Lines 119, 124, 431–438 |
+| `piup-study3-drycheck.R` | ≥5 | **≥5** ✅ (unchanged) | — |
 
 ### Why this happened
 
