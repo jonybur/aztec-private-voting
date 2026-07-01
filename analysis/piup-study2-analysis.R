@@ -924,18 +924,47 @@ if (nrow(m1_row) > 0) {
 cat(sprintf("\nH2.4 VERDICT: %s\n\n", h24_verdict))
 
 # [EXPLORATORY] M1 × L interaction — stronger effect in fingerprint condition?
-cat("[EXPLORATORY] M1 × L interaction (§9.1 exploratory):\n")
-lr_exp <- glm(m3_click ~ m1_qac * L + E + I,
-              data = df_lr, family = binomial())
-lr_exp_tidy <- broom::tidy(lr_exp, exponentiate = TRUE, conf.int = TRUE)
-int_row_exp <- lr_exp_tidy[grepl("m1_qac:L", lr_exp_tidy$term), ]
-if (nrow(int_row_exp) > 0) {
-  cat(sprintf("  M1 × L interaction: OR = %.2f, p = %.4f\n",
-              int_row_exp$estimate, int_row_exp$p.value))
+cat("[EXPLORATORY] M1 × L interaction (§9.1 exploratory, not pre-registered):\n")
+lr_exp_L <- glm(m3_click ~ m1_qac * L + E + I,
+               data = df_lr, family = binomial())
+lr_exp_L_tidy <- broom::tidy(lr_exp_L, exponentiate = TRUE, conf.int = TRUE)
+int_row_L <- lr_exp_L_tidy[grepl("m1_qac:L", lr_exp_L_tidy$term), ]
+if (nrow(int_row_L) > 0) {
+  cat(sprintf("  M1 × L interaction: OR = %.2f [%.2f, %.2f], p = %.4f\n",
+              int_row_L$estimate, int_row_L$conf.low, int_row_L$conf.high,
+              int_row_L$p.value))
 } else {
   cat("  Interaction term not found; check factor level names.\n")
 }
 cat("  *** EXPLORATORY — not pre-registered. ***\n\n")
+
+# [EXPLORATORY] M1 × I interaction — does calibration moderate the comprehension → save path?
+# Pre-specified exploratory: Amendment 24 (pre-data, tick-4373).
+# Tests: among participants who correctly understood the receipt (M1=1), is the download
+# click rate amplified when a calibration intervention (I1) is present? Or does calibration
+# primarily operate by correcting incorrect mental models (boosting M1) rather than by
+# amplifying the M1→download path? Interpretive note: interaction OR > 1 → calibration
+# amplifies the comprehension → download link; OR < 1 → calibration partially substitutes
+# for comprehension (less mediation through M1 when calibration is present).
+cat("[EXPLORATORY] M1 × I interaction — calibration moderates Q-AC → download link?\n")
+cat("Pre-specified exploratory: Amendment 24 (pre-data, 2026-07-01).\n")
+lr_exp_I <- glm(m3_click ~ m1_qac * I + L + E,
+               data = df_lr, family = binomial())
+lr_exp_I_tidy <- broom::tidy(lr_exp_I, exponentiate = TRUE, conf.int = TRUE)
+int_row_I <- lr_exp_I_tidy[grepl("m1_qac:I", lr_exp_I_tidy$term), ]
+if (nrow(int_row_I) > 0) {
+  cat(sprintf("  M1 × I interaction: OR = %.2f [%.2f, %.2f], p = %.4f\n",
+              int_row_I$estimate, int_row_I$conf.low, int_row_I$conf.high,
+              int_row_I$p.value))
+  cat(sprintf("  Interpretation: %s\n",
+              if (int_row_I$estimate > 1)
+                "Calibration amplifies comprehension → download link (OR > 1)."
+              else
+                "Calibration substitutes for / attenuates comprehension → download link (OR < 1)."))
+} else {
+  cat("  Interaction term not found; check factor level names.\n")
+}
+cat("  *** PRE-SPECIFIED EXPLORATORY (Amendment 24) — not confirmatory. ***\n\n")
 
 } # end if (!PILOT)
 
