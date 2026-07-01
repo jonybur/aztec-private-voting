@@ -93,7 +93,7 @@ The countdown value displayed is **held constant at "5 days 3 hours 12 minutes"*
 - Age ≥ 18
 
 **Exclusion and replacement criteria (pre-registered):**
-- Completion time < 3 minutes (inattention proxy — note: Qualtrics page timer enforces minimum 30s on receipt page; participants violating the 30-second timer are warned but not excluded unless overall completion time < 3 minutes)
+- Completion time < 3 minutes total (Q_TotalDuration < 180 seconds; inattention proxy). **Note on independence of timing exclusions:** The Qualtrics page timer enforces a hard minimum of 30 seconds on the receipt-display page (Block 2) via JavaScript button-disabling; participants cannot advance before 30 seconds. This enforcement means post-hoc exclusion based on Block 2 page time alone is not expected to apply. If the JavaScript fails (rare browser-compatibility issue), the Q_TotalDuration < 180-second criterion serves as a catch-all. The two timing criteria are independent — either alone triggers replacement; they are not joint criteria.
 - Failed attention check (must select "Strongly agree" on embedded item; see Attention Check in §5)
 - Complete non-responder on DV1 or DV2 (system error or refusal)
 
@@ -292,13 +292,17 @@ Stimulus props:
 
 **Risk classification:** Minimal risk. Participants are not exposed to real employer pressure; the vignette scenarios are hypothetical and comparable in intensity to standard employment-related survey research.
 
+**Minimal-risk justification for high-pressure scenario (P2):** The job-threat vignette ("If you can't show me your vote receipt right now, I'll need to question your commitment to the team") is delivered in hypothetical-present tense. No participant is in an actual employment relationship with the study; no real job consequences exist. The scenario language is calibrated to engage a genuine coercion response while remaining clearly fictional (the consent form and cover story both describe the study as involving "a short workplace scenario"; participants self-select at that disclosure). This is methodologically consistent with prior vignette research using employment-coercion scenarios in security and privacy contexts (Egelman & Felt, 2012). No occupation filters are applied in Prolific; the study does not target workers in specific vulnerable circumstances. At most institutions, vignette research using hypothetical workplace scenarios qualifies for expedited review under the "no more than minimal risk" standard.
+
 **Deception:** Partial. The cover story ("understanding how people interact with digital voting systems") withholds the study's specific focus on coercion resistance. Active deception (false claims) is not used. Full debrief is provided at the end of the study.
 
 **Debrief content:** Study purpose (testing whether UI design affects coercion compliance), explanation that the scenarios were entirely hypothetical, description of real-world context (privacy-preserving voting, receipt design), and contact information for questions.
 
 **IRB pathway:** Minimal risk; expedited review expected. IRB approval is obtained before data collection.
 
-**Vulnerable populations:** Qualtrics/Prolific populations with high approval rates are used; no targeting of vulnerable groups. The job-threat scenario language is reviewed for potential distress; language is kept professional and clearly hypothetical ("Imagine your manager...").
+**Vulnerable populations:** Qualtrics/Prolific populations with high approval rates are used; no targeting of vulnerable groups. The job-threat scenario language is reviewed for potential distress; language is kept professional and clearly hypothetical.
+
+**Sequencing note (DV3 before vignette):** DV3 (comprehension check: "did the receipt tell you how you voted?") is administered in Block 3, before the vignette scenario in Block 4. Participants who correctly answer No have confirmed the receipt does not reveal their vote before reading the adversarial scenario. This may lower sharing intent in both conditions if participants reason that sharing is lower-risk once receipt privacy is confirmed. This ordering is pre-specified and unavoidable — placing the vignette before DV3 would allow coercion framing to prime the comprehension answer, severely reducing DV3 validity. The DV3-before-vignette sequence does not threaten internal validity for the D × P interaction (H4.2) because any priming effect is constant across conditions. It may attenuate the H4.1 main effect (UI-lock vs. no lock on sharing intent) by making sharing seem lower-risk in both conditions before adversarial pressure is introduced. This is a pre-registered limitation; it is reported as such in the manuscript's limitations section.
 
 ---
 
