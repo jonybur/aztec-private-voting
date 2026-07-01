@@ -152,10 +152,14 @@ The naming rationale in `receipt-design.md` is based on English-language mental 
 **Q3: How does social proof affect the trade-off between verifiability and pressure?**  
 Study 3 tests whether showing a "N voters have verified" counter increases verification rates. But the counter also creates a social signal that *not verifying* is non-normative, which could increase coercion pressure on voters who have not verified. The interaction between social proof for usability and coercion pressure is unexplored in the voting security literature.
 
-**Q4: What is the right UX for the temporal privacy constraint?**  
+**Q4: What is the right UX for the temporal privacy constraint?** *(Addressed by Study 4)*  
 The PIUP's receipt-freeness holds only if the fingerprint is kept private until the tally closes (otherwise the fingerprint → transaction → choice lookup is possible). The current receipt UI handles this with copy ("don't share until the vote closes"). Is copy sufficient? Would a UI that prevents sharing before the deadline (e.g., a share button that becomes active only after finalization) be more robust? And would that create usability problems for voters who want to confirm immediately?
 
-These questions are the natural research agenda following Studies 1–3.
+Study 4 (pre-registered 2×2 vignette, N=160; `docs/piup-study4-osf-prereg-2026-07-01.md`) directly addresses this question. The UI-lock condition disables copy/share until vote close; the countdown-only condition uses copy instruction alone ("sharing is safe after vote close"). The primary DV is self-reported sharing intent (7-point scale); the interaction hypothesis is that the lock's sharing-intent reduction is larger under high adversarial pressure than moderate pressure — where a technical constraint ("I cannot") is harder for a coercer to override than a normative one ("I should not"). The secondary DV measures perceived deniability: does the voter believe "the app won't let me" is a convincing and socially acceptable response to a coercer? Study 4 provides the first experimental evidence on whether UI-level temporal enforcement (Invariant 2) produces genuine coercion resistance at the social layer.
+
+The remaining open question — whether the lock creates usability problems for voters who want to confirm immediately — is not addressed by Study 4 (which measures coercion resistance in adversarial scenarios, not verification convenience). This would require a separate usability study with non-adversarial verification tasks.
+
+These questions are the natural research agenda following Studies 1–3; Q4 is now the subject of Study 4.
 
 ---
 
@@ -165,6 +169,8 @@ These questions are the natural research agenda following Studies 1–3.
 - `docs/receipt-design.md` — the UX rationale
 - `docs/receipt.md` — threat model and verification flow
 - `docs/piup-study3-social-verification-2026-06-29.md` — Study 3 (social proof)
+- `docs/piup-study4-temporal-coercion-vignette-2026-07-01.md` — Study 4 design (addresses Q4 above)
+- `docs/piup-study4-osf-prereg-2026-07-01.md` — Study 4 pre-registration
 - `docs/gt-hci-research-statement-draft-2026-06-22.md` — GT application
 - `docs/cmu-hci-research-statement-draft-2026-06-22.md` — CMU application
 - `GRANT.md` — Aztec Wave 3 grant application
