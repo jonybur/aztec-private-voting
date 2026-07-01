@@ -1,8 +1,8 @@
 # Protective Absence: Designing Coercion-Resistant Receipts for Private Cryptographic Voting
 
 _Draft for CHI 2027 submission · Jony Bursztyn · 2026-06-22_
-_Status: All sections written. §4.6 Results pending Study 1 data collection (2026-Q3 pilot). Submission-clean pending OSF amendments O+T._
-_Word count: ~11,412 words (body excl. tables + refs; CHI cap 12,000 incl. refs, excl. tables). Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendment 14)._
+_Status: All sections written. §4.6 Results pending Study 1 data collection (2026-Q3 pilot). Submission-clean pending OSF amendments O+T. Four-study arc: §7 updated tick-4397; abstract + §1.3 updated tick-4402._
+_Word count: ~11,787 words (body excl. tables + refs, per tick-4397 estimate); abstract +~30w (tick-4402). §4.6 fill-in adds +245–405w → final ~12,060–12,220w: trim pass needed post-fill (target §4.6 narrative or §6.4 examples). CHI cap 12,000 incl. refs, excl. tables. Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendment 14)._
 
 ---
 
@@ -12,7 +12,7 @@ Submission confirmations carry an implicit claim: the system received what you s
 
 We present the **Proof-of-Inclusion UX Pattern (PIUP)**, a design class for systems that must confirm participation without revealing content. PIUP centers on *protective absence*: deliberate omission of the submitted choice, paired with a signal marking omission as intentional. This inverts Norman's feedback principle — correct feedback proves the action is *protected from display*.
 
-We instantiate PIUP in Aztec Private Voting and report two empirical studies: Study 1 (N=280, pre-registered, 4-condition between-subjects) on identifier label effects on privacy mental models; Study 2 (N=240, planned, 2×2×2 factorial) on explanation and calibration. PIUP formalises three invariants (surrogate independence, surrogate privacy in transit, minimal receipt content) and one named limitation: in the current Aztec Private Voting implementation, vote choice appears in public calldata — addressable at the application layer (§1.1), not through UI design.
+We instantiate PIUP in Aztec Private Voting and report four pre-registered studies. Study 1 (N=280, 4-condition between-subjects) tests identifier label effects on privacy mental models. Study 2 (N=240, 2×2×2 factorial) tests explanation and calibration effects. Study 3 (N≥80, two-arm field pilot) tests whether a social-verification counter increases post-vote verification return rates. Study 4 (N=160, 2×2 vignette) tests whether a UI-level temporal lock on the submission token produces genuine coercion deniability under adversarial pressure. PIUP formalises three invariants (surrogate independence, surrogate privacy in transit, minimal receipt content) and one named limitation: in the current Aztec Private Voting implementation, vote choice appears in public calldata — addressable at the application layer (§1.1), not through UI design.
 
 ---
 
@@ -58,7 +58,7 @@ The key contrast is fingerprint vs. confirmation code. "Confirmation code" in eC
 
 ### 1.3 Contributions
 
-This paper makes four contributions: (1) **PIUP** — a formally-characterized design class with three invariants and one named limitation for coercion-resistant confirmation in privacy-preserving submission systems (§2.1, §6.5); (2) **Aztec Private Voting** — a Noir ZK smart contract and React component library implementing PIUP on the Aztec v5 testnet (§3); (3) **Study 1** — a pre-registered 4-condition between-subjects experiment (N=280) on identifier label effects on privacy mental models (§4); and (4) **Study 2** — a pre-analysis plan for a 2×2×2 factorial (L × E × I; 8 cells, N=240) testing explanation and calibration effects (§5).
+This paper makes six contributions: (1) **PIUP** — a formally-characterized design class with three invariants and one named limitation for coercion-resistant confirmation in privacy-preserving submission systems (§2.1, §6.5); (2) **Aztec Private Voting** — a Noir ZK smart contract and React component library implementing PIUP on the Aztec v5 testnet (§3); (3) **Study 1** — a pre-registered 4-condition between-subjects experiment (N=280) on identifier label effects on privacy mental models (§4); (4) **Study 2** — a pre-registered 2×2×2 factorial (L × E × I; 8 cells, N=240) on explanation and calibration effects (§5); (5) **Study 3** — a pre-registered two-arm field pilot (N≥80) testing whether a social-verification counter increases post-vote verification return rates (§7); and (6) **Study 4** — a pre-registered 2×2 vignette experiment (N=160) testing whether a UI-level temporal lock on the submission token produces genuine coercion deniability under adversarial pressure (§7).
 
 ### 1.4 Scope and relation to prior work
 
@@ -391,7 +391,7 @@ H2.1-H2.4 are independent pre-specified predictions; no cross-hypothesis correct
 
 ### 5.6 Status
 
-Study 2 pre-registration DRAFT is complete (`docs/piup-study2-preregistration-draft-2026-06-29.md`, 23 design amendments incorporated as of 2026-06-30). The DRAFT is OSF-ready pending two gates: (a) Study 1 pilot data (N = 40) to calibrate baseline Q-AC accuracy estimates for H2.1 power (pre-reg §4 sampling plan), and (b) Study 1 H4 outcome from the full launch (N = 280) to resolve the H2.3 conditional secondary dependency and set final N (240 if H4 supported; 160 if not). Until OSF upload, Study 2 contribution (C4) is described as a "pre-analysis plan" (§1). If Study 2 is uploaded to OSF before CHI submission, update C4 heading to "Pre-registered study design (Study 2, N=240)" with OSF DOI, and update §5.6, §6.2, and §7 accordingly. Full design specification: `docs/piup-study2-design-note-2026-06-22.md`. [Updated tick-4293: status advanced from design-note stage to pre-registration DRAFT complete (14 amendments, 2026-06-30); OSF gates unchanged.] [Updated tick-4327: amendment count corrected 14→23 to reflect Amendments 15-23 incorporated 2026-06-30 via cross-check (tick-4321); all 23 amendments are pre-data; OSF gates unchanged.]
+Study 2 pre-registration DRAFT is complete (`docs/piup-study2-preregistration-draft-2026-06-29.md`, 23 design amendments incorporated as of 2026-06-30). The DRAFT is OSF-ready pending two gates: (a) Study 1 pilot data (N = 40) to calibrate baseline Q-AC accuracy estimates for H2.1 power (pre-reg §4 sampling plan), and (b) Study 1 H4 outcome from the full launch (N = 280) to resolve the H2.3 conditional secondary dependency and set final N (240 if H4 supported; 160 if not). Study 2 contribution is now C4 in the six-contribution list (§1.3, updated tick-4402; described as 'pre-registered 2×2×2 factorial'). If Study 2 is uploaded to OSF before CHI submission, add OSF DOI to C4 in §1.3 and update §5.6, §6.2, and §7 accordingly. Full design specification: `docs/piup-study2-design-note-2026-06-22.md`. [Updated tick-4293: status advanced from design-note stage to pre-registration DRAFT complete (14 amendments, 2026-06-30); OSF gates unchanged.] [Updated tick-4327: amendment count corrected 14→23 to reflect Amendments 15-23 incorporated 2026-06-30 via cross-check (tick-4321); all 23 amendments are pre-data; OSF gates unchanged.]
 
 ---
 
