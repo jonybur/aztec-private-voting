@@ -274,16 +274,21 @@ if (p_h41 >= 0.05) {
   sd_d0 <- sd(df_itt$QR5_DV1[df_itt$D == "D0"], na.rm = TRUE)
   sd_d1 <- sd(df_itt$QR5_DV1[df_itt$D == "D1"], na.rm = TRUE)
 
-  tost_result <- TOSTtwo(
+  # Equivalence bound: ±1 pooled SD of DV1 (raw scale), pre-registered.
+  # tsum_TOST() is the current TOSTER API (>= 0.4.0); eqbound_type="raw" avoids
+  # the biased SMD bound; eqb = sd_dv1 implements the pre-registered ±1-SD bound.
+  tost_result <- tsum_TOST(
     m1 = m_d0, m2 = m_d1,
     sd1 = sd_d0, sd2 = sd_d1,
     n1 = n_d0, n2 = n_d1,
-    low_eqbound_d = -1.0,
-    high_eqbound_d = 1.0,
+    eqb = sd_dv1,
+    eqbound_type = "raw",
     alpha = 0.05
   )
   print(tost_result)
-  cat("Equivalence established (both p < .05):", tost_result$TOST_p1 < 0.05 & tost_result$TOST_p2 < 0.05, "\n")
+  tost_p1 <- tost_result$TOST$p.value[1]
+  tost_p2 <- tost_result$TOST$p.value[2]
+  cat("Equivalence established (both p < .05):", tost_p1 < 0.05 & tost_p2 < 0.05, "\n")
 } else {
   cat("H4.1 significant — TOST not required.\n")
 }
