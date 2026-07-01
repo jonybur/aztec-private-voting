@@ -202,7 +202,15 @@ Sensitivity analysis 3: re-run the primary logistic regression excluding DV2 as 
 
 ## 9. Relation to Study 2
 
-Study 3 is embedded in the same live election as Study 2. Random assignment at T0 determines both Study 2 (baseline PIUP receipt experience) and Study 3 (social proof vs. control). Participants provide self-report measures at T0 (DV2, M1, C1 from Study 3; all Study 2 T0 measures) and T+14 (DV3, DV4 from Study 3; all Study 2 T+14 measures). The Study 2 primary outcome (DV1 Study 2: verification rate in a PIUP election) is the same behavioral measure as Study 3 DV1, but Study 2's analysis does not condition on the Study 3 manipulation. Study 3 takes the Study 2 pool and adds condition as a factor.
+Study 2 and Study 3 address different phases of the PIUP behavioral arc and use different paradigms. **Study 2** is a controlled single-session experiment: participants are recruited via Prolific, interact with the actual VoteReceipt.tsx component hosted on Vercel in study mode (download-button click is logged but no file is written; the vote is consequentially inert), and answer questionnaires immediately after receipt exposure (T0 only). Study 2's primary outcome is absent-content interpretation accuracy (Q-AC; H2.1), not verification return rate. Study 2 has no T+14 follow-up component.
+
+**Study 3** is a field experiment requiring a live DAO election with the Aztec Private Voting contract deployed on testnet (or mainnet). Participants are real voters who receive a real, downloadable receipt and can interact with the `verify_vote_counted()` function 14 days after casting their ballot. The social proof counter manipulation draws from actual on-chain verification counts, not simulated data.
+
+Because Study 2 uses a simulated Vercel prototype and Study 3 requires a live contract deployment, they cannot be embedded in the same election. The Study 3 pre-registration must be filed independently of Study 2's OSF upload. The timing dependency is: Study 1 H4 outcome is needed to confirm Study 2 N and to set the Study 3 pool estimate; Study 3 data collection requires a separate live election in parallel with or following Study 2 data collection.
+
+**Study 3 participant pool:** Voters in a live election using the deployed Aztec Private Voting v5 contract. Recruitment proceeds through the DAO's existing voter pool (no Prolific). No additional questionnaire recruitment is required beyond the election itself; T0 and T+14 measures are embedded in the voting flow and a follow-up email (if IRB-approved follow-up contact mechanism is in place).
+
+_[Amended tick-4427: §9 rewrote to accurately reflect that Study 2 is a controlled Vercel prototype (no T+14, primary DV = Q-AC accuracy) and Study 3 is a separate live-election field experiment. The original §9 incorrectly described Study 2 as a field experiment with T+14 measures and verification-rate DV — this reflected an earlier design conception that was superseded when Study 2 was redesigned as a controlled factorial experiment (pre-reg finalized 2026-06-29). Design dependency unchanged: Study 1 H4 gates Study 2 N, which sets Study 3 pool estimate. This amendment is pre-data and does not alter any hypothesis, DV, or analysis plan.]_
 
 ---
 
@@ -235,7 +243,7 @@ The pilot is designed to feed into one of three replication options (see `docs/p
 
 Before filing on OSF (complete in order):
 
-- [ ] Study 2 design is finalized and Study 2 pre-reg is filed (Study 3 is embedded in Study 2's election)
+- [ ] Study 2 design is finalized and Study 2 pre-reg is filed (Study 3 runs in a separate live election, not embedded in Study 2's Vercel prototype experiment; see §9)
 - [ ] Study 1 H4 outcome available (informs whether Study 2 proceeds with N=240 or N=160, which sets the available Study 3 pool)
 - [ ] Counter floor value confirmed as 5 (pre-registered; chosen over ≥10 for pilot reachability at N=80)
 - [ ] No T+7 reminder confirmed (not in deployment pipeline)
