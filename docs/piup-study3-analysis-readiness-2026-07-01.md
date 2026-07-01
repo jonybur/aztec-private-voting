@@ -5,13 +5,13 @@
 **Against:** `docs/piup-study3-osf-prereg-2026-07-01.md`, `docs/piup-study3-prereg-quality-check-2026-07-01.md`, `docs/piup-study3-social-verification-2026-06-29.md`  
 **Study type:** Two-arm between-subjects field experiment (embedded in same live election as Study 2)  
 **Reviewer:** Autonomous quality pass — not a substitute for Jony's review before OSF filing  
-**Status:** ⚠️ 1 critical discrepancy flagged (Jony decision required). All other gate items documented.
+**Status:** ✅ Critical discrepancy resolved in tick-4408 (Option A applied — pre-reg floor updated to ≥5 to match analysis script). Pre-reg ready for Jony’s OSF filing review.
 
 ---
 
-## 🔴 CRITICAL: Counter floor mismatch — pre-reg vs. analysis script
+## ✅ RESOLVED (tick-4408): Counter floor mismatch — pre-reg vs. analysis script
 
-**This must be resolved before OSF filing.**
+**Option A applied.** Pre-reg updated to floor=5 in §3.2, §7.7, and registration checklist. Analysis script already uses floor=5. No script change needed. Pre-reg commit: see tick-4408.
 
 | Document | Counter floor | Location |
 |---|---|---|

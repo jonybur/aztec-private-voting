@@ -50,7 +50,7 @@ Social proof (Cialdini, 1984) has been shown to increase upfront security behavi
 
 The counter value is updated every 15 minutes from public on-chain `verify_vote_counted()` call logs. It displays the raw count (not a percentage) to avoid base-rate anchoring when n is small early in the verification window.
 
-**Counter floor (pre-registered):** To avoid negative social proof effects at very low verification counts (Cialdini, 1984) — e.g., "0 voters have verified" may actively demotivate verification — the social proof counter activates only after **≥ 10 participants have verified their receipt**. Before this floor is reached, the treatment receipt displays "Verification is open until [date]" without a count. This floor value (10) is the pre-registered design parameter; it will not be changed after registration.
+**Counter floor (pre-registered):** To avoid negative social proof effects at very low verification counts (Cialdini, 1984) — e.g., "0 voters have verified" may actively demotivate verification — the social proof counter activates only after **≥ 5 participants have verified their receipt**. This threshold (rather than the originally considered ≥10) was chosen because at the expected pilot sample size (N = 80), a floor of 10 would not be reached at the conservative baseline verification rate (10% × 80 = 8 verifications). A floor of 5 avoids negative social proof from a "0 verified" display while remaining reachable at the conservative baseline. Before this floor is reached, the treatment receipt displays "Verification is open until [date]" without a count. This floor value (5) is the pre-registered design parameter; it will not be changed after registration.
 
 ### 3.3 Condition assignment and blinding
 
@@ -172,9 +172,9 @@ If log opt-in n ≥ 40: Kaplan-Meier survival curves by condition; log-rank test
 
 ### 7.7 Amendment protocol
 
-If the counter floor (≥10 verified) is not reached before T+14 in the treatment condition, the social proof counter will never have activated. In this case, the treatment was not delivered as designed. Pre-specified response: treat this as a manipulation failure; report verification rates descriptively without the logistic regression primary analysis; document for powered replication design revision.
+If the counter floor (≥5 verified) is not reached before T+14 in the treatment condition, the social proof counter will never have activated. In this case, the treatment was not delivered as designed. Pre-specified response: treat this as a manipulation failure; report verification rates descriptively without the logistic regression primary analysis; document for powered replication design revision.
 
-**Note on floor calibration and expected baseline:** At the conservative verification baseline (p₁ = 0.10) with N = 80, the expected number of verifications is ~8 — below the floor of 10. Manipulation failure is therefore a plausible outcome under the conservative scenario. The PIUP receipt design (Study 2) is expected to raise the baseline above 0.10; if Study 2 establishes a baseline ≥ 0.15, expected verifications = 12, clearing the floor. If the floor is not reached, the trial is retrospectively classified as an implementation feasibility check and the floor threshold is revised downward (e.g., to ≥5) before the powered replication registration. This contingency does not require a pre-registration amendment if condition assignments remain blinded.
+**Note on floor calibration:** The floor of 5 was chosen to be reachable at the conservative baseline (p₁ = 0.10, N = 80 → expected 8 verifications), unlike the originally considered floor of 10 (which would not be reached at p₁ = 0.10). At the PIUP-elevated baseline expected from Study 2 (p₁ ≥ 0.15, N = 80 → ≥12 verifications), the floor is cleared comfortably. If the floor of 5 is not reached before T+14, manipulation failure applies and results are reported descriptively. This constitutes an extreme implementation failure scenario (< 5 of ~80 participants verifying), which would indicate a fundamental baseline problem to be documented for the powered replication.
 
 ### 7.8 Sensitivity analysis 3 — DV2 timing heterogeneity
 
@@ -237,7 +237,7 @@ Before filing on OSF (complete in order):
 
 - [ ] Study 2 design is finalized and Study 2 pre-reg is filed (Study 3 is embedded in Study 2's election)
 - [ ] Study 1 H4 outcome available (informs whether Study 2 proceeds with N=240 or N=160, which sets the available Study 3 pool)
-- [ ] Counter floor value confirmed as 10 (no change from design doc)
+- [ ] Counter floor value confirmed as 5 (pre-registered; chosen over ≥10 for pilot reachability at N=80)
 - [ ] No T+7 reminder confirmed (not in deployment pipeline)
 - [ ] Logistic regression specification confirmed with statistician (covariates, centering)
 - [ ] Debrief script finalized (`piup-study3-debrief-script-2026-06-30.md`)
