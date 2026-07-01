@@ -8,11 +8,11 @@ _Word count: 9,262 body words (target 9,000-12,000; CHI cap). Open actions: JONY
 
 ## Abstract
 
-Submission confirmations carry an implicit claim: the system received what you sent. In private cryptographic voting, this creates a coercion surface - a receipt showing the submitted choice can be demanded as compliance proof.
+Submission confirmations carry an implicit claim: the system received what you sent. In private cryptographic voting, this creates a coercion surface — a receipt showing the submitted choice can be demanded as compliance proof.
 
-We present the **Proof-of-Inclusion UX Pattern (PIUP)**, a design class for systems that must confirm participation without revealing content. PIUP centers on *protective absence*: deliberate omission of the submitted choice, paired with a signal marking omission as intentional. This inverts Norman's feedback principle - correct feedback proves the action is *protected from display*.
+We present the **Proof-of-Inclusion UX Pattern (PIUP)**, a design class for systems that must confirm participation without revealing content. PIUP centers on *protective absence*: deliberate omission of the submitted choice, paired with a signal marking omission as intentional. This inverts Norman's feedback principle — correct feedback proves the action is *protected from display*.
 
-We instantiate PIUP in Aztec Private Voting and report two empirical studies: Study 1 (N=280, pre-registered, 4-condition between-subjects) on identifier label effects on privacy mental models; Study 2 (N=240, planned, 2×2×2 factorial) on explanation and calibration. PIUP formalises three invariants (surrogate independence, surrogate privacy in transit, minimal receipt content) and one named limitation: in the current Aztec Private Voting implementation, vote choice appears in public calldata - addressable at the application layer (§1.1), not through UI design.
+We instantiate PIUP in Aztec Private Voting and report two empirical studies: Study 1 (N=280, pre-registered, 4-condition between-subjects) on identifier label effects on privacy mental models; Study 2 (N=240, planned, 2×2×2 factorial) on explanation and calibration. PIUP formalises three invariants (surrogate independence, surrogate privacy in transit, minimal receipt content) and one named limitation: in the current Aztec Private Voting implementation, vote choice appears in public calldata — addressable at the application layer (§1.1), not through UI design.
 
 ---
 
