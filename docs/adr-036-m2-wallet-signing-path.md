@@ -1,7 +1,7 @@
 # ADR-036: M2 Wallet Signing Path — EIP-191 vs. ADR-036 vs. Raw
 
 **Date:** 2026-06-22  
-**Status:** Proposed — awaiting Jony decision  
+**Status:** Accepted — Path C (EIP-191) implemented (tick-4365)  
 **Affects:** `contracts/src/main.nr` (`cast_vote_babylon_v2`), `packages/react/src/hooks/useM2Signing.ts`  
 **Blocking:** Testnet redeployment, Wave 3 grant submission
 
