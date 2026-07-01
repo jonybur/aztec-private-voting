@@ -65,6 +65,13 @@ library(survival) # survfit, Surv; install.packages("survival") if needed
 #   dv1_selfreport  = sample(c(0,1,NA), N, replace=TRUE, prob=c(0.7,0.15,0.15)),
 #   dv2_intent      = sample(1:7, N, replace=TRUE),
 #   dv3_comprehension = sample(c(0,1), N, replace=TRUE, prob=c(0.2,0.8)),
+#   # NOTE: Dry-run uses pre-computed dv3_comprehension. Real Qualtrics data will have
+#   # raw item columns dv3_q1–dv3_q4 instead. See DV3 SCORING block below (after mutate).
+#   # Simulated raw items for end-to-end scoring test (optional — keep if testing Option A/B):
+#   # dv3_q1 = sample(c("Yes","No","I'm not sure"), N, replace=TRUE, prob=c(0.75,0.15,0.10)),
+#   # dv3_q2 = sample(c("No","Yes","I'm not sure"), N, replace=TRUE, prob=c(0.70,0.20,0.10)),
+#   # dv3_q3 = sample(c("No","Yes","I'm not sure"), N, replace=TRUE, prob=c(0.70,0.20,0.10)),
+#   # dv3_q4 = sample(c("b","a","c","d"), N, replace=TRUE, prob=c(0.75,0.10,0.10,0.05)),
 #   dv4_trust1      = sample(1:7, N, replace=TRUE),
 #   dv4_trust2      = sample(1:7, N, replace=TRUE),
 #   m1_eff1         = sample(1:5, N, replace=TRUE),
@@ -103,6 +110,70 @@ df <- df_raw %>%
     # Partial verifier flag (coded as missing in ITT; see §7.2 SA-1)
     dv1_for_itt = if_else(partial_verify_fail == 1L, NA_integer_, dv1_verified)
   )
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DV3 SCORING — UNCOMMENT WHEN REAL DATA ARRIVES
+# (Dry-run stub uses pre-computed dv3_comprehension = 0|1. Real Qualtrics data
+#  has raw item columns dv3_q1, dv3_q2, dv3_q3, dv3_q4 from the T+14 survey.
+#  See survey instrument: docs/piup-study3-survey-instrument-2026-07-01.md §5.2.)
+#
+# ⚠️ JONY-DECISION REQUIRED before uncommenting — select ONE of the two options:
+#   Option A (recommended, per instrument §5.2): all-4-correct binary.
+#     Uncomment the OPTION A block below.
+#   Option B: majority-rule (≥3 of 4 correct). Requires a sensitivity SA.
+#     Uncomment the OPTION B block below.
+#
+# Qualtrics export column names (rename if Qualtrics exports differently):
+#   dv3_q1 — response to DV3-1 ("Does verifying confirm vote was counted?")
+#             Correct answer: "Yes"
+#   dv3_q2 — response to DV3-2 ("Does verifying reveal which option you chose?")
+#             Correct answer: "No"
+#   dv3_q3 — response to DV3-3 ("If you showed the link, could they learn your choice?")
+#             Correct answer: "No"
+#   dv3_q4 — response to DV3-4 ("What does successful verification prove?")
+#             Correct answer: option (b) — "Counted, not choice"
+#             Qualtrics exports verbatim text or recoded value; use the correct match below.
+#
+# ── OPTION A (ALL-CORRECT BINARY — RECOMMENDED) ───────────────────────────
+# Uncomment lines below once DV3 item wording is confirmed and Jony selects Option A:
+#
+# df <- df %>%
+#   mutate(
+#     dv3_q1_correct = as.integer(dv3_q1 == "Yes"),
+#     dv3_q2_correct = as.integer(dv3_q2 == "No"),
+#     dv3_q3_correct = as.integer(dv3_q3 == "No"),
+#     dv3_q4_correct = as.integer(dv3_q4 == "b"),  # or verbatim text if Qualtrics exports it
+#     dv3_comprehension = as.integer(
+#       dv3_q1_correct == 1L & dv3_q2_correct == 1L &
+#       dv3_q3_correct == 1L & dv3_q4_correct == 1L
+#     )
+#   )
+#
+# ── OPTION B (MAJORITY RULE — ≥3 of 4 CORRECT) ────────────────────────────
+# Uncomment lines below if Jony selects Option B instead:
+# (If Option B: also add a sensitivity analysis comparing to Option A scoring.)
+#
+# df <- df %>%
+#   mutate(
+#     dv3_q1_correct = as.integer(dv3_q1 == "Yes"),
+#     dv3_q2_correct = as.integer(dv3_q2 == "No"),
+#     dv3_q3_correct = as.integer(dv3_q3 == "No"),
+#     dv3_q4_correct = as.integer(dv3_q4 == "b"),
+#     dv3_n_correct  = dv3_q1_correct + dv3_q2_correct + dv3_q3_correct + dv3_q4_correct,
+#     dv3_comprehension = as.integer(dv3_n_correct >= 3L)
+#   )
+# # Option B sensitivity (add to §7.5 exploratory section):
+# # cat("\n  [SA-DV3] Re-check with Option A strict scoring:\n")
+# # df_sa_dv3a <- df %>% mutate(
+# #   dv3_comprehension = as.integer(dv3_q1_correct == 1L & dv3_q2_correct == 1L &
+# #                                  dv3_q3_correct == 1L & dv3_q4_correct == 1L))
+# # print(table(df_sa_dv3a$condition, df_sa_dv3a$dv3_comprehension))
+#
+# ── IF DATA HAS PRE-COMPUTED dv3_comprehension (merged externally) ──────────
+# If the merged CSV already has a binary dv3_comprehension column (0/1),
+# skip both blocks above. Verify column is integer 0|1 before proceeding:
+# stopifnot(all(df$dv3_comprehension %in% c(0L, 1L, NA_integer_)))
+# ─────────────────────────────────────────────────────────────────────────────
 
 cat("Total loaded N =", nrow(df), "\n")
 cat("Condition assignment:\n"); print(table(df$condition))
