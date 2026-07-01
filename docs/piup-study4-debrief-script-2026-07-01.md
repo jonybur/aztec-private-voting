@@ -1,9 +1,9 @@
 # PIUP Study 4: Debrief Script
 
-**Document type:** IRB submission instrument  
-**Study:** Temporal UI-Lock and Social Deniability — PIUP Study 4  
-**Version:** 1.0 (2026-07-01, tick-4393)  
-**Relates to:** `piup-study4-temporal-coercion-vignette-2026-07-01.md` §7, `piup-study4-osf-prereg-2026-07-01.md`  
+**Document type:** IRB submission instrument
+**Study:** Temporal UI-Lock and Social Deniability - PIUP Study 4
+**Version:** 1.0 (2026-07-01, tick-4393)
+**Relates to:** `piup-study4-temporal-coercion-vignette-2026-07-01.md` §7, `piup-study4-osf-prereg-2026-07-01.md`
 **Mirrors:** `piup-study3-debrief-script-2026-06-30.md` (format and IRB submission structure)
 
 ---
@@ -23,7 +23,7 @@ IRB standards require a debrief that:
 
 The debrief is delivered at the **end of the single study session**, immediately after the final survey item and before the Prolific completion code is displayed. All debrief screens are presented within Qualtrics. Participants must acknowledge the debrief (Screen 4) before receiving the completion code.
 
-Study 4 is a single-session study — there is no T+14 follow-up. All participant data is collected within the session; withdrawal removes only Qualtrics response data (no behavioral log or follow-up data exists).
+Study 4 is a single-session study - there is no T+14 follow-up. All participant data is collected within the session; withdrawal removes only Qualtrics response data (no behavioral log or follow-up data exists).
 
 ---
 
@@ -37,7 +37,7 @@ Study 4 is a single-session study — there is no T+14 follow-up. All participan
 
 **Thank you for completing this study.**
 
-Before we share your completion code, we want to tell you the full story of what this study was about. Please take a moment to read this — it will help you understand what your responses contribute to.
+Before we share your completion code, we want to tell you the full story of what this study was about. Please take a moment to read this - it will help you understand what your responses contribute to.
 
 **What we told you at the start:**
 
@@ -47,11 +47,11 @@ At the beginning of this study, we said we were researching "how people interact
 
 This study is investigating whether the *design* of a private voting receipt can help protect voters who are pressured to prove how they voted.
 
-Privacy-preserving voting systems — a type of online voting that uses cryptography to ensure votes are counted correctly without revealing individual choices — give voters a receipt after they cast their ballot. This receipt proves their vote was counted, but it deliberately does not show what they voted for.
+Privacy-preserving voting systems - a type of online voting that uses cryptography to ensure votes are counted correctly without revealing individual choices - give voters a receipt after they cast their ballot. This receipt proves their vote was counted, but it deliberately does not show what they voted for.
 
 The question we are studying: if someone is pressured to share that receipt (by a colleague, a manager, or anyone else), does it make a difference whether the voting app *prevents* them from sharing it during the active voting period?
 
-We predicted that a voting app that *locks* the receipt from being downloaded or copied during the voting period gives a pressured voter a stronger, more convincing excuse — "I can't share this; my app won't let me" — than one that only shows a countdown without enforcing the restriction. We call this *social deniability*.
+We predicted that a voting app that *locks* the receipt from being downloaded or copied during the voting period gives a pressured voter a stronger, more convincing excuse - "I can't share this; my app won't let me" - than one that only shows a countdown without enforcing the restriction. We call this *social deniability*.
 
 ---
 
@@ -61,13 +61,13 @@ We predicted that a voting app that *locks* the receipt from being downloaded or
 
 You were randomly assigned to one of four groups. Each group saw a different combination of receipt type and social scenario.
 
-**Your receipt type:** [RECEIPT_TYPE]  
+**Your receipt type:** [RECEIPT_TYPE]
 *(Note: Qualtrics fills this in automatically. See administration note below.)*
 
 - **Countdown-only (Option D):** The receipt showed a countdown to when sharing becomes safe, but the download button remained active throughout. Participants in this group could have shared the receipt at any time.
-- **UI-lock (Option B):** The receipt showed the same countdown, but the download button was locked — greyed out with a padlock icon — until the vote close time. Participants in this group could not download the receipt during the active voting period.
+- **UI-lock (Option B):** The receipt showed the same countdown, but the download button was locked - greyed out with a padlock icon - until the vote close time. Participants in this group could not download the receipt during the active voting period.
 
-**Your scenario:** [PRESSURE_TYPE]  
+**Your scenario:** [PRESSURE_TYPE]
 *(Note: Qualtrics fills this in automatically. See administration note below.)*
 
 - **Moderate pressure (social request):** A colleague asked to see the receipt out of curiosity about how the system works.
@@ -81,7 +81,7 @@ All four combinations of receipt type and scenario were shown to approximately e
 
 **About the scenarios:**
 
-The situation you were asked to respond to — a colleague or manager requesting your vote receipt — was entirely hypothetical. No actual employer relationship or workplace pressure was implied. No real voting system, election, or Prolific recruitment account was connected to the scenario.
+The situation you were asked to respond to - a colleague or manager requesting your vote receipt - was entirely hypothetical. No actual employer relationship or workplace pressure was implied. No real voting system, election, or Prolific recruitment account was connected to the scenario.
 
 We understand that the high-pressure scenario (job threat framing) can feel uncomfortable to read. It was designed to simulate a genuinely threatening coercion situation, because the social deniability we are studying is most relevant precisely when pressure is high. We are grateful for your willingness to engage with a difficult hypothetical.
 
@@ -91,7 +91,7 @@ If participants knew in advance that the study was about coercion resistance and
 
 ---
 
-### Screen 4: Your Rights — Withdrawing Your Data
+### Screen 4: Your Rights - Withdrawing Your Data
 
 **You have the right to withdraw your data.**
 
@@ -101,10 +101,10 @@ Withdrawing will not affect your Prolific account, your compensation, or any fut
 
 **Do you wish to withdraw your data from this study?**
 
-- ◯ **No — I'm happy for my responses to be used.** Continue to the completion code.
-- ◯ **Yes — Please delete my data.** My responses will not be used.
+- ◯ **No - I'm happy for my responses to be used.** Continue to the completion code.
+- ◯ **Yes - Please delete my data.** My responses will not be used.
 
-*If you select "Yes," you will receive a confirmation email within 48 hours confirming that your data has been removed. You will still receive your Prolific completion code on the next screen.*
+*If you select "Yes," your data will be flagged for deletion. You will still receive your Prolific completion code on the next screen. If you want to confirm deletion has been completed, contact [PI email] within 48 hours of study completion.*
 
 ---
 
@@ -120,9 +120,9 @@ The voting scenarios and receipt screenshots shown in this study were mockups. N
 
 If you have questions about this study, how your data is used, or if you want to withdraw your data after completing this survey, please contact:
 
-> **Principal investigator:** [PI name]  
-> **Email:** [PI email]  
-> **Institution:** [Institution]  
+> **Principal investigator:** [PI name]
+> **Email:** [PI email]
+> **Institution:** [Institution]
 > **IRB protocol number:** [IRB number]
 
 You may also contact the IRB office directly at [IRB contact] if you have concerns about your rights as a research participant.
@@ -131,8 +131,8 @@ You may also contact the IRB office directly at [IRB contact] if you have concer
 
 If you are interested in the research area, the following references describe the problems this study is designed to address:
 
-- Benaloh, J., and Tuinstra, D. (1994). "Receipt-Free Secret-Ballot Elections." *STOC '94.* — The foundational paper defining receipt-freeness in voting.
-- Juels, A., Catalano, D., and Jakobsson, M. (2005). "Coercion-resistant electronic elections." *WPES '05.* — The formal treatment of coercion resistance.
+- Benaloh, J., and Tuinstra, D. (1994). "Receipt-Free Secret-Ballot Elections." *STOC '94.* - The foundational paper defining receipt-freeness in voting.
+- Juels, A., Catalano, D., and Jakobsson, M. (2005). "Coercion-resistant electronic elections." *WPES '05.* - The formal treatment of coercion resistance.
 
 ---
 
@@ -140,17 +140,17 @@ If you are interested in the research area, the following references describe th
 
 *One of the following two screens is shown depending on Screen 4 selection.*
 
-**If participant selected "No — happy to continue":**
+**If participant selected "No - happy to continue":**
 
 > ☐ **I have read the above information and understand the purpose of this study. I consent to my responses being used in analysis and publication (in aggregated, anonymous form).**
 >
 > [Show Prolific completion code →]
 
-**If participant selected "Yes — withdraw my data":**
+**If participant selected "Yes - withdraw my data":**
 
 > **Your data withdrawal has been recorded.**
 >
-> Your session responses will be deleted within 48 hours. You will receive a confirmation email at the address registered with Prolific.
+> Your session responses have been flagged for deletion. The researcher will process withdrawal requests within 48 hours of study completion. If you want confirmation, contact [PI email].
 >
 > Thank you for your time. Your Prolific completion code is: **[COMPLETION_CODE]**
 >
@@ -185,14 +185,14 @@ Participants are told which condition they were assigned to via two Qualtrics pi
 If a participant selects withdrawal on Screen 4:
 1. A withdrawal flag is written to the participant's Qualtrics response record immediately (embedded data field `withdrawn = TRUE`).
 2. Response data is soft-deleted (flagged `withdrawn = TRUE`) within 48 hours.
-3. A confirmation email is sent to the participant's registered email (via Prolific's messaging or a study administration email depending on IRB-approved data management protocol).
+3. Withdrawal requests are processed within 48 hours of study completion (no automated email — participants who want confirmation of deletion may contact [PI email] directly).
 4. Hard deletion of response data occurs within 30 days per IRB data management protocol.
 5. The participant's Prolific completion code is displayed regardless of withdrawal choice, ensuring compensation is not conditional on data donation.
 
 **Qualtrics implementation note:** Use a Branch after Screen 4 to detect `withdrawn = TRUE` and route to the withdrawal-confirmation variant of Screen 6. Both branches display the completion code. The Qualtrics survey flow after the debrief block:
 
 ```
-[Debrief Block: Screens 1–5]
+[Debrief Block: Screens 1-5]
 [Branch: withdrawn = TRUE → Screen 6 (withdrawal variant)]
 [Branch: withdrawn ≠ TRUE → Screen 6 (continue variant)]
 [End of Survey]
@@ -205,7 +205,7 @@ Single-session vignette studies with partial (non-deceptive) disclosure and hypo
 - The hypothetical scenarios did not place participants in genuinely threatening situations
 - Compensation is not withheld based on withdrawal
 
-A withdrawal rate up to 5% is assumed for planning purposes; at n = 40/cell target (after exclusions and replacements), a 5% withdrawal rate reduces the analytic sample by ≤ 2 participants per cell — well within the replacement margin.
+A withdrawal rate up to 5% is assumed for planning purposes; at n = 40/cell target (after exclusions and replacements), a 5% withdrawal rate reduces the analytic sample by ≤ 2 participants per cell - well within the replacement margin.
 
 ### Compensation
 
@@ -248,8 +248,8 @@ Study 4 debrief differs from Study 3 in the following respects:
 | Debrief timing | T+14 (end of follow-up window) | End of single session (immediate) |
 | Number of conditions | 2 (Group A / Group B) | 4 (D0P1 / D0P2 / D1P1 / D1P2) |
 | Deception level | Incomplete disclosure; real social count withheld | Partial disclosure; coercion focus withheld (no active deception) |
-| Count was real? | Yes — social proof counter was real | N/A — no social proof element |
-| Study involves real election? | Yes (participants voted in a real election) | No — scenarios are hypothetical throughout |
+| Count was real? | Yes - social proof counter was real | N/A - no social proof element |
+| Study involves real election? | Yes (participants voted in a real election) | No - scenarios are hypothetical throughout |
 | Behavioral log data? | Yes (opt-in) | No |
 | Longitudinal data withdrawal complexity | High (T0 + T+14 + behavioral log) | Low (single session only) |
 

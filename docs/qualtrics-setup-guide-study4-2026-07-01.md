@@ -127,7 +127,7 @@ By clicking **"I agree"** below, you confirm that you are at least 18 years old 
 
 ## §5 — Block 2: Cover Story + Receipt Display
 
-**Page timing:** Add a JavaScript page timer enforcing **minimum 30 seconds** on this page. Participants who advance before 30 seconds see a warning and cannot continue until the timer expires.
+**Page timing:** Add a JavaScript page timer enforcing **minimum 30 seconds** on this page. The Next button is disabled on page load (`this.disableNextButton()`) and re-enabled only after 30 seconds (`enableNextButton()`). Participants literally cannot advance until the timer expires — this is not a soft warning. Do NOT use Qualtrics\'s built-in Page Timer feature instead; it does not block advancement without additional scripting.
 
 **JavaScript (add to first question in Block 2):**
 
@@ -311,46 +311,209 @@ Force response: Yes
 
 ## §10 — Block 7: Debrief
 
-New page. No timer. Participants cannot go back after the debrief.
+**⚠ IRB-CRITICAL: This block implements the full 5-screen debrief from `piup-study4-debrief-script-2026-07-01.md`. Do not simplify. The withdrawal question (Screen 4) is an IRB requirement.**
 
-**Question QR7_DEBRIEF (Descriptive Text):**
+New page. No timer. Participants cannot go back after the debrief. The debrief block appears in Survey Flow AFTER the two exclusion Branches (§11 trigger logic); excluded participants never see the debrief.
 
----
+**Embedded data to add in Survey Flow BEFORE the Randomizer** (in addition to existing fields):
 
-**Thank you — here is what this study was really about**
+```
+receipt_label  = "" (set at randomisation — see below)
+pressure_label = "" (set at randomisation — see below)
+withdrawn      = FALSE
+```
 
-This study was examining a question about digital voting design: does it matter — for protecting voter privacy under pressure — whether a voting app *technically prevents* sharing a vote receipt, or whether it just *asks you not to*?
-
-You were shown a vote confirmation screen that was one of two versions:
-
-- **Version A (No lock):** The screen showed a countdown message saying when sharing would be safe. The download button was active and you could share the receipt at any time.
-- **Version B (Locked):** The same countdown message was shown, but the download button was disabled with a padlock — the app technically prevented download until the vote closed.
-
-You were in **[Condition description — set from embedded data].**
-
-We also varied the kind of pressure you imagined: some participants imagined a colleague asking out of curiosity; others imagined a manager threatening consequences.
-
-**Why we're studying this:**
-
-Private voting systems are designed so that your receipt proves your vote was counted — without showing *how* you voted. But if you face pressure from an employer or someone with authority over you, that receipt could be demanded. The design question is: does a technical lock ("the app won't let me share") give voters a better way to decline than a normative one ("I'm not supposed to share")?
-
-Your responses help us understand whether this design choice actually matters for people's experience.
-
-**Your responses are confidential.** Individual answers are not shared with anyone and will only appear in aggregate form in research publications.
-
-**Questions?** Contact [PI email / IRB contact].
+In each of the 4 Randomizer branches, set:
+- D0 branches: `receipt_label = Countdown-only (Option D)`
+- D1 branches: `receipt_label = UI-lock (Option B)`
+- P1 branches: `pressure_label = Moderate pressure (a colleague asking out of curiosity)`
+- P2 branches: `pressure_label = High pressure (a manager threatening consequences)`
 
 ---
 
-> **Implementation:** Use Qualtrics Piped Text to fill in the condition description:
-> - If `ui_cond = D0` and `pressure_cond = P1`: "**Version A (No lock) + Moderate scenario** (a colleague asking out of curiosity)"
-> - If `ui_cond = D0` and `pressure_cond = P2`: "**Version A (No lock) + High-pressure scenario** (a manager with threatened consequences)"
-> - If `ui_cond = D1` and `pressure_cond = P1`: "**Version B (Locked) + Moderate scenario** (a colleague asking out of curiosity)"
-> - If `ui_cond = D1` and `pressure_cond = P2`: "**Version B (Locked) + High-pressure scenario** (a manager with threatened consequences)"
+### Screen 1 — What This Study Was Really About
+
+**Question QR7_S1 (Descriptive Text):**
+
+> **Thank you for completing this study.**
 >
-> In Qualtrics, use four separate Descriptive Text questions with Display Logic on `ui_cond` + `pressure_cond`, or use a single question with Piped Text referencing an Embedded Data field set earlier to the debrief string.
+> Before we share your completion code, we want to tell you the full story of what this study was about.
+>
+> **What we told you at the start:** We said we were researching "how people interact with digital voting systems." That description is accurate, but it is incomplete.
+>
+> **What this study was actually about:** This study investigates whether the *design* of a private voting receipt can protect voters who are pressured to prove how they voted. The question: if someone is pressured to share their receipt, does it help if the app *prevents* sharing during the voting period — giving them a stronger excuse ("the app won\'t let me") than a normative one ("I\'m not supposed to")?
+>
+> Your responses help us understand whether this design choice matters for people\'s experience of social pressure.
+>
+> **Your responses are confidential.** All answers appear only in aggregate form in publications.
 
-After the debrief text, add a standard **End of Survey** block with redirect to Prolific Completion URL.
+No question — Descriptive Text only. Page Break after this block.
+
+---
+
+### Screen 2 — Your Condition
+
+**Question QR7_S2 (Descriptive Text):** *(Use Display Logic or Piped Text from Embedded Data fields.)*
+
+You were randomly assigned to one of four groups. Use four separate Descriptive Text questions with Display Logic on `ui_cond` + `pressure_cond`, or pipe from the embedded data fields set at randomisation:
+
+| Condition | `receipt_label` value | `pressure_label` value |
+|-----------|----------------------|------------------------|
+| D0P1 | Countdown-only (Option D) | Moderate pressure (a colleague asking out of curiosity) |
+| D0P2 | Countdown-only (Option D) | High pressure (a manager threatening consequences) |
+| D1P1 | UI-lock (Option B) | Moderate pressure (a colleague asking out of curiosity) |
+| D1P2 | UI-lock (Option B) | High pressure (a manager threatening consequences) |
+
+> **Your receipt type:** `${e://Field/receipt_label}`
+>
+> - **Countdown-only (Option D):** The download button remained active; only a countdown was shown.
+> - **UI-lock (Option B):** The download button was locked with a padlock icon until the vote closed.
+>
+> **Your scenario:** `${e://Field/pressure_label}`
+>
+> - **Moderate pressure:** A colleague asked to see your receipt out of curiosity.
+> - **High pressure:** A manager threatened to question your commitment if you could not produce the receipt.
+
+Page Break after this screen.
+
+---
+
+### Screen 3 — The Scenarios Were Hypothetical
+
+**Question QR7_S3 (Descriptive Text):**
+
+> **About the scenarios:**
+>
+> The situation you were asked to respond to — a colleague or manager requesting your vote receipt — was entirely hypothetical. No actual employer relationship or workplace pressure was implied. No real voting system, election, or Prolific account was connected to the scenario.
+>
+> We understand the high-pressure scenario (job-threat framing) can feel uncomfortable to read. It was designed to simulate a genuinely threatening coercion situation, because social deniability is most relevant when pressure is high.
+>
+> **Why we did not tell you the full purpose at the start:** If participants knew the study was about coercion resistance, they would likely respond based on what they think the "correct" privacy-respecting answer is — rather than their genuine intentions. Temporarily withholding the specific focus protects the scientific validity of the findings. Your consent form accurately described the study; only the specific coercion-resistance focus was withheld temporarily.
+
+Page Break after this screen.
+
+---
+
+### Screen 4 — Data Withdrawal (IRB required)
+
+**⚠ IRB-REQUIRED: This screen must be implemented exactly as specified. A withdrawal mechanism is required for studies using partial disclosure.**
+
+**Question QR7_WITHDRAW (Multiple Choice — Single Answer):**
+
+Question text:
+
+> **You have the right to withdraw your data.**
+>
+> Now that you know the full purpose of this study, you can choose to have your responses removed from our dataset. If you withdraw, all responses from this session will be deleted and will not appear in any analysis or publication.
+>
+> Withdrawing will not affect your Prolific account, your compensation, or any future studies. There are no penalties.
+>
+> **Do you wish to withdraw your data from this study?**
+
+Choices:
+- ◯ **No — I am happy for my responses to be used.** (Choice value: 1)
+- ◯ **Yes — Please delete my data.** My responses will not be used. (Choice value: 2)
+
+Force response: Yes.
+
+**Survey Flow — Branch after QR7_WITHDRAW:**
+```
+IF QR7_WITHDRAW = 2 (Yes — withdraw)
+  → Set Embedded Data: withdrawn = TRUE
+  → Jump to Screen 6 (withdrawal variant)
+ELSE (No — continue)
+  → Continue to Screen 5
+```
+
+Page Break after this screen.
+
+---
+
+### Screen 5 — Privacy and Contact (Jony: fill placeholders before IRB submission)
+
+**Question QR7_S5 (Descriptive Text):**
+
+> **A note about your privacy:**
+>
+> This study collected only your survey responses. No personal information beyond your Prolific ID was recorded. Your Prolific ID is used only to prevent duplicate participation and to process payment; it is not linked to your response data in any publication.
+>
+> The voting scenarios and receipt screenshots were mockups. No actual vote was cast, no blockchain transaction occurred, and no voting record was created.
+>
+> **Questions or concerns:**
+>
+> **Principal investigator:** [PI name — FILL BEFORE IRB SUBMISSION]
+> **Email:** [PI email — FILL BEFORE IRB SUBMISSION]
+> **Institution:** [Institution — FILL BEFORE IRB SUBMISSION]
+> **IRB protocol number:** [Assigned at submission — leave blank until assigned]
+>
+> You may also contact the IRB office at [IRB contact email/phone — FILL BEFORE IRB SUBMISSION] if you have concerns about your rights as a research participant.
+
+Page Break after this screen. (Screen 5 shown only to non-withdrawing participants via Survey Flow.)
+
+---
+
+### Screen 6 — Acknowledgement and Completion Code (two variants)
+
+**⚠ Both variants must display the Prolific Completion Code. Compensation is NOT conditional on data retention.**
+
+**Variant A — for participants who did NOT withdraw** (shown when `withdrawn ≠ TRUE`):
+
+**Question QR7_S6A (Descriptive Text / Acknowledgement):**
+
+> ☐ **I have read the above information and understand the purpose of this study. I consent to my responses being used in analysis and publication (in aggregated, anonymous form).**
+>
+> Your Prolific completion code: **[Paste Prolific Completion Code here]**
+>
+> Please enter this code on Prolific to receive your payment.
+
+Force response on the checkbox. End of Survey redirect → Prolific Completion URL.
+
+---
+
+**Variant B — for participants who withdrew** (shown when `withdrawn = TRUE`):
+
+**Question QR7_S6B (Descriptive Text):**
+
+> **Your data withdrawal has been recorded.**
+>
+> Your session responses will be flagged for deletion within 48 hours. Thank you for your time.
+>
+> Your Prolific completion code: **[Paste Prolific Completion Code here]**
+>
+> Please enter this code on Prolific to receive your payment.
+
+End of Survey redirect → Prolific Completion URL.
+
+---
+
+### §10 — Survey Flow for Debrief Block
+
+```
+[Block 7: Debrief]
+  Screen 1 (QR7_S1) — Study purpose disclosure
+  Screen 2 (QR7_S2) — Condition reveal (Piped Text from receipt_label + pressure_label)
+  Screen 3 (QR7_S3) — Hypothetical caveat
+  Screen 4 (QR7_WITHDRAW) — Data withdrawal question
+  [Branch: QR7_WITHDRAW = 2 → Set withdrawn = TRUE → Skip to Screen 6B]
+  Screen 5 (QR7_S5) — Privacy note + contact (non-withdrawing only)
+  Screen 6A (QR7_S6A) — Acknowledgement + code (non-withdrawing)
+[Branch: withdrawn = TRUE]
+  Screen 6B (QR7_S6B) — Withdrawal confirmed + code
+[End of Survey → Prolific Completion URL]
+```
+
+### §10 — Data Export Variables Added
+
+Add these to the §12 variable reference table:
+
+| Qualtrics variable | Pre-reg name | Type | Notes |
+|--------------------|--------------|------|-------|
+| `receipt_label` | — | string | Set at randomisation; piped into Screen 2 |
+| `pressure_label` | — | string | Set at randomisation; piped into Screen 2 |
+| `QR7_WITHDRAW` | — | 1 or 2 | 1 = No (retain); 2 = Yes (withdraw) |
+| `withdrawn` | — | TRUE/FALSE | Set by Branch if QR7_WITHDRAW = 2 |
+
+**Post-study action:** Before analysis, filter out all rows where `withdrawn = TRUE`. Document this step in the IRB data management section.
 
 ---
 
