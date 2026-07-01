@@ -1,7 +1,7 @@
 # PIUP Study 4: Pre-IRB Design Critique
 
-**Date:** 2026-07-01 (created); last updated tick-4414  
-**Status:** Internal review — pre-IRB (issues 1, 3, 4, 7 resolved tick-4414)  
+**Date:** 2026-07-01 (created); last updated tick-4415  
+**Status:** Internal review — pre-IRB (issues 1, 3, 4, 7, 8, 9 resolved tick-4414; issues 5, 6 verified already present in pre-reg tick-4415; only Jony-only items 2 + 10 remain)  
 **Author:** Tick-4414 automated review  
 **Connects to:** `piup-study4-temporal-coercion-vignette-2026-07-01.md`, `piup-study4-osf-prereg-2026-07-01.md`, `piup-study4-debrief-script-2026-07-01.md`, `qualtrics-setup-guide-study4-2026-07-01.md`
 
@@ -276,28 +276,42 @@ The following items were audited and found satisfactory:
 
 Items marked ⛔ must be resolved before IRB submission.
 
-- ⛔ Fix 1: Add withdrawal question to Qualtrics §10 implementation
-- ⛔ Fix 2: Fill IRB placeholders in debrief script Screen 5
-- ⛔ Fix 3: Replace confirmation-email promise with Prolific-native deletion protocol
-- ⛔ Fix 4: Align Qualtrics guide debrief implementation with full debrief script
-- ⛔ Fix 5: Add P2 minimal-risk justification to pre-reg §9
-- ⬜ Fix 6: Add DV3-priming sequencing note to pre-reg §9 (limitation)
-- ⬜ Fix 7: Specify Display Logic for condition debrief text in Qualtrics guide
-- ⬜ Fix 8: Add button-disable logic to page timer JavaScript
-- ⬜ Fix 9: Clarify timing exclusions are independent OR gates in pre-reg §4
-- ⬜ Fix 10: File Amendment 4-A on OSF (Jony-only)
-- ⬜ IRB application: submit to relevant institution (GT/CMU) after above items addressed
+- ✅ Fix 1: Add withdrawal question to Qualtrics §10 implementation — **done tick-4414**
+- ⛔ Fix 2: Fill IRB placeholders in debrief script Screen 5 — **Jony-only** (annotated [FILL BEFORE IRB SUBMISSION])
+- ✅ Fix 3: Replace confirmation-email promise with Prolific-native deletion protocol — **done tick-4414**
+- ✅ Fix 4: Align Qualtrics guide debrief implementation with full debrief script — **done tick-4414**
+- ✅ Fix 5: P2 minimal-risk justification — **already present in pre-reg §9** (verified tick-4415; false positive in original critique)
+- ✅ Fix 6: DV3-priming sequencing note — **already present in pre-reg §9** (verified tick-4415; false positive in original critique)
+- ✅ Fix 7: Specify Display Logic / Piped Text for condition debrief text — **done tick-4414** (`receipt_label`/`pressure_label` fields + Piped Text syntax defined)
+- ✅ Fix 8: Add button-disable logic to page timer JavaScript — **done tick-4414** (`disableNextButton()` on load confirmed hard block)
+- ✅ Fix 9: Clarify timing exclusions are independent OR gates in pre-reg §4 — **done tick-4414** (independence clause verified present)
+- ⛔ Fix 10: File Amendment 4-A on OSF — **Jony-only** (must file before IRB submission and data collection)
+- ⬜ IRB application: submit to relevant institution (GT/CMU) after above items addressed — **Jony-only**
 
 **⛔ = must fix before IRB submission**  
 **⬜ = should fix; study could proceed without but IRB may request**
+
+**CURRENT STATE (tick-4415): 9/11 items complete. Remaining blockers are both Jony-only: Fix 2 (IRB contact info) and Fix 10 (OSF Amendment 4-A filing). All agent-fixable items are done.**
 
 ---
 
 ## Summary verdict
 
-Study 4 is methodologically sound and the core design (2×2 vignette, DV1/DV2, H4.1-H4.4, analysis pipeline) is clean. The critical gaps are administrative and implementation-level: the withdrawal mechanism promised in the debrief script is not implemented in the Qualtrics guide, the IRB contact fields are unfilled, and the confirmation-email promise is undeliverable. These are all fixable before IRB submission. The minimal-risk classification is defensible with an explicit justification paragraph for the P2 scenario language.
+Study 4 is methodologically sound and the core design (2×2 vignette, DV1/DV2, H4.1-H4.4, analysis pipeline) is clean. All agent-fixable pre-IRB items are now resolved:
 
-Estimated pre-IRB work (agent-fixable): Issues 6, 8, 9 — add notes to pre-reg and Qualtrics guide (can be done this session).  
-Estimated pre-IRB work (Jony-only): Issues 1–5 (withdrawal mechanism in Qualtrics, IRB contact info, email promise fix, full debrief implementation, Amendment 4-A OSF filing).
+- Withdrawal mechanism fully implemented in Qualtrics (QR7_WITHDRAW + branch + embedded data)
+- Full 6-screen debrief in Qualtrics guide §10 (aligns with IRB debrief script)
+- Email promise removed; manual-contact wording used throughout
+- receipt_label + pressure_label Piped Text fields defined with exact Qualtrics syntax
+- Button-disable JavaScript confirmed hard-blocking (not advisory)
+- Timing exclusions confirmed independent OR gates in pre-reg §4
+- P2 minimal-risk justification present in pre-reg §9 (was already there before critique; not a new omission)
+- DV3-priming sequencing limitation present in pre-reg §9 (was already there before critique; not a new omission)
 
-_Created: 2026-07-01 (tick-4414). Based on audit of: pre-reg §§1-12, design doc §§1-13, debrief script Screens 1-6, Qualtrics guide §§1-15, Study 4 dry-check run this tick (all 9 sections PASS)._
+**Remaining (both Jony-only):**
+1. **Fix 2 (⛔ CRITICAL):** Fill IRB contact fields — PI name, email, institution, protocol number, IRB contact — in Qualtrics guide §10 Screen 5 (currently annotated [FILL BEFORE IRB SUBMISSION])
+2. **Fix 10 (⛔ CRITICAL):** File Amendment 4-A on OSF before IRB submission and data collection
+
+Once Fixes 2 and 10 are complete, Study 4 is ready for IRB submission.
+
+_Created: 2026-07-01 (tick-4414). Last updated: tick-4415 (Issues 5+6 verified already-present; checklist finalised). Based on audit of: pre-reg §§1-12, design doc §§1-13, debrief script Screens 1-6, Qualtrics guide §§1-15, Study 4 dry-check (all 9 sections PASS, tick-4414)._
