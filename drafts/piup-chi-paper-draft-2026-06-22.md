@@ -18,7 +18,7 @@ We instantiate PIUP in Aztec Private Voting and report two empirical studies: St
 
 ## 1. Introduction
 
-When Mango Markets put the loss-socialisation decision from a $116M protocol exploit to a governance vote in October 2022, every voter's wallet address was public on-chain. This is not an edge case - it is the default condition for blockchain governance: all participation is pseudonymous at best, traceable by design, and indexable by anyone running a node. In high-stakes organisational votes, pseudonymity under observation is coercive. Voters who can be identified can be pressured.
+When Mango Markets put the loss-socialization decision from a $116M protocol exploit to a governance vote in October 2022, every voter's wallet address was public on-chain. This is not an edge case - it is the default condition for blockchain governance: all participation is pseudonymous at best, traceable by design, and indexable by anyone running a node. In high-stakes organizational votes, pseudonymity under observation is coercive. Voters who can be identified can be pressured.
 
 Zero-knowledge proof systems offer a partial technical resolution. Aztec's ZK rollup allows a voter to prove eligibility and submit a ballot without revealing the ballot's contents in public calldata. At the private state layer, ZK achieves what it is designed for: the system records a nullifier and the aggregate tally — no persistent state links the voter to their choice. A named limitation remains at the calldata layer: the vote choice appears as a plaintext argument in the contract's public accounting step, visible at submission time (§1.1). State-level storage of the choice is eliminated; calldata exposure at the moment of submission is not.
 
@@ -30,7 +30,7 @@ In private voting, the correct behavior is the opposite. A receipt that shows th
 
 The design problem is that absence, by default, reads as failure.
 
-Usability-security research documents multiple failure modes when users encounter unexpected security interface states: inferring system failure from absent confirmation [Whitten and Tygar 1999], ignoring present permission warnings [Felt et al. 2012], and dismissing warnings as inapplicable [Egelman and Schechter 2013]. In the receipt context, the operative failure mode is the first. A receipt that shows no vote choice, without explanation, will be read as: "the system didn't record my vote," "the vote failed," or "this is a bug." The technical guarantee becomes an experiential failure.
+Usability-security research documents multiple failure modes when users encounter unexpected security interface states: inferring system failure from absent confirmation (Whitten and Tygar, 1999), ignoring present permission warnings (Felt et al., 2012), and dismissing warnings as inapplicable (Egelman and Schechter, 2013). In the receipt context, the operative failure mode is the first. A receipt that shows no vote choice, without explanation, will be read as: "the system didn't record my vote," "the vote failed," or "this is a bug." The technical guarantee becomes an experiential failure.
 
 The contribution of this paper is a design pattern that resolves this tension: the **Proof-of-Inclusion UX Pattern (PIUP)**.
 
@@ -50,7 +50,7 @@ Three formal invariants characterize the pattern (full specification: §2.1): **
 
 The identifier on the PIUP receipt — what PIUP calls the *submission token* — occupies the conceptual role ZK voting literature assigns to a *nullifier*: a value proving participation without revealing content.
 
-"Your nullifier: `a3f9...`" is technically correct and, for non-expert users, actively misleading: walkthroughs produced consistent failure readings - "nullifier" sounds like a cancellation or a legal invalidation. The term is opaque to experts and misleading to non-experts - a combination that, per Whitten and Tygar, reliably produces usability failures in security-critical contexts.
+"Your nullifier: `a3f9...`" is technically correct and, for non-expert users, actively misleading: our design walkthroughs produced consistent failure readings - "nullifier" sounds like a cancellation or a legal invalidation. The term is opaque to experts and misleading to non-experts - a combination that, per Whitten and Tygar, reliably produces usability failures in security-critical contexts.
 
 Four candidate labels were tested through design iteration: **"vote fingerprint"** (uniqueness-without-disclosure), **"confirmation code"** (standard eCommerce convention), **"nullifier"** (technically precise), and **"receipt ID"** (generic baseline).
 
