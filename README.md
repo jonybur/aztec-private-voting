@@ -18,6 +18,8 @@ The hardest part of private voting UX is the receipt — the moment after a vote
 
 We treat the receipt as the product. The `<VoteReceipt />` component is built around one design principle: prove the vote was counted without proving how the voter voted. It uses a "vote fingerprint" (the nullifier, renamed for comprehension), download-by-default persistence, and copy written to avoid the words "cryptographic", "zero-knowledge", and "nullifier".
 
+This design is formalised as the **Proof-of-Inclusion UX Pattern (PIUP)** — the first documented design class combining verifiability and content-blindness in a single receipt artifact. Three formal invariants are stated in [`docs/proof-of-inclusion-ux-pattern-2026-06-22.md`](docs/proof-of-inclusion-ux-pattern-2026-06-22.md). The core label-choice claim (does "vote fingerprint" produce better privacy mental models than "confirmation code" or "receipt ID"?) is the subject of Study 1: a pre-registered 4-condition between-subjects experiment (N=280, pre-registration complete — [`docs/piup-study1-preregistration-2026-06-22.md`](docs/piup-study1-preregistration-2026-06-22.md)).
+
 See [`docs/receipt-design.md`](docs/receipt-design.md) for the full design rationale, the specific copy decisions, and the open questions we did not solve.
 
 ## Repo layout
@@ -111,14 +113,14 @@ npm run deploy:testnet
 
 Full run book in [docs/deployment.md](docs/deployment.md). Both options write the deployed address to `deployments/alpha-testnet.json`, which the demo reads automatically.
 
-### Aztec Alpha testnet deployment
+### Aztec testnet deployment
 
 | Field                | Value                                                           |
 | -------------------- | --------------------------------------------------------------- |
-| Network              | Aztec Alpha testnet (`https://rpc.testnet.aztec-labs.com`) — L1: Sepolia (chain 11155111) |
-| `PrivateVoting`      | _see `deployments/alpha-testnet.json` (populated by deploy script)_ |
-| Noir version         | Aztec-NR v4.3.0-nightly.20260429                                |
-| ⚠️ Note             | Aztec Alpha v4 has a known vulnerability (disclosed March 2026). Patch ships with v5 (July 2026). Testnet demo is fine; do not use for production governance. |
+| Network              | Aztec v5 testnet (`https://v5.testnet.rpc.aztec-labs.com`) — L1: Sepolia (chain 11155111) |
+| `PrivateVoting`      | Compiled artifact ready (`b828bc6`); deployment pending `DEPLOYER_SECRET_KEY` + `DEPLOYER_SIGNING_KEY` credentials — see [`docs/v5-upgrade-runbook.md`](docs/v5-upgrade-runbook.md) |
+| Noir version         | Aztec-NR v5.0.0-rc.1 (released 2026-06-15; zero contract changes required from v4.3) |
+| ℹ️ Note             | Aztec Alpha v4 had a known vulnerability (disclosed March 2026); the v4 contract `0x1a8ef...` is no longer accessible after the v5 testnet reset. The v5 RPC is live (confirmed block ~11,800, 2026-06-27). |
 
 ## Running the demo locally
 
