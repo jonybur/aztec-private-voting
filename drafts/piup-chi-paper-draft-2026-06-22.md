@@ -118,7 +118,7 @@ Across these domains, the three invariants translate directly: the token must no
 
 ## 3. System: Aztec Private Voting
 
-Aztec Private Voting is a Noir ZK smart contract and React component library implementing the PIUP on the Aztec v5 testnet. It provides the canonical instantiation of the pattern described in Section 2 and is the system on which Studies 1 and 2 are run.
+Aztec Private Voting is a Noir ZK smart contract and React component library implementing the PIUP on the Aztec v5 testnet. It provides the canonical instantiation of the pattern described in §2 and is the system on which Studies 1 and 2 are run.
 
 ### 3.1 The Noir contract
 
@@ -163,7 +163,7 @@ Circuit analysis and trust-boundary audit across `main.nr` and `eligibility.nr` 
 | No `is_finalized` bypass | Separate check in `record_vote` prevents post-finalize votes |
 | Timing boundary correctness | At `t == end_time`: cast fails, finalize succeeds |
 
-Three findings were resolved before the study - one HIGH severity and two LOW:
+Three findings were resolved before the study — one HIGH severity and two LOW:
 
 *F1-RESIDUAL (HIGH - gated vote bypass).* On TOKEN/ALLOWLIST contracts, the generic `cast_vote` entrypoint could be called with `eligibility_proof = 1`, bypassing the Merkle gate. Resolved by asserting `eligibility_mode == OPEN` in `cast_vote`; gated entrypoints perform the in-circuit Merkle proof before enqueuing `record_vote`.
 
@@ -179,14 +179,14 @@ Two design limitations are documented and not resolved at the prototype stage:
 
 ### 3.4 React component library and `VoteReceipt.tsx`
 
-The system ships a React component library (`packages/react/`) providing the voter-facing UI including the PIUP instantiation. The key component is `VoteReceipt.tsx`, which renders the four PIUP components described in Section 2.1, listed in their actual rendering order:
+The system ships a React component library (`packages/react/`) providing the voter-facing UI including the PIUP instantiation. The key component is `VoteReceipt.tsx`, which renders the four PIUP components described in §2.1, listed in their actual rendering order:
 
 - The status line: *"Your vote was cast"*
 - The vote fingerprint (abbreviated hex: `shortenHex(receipt.receiptId, 6, 4)`; full value accessible via copy button)
 - The protective framing: *"Your vote choice is not shown on this receipt. This is intentional - this fingerprint proves your ballot was counted without revealing what you voted for. Save it to verify after the vote closes, and keep it private until then."*
 - The verification affordance: a collapsed *"How to verify"* section with a three-step explainer and a link to the `verify_vote_counted` endpoint
 
-The component's download action writes a JSON receipt file via `serializeReceipt()`; the file contains the fingerprint, vote metadata, and transaction hash but not the vote choice (Invariant 3). Per §3.3, calldata observers can recover the choice via `txHash`; voters should treat receipts as private until vote close. The fingerprint (`Fr.random()`, 254-bit field element) is independent of wallet, vote ID, and choice - satisfying Invariant 1.
+The component's download action writes a JSON receipt file via `serializeReceipt()`; the file contains the fingerprint, vote metadata, and transaction hash but not the vote choice (Invariant 3). Per §3.3, calldata observers can recover the choice via `txHash`; voters should treat receipts as private until vote close. The fingerprint (`Fr.random()`, 254-bit field element) is independent of wallet, vote ID, and choice — satisfying Invariant 1.
 
 ### 3.5 M2 ownership proof (defense-in-depth)
 
