@@ -167,9 +167,9 @@ Three findings were resolved before the study - one HIGH severity and two LOW:
 
 *F1-RESIDUAL (HIGH - gated vote bypass).* On TOKEN/ALLOWLIST contracts, the generic `cast_vote` entrypoint could be called with `eligibility_proof = 1`, bypassing the Merkle gate. Resolved by asserting `eligibility_mode == OPEN` in `cast_vote`; gated entrypoints perform the in-circuit Merkle proof before enqueuing `record_vote`.
 
-*F2 (Quorum bypass).* `quorum = 0` allows vacuous finalization; resolved by `assert(config.quorum > 0)` in the constructor.
+*F2 (LOW - quorum bypass).* `quorum = 0` allows vacuous finalization; resolved by `assert(config.quorum > 0)` in the constructor.
 
-*F3 (Receipt-ID collision).* `receipt_id = 0` would block subsequent voters; resolved by `assert(receipt_id != 0)` in all entrypoints and React hooks.
+*F3 (LOW - receipt-ID collision).* `receipt_id = 0` would block subsequent voters; resolved by `assert(receipt_id != 0)` in all entrypoints and React hooks.
 
 Two design limitations are documented and not resolved at the prototype stage:
 
