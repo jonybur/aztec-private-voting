@@ -106,8 +106,8 @@ All required packages confirmed installed at drycheck (R 4.3.3).
 | Required packages installed | ✅ (dplyr, broom, survival) | R 4.3.3 |
 | Pre-reg quality check | ✅ Run (tick-4401); 2 issues found | Issue 2 + minor applied autonomously |
 | DV2 timing note (§5) + SA-3 (§7.8) | ✅ Applied in pre-reg + analysis script | Tick-4401/4405 |
-| **Counter floor (pre-reg vs. script)** | **🔴 JONY DECISION REQUIRED** | **Pre-reg: 10 / Script: 5 — see above** |
-| Issue 1 counter floor calibration | ⏳ Pending Jony decision | Lower to 5 (Option A) or add disclosure (Option C) |
+| **Counter floor (pre-reg vs. script)** | **✅ RESOLVED (tick-4408)** | **Option A applied: floor=5 in pre-reg §3.2, §7.7, checklist + analysis script** |
+| Issue 1 counter floor calibration | ✅ RESOLVED (tick-4408) | Option A chosen: floor=5 everywhere; docs synced tick-4409 |
 | OSF pre-registration upload | ⏳ Pending | Must be done AFTER counter floor resolved |
 | Study 2 pre-registration filed first | ⏳ Pending | Study 3 registration checklist requires Study 2 pre-reg first |
 | JONY-ACTION O (OSF Amendment 5) | ⏳ Pending | Shared prerequisite with Study 1; required before data collection |
@@ -137,7 +137,7 @@ This means Study 3 shares all deployment prerequisites with Study 2 and adds:
 
 ## Action items before Study 3 pilot launch
 
-1. **[JONY-CRITICAL] Resolve counter floor discrepancy** — choose pre-reg floor (5 or 10) and align both pre-reg and analysis script before OSF filing.
+1. ~~**[JONY-CRITICAL] Resolve counter floor discrepancy**~~ — ✅ **DONE (tick-4408, Option A, floor=5).** Pre-reg §3.2+§7.7+checklist and analysis script all aligned at floor=5 (committed 7476a6f).
 2. **File OSF amendments O + T** — shared prerequisite with Study 1; must precede data collection.
 3. **File Study 2 pre-reg first** — Study 3 registration checklist requires Study 2 pre-reg to be on file.
 4. **File Study 3 pre-reg** — after counter floor resolved and Study 2 pre-reg is filed.
