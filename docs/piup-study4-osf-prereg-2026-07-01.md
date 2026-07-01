@@ -59,9 +59,9 @@ The countdown value displayed is **held constant at "5 days 3 hours 12 minutes"*
 
 ### 3.3 Factor P — Coercion pressure
 
-- **P1 (Moderate — social request):** "Imagine a colleague at work mentions they're trying to understand how the new voting system works. They ask: 'Hey, can you show me your vote receipt? I'm curious what it looks like.' You still have the vote receipt screen open on your computer."
+- **P1 (Moderate — social request):** "A colleague at work mentions they're trying to understand how the new voting system works. They ask: 'Hey, can you show me your vote receipt? I'm curious what it looks like.' You still have the vote receipt screen open on your computer."
 
-- **P2 (High — job threat):** "Imagine your manager calls you in and says: 'We need to verify how our team voted on this issue. If you can't show me your vote receipt right now, I'll need to question your commitment to the team.' You still have the vote receipt screen open on your computer."
+- **P2 (High — job threat):** "Your manager calls you in and says: 'We need to verify how our team voted on this issue. If you can't show me your vote receipt right now, I'll need to question your commitment to the team.' You still have the vote receipt screen open on your computer."
 
 ### 3.4 Procedure
 
@@ -69,7 +69,7 @@ The countdown value displayed is **held constant at "5 days 3 hours 12 minutes"*
 
 2. **Receipt display.** Participant reads: "Imagine you just finished voting in an online election through a company governance platform. After submitting your vote, you were shown the following confirmation screen." Stimulus (one of four screenshots) is displayed. A **minimum 30-second page timer** is enforced via Qualtrics page timing; participants who advance before 30 seconds see a warning.
 
-3. **Comprehension check (DV3 / attention filter).** "Based on what you saw, did the receipt you received tell you or anyone else how you voted?" (Yes / No / Not sure). Correct answer: No.
+3. **Comprehension check (DV3).** "Based on what you saw, did the receipt you received tell you or anyone else how you voted?" (Yes / No / Not sure). Correct answer: No. *(Note: DV3 incorrect answers are not excluded from the primary analysis — they are flagged for a pre-registered sensitivity analysis; see §4. The attention check is the embedded Likert item in step 6, below.)*
 
 4. **Vignette scenario.** Scenario text (P1 or P2) displayed below the receipt screenshot (shown again in this step). The scenario is presented after the comprehension check to prevent scenario framing from priming receipt interpretation.
 
@@ -94,7 +94,7 @@ The countdown value displayed is **held constant at "5 days 3 hours 12 minutes"*
 
 **Exclusion and replacement criteria (pre-registered):**
 - Completion time < 3 minutes (inattention proxy — note: Qualtrics page timer enforces minimum 30s on receipt page; participants violating the 30-second timer are warned but not excluded unless overall completion time < 3 minutes)
-- Failed attention check (must select "Strongly agree" on embedded item; see §5)
+- Failed attention check (must select "Strongly agree" on embedded item; see Attention Check in §5)
 - Complete non-responder on DV1 or DV2 (system error or refusal)
 
 Participants meeting any exclusion criterion are replaced until n = 40 per cell is reached.
@@ -148,6 +148,14 @@ Pre-registered moderator for H4.4: high self-efficacy participants may be less a
 **Item:** "Have you ever used a digital voting platform (other than standard government voting)?" (Yes / No)
 
 Used as covariate in sensitivity analyses only. Not predicted to moderate primary outcomes.
+
+### Attention Check
+
+**Item:** "For quality purposes, please select **Strongly agree** for this item."
+
+**Scale:** 1–7 Likert (1 = Strongly disagree, 7 = Strongly agree)
+
+**Correct response:** 7 (Strongly agree). Participants who do not select 7 are excluded and replaced (see §4 exclusion criteria). The attention check is embedded among M1 and C1 items in Block 6; item order within Block 6 is randomised so attention-check position is not predictable.
 
 ---
 
@@ -263,11 +271,13 @@ If H4.1 is not significant (p ≥ .05 one-tailed), a TOST equivalence test (Lake
 
 ## 8. Materials
 
-**Stimuli:** Four static PNGs (one per cell), captured from `VoteReceipt.tsx` with the following props:
-- Cell D0: `<VoteReceipt voteCloseTimestamp={ts} />` (countdown, download enabled)
-- Cell D1: `<VoteReceipt temporalLock="lock" voteCloseTimestamp={ts} />` (countdown, download disabled + padlock)
+**Stimuli:** Two distinct visual stimulus variants (one per D condition), each used in two cells (D0 is used in P1 and P2 cells; D1 is used in P1 and P2 cells). Screenshot files are named by cell (`cell-D0P1.png`, `cell-D0P2.png`, `cell-D1P1.png`, `cell-D1P2.png`) for Qualtrics routing clarity, but D0P1 ≅ D0P2 (visually identical) and D1P1 ≅ D1P2 (visually identical). The pressure factor P is operationalised through the vignette text (Block 4), not through the stimulus image.
+
+Stimulus props:
+- D0 variant: `<VoteReceipt voteCloseTimestamp={ts} />` (countdown, download enabled)
+- D1 variant: `<VoteReceipt temporalLock="lock" voteCloseTimestamp={ts} />` (countdown, download disabled + padlock)
 - `ts` is set to render "5 days 3 hours 12 minutes" remaining
-- Receipt identifier: held constant across all four stimuli
+- Receipt identifier: held constant across all four screenshot files
 - Vote title: held constant ("Company governance vote — Q2 infrastructure proposal")
 
 **Survey platform:** Qualtrics. Block randomisation by condition, four-group between-subjects; one condition per participant.
@@ -311,7 +321,7 @@ If H4.1 is not significant (p ≥ .05 one-tailed), a TOST equivalence test (Lake
 
 | Date | Amendment | Reason | Filed before unblinding? |
 |---|---|---|---|
-| — | — | — | — |
+| 2026-07-01 | **Amendment 4-A:** Vignette opening-word change. P1: “Imagine a colleague at work…” → “A colleague at work…”. P2: “Imagine your manager calls you in…” → “Your manager calls you in…”. Scenario meaning and hypothetical framing unchanged. No effect on DV1/DV2 scoring or hypotheses. | Pre-data (noted; OSF filing pending before data collection) |
 
 ---
 

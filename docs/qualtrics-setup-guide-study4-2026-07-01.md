@@ -73,9 +73,7 @@ The complete Survey Flow, in order:
 ```
 [Embedded Data — top-level]
   PROLIFIC_PID = ${e://Field/PROLIFIC_PID}
-
-[Branch: attention_fail = 1]
-  → [Screen-out block]     (immediate exclusion if caught early — see §9)
+  attention_fail = 0
 
 [Randomizer — evenly present one of 4 branches]
   Branch A: Set condition=D0P1, ui_cond=D0, pressure_cond=P1
@@ -89,9 +87,13 @@ The complete Survey Flow, in order:
 [Block 4: Vignette scenario (shown per condition)]
 [Block 5: Primary outcomes — DV1 then DV2]
 [Block 6: Moderator + covariates + attention check (randomised order)]
+[Branch: QR6_ATTN ≠ 7 → Set attention_fail = 1 → Screen-Out block]  ← AFTER Block 6
+[Branch: Q_TotalDuration < 180 AND attention_fail = 0 → Screen-Out block]
 [Block 7: Debrief]
 [End of Survey]
 ```
+
+> ⚠️ **Implementation note:** The attention-fail Branch must come AFTER Block 6 — that is where `QR6_ATTN` is collected and where `attention_fail` is set to 1. Do not place an attention-fail branch before the Randomizer or before Block 6; it will never fire because the flag is initialised to 0 and only changes in post-Block-6 logic.
 
 The Randomizer element uses "Evenly Present Elements" to ensure balanced cell assignment. Do NOT use weighted randomisation.
 
@@ -362,9 +364,11 @@ A dedicated block for excluded participants. Contains one instruction and an End
 
 End of Survey redirect → Prolific Screen-Out URL.
 
-**Trigger conditions:**
-1. Attention check failure (QR6_ATTN ≠ 7): redirect to Screen-Out.
-2. Completion time < 3 minutes: detected via `Q_TotalDuration` embedded data. Add a Branch after Block 6 (before debrief): if `Q_TotalDuration < 180` AND `attention_fail = 0` → Screen-Out.
+**Trigger conditions (both Branches placed in Survey Flow AFTER Block 6):**
+1. **Attention check failure:** Branch: `QR6_ATTN ≠ 7` → Set `attention_fail = 1` → Screen-Out.
+2. **Completion time:** Branch: `Q_TotalDuration < 180` AND `attention_fail = 0` → Screen-Out.
+
+> Both Branches must appear in Survey Flow AFTER Block 6, before Block 7 (Debrief). Placing them before the Randomizer or before Block 6 will cause them to never fire (the conditions cannot be true before the questions are asked).
 
 **Comprehension-check failure (DV3 incorrect):** Do NOT redirect to Screen-Out. Flag in data (`comprehension_check_correct = 0`) for pre-registered sensitivity analysis. These participants complete the full survey and receive payment.
 
