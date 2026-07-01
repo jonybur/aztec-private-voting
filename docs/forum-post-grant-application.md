@@ -41,7 +41,7 @@ The most concrete way I can say this: when building the receipt, I kept asking "
 
 **Test suite** — 41 user stories, Playwright + Noir unit tests.
 
-**Live testnet deployment** — `[CONTRACT ADDRESS]` (v5.testnet.rpc.aztec-labs.com — deploying now; will update before submitting)
+**Live testnet deployment** — `[CONTRACT ADDRESS]` (v5.testnet.rpc.aztec-labs.com — block 887, Jul 1 2026; rollupVersion `2787991301` stable; artifact compiled and ready `contracts/target/`; deploy immediately before submitting and replace this placeholder)
 
 ### The receipt — the actual research contribution
 
@@ -57,7 +57,11 @@ The full rationale — including design alternatives rejected and open problems 
 
 **PIUP Study 1 — empirical validation (pre-registered):** The receipt design's core claim — that label choice affects privacy mental model quality — is being tested empirically, not assumed. Study 1 is a 4-condition between-subjects experiment (n=70 per condition, N=280) comparing the four candidate identifier labels: *vote fingerprint* (current production), *confirmation code*, *nullifier*, and *receipt ID*. Primary endpoint: Q2 accuracy (does the voter correctly infer their vote choice is hidden?), A > B, pre-registered as directional. 14 confirmatory tests across 4 Holm-corrected families. H2 is pre-registered as a dissociation prediction: we expect A to match B on overall accuracy but diverge on the two privacy items specifically, because eCommerce framing activates the right behavioural schema ("this proves submission") but the wrong representational schema ("the receipt contains what I submitted"). Full pre-registration, survey instrument, and R analysis script are committed to this repo. OSF DOI: `[OSF DOI — upload docs/piup-study1-preregistration-2026-06-22.md before posting]`.
 
-This is the answer to the open question in the [Horizon PRD for Private Voting](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md): *"Default receipts content voters expect."*
+**PIUP Study 2 — explanation effects (pre-registration draft complete):** Study 2 is a 2×2×2 between-subjects experiment (N=240, contingent on Study 1 H4) testing whether explicit absent-choice explanation in the receipt increases correct interpretation, trust calibration, and save behavior. It also tests whether the explanation moderates the label effect: we predict "confirmation code" produces lower absent-content accuracy without explanation, but closes the gap when explanation is added. Pre-registration draft is committed ([`docs/piup-study2-preregistration-draft-2026-06-29.md`](docs/piup-study2-preregistration-draft-2026-06-29.md)) with 24 total amendments tracked pre-data across both studies. Finalize + upload after Study 1 pilot confirms H4.
+
+**PIUP Study 3 — social verification (power analysis complete):** Tests whether adding a social signal to the receipt ("X of Y voters saved their receipt") increases save rates via social proof. Power analysis done; pilot is embedded in Study 2 (n=40/condition); powered replication requires N=280+. Pre-IRB critique and debrief script are committed.
+
+This three-study program is the answer to the open question in the [Horizon PRD for Private Voting](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md): *"Default receipts content voters expect."* No other voting tool has asked this question empirically.
 
 ### Real-world threat model: KelpDAO/rsETH
 
@@ -101,7 +105,7 @@ This project directly implements the [Private Voting Module for DAOs PRD](https:
 | §4.3 Auditor flow | ⚠️ Partial — per-voter receipt delivered; auditor proof pack (post-grant) |
 | §5 MVP eligibility templates (token weight, one-person-one-vote, role lists) | ✅ Full — 3 modes shipped |
 | §5 MVP encrypted ballot lifecycle (commit, tally, finalize) | ⚠️ Named Limitation — anonymous but unencrypted pre-M3; M3 spec complete |
-| §11 Open question: *"Default receipts content voters expect"* | ✅ Answered — PIUP (`docs/proof-of-inclusion-ux-pattern-2026-06-22.md`) + empirical Study 1 (pre-registered) |
+| §11 Open question: *"Default receipts content voters expect"* | ✅ Answered — PIUP (`docs/proof-of-inclusion-ux-pattern-2026-06-22.md`) + empirical programme: Study 1 pre-registered (N=280, label effects), Study 2 draft pre-registered (N=240, explanation effects), Study 3 power-analysed (N=280+, social verification) |
 
 Two notes on the Named Limitation:
 - **What it is:** `vote_choice` is a public argument of `record_vote` (the public half of each Aztec transaction). An observer with the full call log can correlate `receipt_id → vote_choice`.

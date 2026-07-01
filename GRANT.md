@@ -47,7 +47,7 @@ This receipt pattern has been formalised as the **Proof-of-Inclusion UX Pattern 
 
 The contracts compile cleanly against **Aztec-NR v5.0.0-rc.1** (released June 15, 2026 — first testnet RC). Zero contract code changes were required across any version from v4.3 to v5.0.0-rc.1. All import paths, function attribute macros, state variables, and trait derives are identical. The Aztec team disclosed a critical vulnerability in Alpha v4 in March 2026; we are already on v5.
 
-**v5 testnet upgrade complete (Jun 18 2026):** New endpoint `https://v5.testnet.rpc.aztec-labs.com` is live and healthy (confirmed block ~11,800, 2026-06-27). The upgrade included a testnet state reset — the v4 contract `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (deployed 2026-05-18) is no longer accessible. The v5 contract artefact is compiled and ready (`b828bc6`); deployment requires `DEPLOYER_SECRET_KEY` + `DEPLOYER_SIGNING_KEY` credentials (see `docs/v5-upgrade-runbook.md`). The contract address in this document will be updated before forum submission.
+**v5 testnet upgrade complete (Jun 18 2026):** New endpoint `https://v5.testnet.rpc.aztec-labs.com` is live and healthy (confirmed block 887, 2026-07-01; rollupVersion `2787991301` stable; note: testnet resets periodically — block count resets with each state reset, but rollup address and RPC endpoint remain stable). The upgrade included a testnet state reset — the v4 contract `0x1a8efeffe391793756a08b92672856134d13ae5b7b600cffe50fa5eff7daa981` (deployed 2026-05-18) is no longer accessible. The v5 contract artefact is compiled and ready (`b828bc6`); deployment requires `DEPLOYER_SECRET_KEY` + `DEPLOYER_SIGNING_KEY` credentials (see `docs/v5-upgrade-runbook.md`). The contract address in this document will be updated before forum submission.
 
 ---
 
@@ -150,7 +150,7 @@ This project directly implements the [Private Voting Module for DAOs PRD](https:
 | §4.3 Auditor flow | ⚠️ Partial — per-voter receipt delivered; auditor proof pack (post-grant) |
 | §5 MVP eligibility templates (token weight, one-person-one-vote, role lists) | ✅ Full — 3 modes shipped |
 | §5 MVP encrypted ballot lifecycle (commit, tally, finalize) | ⚠️ Named Limitation — anonymous but unencrypted pre-M3; M3 spec complete |
-| §11 Open question: *"Default receipts content voters expect"* | ✅ Answered — PIUP + empirical Study 1 (pre-registered) |
+| §11 Open question: *"Default receipts content voters expect"* | ✅ Answered — PIUP + three-study empirical programme (Study 1 pre-registered N=280 label effects; Study 2 draft pre-registered N=240 explanation effects; Study 3 power-analysed N=280+ social verification) |
 
 Two notes on the Named Limitation:
 - **What it is:** `vote_choice` is a public argument of `record_vote` (the public half of each Aztec transaction). An observer with the full call log can correlate `receipt_id → vote_choice`.
