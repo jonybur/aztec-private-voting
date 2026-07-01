@@ -2,7 +2,7 @@
 
 _Draft for CHI 2027 submission · Jony Bursztyn · 2026-06-22_
 _Status: All sections written. §4.6 Results pending Study 1 data collection (2026-Q3 pilot). Submission-clean pending OSF amendments O+T._
-_Word count: 9,262 body words (target 9,000-12,000; CHI cap). Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendment 14)._
+_Word count: ~11,412 words (body excl. tables + refs; CHI cap 12,000 incl. refs, excl. tables). Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendment 14)._
 
 ---
 
