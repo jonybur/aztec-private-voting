@@ -123,7 +123,7 @@ Single-item, 7-point Likert. The construct (willingness to comply with a specifi
 
 **Scale:** 1 (Not at all convincing) to 7 (Very convincing)
 
-Note on DV2 asymmetry: In D0 (no lock) cells, this item measures *counterfactual* deniability (what participants imagine would happen if they claimed the app prevents sharing, even though it does not). In D1 (UI-lock) cells, it measures *actual* deniability. This asymmetry is inherent to the design; DV2 is secondary and exploratory, and the asymmetry will be noted in the analysis.
+Note on DV2 asymmetry: In D0 (no lock) cells, this item measures *counterfactual* deniability (what participants imagine would happen if they claimed the app prevents sharing, even though it does not). In D1 (UI-lock) cells, it measures *actual* deniability. This asymmetry is inherent to the design; DV2 is secondary confirmatory (H4.3 is pre-specified), and the asymmetry will be noted in the analysis.
 
 ### Attention filter (embedded, not an outcome)
 
@@ -209,7 +209,7 @@ where M\_X\_Y is the cell mean of DV1 in condition X × Y.
 
 **Reporting:** p-value, Cohen's d with 95% CI.
 
-**Note:** DV2 is secondary and exploratory relative to DV1. The DV2 asymmetry (counterfactual in D0, actual in D1) is noted; this limits causal inference from H4.3 but does not preclude the test. A significant H4.3 indicates that UI-lock increases perceived deniability, but the asymmetry prevents ruling out that D1 participants simply have more reason to think the phrase is accurate (it is). This will be discussed in the analysis.
+**Note:** DV2 is secondary confirmatory relative to DV1 (H4.3 is pre-specified; H4.4 is the genuinely exploratory test). The DV2 asymmetry (counterfactual in D0, actual in D1) is noted; this limits causal inference from H4.3 but does not preclude the test. A significant H4.3 indicates that UI-lock increases perceived deniability, but the asymmetry prevents ruling out that D1 participants simply have more reason to think the phrase is accurate (it is). This will be discussed in the analysis.
 
 ---
 
