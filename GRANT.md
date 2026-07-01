@@ -25,6 +25,8 @@ The full design rationale — including the specific copy decisions, the alterna
 
 This receipt pattern has been formalised as the **Proof-of-Inclusion UX Pattern (PIUP)** in [`docs/proof-of-inclusion-ux-pattern-2026-06-22.md`](docs/proof-of-inclusion-ux-pattern-2026-06-22.md) — the first documented design class combining verifiability and content-blindness in a single receipt artifact. The pattern generalises beyond voting to sealed-bid auctions, whistleblower systems, and blind peer review. Three formal invariants are stated; the current L1 privacy gap (vote choice visible in `record_vote` public calldata) is documented as a named limitation, not glossed over.
 
+**PIUP Study 1 — empirical validation (pre-registered):** The receipt design's core claim — that label choice affects privacy mental model quality — is being tested empirically, not assumed. Study 1 is a 4-condition between-subjects experiment (n=70 per condition, N=280) comparing the four candidate identifier labels: *vote fingerprint* (current production), *confirmation code*, *nullifier*, and *receipt ID*. Primary endpoint: Q2 accuracy — does the voter correctly infer their vote choice is hidden? — A > B, pre-registered as directional. 14 confirmatory tests across 4 Holm-corrected families. H2 is pre-registered as a dissociation prediction: we expect A to match B on overall accuracy but diverge on the two privacy items specifically, because eCommerce framing activates the right behavioural schema ("this proves submission") but the wrong representational schema ("the receipt contains what I submitted"). Full pre-registration, survey instrument, and R analysis script are committed to this repo ([`docs/piup-study1-preregistration-2026-06-22.md`](docs/piup-study1-preregistration-2026-06-22.md), [`analysis/piup-study1-analysis.R`](analysis/piup-study1-analysis.R)).
+
 ---
 
 ## Technical state
@@ -139,9 +141,22 @@ This is calibrated as a tooling + research grant. Wave 2 tooling grants ranged $
 
 ## Alignment with Aztec Horizon
 
-This project implements the [Private Voting Module for DAOs PRD](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md) from the Aztec Horizon repository — Aztec's own curated library of ecosystem applications it wants built. The PRD specifies: admin flow, voter flow, eligibility proofs, encrypted ballots, receipts, quorum rules. Aztec Private Voting implements all of it.
+This project directly implements the [Private Voting Module for DAOs PRD](https://github.com/AztecProtocol/Horizon/blob/main/PRDs/Private_Voting_Module_for_DAOs.md) — Aztec's own specification for the ecosystem application it wants built. Section-by-section:
 
-The Horizon PRD lists receipts as an open question: *"Default receipts content voters expect."* `docs/receipt-design.md` answers that question in full, including specific UX decisions, alternatives rejected, and the coercion-resistance analysis. This is the contribution the PRD needed but did not specify.
+| PRD section | Status |
+|---|---|
+| §4.1 Admin flow (configure, publish, monitor, finalize) | ✅ Full |
+| §4.2 Voter flow (eligibility proof, private vote, verify inclusion) | ✅ Full |
+| §4.3 Auditor flow | ⚠️ Partial — per-voter receipt delivered; auditor proof pack (post-grant) |
+| §5 MVP eligibility templates (token weight, one-person-one-vote, role lists) | ✅ Full — 3 modes shipped |
+| §5 MVP encrypted ballot lifecycle (commit, tally, finalize) | ⚠️ Named Limitation — anonymous but unencrypted pre-M3; M3 spec complete |
+| §11 Open question: *"Default receipts content voters expect"* | ✅ Answered — PIUP + empirical Study 1 (pre-registered) |
+
+Two notes on the Named Limitation:
+- **What it is:** `vote_choice` is a public argument of `record_vote` (the public half of each Aztec transaction). An observer with the full call log can correlate `receipt_id → vote_choice`.
+- **Why PIUP is the right response:** The receipt is engineered around *surrogate independence* — it contains the vote fingerprint but never the vote choice. A coercer who can see calldata still cannot coerce from the receipt alone; the receipt proves participation, not direction. M3 closes the calldata exposure entirely.
+
+The gap that matters for the grant: every other system (MACI, Shutter, NounsDAO/Aztec) ignores the open question entirely. PIUP is the first documented, empirically-tested design answer.
 
 ---
 
