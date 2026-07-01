@@ -180,3 +180,16 @@ All other pre-IRB critique items are also resolved in `piup-study3-social-verifi
 **Outstanding Jony actions before IRB submission:**
 - Fill placeholders: `[PI name]`, `[PI email]`, `[Institution]`, `[IRB protocol number]`, `[IRB contact]` in Screen 4 of this debrief script
 - Upload OSF pre-registration (JONY-ACTION O + T prerequisite)
+- **Decide: disclose condition assignment in debrief?** (see M5 below)
+
+### M5 — Condition assignment disclosure (flagged tick-4366)
+
+The current administration note says participants are **not told which group they were in** (Group A or Group B). The justification is "could change retrospective interpretation of the experience."
+
+**IRB risk:** This is a methodological justification, not an ethical one. IRBs evaluate debrief adequacy from the participant's perspective, not the researcher's data-quality perspective. Standard guidance (APA Ethics Code §8.08; Baumrind 1985) requires full disclosure in debrief unless withholding is itself protective of the participant. Here, knowing "you saw the social counter" or "you did not" is not harmful — the counter was real and participants' behavior is already in the past.
+
+**Recommended fix (one of two options):**
+1. **Disclose condition:** Add to Screen 1 — "If you saw a line showing how many others had verified, you were in Group B. If you did not see this line, you were in Group A." This is cleaner ethically and easier to justify to IRB.
+2. **Strengthen justification in IRB application:** If Jony has a specific reason not to disclose (e.g., linked to a post-study qualitative follow-up that needs condition-blindness), that reason must appear explicitly in the IRB narrative — not just in the debrief admin notes.
+
+Option 1 is recommended unless there is a study-design reason to avoid it.
