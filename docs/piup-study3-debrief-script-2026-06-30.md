@@ -45,7 +45,9 @@ When you cast your vote in this election, you were randomly assigned to one of t
 - **Group A (about half of participants):** Your vote receipt showed the standard receipt with no additional information.
 - **Group B (about half of participants):** Your vote receipt included a line showing how many voters in this election had already attempted to verify their vote.
 
-You may have been in either group. The two receipts were otherwise identical: both contained the same verification information, both linked to the same verification page, and both were privacy-preserving.
+**You were in [GROUP_ASSIGNMENT].** *(Note: the survey system fills this in automatically based on your randomisation record — participants see either "Group A" or "Group B", not both.)*
+
+The two receipts were otherwise identical: both contained the same verification information, both linked to the same verification page, and both were privacy-preserving.
 
 ---
 
@@ -133,7 +135,9 @@ The debrief is delivered **before** any T+14 measures are collected. The debrief
 
 ### Condition unblinding
 
-Participants are told they were in "Group A" or "Group B" but are **not** told which group they were in specifically. The debrief describes both conditions accurately but does not reveal individual assignment. This is deliberate: revealing condition assignment could change retrospective interpretation of the experience and is not necessary for ethical disclosure. If a participant specifically asks which group they were in, the contact PI can disclose this post-study.
+Participants are told **which group they were in** via the `[GROUP_ASSIGNMENT]` placeholder in Screen 1. This is populated by embedded survey data at debrief delivery time (Qualtrics: use an embedded data field `condition` set at T0 randomisation, piped into Screen 1 as `${e://Field/condition_label}` where `condition_label` = "Group A" or "Group B").
+
+**Rationale for full disclosure (M5 fix):** The earlier administration note withheld individual condition assignment to avoid "retrospective interpretation changes." This is a methodological concern, not an ethical one. APA Ethics Code §8.08 requires debrief to provide full disclosure unless withholding is itself protective of the participant. Knowing which condition you were in is not harmful — the social counter was real and the participant's past behavior cannot be changed. Withholding condition assignment without a protective justification would be difficult to defend to an IRB. Full disclosure is now implemented via the `[GROUP_ASSIGNMENT]` field in Screen 1.
 
 ### Data withdrawal pipeline
 
@@ -182,14 +186,8 @@ All other pre-IRB critique items are also resolved in `piup-study3-social-verifi
 - Upload OSF pre-registration (JONY-ACTION O + T prerequisite)
 - **Decide: disclose condition assignment in debrief?** (see M5 below)
 
-### M5 — Condition assignment disclosure (flagged tick-4366)
+### M5 — Condition assignment disclosure ✅ resolved tick-4367
 
-The current administration note says participants are **not told which group they were in** (Group A or Group B). The justification is "could change retrospective interpretation of the experience."
+**Fix applied:** Screen 1 now discloses individual condition assignment via the `[GROUP_ASSIGNMENT]` piped-text placeholder ("Group A" or "Group B"). The administration note on condition unblinding has been updated to explain the Qualtrics implementation and the ethical rationale (APA §8.08). The prior justification for withholding (retrospective interpretation concern) was methodological, not ethical, and has been removed.
 
-**IRB risk:** This is a methodological justification, not an ethical one. IRBs evaluate debrief adequacy from the participant's perspective, not the researcher's data-quality perspective. Standard guidance (APA Ethics Code §8.08; Baumrind 1985) requires full disclosure in debrief unless withholding is itself protective of the participant. Here, knowing "you saw the social counter" or "you did not" is not harmful — the counter was real and participants' behavior is already in the past.
-
-**Recommended fix (one of two options):**
-1. **Disclose condition:** Add to Screen 1 — "If you saw a line showing how many others had verified, you were in Group B. If you did not see this line, you were in Group A." This is cleaner ethically and easier to justify to IRB.
-2. **Strengthen justification in IRB application:** If Jony has a specific reason not to disclose (e.g., linked to a post-study qualitative follow-up that needs condition-blindness), that reason must appear explicitly in the IRB narrative — not just in the debrief admin notes.
-
-Option 1 is recommended unless there is a study-design reason to avoid it.
+**Implementation note for Jony:** At T0 randomisation, set Qualtrics embedded data field `condition_label` = "Group A" (control) or "Group B" (treatment). In the debrief Screen 1, replace `[GROUP_ASSIGNMENT]` with the Qualtrics piped text `${e://Field/condition_label}`. This ensures each participant sees their own condition in the debrief automatically.
