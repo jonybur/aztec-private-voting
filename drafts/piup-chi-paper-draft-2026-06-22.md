@@ -347,7 +347,7 @@ Study 1 isolates the label effect while holding explanatory copy constant. Study
 
 **RQ3 (Calibration intervention).** Does an accuracy-feedback intervention before the receipt increase correct absent-content interpretation and reduce confidence miscalibration without reducing save intention? (See §6.2, §6.3.)
 
-**RQ4 (Save behavior).** Does correct absent-content interpretation predict save intention? Is this relationship moderated by calibration? (See §6.1.)
+**RQ4 (Save behavior).** Does correct absent-content interpretation predict observed save behavior (download click)? Is this relationship moderated by calibration? (See §6.1.)
 
 ### 5.2 Design
 
@@ -385,7 +385,7 @@ The primary analysis axis is contingent on Study 1 outcomes (full decision table
 
 **H2.3 (RQ3; pre-specified conditional secondary).** If Study 1 H4 is supported (§4.5): two-sample t-test on M4 confidence-accuracy residual in L2 cells (I1-L2 vs. I2-L2), one-tailed (I1 > I2), α = 0.05; n = 60 per I level, pooling E1+E2 within L2; quantity: Cohen's d + 95% CI. With a no-harm test on M3 save intention: TOST equivalence (equivalence bounds ±0.5 SD; Lakens, 2017; α = 0.05 per one-sided test; `TOSTER::tsum_TOST`, var.equal = FALSE); if equivalence not established (p_max ≥ 0.05): report M3 Cohen's d + 90% CI (pre-reg §6.4).
 
-**H2.4 (RQ4).** Logistic regression of observed download click on Q-AC accuracy, with L, E, I as covariates (main effects, no interactions); quantity: OR for Q-AC accuracy. Pre-specified sensitivity: re-run excluding browser-fallback participants (design note §9.3).
+**H2.4 (RQ4).** Logistic regression of observed download click on Q-AC accuracy, with L, E, I as covariates (main effects, no interactions); quantity: OR for Q-AC accuracy. Pre-specified sensitivity: re-run excluding browser-fallback participants (design note §9.3). Pre-specified exploratory: re-run adding Q-AC × I interaction term; report interaction OR + 95% CI (tests whether calibration moderates the Q-AC → download relationship; not confirmatory).
 
 H2.1-H2.4 are independent pre-specified predictions; no cross-hypothesis correction applied. A single pre-specified test is performed per hypothesis; no within-family multiplicity adjustment is required (design note §9.2). Exploratory comparisons across all L × E × I cells are descriptive only.
 
@@ -450,7 +450,7 @@ The underlying design problem is domain-independent. The PIUP invariants apply t
 
 **Demand characteristics and label substitution.** In Condition C (nullifier label), Q1 reads: "Does having this *nullifier* prove that your vote was counted?" The word "nullifier" in the question stem may independently depress Q1-C accuracy - participants associating "nullifier" with "null, cancelled" may answer No based on the question text alone, not the receipt label. The Q1-C demand characteristic operates in the H3 prediction direction; the H3 analysis does not require isolating the two sources. If the pilot (n = 10/cell) shows < 30% Q1 accuracy in Condition C, a pre-registered ethics clause permits label substitution before the full launch; this decision is independent of and does not alter the H3 alpha level.
 
-**Statistical power.** The pre-registration used G\*Power's McNemar (within-subjects) test in error; the corrected between-subjects calculation (Cohen's h = 0.30, one-tailed, α = 0.05) yields n = 67/cell for 80% power; the study targets n = 70/cell (≈82%). The omnibus 4-condition chi-squared is intentionally underpowered (≈67%); it is descriptive-secondary and does not adjudicate any of the 14 confirmatory hypotheses. For Study 2, all four confirmatory hypotheses (H2.1-H2.4) are adequately powered at pre-specified effect sizes (§5.2); H2.3 (TOST on save intention) achieves ≈86% power at d = 0.50 with n = 60 per I level.
+**Statistical power.** The pre-registration used G\*Power's McNemar (within-subjects) test in error; the corrected between-subjects calculation (Cohen's h = 0.30, one-tailed, α = 0.05) yields n = 67/cell for 80% power; the study targets n = 70/cell (≈82%). The omnibus 4-condition chi-squared is intentionally underpowered (≈67%); it is descriptive-secondary and does not adjudicate any of the 14 confirmatory hypotheses. For Study 2, all four confirmatory hypotheses (H2.1-H2.4) are adequately powered at pre-specified effect sizes (§5.2); H2.3 (M4 confidence residual t-test) achieves ≈86% power at d = 0.50 with n = 60 per I level; the no-harm TOST on M3 save intention is not independently powered but uses the same n = 60 per I level with equivalence bounds ±0.5 SD.
 
 **Scope.** The PIUP invariants and empirical tests apply to single-vote binary or multi-option receipts. Ranked-choice, quadratic, and cumulative voting receipts introduce additional absent-content complexity - the receipt must confirm that a full preference ordering was recorded without revealing it - and are not addressed here. Generalisation to non-binary preference structures is a direction for future work.
 
