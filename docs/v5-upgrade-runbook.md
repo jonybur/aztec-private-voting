@@ -50,6 +50,8 @@ Confirmed live 2026-06-22 at block 5620.
 
 **⚠️ SECOND RESET — Re-confirmed 2026-07-01 (tick-4380):** `{"result":967}` at 09:00 UTC. rollupVersion `2787991301` unchanged — same rollup since tick-4370. Block counter is low after the reset; confirm it is incrementing (call twice 30s apart) rather than checking a specific threshold. Rollup address changed: old `0xe4394f118b115de2bdad88ee1abd599cf5d25c70` → new `0xfe6061806cac748085904a010d2d9e33b8031741`.
 
+**Re-confirmed 2026-07-01 (tick-4398, ~14:00 UTC):** `{"result":1226}` — +259 blocks since 09:00 UTC (~51 blocks/hour). Active block production confirmed. ✅ Testnet healthy post-second-reset.
+
 ### 3b. Install v5 CLI
 
 ```bash
