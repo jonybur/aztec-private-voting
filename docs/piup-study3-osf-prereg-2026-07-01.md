@@ -72,7 +72,9 @@ The current pilot **does not include a T+7 social proof reminder notification**.
 
 **Target sample:** N = 80 (n = 40 per condition).
 
-**Population:** Voters in a live election using the Aztec Private Voting contract. Study 3 is embedded in the same election as Study 2; participants overlap with the Study 2 pool. No additional recruitment is required beyond the Study 2 election.
+**Population:** Voters in a live election using the Aztec Private Voting contract (separate from Study 2; see §9). Study 3 is a live-election field experiment and cannot be embedded in the same election as Study 2, which uses a controlled Vercel prototype with consequentially inert votes. Participants are real voters in an election facilitated by the deployed Aztec Private Voting v5 contract. No separate Prolific or panel recruitment is required; participants are recruited through the DAO's existing voter pool.
+
+_[Amendment: tick-4429 — §4 Population corrected to match §9 (tick-4427). Original §4 incorrectly stated 'Study 3 is embedded in the same election as Study 2; participants overlap with the Study 2 pool.' §9 was corrected at tick-4427 to accurately state Studies 2 and 3 use different paradigms and cannot share an election. §4 was not updated at that time. This amendment corrects the inconsistency. Pre-data; no hypothesis, DV, or analysis change.]_
 
 **Eligibility:**
 - Completed ballot submission in the target election (ballot recorded on-chain)
