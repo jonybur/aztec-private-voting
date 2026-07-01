@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { VoteReceipt } from './VoteReceipt';
 import type { ExplanationVariant, ReceiptLabelVariant } from './VoteReceipt';
@@ -341,6 +341,7 @@ describe('VoteReceipt studyMode — Study 2 behavioral logging (APV-PIUP-03)', (
   });
 
   it('studyMode=true + E2 + confirmation-code: full Study 2 condition wires up', async () => {
+
     const onDownloadClick = vi.fn();
     const onVerifyExpanded = vi.fn();
     render(
@@ -365,5 +366,104 @@ describe('VoteReceipt studyMode — Study 2 behavioral logging (APV-PIUP-03)', (
     // Verify expansion is logged
     await userEvent.click(screen.getByRole('button', { name: /how to verify/i }));
     expect(onVerifyExpanded).toHaveBeenCalledWith(true);
+  });
+});
+
+/**
+ * Option D: temporal disclosure countdown (APV-PIUP-04)
+ *
+ * Verifies the TemporalDisclosure component renders correctly for three states:
+ *   1. No timestamp provided — nothing rendered.
+ *   2. Timestamp in the future — countdown shown.
+ *   3. Timestamp in the past — "sharing is now safe" shown.
+ *
+ * Ref: docs/piup-temporal-disclosure-ux-spike-2026-07-01.md §Option D
+ */
+describe('VoteReceipt temporal disclosure — Option D countdown (APV-PIUP-04)', () => {
+  const NOW = 1_751_300_000_000; // fixed reference epoch (ms)
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('renders nothing when voteCloseTimestamp is not provided', () => {
+    render(<VoteReceipt receipt={receipt} />);
+    expect(screen.queryByRole('status')).toBeNull();
+    expect(screen.queryByText(/sharing is safe in/i)).toBeNull();
+    expect(screen.queryByText(/vote is closed/i)).toBeNull();
+  });
+
+  it('shows countdown when voteCloseTimestamp is in the future', () => {
+    const future = NOW + 5 * 86400_000 + 3 * 3600_000 + 12 * 60_000; // 5d 3h 12m
+    render(<VoteReceipt receipt={receipt} voteCloseTimestamp={future} />);
+    // Countdown message present
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.getByText(/sharing is safe in/i)).toBeInTheDocument();
+    // Days-dominant format
+    expect(screen.getByText(/5d 3h 12m/i)).toBeInTheDocument();
+    // "sharing is now safe" must NOT appear
+    expect(screen.queryByText(/vote is closed/i)).toBeNull();
+  });
+
+  it('shows hours+minutes format when < 1 day remains', () => {
+    const future = NOW + 3 * 3600_000 + 12 * 60_000; // 3h 12m
+    render(<VoteReceipt receipt={receipt} voteCloseTimestamp={future} />);
+    expect(screen.getByText(/3h 12m/i)).toBeInTheDocument();
+    expect(screen.queryByText(/\dd/)).toBeNull(); // no days part
+  });
+
+  it('shows minutes+seconds format when < 1 hour remains', () => {
+    const future = NOW + 12 * 60_000 + 48_000; // 12m 48s
+    render(<VoteReceipt receipt={receipt} voteCloseTimestamp={future} />);
+    expect(screen.getByText(/12m 48s/i)).toBeInTheDocument();
+  });
+
+  it('shows "vote is closed" when voteCloseTimestamp is in the past', () => {
+    const past = NOW - 60_000; // 1 minute ago
+    render(<VoteReceipt receipt={receipt} voteCloseTimestamp={past} />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.getByText(/vote is closed/i)).toBeInTheDocument();
+    expect(screen.getByText(/sharing your fingerprint is now safe/i)).toBeInTheDocument();
+    // Countdown must NOT appear
+    expect(screen.queryByText(/sharing is safe in/i)).toBeNull();
+  });
+
+  it('uses the correct identifier noun in the post-close message', () => {
+    const past = NOW - 1_000;
+    render(
+      <VoteReceipt receipt={receipt} labelVariant="confirmation-code" voteCloseTimestamp={past} />,
+    );
+    expect(screen.getByText(/sharing your confirmation code is now safe/i)).toBeInTheDocument();
+  });
+
+  it('transitions from countdown to post-close when timer expires', () => {
+    const future = NOW + 5_000; // 5 seconds from now
+    render(<VoteReceipt receipt={receipt} voteCloseTimestamp={future} />);
+    // Before expiry: countdown visible
+    expect(screen.getByText(/sharing is safe in/i)).toBeInTheDocument();
+    expect(screen.queryByText(/vote is closed/i)).toBeNull();
+    // Advance past close time
+    act(() => { vi.advanceTimersByTime(6_000); });
+    expect(screen.queryByText(/sharing is safe in/i)).toBeNull();
+    expect(screen.getByText(/vote is closed/i)).toBeInTheDocument();
+  });
+
+  it('updates the countdown display on each tick', () => {
+    const future = NOW + 2 * 60_000 + 30_000; // 2m 30s
+    render(<VoteReceipt receipt={receipt} voteCloseTimestamp={future} />);
+    expect(screen.getByText(/2m 30s/i)).toBeInTheDocument();
+    // Advance 1 second
+    act(() => { vi.advanceTimersByTime(1_000); });
+    expect(screen.getByText(/2m 29s/i)).toBeInTheDocument();
+  });
+
+  it('does not render temporal disclosure in study mode (no timestamp)', () => {
+    render(<VoteReceipt receipt={receipt} studyMode onDownloadClick={vi.fn()} />);
+    expect(screen.queryByRole('status')).toBeNull();
   });
 });

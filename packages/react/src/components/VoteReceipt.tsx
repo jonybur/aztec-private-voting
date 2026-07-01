@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { shortenHex, formatTimestamp } from '../format';
 import { downloadReceipt } from '../receipt';
@@ -36,6 +36,87 @@ const LABEL_COPY: Record<ReceiptLabelVariant, { heading: string; noun: string }>
   'receipt-id':        { heading: 'Your receipt ID',        noun: 'receipt ID'        },
 };
 
+/**
+ * Formats milliseconds remaining into a human-readable countdown string.
+ * Used by TemporalDisclosure (Option D, Invariant 2 enforcement).
+ *
+ * Examples:
+ *   5d 3h 12m  — days-dominant
+ *   3h 12m     — hours-dominant
+ *   12m 48s    — minutes-dominant
+ *   48s        — seconds only (final minute)
+ */
+function formatTimeRemaining(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (days > 0) return `${days}d ${hours}h ${minutes}m`;
+  if (hours > 0) return `${hours}h ${minutes}m`;
+  if (minutes > 0) return `${minutes}m ${seconds}s`;
+  return `${seconds}s`;
+}
+
+/**
+ * Option D: temporal disclosure countdown (Invariant 2).
+ *
+ * Shows a live countdown until the vote closes, then a "sharing is now safe"
+ * message. Renders nothing when `voteCloseTimestamp` is undefined.
+ *
+ * The countdown provides a concrete temporal anchor — users can truthfully
+ * say "sharing is not safe yet" and point to the UI — without a technical
+ * lock (which would require enforcing the timestamp server-side). This is
+ * the minimum viable implementation of social-deniability for vote-buyer
+ * pressure scenarios (see spike: Option D rationale).
+ *
+ * Ref: docs/piup-temporal-disclosure-ux-spike-2026-07-01.md §Option D
+ */
+function TemporalDisclosure({
+  voteCloseTimestamp,
+  identifierNoun,
+}: {
+  voteCloseTimestamp: number | undefined;
+  identifierNoun: string;
+}): JSX.Element | null {
+  const [remaining, setRemaining] = useState<number>(() =>
+    voteCloseTimestamp != null ? voteCloseTimestamp - Date.now() : 0,
+  );
+
+  useEffect(() => {
+    if (voteCloseTimestamp == null) return;
+    const tick = (): void => setRemaining(voteCloseTimestamp - Date.now());
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [voteCloseTimestamp]);
+
+  if (voteCloseTimestamp == null) return null;
+
+  if (remaining <= 0) {
+    return (
+      <p
+        className="apv-receipt__temporal apv-receipt__temporal--safe"
+        role="status"
+        aria-live="polite"
+      >
+        Vote is closed — sharing your {identifierNoun} is now safe.
+      </p>
+    );
+  }
+
+  return (
+    <p
+      className="apv-receipt__temporal apv-receipt__temporal--pending"
+      role="status"
+      aria-live="off"
+    >
+      Sharing is safe in {formatTimeRemaining(remaining)} — after the vote closes.
+    </p>
+  );
+}
+
 export interface VoteReceiptProps {
   receipt: VoteReceiptData;
   onDownload?: (receipt: VoteReceiptData) => void;
@@ -55,6 +136,21 @@ export interface VoteReceiptProps {
    * - undefined     Production framing (default; used in Study 1).
    */
   explanationVariant?: ExplanationVariant;
+  /**
+   * Unix-millisecond timestamp when the vote closes.
+   * When provided, renders an Option D temporal disclosure countdown
+   * (Invariant 2 enforcement) between the explainer paragraph and the
+   * action buttons.
+   *
+   * - Pre-close: "Sharing is safe in Xd Yh Zm — after the vote closes."
+   * - Post-close: "Vote is closed — sharing your [noun] is now safe."
+   *
+   * No technical lock is applied; the countdown is a copy-level salience
+   * aid. Add Option B (UI lock) separately when the adversarial model warrants.
+   *
+   * Ref: docs/piup-temporal-disclosure-ux-spike-2026-07-01.md §Option D
+   */
+  voteCloseTimestamp?: number;
   /**
    * When true, the component operates in study-data-collection mode:
    *   - The Download button fires `onDownloadClick(true)` instead of
@@ -141,6 +237,7 @@ export function VoteReceipt({
   verifierUrl,
   labelVariant = 'fingerprint',
   explanationVariant,
+  voteCloseTimestamp,
   studyMode = false,
   onDownloadClick,
   onVerifyExpanded,
@@ -229,6 +326,11 @@ export function VoteReceipt({
 
       <ExplainerParagraph
         explanationVariant={explanationVariant}
+        identifierNoun={identifierNoun}
+      />
+
+      <TemporalDisclosure
+        voteCloseTimestamp={voteCloseTimestamp}
         identifierNoun={identifierNoun}
       />
 
