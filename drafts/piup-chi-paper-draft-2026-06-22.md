@@ -244,7 +244,7 @@ Eight items assessed comprehension accuracy, confidence, and save intention. Tab
 |---|---|---|---|---|
 | Q1-Inclusion | "Does having your [LABEL] prove your vote was counted?" | Binary; correct: Yes | H1, H3 | Confirmatory |
 | Q2-Choice-blindness | "Does having your [LABEL] prove which voting option you chose?" | Binary; correct: No | H1, H2 primary | Confirmatory |
-| Q3-Coercion scenario | "If you showed a third party your [LABEL], could they tell which voting option you chose?" | Binary; correct: No | H1, H2 secondary | Confirmatory |
+| Q3-Coercion scenario | "Imagine your employer asks you to show them this screen as proof of your vote. If you showed a third party your screen and your [LABEL], could they tell which voting option you chose?" | Binary; correct: No | H1, H2 secondary | Confirmatory |
 | Q4-Receipt loss | "If you closed without saving your [LABEL], what would happen?" | Binary; correct: vote survives; [LABEL] is personal proof | - | Confirmatory |
 | Composite accuracy | Proportion correct on Q1-Q4 | 0-1.0 | H2 (TOST) | Confirmatory |
 | Q5-Open-ended | "Why might this voting system choose NOT to show you which option you voted for?" | 0-2, two raters, κ ≥ 0.70; rubric: OSF §11 | Pre-reg secondary | Pre-registered |

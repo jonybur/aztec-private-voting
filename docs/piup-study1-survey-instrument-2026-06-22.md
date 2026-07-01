@@ -471,7 +471,8 @@ Set up a Screen Out URL in Prolific for SC1/SC2 failures to avoid paying screen-
 | `condition` | string (A/B/C/D) | Assigned condition |
 | `condition_label` | string | Human-readable label for assigned condition |
 | `SC1` | binary | 1 = pass screener (voted past 12m), 0 = fail |
-| `SC2_occupation` | string | Raw occupation bucket |
+| `SC2_occupation` | string | Raw occupation bucket (from SC2 Qualtrics response) |
+| `occupation_sw_eng` | binary | **Derived variable** — 1 if SC2_occupation ∈ {"Practising software engineer or developer", "Student in computer science or software engineering"}, else 0. Safety-net exclusion applied at analysis stage (Rule 3, analysis.R line 207) for participants who slipped through the Prolific SC2 screener. |
 | `Q1` | binary | 1 = correct (Yes), 0 = incorrect |
 | `Q2` | binary | 1 = correct (No), 0 = incorrect |
 | `Q3` | binary | 1 = correct (No), 0 = incorrect |
