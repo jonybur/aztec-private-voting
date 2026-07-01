@@ -95,7 +95,7 @@ The current pilot **does not include a T+7 social proof reminder notification**.
 
 ### Secondary outcomes
 
-**DV2 — Stated intent to verify (T0, self-report):** "How likely are you to come back to this receipt to verify your vote was counted?" (1 = Very unlikely, 7 = Very likely). Administered at T0 immediately after receipt display, before condition assignment is apparent.
+**DV2 — Stated intent to verify (T0, self-report):** "How likely are you to come back to this receipt to verify your vote was counted?" (1 = Very unlikely, 7 = Very likely). Administered at T0 immediately after receipt display, while participants are unaware that a two-condition design is in operation. Note: participants who vote after the counter floor is reached will have already seen the social proof counter when DV2 is measured; DV2 is post-treatment for this subgroup (see §7.8).
 
 **DV3 — Verification comprehension (T+14, self-report):** Abbreviated Q1–Q4 rubric adapted from Study 1 (L2 context-shift note: in Study 1, Q1–Q4 measure label-level privacy mental models; here the rubric is adapted to measure comprehension of verification purpose — whether the participant correctly understands that verifying confirms counting but not vote content). Labelled "adapted" in all study materials. Predicted null condition difference.
 
@@ -173,6 +173,14 @@ If log opt-in n ≥ 40: Kaplan-Meier survival curves by condition; log-rank test
 ### 7.7 Amendment protocol
 
 If the counter floor (≥10 verified) is not reached before T+14 in the treatment condition, the social proof counter will never have activated. In this case, the treatment was not delivered as designed. Pre-specified response: treat this as a manipulation failure; report verification rates descriptively without the logistic regression primary analysis; document for powered replication design revision.
+
+**Note on floor calibration and expected baseline:** At the conservative verification baseline (p₁ = 0.10) with N = 80, the expected number of verifications is ~8 — below the floor of 10. Manipulation failure is therefore a plausible outcome under the conservative scenario. The PIUP receipt design (Study 2) is expected to raise the baseline above 0.10; if Study 2 establishes a baseline ≥ 0.15, expected verifications = 12, clearing the floor. If the floor is not reached, the trial is retrospectively classified as an implementation feasibility check and the floor threshold is revised downward (e.g., to ≥5) before the powered replication registration. This contingency does not require a pre-registration amendment if condition assignments remain blinded.
+
+### 7.8 Sensitivity analysis 3 — DV2 timing heterogeneity
+
+For participants who voted after the counter floor was reached, DV2 (stated intent to verify) was administered after exposure to the social proof counter and is therefore a post-treatment variable. Including DV2 as a covariate in the primary analysis (§7.1) may introduce post-treatment bias for this subgroup.
+
+Sensitivity analysis 3: re-run the primary logistic regression excluding DV2 as a covariate (i.e., `DV1 ~ Condition + self_efficacy (M1)` only). Compare condition OR and 90% CI with and without DV2. If estimates differ by >10% in either direction, report both and note the post-treatment bias mechanism. Label exploratory.
 
 ---
 
