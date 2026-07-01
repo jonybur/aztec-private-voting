@@ -23,7 +23,7 @@ The design I arrived at — the **Proof-of-Inclusion UX Pattern (PIUP)** — is 
 
 The connection to Professor Antón's program is direct. Her work asks: given a privacy regulation or requirement, how do we produce software behavior that is provably complete and correct? The PIUP work is the adjacent question on the output side: given a system that has *correctly implemented* a privacy property at the protocol layer, how do we design the feedback that produces correct mental models of that property in non-technical users? The two questions are load-bearing for each other. A formally correct private voting system is not *fully* correct if users behave in ways that defeat its privacy property — sharing a receipt under coercion, misreading an absent vote summary as an error, failing to retain the identifier for deferred verification. What "correct" user behavior looks like is determined precisely by the formal privacy specification; and whether a UX design achieves it is an empirical question. That connection — between formal privacy specifications and the user behaviors they presuppose — is the intellectual project I would want to pursue at GT IC.
 
-I have a working ZK voting system implemented in Noir on Aztec Network — compiled against v5 and with testnet deployment ready pending credential setup — a documented design pattern with stated invariants, a pre-registration for Study 1 complete and ready for OSF upload, and a three-study evaluation agenda described in my research statement. I am ready to begin empirical work and would welcome the opportunity to discuss this with Professor Antón.
+I have a working ZK voting system implemented in Noir on Aztec Network — compiled against v5 and with testnet deployment ready pending credential setup — a documented design pattern with stated invariants, a pre-registration for Study 1 complete and ready for OSF upload, and a four-study evaluation agenda described in my research statement. I am ready to begin empirical work and would welcome the opportunity to discuss this with Professor Antón.
 
 Sincerely,  
 Jony Bursztyn
@@ -33,7 +33,7 @@ Jony Bursztyn
 ## Notes for Jony
 
 ### What this letter does differently from the research statement
-- The research statement is a 750-word academic case: research gap, design contribution, three-study agenda.
+- The research statement is a 750-word academic case: research gap, design contribution, four-study agenda.
 - This cover letter is ~420 words and is **personal**: who you are, what you built, why GT specifically, and why Antón. It should feel like a direct pitch, not an academic abstract.
 
 ### Antón-specific connection argument
