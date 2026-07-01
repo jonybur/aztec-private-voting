@@ -467,3 +467,151 @@ describe('VoteReceipt temporal disclosure — Option D countdown (APV-PIUP-04)',
     expect(screen.queryByRole('status')).toBeNull();
   });
 });
+
+/**
+ * Option B: UI-lock — download/copy disabled until vote closes (APV-PIUP-05)
+ *
+ * Verifies that `temporalLock='lock'` + `voteCloseTimestamp` produces a
+ * technical barrier (disabled buttons, padlock icon, correct aria attributes)
+ * before the vote closes, and that both buttons re-enable once the close
+ * timestamp is reached.
+ *
+ * This generates the "structural-excuse" stimulus condition for Study 4
+ * (UI-lock × coercion-pressure factorial vignette).
+ *
+ * Ref: docs/piup-temporal-disclosure-ux-spike-2026-07-01.md §Option B
+ * Ref: docs/piup-study4-temporal-coercion-vignette-2026-07-01.md §3.1
+ */
+describe('VoteReceipt UI-lock — Option B pre-close enforcement (APV-PIUP-05)', () => {
+  const NOW = 1_751_300_000_000; // fixed reference epoch (ms)
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('disables download button before vote close when temporalLock=lock', () => {
+    const future = NOW + 5 * 86400_000; // 5 days from now
+    render(<VoteReceipt receipt={receipt} temporalLock="lock" voteCloseTimestamp={future} />);
+    // The locked button renders with class apv-receipt__primary--locked
+    const downloadBtn = screen.getByRole('button', { name: /download locked until vote closes/i });
+    expect(downloadBtn).toBeDisabled();
+    expect(downloadBtn).toHaveAttribute('aria-disabled', 'true');
+    expect(downloadBtn).toHaveClass('apv-receipt__primary--locked');
+    // Standard "Download receipt" button must NOT appear
+    expect(screen.queryByRole('button', { name: /^download receipt$/i })).toBeNull();
+  });
+
+  it('shows padlock icon and countdown on the locked download button', () => {
+    const future = NOW + 5 * 86400_000 + 3 * 3600_000 + 12 * 60_000; // 5d 3h 12m
+    render(<VoteReceipt receipt={receipt} temporalLock="lock" voteCloseTimestamp={future} />);
+    const downloadBtn = screen.getByRole('button', { name: /download locked until vote closes/i });
+    // Button text contains the countdown (5d 3h 12m)
+    expect(downloadBtn.textContent).toMatch(/5d 3h 12m/i);
+    // Padlock emoji present in button
+    expect(downloadBtn.textContent).toContain('🔒');
+  });
+
+  it('disables copy button before vote close when temporalLock=lock', () => {
+    const future = NOW + 5 * 86400_000;
+    render(<VoteReceipt receipt={receipt} temporalLock="lock" voteCloseTimestamp={future} />);
+    const copyBtn = screen.getByRole('button', { name: /fingerprint locked until vote closes/i });
+    expect(copyBtn).toBeDisabled();
+    expect(copyBtn).toHaveAttribute('aria-disabled', 'true');
+    // Padlock emoji visible on the copy button
+    expect(copyBtn.textContent).toContain('🔒');
+  });
+
+  it('still renders the Option D countdown when temporalLock=lock', () => {
+    // Option B = UI-lock + countdown; TemporalDisclosure should still appear.
+    // Note: /5d 3h 12m/ appears in both the status element and the locked button
+    // text — scope assertion to role='status' to avoid multiple-element error.
+    const future = NOW + 5 * 86400_000 + 3 * 3600_000 + 12 * 60_000; // 5d 3h 12m
+    render(<VoteReceipt receipt={receipt} temporalLock="lock" voteCloseTimestamp={future} />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.getByText(/sharing is safe in/i)).toBeInTheDocument();
+    // Countdown value appears in the status element (TemporalDisclosure)
+    expect(screen.getByRole('status')).toHaveTextContent(/5d 3h 12m/);
+  });
+
+  it('re-enables download button once the vote closes', () => {
+    const future = NOW + 3_000; // 3 seconds from now
+    render(<VoteReceipt receipt={receipt} temporalLock="lock" voteCloseTimestamp={future} />);
+    // Pre-close: locked
+    expect(screen.getByRole('button', { name: /download locked until vote closes/i })).toBeDisabled();
+    // Advance past close time
+    act(() => { vi.advanceTimersByTime(4_000); });
+    // Post-close: normal download button appears
+    const downloadBtn = screen.getByRole('button', { name: /download receipt/i });
+    expect(downloadBtn).not.toBeDisabled();
+    expect(downloadBtn).toHaveClass('apv-receipt__primary');
+    expect(downloadBtn).not.toHaveClass('apv-receipt__primary--locked');
+  });
+
+  it('re-enables copy button once the vote closes', () => {
+    const future = NOW + 3_000;
+    render(<VoteReceipt receipt={receipt} temporalLock="lock" voteCloseTimestamp={future} />);
+    // Pre-close: copy locked
+    expect(screen.getByRole('button', { name: /fingerprint locked until vote closes/i })).toBeDisabled();
+    act(() => { vi.advanceTimersByTime(4_000); });
+    // Post-close: copy button enabled with normal aria-label
+    const copyBtn = screen.getByRole('button', { name: /copy fingerprint/i });
+    expect(copyBtn).not.toBeDisabled();
+  });
+
+  it('Option D (temporalLock=count) keeps download enabled before vote close', () => {
+    const future = NOW + 5 * 86400_000;
+    render(<VoteReceipt receipt={receipt} temporalLock="count" voteCloseTimestamp={future} />);
+    // Countdown shown (Option D)
+    expect(screen.getByText(/sharing is safe in/i)).toBeInTheDocument();
+    // Download button is NOT locked — normal "Download receipt" button present and enabled
+    const downloadBtn = screen.getByRole('button', { name: /download receipt/i });
+    expect(downloadBtn).not.toBeDisabled();
+    expect(downloadBtn).not.toHaveClass('apv-receipt__primary--locked');
+    // No padlock-locked button present
+    expect(screen.queryByRole('button', { name: /download locked until vote closes/i })).toBeNull();
+  });
+
+  it('no temporalLock keeps download enabled before vote close', () => {
+    const future = NOW + 5 * 86400_000;
+    render(<VoteReceipt receipt={receipt} voteCloseTimestamp={future} />);
+    // Countdown shown (default Option D behaviour when timestamp provided)
+    expect(screen.getByText(/sharing is safe in/i)).toBeInTheDocument();
+    // Download not locked
+    const downloadBtn = screen.getByRole('button', { name: /download receipt/i });
+    expect(downloadBtn).not.toBeDisabled();
+    expect(screen.queryByRole('button', { name: /download locked until vote closes/i })).toBeNull();
+  });
+
+  it('temporalLock=lock has no effect when voteCloseTimestamp is not provided', () => {
+    // Without a timestamp, isLocked is always false
+    render(<VoteReceipt receipt={receipt} temporalLock="lock" />);
+    // Normal download button present
+    expect(screen.getByRole('button', { name: /download receipt/i })).not.toBeDisabled();
+    // No locked download button
+    expect(screen.queryByRole('button', { name: /download locked until vote closes/i })).toBeNull();
+    // Copy button present in normal state
+    expect(screen.getByRole('button', { name: /copy fingerprint/i })).not.toBeDisabled();
+    // No temporal disclosure rendered
+    expect(screen.queryByRole('status')).toBeNull();
+  });
+
+  it('uses the correct identifier noun in locked copy button label', () => {
+    const future = NOW + 5 * 86400_000;
+    render(
+      <VoteReceipt
+        receipt={receipt}
+        temporalLock="lock"
+        voteCloseTimestamp={future}
+        labelVariant="confirmation-code"
+      />,
+    );
+    expect(
+      screen.getByRole('button', { name: /confirmation code locked until vote closes/i }),
+    ).toBeDisabled();
+  });
+});
