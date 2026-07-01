@@ -29,6 +29,21 @@ export type ReceiptLabelVariant = 'fingerprint' | 'confirmation-code' | 'nullifi
  */
 export type ExplanationVariant = 'explained' | 'unexplained';
 
+/**
+ * Controls the temporal download-lock behaviour (Option B, Invariant 2).
+ *
+ * - 'lock'    (Option B) Download and copy are disabled until the vote closes.
+ *             A padlock icon is shown; button reads "Locked until vote closes".
+ *             Used to generate Study 4 stimuli (UI-lock × coercion-pressure).
+ * - 'count'   (Option D) Countdown is shown but no technical barrier is applied.
+ *             Default when `voteCloseTimestamp` is set.
+ * - undefined No temporal enforcement (production default; no `voteCloseTimestamp`).
+ *
+ * Ref: docs/piup-study4-temporal-coercion-vignette-2026-07-01.md §3.1
+ * Ref: docs/piup-temporal-disclosure-ux-spike-2026-07-01.md §Option B
+ */
+export type TemporalLockVariant = 'lock' | 'count';
+
 const LABEL_COPY: Record<ReceiptLabelVariant, { heading: string; noun: string }> = {
   'fingerprint':       { heading: 'Your vote fingerprint',  noun: 'fingerprint'       },
   'confirmation-code': { heading: 'Your confirmation code', noun: 'confirmation code'  },
@@ -60,6 +75,26 @@ function formatTimeRemaining(ms: number): string {
 }
 
 /**
+ * Shared countdown state hook — used by TemporalDisclosure and the
+ * Option B lock to keep both in sync from a single interval.
+ */
+function useTimeRemaining(voteCloseTimestamp: number | undefined): number {
+  const [remaining, setRemaining] = useState<number>(() =>
+    voteCloseTimestamp != null ? voteCloseTimestamp - Date.now() : 0,
+  );
+
+  useEffect(() => {
+    if (voteCloseTimestamp == null) return;
+    const tick = (): void => setRemaining(voteCloseTimestamp - Date.now());
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [voteCloseTimestamp]);
+
+  return remaining;
+}
+
+/**
  * Option D: temporal disclosure countdown (Invariant 2).
  *
  * Shows a live countdown until the vote closes, then a "sharing is now safe"
@@ -76,22 +111,12 @@ function formatTimeRemaining(ms: number): string {
 function TemporalDisclosure({
   voteCloseTimestamp,
   identifierNoun,
+  remaining,
 }: {
   voteCloseTimestamp: number | undefined;
   identifierNoun: string;
+  remaining: number;
 }): JSX.Element | null {
-  const [remaining, setRemaining] = useState<number>(() =>
-    voteCloseTimestamp != null ? voteCloseTimestamp - Date.now() : 0,
-  );
-
-  useEffect(() => {
-    if (voteCloseTimestamp == null) return;
-    const tick = (): void => setRemaining(voteCloseTimestamp - Date.now());
-    tick();
-    const id = window.setInterval(tick, 1000);
-    return () => window.clearInterval(id);
-  }, [voteCloseTimestamp]);
-
   if (voteCloseTimestamp == null) return null;
 
   if (remaining <= 0) {
@@ -138,19 +163,36 @@ export interface VoteReceiptProps {
   explanationVariant?: ExplanationVariant;
   /**
    * Unix-millisecond timestamp when the vote closes.
-   * When provided, renders an Option D temporal disclosure countdown
-   * (Invariant 2 enforcement) between the explainer paragraph and the
-   * action buttons.
+   * When provided, renders a temporal disclosure countdown (Invariant 2).
    *
-   * - Pre-close: "Sharing is safe in Xd Yh Zm — after the vote closes."
-   * - Post-close: "Vote is closed — sharing your [noun] is now safe."
+   * Behaviour depends on `temporalLock`:
    *
-   * No technical lock is applied; the countdown is a copy-level salience
-   * aid. Add Option B (UI lock) separately when the adversarial model warrants.
+   * - `temporalLock` undefined or 'count' (Option D): countdown shown;
+   *   no technical barrier applied. Pre-close copy: "Sharing is safe in
+   *   Xd Yh Zm — after the vote closes." Post-close: "Vote is closed —
+   *   sharing your [noun] is now safe."
    *
-   * Ref: docs/piup-temporal-disclosure-ux-spike-2026-07-01.md §Option D
+   * - `temporalLock='lock'` (Option B): countdown shown AND download/copy
+   *   buttons are disabled until the vote closes. Post-close: buttons
+   *   re-enable normally.
+   *
+   * Ref: docs/piup-temporal-disclosure-ux-spike-2026-07-01.md §Option D §Option B
    */
   voteCloseTimestamp?: number;
+  /**
+   * Controls whether a technical download/copy barrier is enforced
+   * (Option B) or only a salient countdown is shown (Option D, default).
+   *
+   * - 'lock'  (Option B) Download button is disabled with a padlock icon
+   *           until `voteCloseTimestamp` is reached. Generates the
+   *           structural-excuse condition in Study 4.
+   * - 'count' (Option D, default) Countdown shown; no technical barrier.
+   *
+   * Has no effect when `voteCloseTimestamp` is undefined.
+   *
+   * Ref: docs/piup-study4-temporal-coercion-vignette-2026-07-01.md §3.1
+   */
+  temporalLock?: TemporalLockVariant;
   /**
    * When true, the component operates in study-data-collection mode:
    *   - The Download button fires `onDownloadClick(true)` instead of
@@ -238,6 +280,7 @@ export function VoteReceipt({
   labelVariant = 'fingerprint',
   explanationVariant,
   voteCloseTimestamp,
+  temporalLock,
   studyMode = false,
   onDownloadClick,
   onVerifyExpanded,
@@ -247,7 +290,13 @@ export function VoteReceipt({
 
   const { heading: identifierHeading, noun: identifierNoun } = LABEL_COPY[labelVariant];
 
+  // Shared countdown for both TemporalDisclosure and Option B lock.
+  const remaining = useTimeRemaining(voteCloseTimestamp);
+  const isLocked = temporalLock === 'lock' && voteCloseTimestamp != null && remaining > 0;
+
   const handleCopy = async (): Promise<void> => {
+    // Copy is blocked in Option B lock mode (pre-close).
+    if (isLocked) return;
     await navigator.clipboard.writeText(receipt.receiptId);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1500);
@@ -315,11 +364,13 @@ export function VoteReceipt({
           </code>
           <button
             type="button"
-            className="apv-receipt__copy"
+            className={`apv-receipt__copy${isLocked ? ' apv-receipt__copy--locked' : ''}`}
             onClick={handleCopy}
-            aria-label={`Copy ${identifierNoun}`}
+            disabled={isLocked}
+            aria-label={isLocked ? `${identifierNoun} locked until vote closes` : `Copy ${identifierNoun}`}
+            aria-disabled={isLocked}
           >
-            {copied ? 'Copied' : 'Copy'}
+            {isLocked ? '🔒' : copied ? 'Copied' : 'Copy'}
           </button>
         </div>
       </div>
@@ -332,12 +383,30 @@ export function VoteReceipt({
       <TemporalDisclosure
         voteCloseTimestamp={voteCloseTimestamp}
         identifierNoun={identifierNoun}
+        remaining={remaining}
       />
 
       <div className="apv-receipt__actions">
-        <button type="button" className="apv-receipt__primary" onClick={handleDownload}>
-          Download receipt
-        </button>
+        {isLocked ? (
+          // Option B: UI-lock — download disabled with padlock until vote closes.
+          // Generates the structural-excuse stimulus for Study 4 (UI-lock condition).
+          // Copy handler is also guarded above; this button is the primary
+          // download entry point.
+          <button
+            type="button"
+            className="apv-receipt__primary apv-receipt__primary--locked"
+            disabled
+            aria-label="Download locked until vote closes"
+            aria-disabled="true"
+          >
+            <span className="apv-receipt__lock-icon" aria-hidden="true">🔒</span>
+            {' '}Locked until vote closes in {formatTimeRemaining(remaining)}
+          </button>
+        ) : (
+          <button type="button" className="apv-receipt__primary" onClick={handleDownload}>
+            Download receipt
+          </button>
+        )}
         <button
           type="button"
           className="apv-receipt__secondary"

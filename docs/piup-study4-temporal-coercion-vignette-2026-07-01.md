@@ -272,9 +272,9 @@ Study 4 is not currently in the CHI 2027 draft. Two integration options:
 
 ## 13. Stimulus construction checklist
 
-- [ ] VoteReceipt.tsx: confirm `voteCloseTimestamp` prop works and TemporalDisclosure renders countdown correctly (done, tick-4385)
-- [ ] Option B: add `disabled` + padlock + updated copy to download button in VoteReceipt.tsx (new work — estimate 1 hour)
-- [ ] Export 4 static PNGs: 2 UI conditions × 2 (done from VoteReceipt; take screenshots)
+- [x] VoteReceipt.tsx: confirm `voteCloseTimestamp` prop works and TemporalDisclosure renders countdown correctly (done, tick-4385)
+- [x] Option B: `temporalLock='lock'` prop added to VoteReceipt.tsx (tick-4387) — download/copy buttons disabled pre-close with padlock icon; `useTimeRemaining` hook shared between countdown display and lock state; `TemporalLockVariant` type exported; TypeScript clean. Use `<VoteReceipt temporalLock="lock" voteCloseTimestamp={ts} />` for Option B stimuli.
+- [ ] Export 4 static PNGs: 2 UI conditions × 2 pressure levels (capture from VoteReceipt with Option D and Option B props)
 - [ ] Qualtrics: build 4-condition survey with stimulus images, DV1–DV2, M1, C1, attention check, debrief
 - [ ] OSF: pre-register before data collection (hypotheses, measures, analysis plan, N=160 target, exclusion criteria verbatim)
 
