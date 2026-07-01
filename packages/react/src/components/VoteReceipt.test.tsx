@@ -615,3 +615,122 @@ describe('VoteReceipt UI-lock — Option B pre-close enforcement (APV-PIUP-05)',
     ).toBeDisabled();
   });
 });
+
+describe('VoteReceipt social proof counter — Study 3 (APV-PIUP-06)', () => {
+  const NOW = 1_751_300_000_000; // fixed reference epoch (ms)
+  const FUTURE = NOW + 7 * 86400_000; // 7 days ahead
+  const FLOOR = 5; // pre-registered default
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('no social proof banner when socialProofCount is undefined (control condition)', () => {
+    render(<VoteReceipt receipt={receipt} />);
+    expect(screen.queryByTestId('social-proof-banner')).toBeNull();
+  });
+
+  it('banner rendered when socialProofCount=0 (below floor — no count text)', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={0} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner).toBeInTheDocument();
+    // count < floor: count text must NOT appear
+    expect(banner.textContent).not.toMatch(/\d+ voter/);
+    expect(banner.textContent).toMatch(/Verification is open/i);
+  });
+
+  it('banner at count=4 (one below floor) shows closing text only, no count', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={4} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).not.toMatch(/\d+ voter/);
+    expect(banner.textContent).toMatch(/Verification is open/i);
+  });
+
+  it('banner at count=5 (floor) shows count text', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={FLOOR} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).toMatch(/5 voters have already verified/i);
+  });
+
+  it('banner at count=12 shows correct plural count', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={12} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).toMatch(/12 voters have already verified/i);
+  });
+
+  it('banner at count=1 uses singular noun ("voter has")', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={1} socialProofFloor={1} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).toMatch(/1 voter has already verified/i);
+  });
+
+  it('no date suffix when voteCloseTimestamp is absent', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={0} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    // No timestamp — generic closing only (no 'until')
+    expect(banner.textContent).toMatch(/Verification is open\./i);
+    expect(banner.textContent).not.toMatch(/until/i);
+  });
+
+  it('closing text includes "until" when voteCloseTimestamp provided', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={0} voteCloseTimestamp={FUTURE} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).toMatch(/Verification is open until/i);
+  });
+
+  it('count text includes closing-date clause when both count>=floor and timestamp set', () => {
+    render(
+      <VoteReceipt
+        receipt={receipt}
+        socialProofCount={10}
+        voteCloseTimestamp={FUTURE}
+      />,
+    );
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).toMatch(/10 voters have already verified/i);
+    expect(banner.textContent).toMatch(/Verification is open until/i);
+  });
+
+  it('custom socialProofFloor=3 activates count at count=3', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={3} socialProofFloor={3} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).toMatch(/3 voters have already verified/i);
+  });
+
+  it('custom socialProofFloor=3: count=2 still shows no count text', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={2} socialProofFloor={3} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).not.toMatch(/\d+ voter/);
+    expect(banner.textContent).toMatch(/Verification is open/i);
+  });
+
+  it('banner has role="status" for accessibility (live region)', () => {
+    render(<VoteReceipt receipt={receipt} socialProofCount={5} />);
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner).toHaveAttribute('role', 'status');
+  });
+
+  it('social proof banner renders alongside Option B lock (independent props)', () => {
+    // Both are valid simultaneously: lock controls download; social proof shows count.
+    render(
+      <VoteReceipt
+        receipt={receipt}
+        socialProofCount={8}
+        temporalLock="lock"
+        voteCloseTimestamp={FUTURE}
+      />,
+    );
+    // Download button locked
+    const buttons = screen.getAllByRole('button');
+    const lockedBtn = buttons.find(b => b.getAttribute('aria-disabled') === 'true');
+    expect(lockedBtn).toBeDisabled();
+    // Social proof banner still present with correct count
+    const banner = screen.getByTestId('social-proof-banner');
+    expect(banner.textContent).toMatch(/8 voters have already verified/i);
+  });
+});

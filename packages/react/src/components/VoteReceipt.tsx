@@ -95,6 +95,69 @@ function useTimeRemaining(voteCloseTimestamp: number | undefined): number {
 }
 
 /**
+ * Pre-registered social proof counter floor (Study 3, OSF pre-reg §3.2).
+ * Counter activates only when verifiedCount >= floor to avoid negative
+ * social proof at low counts (Cialdini, 1984). Do NOT change without
+ * filing an OSF amendment before data collection begins.
+ */
+const SOCIAL_PROOF_FLOOR = 5;
+
+/**
+ * Study 3: Social proof verification counter banner.
+ *
+ * Treatment condition receipt displays a count of voters who have already
+ * verified their receipt. The counter activates only when count >= floor
+ * (pre-registered at 5 per OSF §3.2) to avoid negative social proof at
+ * low verification counts ("0 voters have verified" demotivates).
+ *
+ * When count >= floor:
+ *   "N voters have already verified their vote in this election.
+ *    Verification is open until [date]."
+ * When count < floor:
+ *   "Verification is open until [date]." (no count displayed)
+ *
+ * Renders nothing when `socialProofCount` is undefined (control condition).
+ *
+ * Ref: docs/piup-study3-social-verification-2026-06-29.md §3 (floor §M1)
+ * Ref: docs/piup-study3-osf-prereg-2026-07-01.md §3.2
+ */
+function SocialProofBanner({
+  count,
+  floor,
+  voteCloseTimestamp,
+}: {
+  count: number;
+  floor: number;
+  voteCloseTimestamp: number | undefined;
+}): JSX.Element {
+  const closingText =
+    voteCloseTimestamp != null
+      ? `Verification is open until ${new Date(voteCloseTimestamp).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}.`
+      : 'Verification is open.';
+
+  return (
+    <p
+      className="apv-receipt__social-proof"
+      role="status"
+      aria-live="polite"
+      data-testid="social-proof-banner"
+    >
+      {count >= floor ? (
+        <>
+          <span className="apv-receipt__social-proof-count">
+            {count} {count === 1 ? 'voter has' : 'voters have'} already verified their vote in
+            this election.
+          </span>{' '}
+          {closingText}
+        </>
+      ) : (
+        closingText
+      )}
+    </p>
+  );
+}
+
+/**
  * Option D: temporal disclosure countdown (Invariant 2).
  *
  * Shows a live countdown until the vote closes, then a "sharing is now safe"
@@ -194,6 +257,32 @@ export interface VoteReceiptProps {
    */
   temporalLock?: TemporalLockVariant;
   /**
+   * Study 3 social proof counter — number of voters who have already
+   * verified their receipt in this election. Provided by the host;
+   * polled from on-chain `verify_vote_counted()` call logs approximately
+   * every 15 minutes.
+   *
+   * When set, renders the SocialProofBanner (treatment condition).
+   * When undefined (default), no social proof banner is shown (control).
+   *
+   * The count is only displayed when `socialProofCount >= socialProofFloor`
+   * (default 5) to avoid negative social proof at low counts.
+   *
+   * Ref: docs/piup-study3-social-verification-2026-06-29.md §3
+   * Ref: docs/piup-study3-osf-prereg-2026-07-01.md §3.2
+   */
+  socialProofCount?: number;
+  /**
+   * Pre-registered floor for the social proof counter (Study 3 OSF §3.2).
+   * The count text is shown only when `socialProofCount >= socialProofFloor`.
+   * Below the floor the banner shows "Verification is open [until date]."
+   * with no count, avoiding negative social proof from low numbers.
+   *
+   * Defaults to 5 (pre-registered). Do NOT change after OSF filing without
+   * a new amendment.
+   */
+  socialProofFloor?: number;
+  /**
    * When true, the component operates in study-data-collection mode:
    *   - The Download button fires `onDownloadClick(true)` instead of
    *     triggering an actual file download. No file is written to disk.
@@ -281,6 +370,8 @@ export function VoteReceipt({
   explanationVariant,
   voteCloseTimestamp,
   temporalLock,
+  socialProofCount,
+  socialProofFloor = SOCIAL_PROOF_FLOOR,
   studyMode = false,
   onDownloadClick,
   onVerifyExpanded,
@@ -385,6 +476,14 @@ export function VoteReceipt({
         identifierNoun={identifierNoun}
         remaining={remaining}
       />
+
+      {socialProofCount != null ? (
+        <SocialProofBanner
+          count={socialProofCount}
+          floor={socialProofFloor}
+          voteCloseTimestamp={voteCloseTimestamp}
+        />
+      ) : null}
 
       <div className="apv-receipt__actions">
         {isLocked ? (
