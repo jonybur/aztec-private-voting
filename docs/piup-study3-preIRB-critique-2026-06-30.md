@@ -31,27 +31,31 @@ Both the original H1 assessment (tick-4287) and the tick-4319 "fix" introduced e
 
 ---
 
-### H2: Dangling reference — Nissen et al. (2025)
+### H2: Dangling reference — Nissen et al. (2025) [RESOLVED tick-4364]
 
-`piup-study3-social-verification-2026-06-29.md` includes in its references:
+**⚠️ Status: ✅ RESOLVED (tick-4364)** — Verified against current `piup-study3-social-verification-2026-06-29.md`. Nissen et al. (2025) IS cited in the document body (§7 Ethical considerations, "Partial disclosure with debrief" paragraph): *"consistent with the privacy-preserving design in Nissen et al. (2025) who found that counter-strategies are more effective when coercer visibility is low."* The reference appears in both body and references list. H2 is closed.
+
+~~`piup-study3-social-verification-2026-06-29.md` includes in its references:
 
 > Nissen, C., Hilt, T., Budurushi, J., Volkamer, M., and Kulyk, O. (2025). Voting under pressure: Perceptions of counter-strategies in internet voting. *E-VOTE-ID 2025*. LNCS vol. 16028, pp. 158–174.
 
-This citation does not appear anywhere in the document body. Either it was intended to support a claim that was later edited out, or it was added speculatively. IRB reviewers will notice. Either cite it (it's potentially useful in §2 Motivation for the coercion discussion) or remove it from the references.
+This citation does not appear anywhere in the document body. Either it was intended to support a claim that was later edited out, or it was added speculatively. IRB reviewers will notice. Either cite it (it's potentially useful in §2 Motivation for the coercion discussion) or remove it from the references.~~
 
-**Suggested use:** Nissen et al. (2025) could be cited in §7 Ethical considerations or §2 Motivation when discussing the coercion-surface implications of showing a public verification counter. The counter is privacy-preserving with respect to *who* verified, but could interact with coercion strategies — Nissen et al.'s framework for counter-strategies in internet voting may be relevant here. If it isn't being actively used, remove it.
+~~**Suggested use:** Nissen et al. (2025) could be cited in §7 Ethical considerations or §2 Motivation when discussing the coercion-surface implications of showing a public verification counter. The counter is privacy-preserving with respect to *who* verified, but could interact with coercion strategies — Nissen et al.'s framework for counter-strategies in internet voting may be relevant here. If it isn't being actively used, remove it.~~
 
 ---
 
-### H3: "Non-deception" claim is overstated
+### H3: "Non-deception" claim is overstated [RESOLVED tick-4364]
 
-§7 Ethical considerations states: "The count is real and accurate. Participants in the treatment condition see genuine social behavior, not a simulated one."
+**⚠️ Status: ✅ RESOLVED (tick-4364)** — Verified against current `piup-study3-social-verification-2026-06-29.md`. §7 Ethical considerations uses "**Partial disclosure with debrief:**" (bold label, not "Non-deception"). The paragraph explicitly states: *"Participants are not informed of the two-condition design at T0 to prevent demand effects. This constitutes incomplete disclosure, which is justified by the minimal-risk nature of the manipulation and mitigated by full debrief at T+14."* Both the heading and the required sentence are in place. H3 is closed.
+
+~~§7 Ethical considerations states: "The count is real and accurate. Participants in the treatment condition see genuine social behavior, not a simulated one."
 
 This is true. But the section leads with a heading "Non-deception," which is misleading. Participants in *both conditions* are told the study is about "how voters use their receipts after an election." They are not told (a) that there are two versions of the receipt, or (b) that a between-subjects manipulation is occurring. This is deception by omission — standard and defensible in behavioural research, but it needs to be named correctly.
 
 **IRB reviewers will flag this.** The section should be renamed "Partial disclosure" or "Incomplete disclosure with debrief" and should explicitly acknowledge that participants are not told about the two-condition design. The current framing ("non-deception") could trigger a request for revision if reviewers interpret it as claiming no deception at all.
 
-**Fix:** Rename the section and add a sentence: *"Participants are not informed of the two-condition design at T0 to prevent demand effects. This constitutes incomplete disclosure, which is justified by the minimal-risk nature of the manipulation and mitigated by full debrief at T+14."*
+**Fix:** Rename the section and add a sentence: *"Participants are not informed of the two-condition design at T0 to prevent demand effects. This constitutes incomplete disclosure, which is justified by the minimal-risk nature of the manipulation and mitigated by full debrief at T+14."*~~
 
 ---
 
@@ -161,6 +165,8 @@ Before submitting to IRB, the following must be in place:
 The Study 3 design is methodologically coherent and the pilot/feasibility framing is the correct pragmatic choice given the power constraints. The theoretical contribution (social proof for *deferred* security behaviour across a two-week gap) is genuine and publishable.
 
 **Updated assessment (tick-4319):** All high-priority (H1–H3) and medium-priority (M1–M4) items identified in this critique are resolved in the current document versions. The original critique was generated against an in-progress version of the docs; the fixes were applied before the docs were finalised. The only remaining item (L3) is a minor cross-reference tightening that requires no structural change — only specific anchor syntax when the doc is converted to IRB submission format.
+
+**Verification (tick-4364, 2026-07-01):** Re-verified H2 and H3 against the live document. H2 (Nissen et al. 2025): citation appears in body text (§7, "Partial disclosure with debrief" paragraph) and in references list — not dangling. H3 (Non-deception): §7 uses bold label "**Partial disclosure with debrief:**" and includes the required sentence about incomplete disclosure. Both checklist items confirmed correct. The H2/H3 body sections in this critique were marked RESOLVED accordingly. No structural changes required to the study doc.
 
 No significant revision session is needed. The social-verification and debrief-script docs are IRB-ready pending:
 1. OSF pre-registration upload (Jony action)
