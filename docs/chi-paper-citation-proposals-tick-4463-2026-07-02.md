@@ -39,9 +39,11 @@ Cite in §1.2 alongside Kulyk 2015 in the verification-usability list sentence. 
 
 ---
 
-## 2. Draft §1.2 Edit — Volkamer 2022 (Primary Recommendation)
+## 2. Draft §1.4 Edit — Volkamer 2022 (Primary Recommendation)
 
-### Current text (line 67)
+**NOTE (tick-4490):** This section was originally labelled §1.2 but the target paragraph ('Prior e-voting usability work evaluates voter *verification*...') is in §1.4 'Scope and relation to prior work' in the current draft. Section numbering corrected here; the paper itself is unaffected.
+
+### Current text (§1.4, current draft)
 ```
 Prior e-voting usability work evaluates voter *verification* (ballot inclusion checking) rather than voter *comprehension* of what the inclusion proof proves or withholds. STAR-Vote (Bell et al. 2013), Helios (Adida et al. 2009), Marky et al. (2018), and Kulyk et al. (2015) measure task completion, workload, or cryptographic eligibility-hiding, not receipt representational semantics. Carback et al. (2010) evaluate whether voters *use* the Scantegrity II affordance, not whether they correctly model the privacy property. No prior work directly examines what voters *believe* a cryptographic receipt reveals about their vote choice.
 ```
@@ -53,7 +55,7 @@ Insert between the list sentence and "Carback et al. (2010)...":
 Prior e-voting usability work evaluates voter *verification* (ballot inclusion checking) rather than voter *comprehension* of what the inclusion proof proves or withholds. STAR-Vote (Bell et al. 2013), Helios (Adida et al. 2009), Marky et al. (2018), and Kulyk et al. (2015) measure task completion, workload, or cryptographic eligibility-hiding, not receipt representational semantics. While subsequent work has extended these findings to varied verifiable voting system designs (Volkamer et al., 2022), the receipt privacy-mental-model problem — the artifact voters retain *after* verification — has not been empirically addressed. Carback et al. (2010) evaluate whether voters *use* the Scantegrity II affordance, not whether they correctly model the privacy property. No prior work directly examines what voters *believe* a cryptographic receipt reveals about their vote choice.
 ```
 
-**Word delta:** +22 words (~1.8% of §1.2 budget).  
+**Word delta:** +22 words. Total body word count after applying: ~11,705 (under 12,000 cap; safe before §4.6 fill-in).  
 **Effect:** Establishes explicitly that PIUP's gap claim survives post-2018 work. Blocks a CHI reviewer objection that the literature review is outdated.
 
 ### Option B — Add Kulyk 2021 to the list sentence (lower priority)
@@ -74,12 +76,21 @@ STAR-Vote (Bell et al. 2013), Helios (Adida et al. 2009), Marky et al. (2018), K
 
 ---
 
-## 3. Bibliography Entries (pending Jony DOI verification)
+## 3. Bibliography Entries (✅ CONFIRMED tick-4490)
 
 ### Volkamer et al. 2022 (SOUPS)
+✅ **All details confirmed tick-4490** via USENIX proceedings page + KIT/SECUSO staff page.
 ```
-- Volkamer, M., Kulyk, O., Ludwig, J., and Fuhrberg, N. (2022). "Increasing Security without Decreasing Usability: A Comparison of Various Verifiable Voting Systems." _Eighteenth Symposium on Usable Privacy and Security (SOUPS 2022)_. USENIX Association. ISBN 978-1-939133-30-4. ✅ Venue + authors + title confirmed (tick-4464, USENIX.org open access). PDF: https://www.usenix.org/system/files/soups2022-volkamer.pdf (21 pages). USENIX SOUPS proceedings use per-paper pagination; no cross-paper page range in USENIX open-access format — omit pp. (consistent with Bell et al. 2013 and Adida et al. 2009 format in CHI paper). [Jony: only remaining action = decide whether to apply Option A to §1.2]
+- Volkamer, M., Kulyk, O., Ludwig, J., and Fuhrberg, N. (2022). Increasing security without decreasing usability: A comparison of various verifiable voting systems. _Eighteenth Symposium on Usable Privacy and Security (SOUPS 2022)_, 233–252. USENIX Association.
 ```
+Confirmation sources:
+- USENIX: https://www.usenix.org/conference/soups2022/presentation/volkamer
+- KIT/SECUSO staff page: pp. 233–252 confirmed
+- Open access PDF: https://www.usenix.org/system/files/soups2022-volkamer.pdf
+- ISBN: 978-1-939133-30-4
+- Date: August 8–9, 2022, Boston, MA
+
+[Jony: only remaining action = decide whether to apply Option A to §1.4]
 
 ### Kulyk et al. 2021 (E-Vote-ID) — only if Option B or combined edit applied
 ```
@@ -93,8 +104,8 @@ STAR-Vote (Bell et al. 2013), Helios (Adida et al. 2009), Marky et al. (2018), K
 | Action | Status | Detail |
 |---|---|---|
 | retrieve-kulyk-secrecy-preserving-paper | **✅ RESOLVED** | Paper found, assessed LOW-MODERATE, safe to add to §1.2 list if desired |
-| Add Volkamer 2022 to §1.2 | **⏳ JONY DECISION** | Venue/title/authors confirmed (tick-4464); apply Option A text above |
-| Verify Volkamer 2022 DOI + page numbers | **✅ RESOLVED (tick-4464)** | USENIX SOUPS 2022 confirmed; ISBN 978-1-939133-30-4; open-access, no pp. needed |
+| Add Volkamer 2022 to §1.4 | **⏳ JONY DECISION** | All details confirmed (tick-4490: pp. 233–252, USENIX open access); apply Option A text to §1.4 |
+| Verify Volkamer 2022 DOI + page numbers | **✅ RESOLVED (tick-4490)** | USENIX SOUPS 2022; pp. 233–252 confirmed via KIT/SECUSO; ISBN 978-1-939133-30-4 |
 | Verify Kulyk 2021 LNCS volume + DOI | **⏳ JONY (if adding)** | Check Springer E-Vote-ID 2021 proceedings |
 
 ---

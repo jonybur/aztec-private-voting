@@ -24,9 +24,11 @@ Three targeted searches for:
 
 **Distinction from PIUP:** PIUP's contribution is orthogonal. PIUP addresses the *receipt layer* — what the voter retains after their ballot is recorded, and whether that receipt correctly signals its privacy properties under adversarial conditions. Cast-as-intended verification usability (Marky 2018, Kulyk 2015, Volkamer 2022) addresses whether the voter can check that their ballot was *recorded correctly*. These are different problems: PIUP assumes recording was successful (the receipt confirms it) and focuses on what the receipt reveals about the vote choice.
 
-**Recommendation:** Cite in §1.2 (related work paragraph on verification usability) as evidence that the SECUSO group's post-2018 work continues to focus on verification usability, not receipt privacy design. One-sentence mention. This strengthens the positioning gap claim: "While subsequent work has extended these findings to varied verifiable voting system designs (Volkamer et al., 2022), the receipt privacy-mental-model problem — the artifact voters retain *after* verification — has not been empirically addressed."
+**Recommendation:** Cite in §1.4 (related work paragraph on verification usability; the paragraph beginning 'Prior e-voting usability work evaluates voter *verification*...') as evidence that the SECUSO group's post-2018 work continues to focus on verification usability, not receipt privacy design. One-sentence mention. This strengthens the positioning gap claim: "While subsequent work has extended these findings to varied verifiable voting system designs (Volkamer et al., 2022), the receipt privacy-mental-model problem — the artifact voters retain *after* verification — has not been empirically addressed."
 
-**Action required:** Jony to confirm venue/DOI (Springer chapter in SOUPS 2022 proceedings) and decide whether to add. If added: +1 reference to bibliography, ~20 words in §1.2.
+**✅ Venue CONFIRMED (tick-4490):** USENIX SOUPS 2022 (NOT Springer — open access). Title confirmed via USENIX proceedings page. Pages: 233–252. URL: https://www.usenix.org/conference/soups2022/presentation/volkamer PDF: https://www.usenix.org/system/files/soups2022-volkamer.pdf. ISBN: 978-1-939133-30-4.
+
+**Remaining Jony action:** Decide whether to apply Option A to §1.4 (related work paragraph). +1 reference (pp. 233–252), +22 words. Ready-to-paste text is in `docs/chi-paper-citation-proposals-tick-4463-2026-07-02.md` §2 (note: that doc says §1.2 — correct target is §1.4 'Scope and relation to prior work').
 
 ---
 
