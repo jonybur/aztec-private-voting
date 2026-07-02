@@ -15,7 +15,9 @@
 
 ## 1. Study Overview
 
-Private voting systems based on cryptographic verifiability (e.g., Helios, STAR-Vote, Aztec Private Voting) allow each voter to check that their ballot was counted — but prior deployments consistently report verification rates below 10% (Adida et al., 2009; Bell et al., 2013). The PIUP (Proof-of-Inclusion UX Pattern) reduces verification friction by issuing a voter a named surrogate identifier ("vote fingerprint") with explicit verification instructions and a downloadable artifact. Study 2 (concurrent) establishes a PIUP baseline verification rate. **Study 3 asks: does a social proof signal embedded in the PIUP receipt increase the rate at which voters return to verify?**
+Private voting systems based on cryptographic verifiability (e.g., Helios, STAR-Vote, Aztec Private Voting) allow each voter to check that their ballot was counted — but prior deployments consistently report verification rates below 10% (Adida et al., 2009; Bell et al., 2013). The PIUP (Proof-of-Inclusion UX Pattern) reduces verification friction by issuing a voter a named surrogate identifier ("vote fingerprint") with explicit verification instructions and a downloadable artifact. Study 2 (separate paradigm — controlled Prolific experiment; see §9) tests explanation and calibration effects on absent-content interpretation. **Study 3 asks: does a social proof signal embedded in the PIUP receipt increase the rate at which voters return to verify?** Study 3 establishes its own verification-rate baseline via the control arm; no comparison to Study 2 data is pre-registered.
+
+_[Amendment tick-4445 — §1 Study 2 description corrected: original text 'Study 2 (concurrent) establishes a PIUP baseline verification rate' was stale from the pre-redesign conception when Studies 2+3 shared an election. Study 2 was redesigned as a controlled single-session Prolific experiment (primary DV: Q-AC absent-content interpretation accuracy; no T+14 follow-up; no live contract). Study 2 does not measure or establish a baseline verification rate. Study 3 establishes its own baseline via the control arm. Parallel to §3.1 correction and §4 (tick-4429) and §9 (tick-4427) corrections. Pre-data; no hypothesis, DV, or analysis change.]_
 
 Social proof (Cialdini, 1984) has been shown to increase upfront security behavior (Das et al., 2014, CCS: password manager adoption via peer-count display). Study 3 tests whether the same mechanism operates for **deferred** security behavior — returning to verify after a vote has been cast — in a private voting context where the ZK contract's public `verify_vote_counted()` function makes an aggregate verification count technically available without de-anonymizing any individual voter.
 
@@ -39,7 +41,9 @@ Social proof (Cialdini, 1984) has been shown to increase upfront security behavi
 
 ### 3.1 Structure
 
-**Two-arm, between-subjects field experiment** embedded within the same live election as Study 2. Participants are voters in a real election using the Aztec Private Voting contract. Condition assignment is random at T0 (moment of ballot submission).
+**Two-arm, between-subjects field experiment** in a separate live election from Study 2 (see §4, §9). Participants are voters in a real election using the Aztec Private Voting contract. Condition assignment is random at T0 (moment of ballot submission).
+
+_[Amendment tick-4445 — §3.1 corrected: original text 'embedded within the same live election as Study 2' was stale. Studies 2 and 3 run in separate elections (Study 2 uses a Vercel prototype with no live contract; Study 3 requires a live Aztec deployment). Parallel to §1 correction and §4 (tick-4429) and §9 (tick-4427) corrections. Pre-data; no hypothesis, DV, or analysis change.]_
 
 | Condition | Receipt display at T0 |
 |---|---|

@@ -1,9 +1,9 @@
 # PIUP Study 3 — Pre-Registration Cross-Check Report
 
-**Date:** 2026-07-01 (tick-4429); updated 2026-07-02 (tick-4442)  
+**Date:** 2026-07-01 (tick-4429); updated 2026-07-02 (tick-4442); updated 2026-07-02 (tick-4445)  
 **Author:** OpenClaw Agent  
 **Purpose:** Systematic cross-check of `piup-study3-osf-prereg-2026-07-01.md` against `analysis/piup-study3-analysis.R`, `analysis/piup-study3-drycheck.R`, `docs/piup-study3-debrief-script-2026-06-30.md`, and `drafts/piup-chi-paper-draft-2026-06-22.md` §7. Parallel to `docs/piup-study1-crosscheck-2026-07-01.md` (5 gaps found) and `docs/piup-study2-crosscheck-2026-06-30.md` (5 gaps found).  
-**Result:** 4 gaps found. 1 critical (fixed), 2 moderate (partially resolved — see updates below), 1 minor (not an issue).
+**Result:** 6 gaps found. 3 critical (all fixed), 2 moderate (partially resolved — see updates below), 1 minor (not an issue). Gaps 5+6 found and fixed tick-4445.
 
 ---
 
@@ -15,6 +15,8 @@
 | 2 | MODERATE | Pre-reg §5 / DV3 | DV3 (verification comprehension) item wording not specified; "abbreviated Q1–Q4 rubric adapted from Study 1" with no actual question text, no composite scoring rule | ⏳ PARTIAL — items drafted in `piup-study3-dv3-specification-2026-07-02.md`; DV3-3A vs DV3-3B pending Jony choice — see Gap 2 |
 | 3 | MODERATE | Pre-reg §5 / DV3 | DV3 scoring rule not defined — analysis script treats `dv3_comprehension` as a single 0/1 binary column; pre-reg says "Q1–Q4 composite" but gives no composite specification | ⏳ PARTIAL — Option A (strict composite) documented in spec; pending Jony confirmation — see Gap 3 |
 | 4 | MINOR | Pre-reg §1 inline citation | "Das et al., 2014, CCS: password manager adoption via peer-count display" — paper title and topic may be imprecise; actual title is "Increasing security sensitivity with social proof: A large-scale experimental confirmation" (security behaviors broadly, not specifically password-manager adoption) | ✅ CONFIRMED NOT AN ISSUE — see Gap 4 |
+| 5 | **CRITICAL** | Pre-reg §1 | §1 says "Study 2 (concurrent) establishes a PIUP baseline verification rate" — doubly wrong: (a) Study 2 is not concurrent (separate paradigm, separate election); (b) Study 2 does not measure verification return rates (primary DV is Q-AC absent-content interpretation accuracy) | ✅ Fixed in tick-4445 — §1 rewritten with amendment note |
+| 6 | **CRITICAL** | Pre-reg §3.1 | §3.1 says Study 3 is "embedded within the same live election as Study 2" — directly contradicts §4 (tick-4429) and §9 (tick-4427); same root cause as Gap 1 (section missed by prior fix pass) | ✅ Fixed in tick-4445 — §3.1 rewritten with amendment note |
 
 ---
 
@@ -147,11 +149,47 @@ The inline description "password manager adoption via peer-count display" is a s
 | Study 1 H4 outcome | ⏳ Needed to calibrate Study 3 voter pool estimate |
 | OSF pre-registration upload | ⏳ Pending above fixes + study 2 sequencing |
 
-**Current state (tick-4442): §4 gap fixed. T+14 instrument exists. DV3 items specified. Remaining blockers:**
+**Current state (tick-4445): §4, §1, §3.1 gaps all fixed. T+14 instrument exists. DV3 items specified. Remaining blockers:**
 1. **Gap 2 + 3 (PARTIAL):** DV3-3 wording (DV3-3A vs DV3-3B) and scoring rule — Jony must approve before OSF amendment filed (spec doc `piup-study3-dv3-specification-2026-07-02.md`)
 2. **M1 items:** Compeau-Higgins source mapping confirmed; M1-3 refinement recommended in `piup-study3-m1-item-review-2026-07-02.md` — Jony to review
 3. **Sequencing:** Study 1 pilot → Study 2 pre-reg filed on OSF → Study 3 pre-reg filed on OSF
 
 ---
 
-_Created: 2026-07-01 (tick-4429). Updated: 2026-07-02 (tick-4442) — pre-pilot gate refreshed: T+14 instrument (tick-4431), Qualtrics guide (tick-4435), DV3 spec (tick-4437), M1 review (tick-4438), analysis script DV3 comment (tick-4441). Based on audit of: pre-reg §§1–12, analysis script (470 lines), drycheck script (586 lines), debrief script Screens 1–4, CHI paper §7 Study 3 description. Parallel to piup-study1-crosscheck (5 gaps) and piup-study2-crosscheck (5 gaps)._
+## Gap 5 — CRITICAL (FIXED tick-4445): §1 'Study 2 (concurrent)' + wrong DV description
+
+### The problem
+
+**§1 Study Overview (pre-fix):**
+> "Study 2 (concurrent) establishes a PIUP baseline verification rate."
+
+Two errors:
+1. **"concurrent"**: Study 2 is not concurrent with Study 3 — they run in separate elections (Study 2: controlled Vercel prototype, no live contract; Study 3: live Aztec deployment). Same root cause as Gap 1 (§4) and Gap 6 (§3.1).
+2. **"establishes a PIUP baseline verification rate"**: Study 2's primary DV is Q-AC absent-content interpretation accuracy (H2.1), not verification return rate. Study 2 has no T+14 follow-up and does not measure verification return rates. This description was from the pre-redesign conception of Study 2 as a field experiment.
+
+### Fix applied (tick-4445)
+
+§1 rewritten: "Study 2 (separate paradigm — controlled Prolific experiment; see §9) tests explanation and calibration effects on absent-content interpretation. Study 3 asks... Study 3 establishes its own verification-rate baseline via the control arm; no comparison to Study 2 data is pre-registered."
+
+Amendment note logged inline in pre-reg §1.
+
+---
+
+## Gap 6 — CRITICAL (FIXED tick-4445): §3.1 'embedded within the same live election as Study 2'
+
+### The problem
+
+**§3.1 Structure (pre-fix):**
+> "**Two-arm, between-subjects field experiment** embedded within the same live election as Study 2."
+
+This directly contradicts §4 (fixed tick-4429) and §9 (fixed tick-4427). Same root cause as Gap 1: when §4 and §9 were corrected, §3.1 was not swept. An OSF reviewer reading §3.1 would conclude Study 3 shares Study 2's election; reading §4 and §9 they would conclude the opposite.
+
+### Fix applied (tick-4445)
+
+§3.1 rewritten: "**Two-arm, between-subjects field experiment** in a separate live election from Study 2 (see §4, §9)."
+
+Amendment note logged inline in pre-reg §3.1.
+
+---
+
+_Created: 2026-07-01 (tick-4429). Updated: 2026-07-02 (tick-4442) — pre-pilot gate refreshed: T+14 instrument (tick-4431), Qualtrics guide (tick-4435), DV3 spec (tick-4437), M1 review (tick-4438), analysis script DV3 comment (tick-4441). Updated: 2026-07-02 (tick-4445) — Gaps 5+6 found and fixed: §1 'Study 2 (concurrent)' + wrong DV description and §3.1 embedding language (both missed by prior fix passes; same root cause as Gap 1). Based on audit of: pre-reg §§1–12, analysis script (470 lines), drycheck script (586 lines), debrief script Screens 1–4, CHI paper §7 Study 3 description. Parallel to piup-study1-crosscheck (5 gaps) and piup-study2-crosscheck (5 gaps)._

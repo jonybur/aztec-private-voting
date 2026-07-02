@@ -5,7 +5,7 @@
 **Against:** `docs/piup-study3-osf-prereg-2026-07-01.md`, `docs/piup-study3-prereg-quality-check-2026-07-01.md`, `docs/piup-study3-social-verification-2026-06-29.md`
 **Study type:** Two-arm between-subjects field experiment (embedded in same live election as Study 2)
 **Reviewer:** Autonomous quality pass - not a substitute for Jony's review before OSF filing
-**Status:** ✅ Counter floor resolved (tick-4408). ⚠️ Two pending Jony decisions before OSF filing: (1) DV3-3 item wording [tick-4437: Option DV3-3A vs. DV3-3B]; (2) M1-3 item wording [tick-4438: keep current vs. M1-3R refinement]. DV3 scoring block in analysis script ready but commented pending decisions. Paradigm corrected tick-4427/4439: Study 3 runs in a SEPARATE live election from Study 2 (not concurrent).
+**Status:** ✅ Counter floor resolved (tick-4408). ⚠️ Three pending Jony decisions before OSF filing: (1) DV3-3 item wording [tick-4437: Option DV3-3A vs. DV3-3B]; (2) DV3 scoring rule [tick-4437: Option A all-4-correct vs. Option B ≥3/4]; (3) M1-3 item wording [tick-4438: keep current vs. M1-3R refinement]. DV3 scoring block in analysis script ready but commented pending decisions. Paradigm corrected tick-4427/4439: Study 3 runs in a SEPARATE live election from Study 2 (not concurrent). Pre-reg §1 + §3.1 stale embedding language also fixed tick-4445 (see crosscheck Gaps 5+6).
 
 ---
 
