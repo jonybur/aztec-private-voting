@@ -1,6 +1,6 @@
 # Cold Email Draft — Sauvik Das (CMU HCII / SPUD Lab)
 
-_Author: Jony Bursztyn · 2026-06-22_  
+_Author: Jony Bursztyn · 2026-06-22 (updated tick-4477, 2026-07-02 — Study 2 now pre-registered; 3-study → 4-study arc; "designed, not yet run" → "pre-registered")_  
 _Status: DRAFT — fill in [PLACEHOLDERS] before sending_  
 _Related: `docs/cmu-hci-research-statement-draft-2026-06-22.md`, `docs/piup-study1-preregistration-2026-06-22.md`_
 
@@ -53,12 +53,12 @@ ratings while scoring only moderately on accuracy — borrowing perceived compet
 eCommerce conventions without validating the underlying model. This is a different mechanism
 from the social-proof effect your 2014 CCS work identified, but it's in the same family: a
 UI convention changes user confidence in ways that aren't anchored to actual security
-understanding. Study 2 (designed, not yet run) tests whether an accuracy-feedback calibration
+understanding. Study 2 (pre-registered) tests whether an accuracy-feedback calibration
 intervention can close the confidence-accuracy gap before the receipt is displayed — and
 whether it does so without reducing receipt-saving behavior. I expect the SPUD Lab's behavioral
-methodology would sharpen that prediction before it runs.
+methodology would sharpen the analysis.
 
-I've attached my research statement (the full 3-study arc with methodology). If this sounds
+I've attached my research statement (the full 4-study arc with methodology). If this sounds
 like a fit for your current work, I'd welcome a 20-minute conversation — or feedback on the
 framing before I apply in December.
 
