@@ -128,8 +128,13 @@ df <- df_raw %>%
 #             Correct answer: "Yes"
 #   dv3_q2 — response to DV3-2 ("Does verifying reveal which option you chose?")
 #             Correct answer: "No"
-#   dv3_q3 — response to DV3-3 ("If you showed the link, could they learn your choice?")
-#             Correct answer: "No"
+#   dv3_q3 — response to DV3-3 (wording PENDING JONY DECISION — two options, tick-4437):
+#     Option DV3-3A (recommended): "If you verified your vote in front of another person,
+#                                   could they learn which option you voted for?"
+#     Option DV3-3B (keep original): "If you showed your receipt link to another person,
+#                                    could they learn which option you chose?"
+#     Either way: Correct answer = "No". Score unchanged; update this comment + instrument
+#     §5.2 once Jony confirms. Combined OSF amendment: DV3 items + scoring rule (tick-4437).
 #   dv3_q4 — response to DV3-4 ("What does successful verification prove?")
 #             Correct answer: option (b) — "Counted, not choice"
 #             Qualtrics exports verbatim text or recoded value; use the correct match below.
