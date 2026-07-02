@@ -1,7 +1,7 @@
 # Jony Action Brief — Current (tick-4465, 2026-07-02)
 
 **Supersedes:** `docs/jony-approval-cheatsheet-2026-06-29.md` (that doc covered only JA-O and JA-T; new actions have since accumulated)  
-**Updated:** tick-4465 (2026-07-02 07:13 UTC)  
+**Updated:** tick-4474 (2026-07-02 09:28 UTC)  
 **Status:** 7 open Jony actions + 1 optional + 1 CHI paper decision
 
 ---
@@ -162,7 +162,7 @@ Full scoring text is in `docs/piup-study3-dv3-specification-2026-07-02.md §3`.
 ## PART 5 — Aztec Grant + GT/CMU Emails
 
 ### Grant submission
-1. Testnet was unreachable at tick-4465 (07:13 UTC). The RPC endpoint (`https://v5.testnet.rpc.aztec-labs.com`) resets periodically. Check again before deploying.
+1. Testnet is **live** (block 2203 confirmed tick-4473, rollupVersion `2787991301` stable as of tick-4474 09:28 UTC). The RPC endpoint `https://v5.testnet.rpc.aztec-labs.com` is healthy.
 2. Redeploy using `docs/v5-upgrade-runbook.md` (needs `DEPLOYER_SECRET_KEY` + `DEPLOYER_SIGNING_KEY` in your local env).
 3. Update the contract address in `GRANT.md` before posting.
 4. Post to `forum.aztec.network` — the post text is in `docs/forum-post-grant-application.md`.
@@ -183,7 +183,7 @@ Full scoring text is in `docs/piup-study3-dv3-specification-2026-07-02.md §3`.
 |------|--------|
 | Study 3+4 drycheck passes | ✅ Confirmed tick-4465 |
 | Study 1+2 analysis scripts | ✅ Pass — no changes needed |
-| CHI paper body | ✅ 11,823 words, all sections written |
+| CHI paper body | ✅ 11,683 words (tick-4467 –140w §7 compression), all sections written |
 | Bibliography | ✅ 17/17 entries verified |
 | ADR-038 M2 RIPEMD-160 code changes | ⏳ **Jony approval needed** before agent applies |
 | Study 3 instrument M1-3 + DV3 update | ⏳ After Jony confirms Decisions A/B/C above |
