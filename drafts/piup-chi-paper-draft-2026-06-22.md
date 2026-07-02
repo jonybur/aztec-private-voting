@@ -165,7 +165,7 @@ Circuit analysis and trust-boundary audit across `main.nr`, `eligibility.nr`, `m
 | Double-vote prevention (M2 path) | Babylon M2 | Nullifier deterministic per (private key, challenge); `receipts` map enforces single-use |
 | EIP-191 encoding correctness | Babylon M2 | Prefix bytes verified byte-for-byte against MetaMask `personal_sign` specification |
 
-Five findings were resolved before the study — one HIGH severity, one MEDIUM, and three LOW:
+Five findings were resolved before the study — one HIGH severity, one MEDIUM, two LOW, and one DESIGN finding (covering three issues):
 
 *F1-RESIDUAL (HIGH - gated vote bypass).* On TOKEN/ALLOWLIST contracts, the generic `cast_vote` entrypoint could be called with `eligibility_proof = 1`, bypassing the Merkle gate. Resolved by asserting `eligibility_mode == OPEN` in `cast_vote`; gated entrypoints perform the in-circuit Merkle proof before enqueuing `record_vote`.
 
