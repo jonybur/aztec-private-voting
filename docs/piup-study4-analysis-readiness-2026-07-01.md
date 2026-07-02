@@ -36,8 +36,9 @@ Run: `Rscript analysis/piup-study4-drycheck.R` — 2026-07-01 (tick-4416)
 |-----------|-------|--------|
 | Study design | 2×2 between-subjects (D × P) | Pre-reg §2 |
 | Conditions | D0P1, D0P2, D1P1, D1P2 | Pre-reg §2 |
-| Target N | 200 (50/condition before exclusions) | Pre-reg §4 |
-| ITT N (synthetic) | 160 after ~12% attrition (attention fail + speed-through) | Drycheck §3 |
+| Target N (pre-reg) | 160 (40/condition); replacement until n=40/cell reached | Pre-reg §4 |
+| Drycheck raw N | 200 (50/condition) — synthetic pre-exclusion pool for pipeline validation | Drycheck §1 |
+| ITT N (synthetic) | 160 after ~20% simulated attrition (attention fail + speed-through; 40/200 excluded) | Drycheck §3 |
 | Primary DV | DV1: sharing intent (1–7 Likert) | Pre-reg §3.3 |
 | Secondary DV | DV2: perceived deniability (1–7 Likert) | Pre-reg §3.4 |
 | Comprehension | DV3: binary (vote-choice display recall) | Pre-reg §3.4 |
