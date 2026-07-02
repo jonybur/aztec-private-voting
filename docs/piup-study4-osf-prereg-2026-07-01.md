@@ -173,7 +173,7 @@ Used as covariate in sensitivity analyses only. Not predicted to moderate primar
 
 **Reporting:** p-value (one-tailed), Cohen's d with 95% CI.
 
-**Rationale:** If Option B reduces sharing intent, a main effect should be visible regardless of pressure level. Power at f = 0.25, α = .05, N = 80 per group: >99% for a main effect.
+**Rationale:** If Option B reduces sharing intent, a main effect should be visible regardless of pressure level. Power at d = 0.50 (f = 0.25), α = .05, N = 80 per group, one-tailed: ≈93% (confirmed via scipy.stats.nct; ncp = d × √(n/2) = 3.16, t_crit = 1.655, df = 158). H4.1 is secondary to H4.2; sample size was determined from H4.2's interaction power requirement (≈86–88%, N = 160).
 
 ---
 
