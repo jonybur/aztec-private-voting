@@ -258,9 +258,11 @@ export interface VoteReceiptProps {
   temporalLock?: TemporalLockVariant;
   /**
    * Study 3 social proof counter — number of voters who have already
-   * verified their receipt in this election. Provided by the host;
-   * polled from on-chain `verify_vote_counted()` call logs approximately
-   * every 15 minutes.
+   * verified their receipt in this election. Provided by the host server
+   * (application-layer log; NOT on-chain — verify_vote_counted() is a view
+   * function that leaves no on-chain trace). The host backend logs aggregate
+   * verification events (no receipt_id stored), caches the count, and
+   * refreshes approximately every 15 minutes.
    *
    * When set, renders the SocialProofBanner (treatment condition).
    * When undefined (default), no social proof banner is shown (control).
@@ -268,6 +270,7 @@ export interface VoteReceiptProps {
    * The count is only displayed when `socialProofCount >= socialProofFloor`
    * (default 5) to avoid negative social proof at low counts.
    *
+   * Architecture: docs/study3-verification-counter-architecture-2026-07-02.md
    * Ref: docs/piup-study3-social-verification-2026-06-29.md §3
    * Ref: docs/piup-study3-osf-prereg-2026-07-01.md §3.2
    */
