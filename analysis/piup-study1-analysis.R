@@ -719,7 +719,28 @@ cat("One-way ANOVA on confidence composite:\n")
 print(conf_aov_summary)
 cat("\n")
 
+# Per-condition confidence means + SDs — named for fill-in template §4.6 [SLOT: conf_mean_A/B/C/D]
+conf_cell_stats <- tapply(df$confidence_composite, df$condition, function(x)
+  c(mean = mean(x, na.rm=TRUE), sd = sd(x, na.rm=TRUE)))
+conf_mean_A <- conf_cell_stats[["A"]]["mean"]
+conf_mean_B <- conf_cell_stats[["B"]]["mean"]
+conf_mean_C <- conf_cell_stats[["C"]]["mean"]
+conf_mean_D <- conf_cell_stats[["D"]]["mean"]
+conf_sd_A   <- conf_cell_stats[["A"]]["sd"]
+conf_sd_B   <- conf_cell_stats[["B"]]["sd"]
+conf_sd_C   <- conf_cell_stats[["C"]]["sd"]
+conf_sd_D   <- conf_cell_stats[["D"]]["sd"]
+cat(sprintf("Confidence means: A=%.2f(%.2f) B=%.2f(%.2f) C=%.2f(%.2f) D=%.2f(%.2f)\n",
+            conf_mean_A, conf_sd_A, conf_mean_B, conf_sd_B,
+            conf_mean_C, conf_sd_C, conf_mean_D, conf_sd_D))
+cat("\n")
+
 f_pval <- conf_aov_summary[[1]][["Pr(>F)"]][1]
+h4_F   <- conf_aov_summary[[1]][["F value"]][1]   # Named alias for fill-in template §4.6
+h4_p   <- f_pval                                    # Named alias for fill-in template §4.6
+# η² = SS_between / SS_total (not auto-computed; template §4.6 calculates from ANOVA table)
+h4_eta2 <- conf_aov_summary[[1]][["Sum Sq"]][1] /
+             sum(conf_aov_summary[[1]][["Sum Sq"]])  # SS_between / (SS_between + SS_within)
 
 anova_sig <- f_pval < 0.05  # gate for H4 confirmatory pairwise; pre-reg §6.7 / paper §4.5
 
@@ -807,8 +828,10 @@ h4_sig       <- all(h4_p_holm  < 0.05,  na.rm = TRUE)
 h4_direction <- all(h4_diff_vals > 0, na.rm = TRUE)  # diff = B - other; must be positive
 h4_support   <- anova_sig && h4_sig && h4_direction  # Fixed tick-4178: gate on anova_sig first
 
-rho_B <- spearman_results[["B"]]$estimate
 rho_A <- spearman_results[["A"]]$estimate
+rho_B <- spearman_results[["B"]]$estimate
+rho_C <- spearman_results[["C"]]$estimate  # Fixed tick-4443: rho_C/D named for fill-in template
+rho_D <- spearman_results[["D"]]$estimate
 cat(sprintf("\n  ρ(B) = %.3f vs. ρ(A) = %.3f → calibration %s for B vs. A\n",
             rho_B, rho_A, ifelse(rho_B < rho_A, "LOWER (H4 calibration direction)", "higher")))
 

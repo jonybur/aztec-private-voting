@@ -62,7 +62,7 @@ After Holm-Bonferroni correction (m = 3): **H2 outcome: [SLOT: H2_outcome: "supp
 > **Script output (actual R names):**
 > - H2-primary Q2: `h2_primary$chi2`, `h2_primary$p_one_tailed`, `h2_primary$OR`, `h2_primary$OR_lo`, `h2_primary$OR_hi`; percents: `h2_primary$prop1*100` (A), `h2_primary$prop2*100` (B)
 > - H2-secondary Q3: `h2_secondary$chi2`, `h2_secondary$p_one_tailed`, `h2_secondary$OR`, `h2_secondary$OR_lo`, `h2_secondary$OR_hi`
-> - H2-tertiary TOST: `tost_result$diff` (A−B), `tost_result$p_lo`, `tost_result$p_hi`, `tost_result$p_tost` (max of two), `tost_result$equiv` (TRUE = equivalence established)
+> - H2-tertiary TOST: `tost_result$diff` (A−B), `tost_result$p_lo`, `tost_result$p_hi`, `tost_result$p_tost` (max of two), `tost_result$equivalence_established` (TRUE = equivalence established) — **not** `$equiv`
 > - Holm: `h2_p_holm[1]` (Q2), `h2_p_holm[2]` (Q3), `h2_p_holm[3]` (TOST)
 > - Overall verdict string: `h2_verdict`
 > **Production note (pre-reg §13):** H2-supported → fingerprint confirmed superior; retain as default. H2-null → both labels equivalent; either label acceptable. H2-reversed → confirmation code superior; swap fingerprint for confirmation code. All three are actionable without redesign.
@@ -113,14 +113,17 @@ One-way ANOVA on confidence composite across 4 conditions: F([SLOT: df_between],
 
 **Calibration analysis (pre-registered secondary; not in Holm family).** Per-condition Spearman ρ (accuracy score 0-4 vs. confidence composite): A ρ = [SLOT: rho_A], B ρ = [SLOT: rho_B], C ρ = [SLOT: rho_C], D ρ = [SLOT: rho_D]. [Expected: ρ_B < ρ_A - confirmation code produces high confidence not tracking accuracy.] This is a descriptive secondary analysis; no NHST verdict.
 
-> **Script output (actual R names):**
-> - ANOVA: `conf_aov_summary[[1]][["F value"]][1]` (F stat), `conf_aov_summary[[1]][["Df"]][1]` (df_between = 3), `conf_aov_summary[[1]][["Df"]][2]` (df_within), `f_pval` (ANOVA p)
-> - η²: **not directly computed** — calculate manually as SS_between / (SS_between + SS_within) from `conf_aov_summary[[1]][["Sum Sq"]]`
+> **Script output (actual R names) — updated tick-4443:**
+> - ANOVA F: `h4_F` (named alias; same as `conf_aov_summary[[1]][["F value"]][1]`)
+> - ANOVA p: `h4_p` (named alias; same as `f_pval`)
+> - df_between: `conf_aov_summary[[1]][["Df"]][1]` (= 3 for 4-condition design)
+> - df_within: `conf_aov_summary[[1]][["Df"]][2]`
+> - η²: `h4_eta2` (computed as SS_between / SS_total; also recalculable from `conf_aov_summary[[1]][["Sum Sq"]]`)
+> - Confidence means: `conf_mean_A`, `conf_mean_B`, `conf_mean_C`, `conf_mean_D` (named variables); SDs: `conf_sd_A` … `conf_sd_D`
 > - Tukey B-A: `get_tukey_p(tukey_df, "B-A")`, diff: `get_tukey_diff(tukey_df, "B-A")`; similarly B-C, B-D
 > - Holm: `h4_p_holm["B-A"]`, `h4_p_holm["B-C"]`, `h4_p_holm["B-D"]`
 > - Verdict string: `h4_verdict` (printed to console)
-> - Confidence means: `conf_desc` (tapply output; each element is a formatted string "mean ± SD (n=...)")
-> - Spearman: `spearman_results[["A"]]$estimate`, `spearman_results[["B"]]$estimate`, etc.
+> - Spearman: `rho_A`, `rho_B`, `rho_C`, `rho_D` (named variables; also via `spearman_results[["A"]]$estimate` etc.)
 > **Study 2 link:** If H4 is **supported**, the I-factor (calibration intervention) in Study 2 is live (H2.3 conditional; §5.5). If H4 is **null**, H2.3 is dropped and Study 2 reduces to N = 160.
 
 ---
