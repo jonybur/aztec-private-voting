@@ -146,7 +146,7 @@ _Added: tick-4444 (2026-07-02)_
 | Study 2 pre-registration filed first | ⏳ Pending | Study 3 registration checklist requires Study 2 pre-reg first |
 | JONY-ACTION O (OSF Amendment 5) | ⏳ Pending | Shared prerequisite with Study 1; required before data collection |
 | JONY-ACTION T (OSF Amendments 12-14) | ⏳ Pending | Shared prerequisite with Study 1; required before data collection |
-| Deployment integration | ⏳ Pre-launch | Server-side randomisation, on-chain log opt-in, counter endpoint |
+| Deployment integration | ⏳ Pre-launch | Server-side randomisation, host server log opt-in (DV5), counter endpoint |
 | Merged data format verified | ⏳ Pre-analysis | Confirm CSV column names match script header (`participant_id`, `condition`, `dv1_verified`, ...) |
 | `late_voter` flag derivation | ⏳ Pre-analysis | Must be derived from deployment logs before running script; documents which participants saw counter |
 | DV5 opt-in CSV path | ⏳ Pre-analysis | Deployment system must export timestamped `verify_vote_counted()` calls per opt-in participant |
@@ -158,15 +158,15 @@ _Added: tick-4444 (2026-07-02)_
 Study 3 is NOT embedded in the same election as Study 2 — they run in **separate live elections**:
 
 - Study 2 is a controlled single-session Prolific experiment (T0 only; no live contract required; VoteReceipt.tsx hosted in study mode)
-- Study 3 is a two-arm field pilot requiring a real Aztec election with on-chain logs
+- Study 3 is a two-arm field pilot requiring a real Aztec election with a live Aztec contract deployment
 - Condition assignment for Study 3 happens at T0 (server-side) for each voter in the Study 3 election
-- The social proof counter is a live endpoint updated every 15 minutes from on-chain logs for the Study 3 election
+- The social proof counter is a live endpoint updated every 15 minutes from the host server verification log (tick-4452: `verify_vote_counted()` is a `#[view]` function — no on-chain log; see architecture correction in pre-reg §3.2 amendment tick-4453)
 - DV1, DV2, and DV5 all require coordination between the Aztec contract deployment and the receipt interface
 - **Study 3 cannot run until the Aztec v5 contract is deployed and the receipt interface is live** (see VON-121: Umbra testnet deploy)
 
 Study 3 adds beyond Study 2 deployment:
 1. The server-side randomisation layer (condition token in receipt session)
-2. The social proof counter endpoint (reads on-chain logs every 15 min)
+2. The social proof counter endpoint (reads host server verification log every 15 min; updated by host backend when participants call `verify_vote_counted()` — see pre-reg §3.2 architecture amendment tick-4453)
 3. The `late_voter` flag derivation (requires timestamp comparison: voter T0 vs. counter floor reached time)
 
 ---

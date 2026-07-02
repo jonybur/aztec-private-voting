@@ -47,16 +47,16 @@ The theoretical connection is direct: Das et al. (2014) operationalized social p
 
 ## 3. Design
 
-**Between-subjects, 2 conditions, deployed within the same election as Study 2.**
+**Between-subjects, 2 conditions, deployed in a separate live election from Study 2** _(corrected tick-4427: Study 3 uses a distinct live Aztec election; Study 2 is a controlled Vercel prototype with consequentially inert votes — they cannot share an election)_.
 
 | Condition | Post-vote receipt display |
 |-----------|--------------------------|
 | Control | Standard PIUP receipt (fingerprint, verification instruction, no aggregate data) |
 | Treatment | PIUP receipt + social proof counter: *"X voters have already verified their vote in this election. Verification is open until [date]."* |
 
-The counter is updated every 15 minutes from on-chain `verify_vote_counted()` call logs. It shows the raw count — not a percentage, not a ratio — to avoid base-rate anchoring problems when n is small early in the verification window. (A count of 12 out of 80 reads as "few people have verified"; 12 out of 80 voters = 15% reads as "a specific low rate." The raw count is more interpretively neutral when the denominator is known to participants through other channels.)
+The counter is maintained by the host server (serverless API + KV store) and updated every 15 minutes. When a participant calls `verify_vote_counted()` via the receipt UI, the host backend logs an aggregate verification event (timestamp and outcome only — no wallet address or receipt ID persisted) and serves the cached count _(corrected tick-4452: `verify_vote_counted()` is a `#[view]` function — no on-chain log is produced; counter is host-server-maintained; see pre-reg §3.2 amendment tick-4453)_. It shows the raw count — not a percentage, not a ratio — to avoid base-rate anchoring problems when n is small early in the verification window. (A count of 12 out of 80 reads as "few people have verified"; 12 out of 80 voters = 15% reads as "a specific low rate." The raw count is more interpretively neutral when the denominator is known to participants through other channels.)
 
-**Counter floor (pre-registered, M1):** To avoid negative social proof effects at low verification counts (Cialdini, 1984) — e.g., "0 voters have verified" may actively demotivate verification — the social proof counter activates only after **≥ 10 participants have verified**. Before this floor is reached, the treatment receipt displays "Verification is open until [date]" without a count. The floor value (10) is pre-registered verbatim before data collection begins and will be reported in the pre-registration document as a design parameter.
+**Counter floor (pre-registered, Option A):** To avoid negative social proof effects at low verification counts (Cialdini, 1984) — e.g., "0 voters have verified" may actively demotivate verification — the social proof counter activates only after **≥ 5 participants have verified** _(corrected tick-4408: floor reduced from 10 to 5; at the pilot N=80 with conservative 10% baseline, floor=10 would not be reached (8 verifications expected); floor=5 avoids negative social proof while remaining reachable; see pre-reg §3.2 + §7.7 + analysis script)_. Before this floor is reached, the treatment receipt displays "Verification is open until [date]" without a count. The floor value (5) is pre-registered verbatim in the OSF pre-registration document (`docs/piup-study3-osf-prereg-2026-07-01.md §3.2`).
 
 **Assignment:** Random assignment at T0 (vote cast). The receipt endpoint is parameterized by voter session; conditions are indistinguishable at the network level and from the contract. This is essential for coercion resistance: the condition flag must not be observable by a third party.
 
