@@ -30,7 +30,7 @@ The most concrete way I can say this: when building the receipt, I kept asking "
 - `finalize_vote` - post-deadline quorum check
 - `verify_vote_counted(nullifier)` - public view, lets any voter confirm their receipt
 - Three eligibility modes: open, token-gated (ZK balance Merkle proof), allowlist (ZK address Merkle membership)
-- Security review complete (May-June 2026): quorum bypass (F2) and receipt ID collision (F3) fixed; 8 sound properties confirmed
+- Security review complete (May–July 2026): generic path (F1–F5) + Babylon M2 path (M2-F1→F5). Code fixes: quorum bypass (F2), receipt ID collision (F3), `ELIGIBILITY_MODE_BABYLON` constant (N-F8), entrypoint mode guards (N-F9), `get_final_tally` bounds check (N-F10), snapshot_version runtime guard (M2-F1). Design findings documented: EVM wallet requirement (M2-F2), one-vote-per-Cosmos-address semantics (M2-F3), 248-bit nullifier entropy (M2-F4). 14 sound properties confirmed across both paths. Pre-production checklist: 3/5 items resolved; professional audit + RIPEMD-160 upgrade (ADR-038) remain pre-mainnet.
 
 **React components (`@aztec-private-voting/react`)**:
 - `<VoteEligibilityProof />` - generates ZK proof of voting rights, silent on happy path
