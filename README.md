@@ -120,7 +120,7 @@ Full run book in [docs/deployment.md](docs/deployment.md). Both options write th
 | Network              | Aztec v5 testnet (`https://v5.testnet.rpc.aztec-labs.com`) — L1: Sepolia (chain 11155111) |
 | `PrivateVoting`      | Compiled artifact ready (`b828bc6`); deployment pending `DEPLOYER_SECRET_KEY` + `DEPLOYER_SIGNING_KEY` credentials — see [`docs/v5-upgrade-runbook.md`](docs/v5-upgrade-runbook.md) |
 | Noir version         | Aztec-NR v5.0.0-rc.1 (released 2026-06-15; zero contract changes required from v4.3) |
-| ℹ️ Note             | Aztec Alpha v4 had a known vulnerability (disclosed March 2026); the v4 contract `0x1a8ef...` is no longer accessible after the v5 testnet reset. The v5 RPC is live (confirmed block ~11,800, 2026-06-27). |
+| ℹ️ Note             | Aztec Alpha v4 had a known vulnerability (disclosed March 2026); the v4 contract `0x1a8ef...` is no longer accessible after the v5 testnet reset. The v5 RPC is live (confirmed block 1977, 2026-07-02 ~04:43 UTC; second testnet reset occurred Jun 30→Jul 1 2026, block counter restarted but rollup address and RPC endpoint unchanged). |
 
 ## Running the demo locally
 

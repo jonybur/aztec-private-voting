@@ -97,9 +97,13 @@ _[Amendment: tick-4429 — §4 Population corrected to match §9 (tick-4427). Or
 
 **Operationalisation:** Binary indicator (0/1). A participant is coded 1 if they called `verify_vote_counted()` with a valid receipt ID on-chain at any time within the 14-day post-vote window. Receipt IDs are pseudonymous (randomly generated at T0, not wallet-linked); verification calls are matched to participants by receipt ID with participant consent.
 
+_[Amendment tick-4454 — §5 DV1 architecture correction (companion to §3.2 amendment tick-4453, pre-data): The phrase "called `verify_vote_counted()` with a valid receipt ID on-chain" is architecturally imprecise. As corrected in §3.2: `verify_vote_counted()` is a view function (no on-chain record). The objective (non-self-report) component of DV1 is sourced from the **host server verification log** (serverless API + KV store; records timestamp and outcome only; no wallet address persisted). A participant who calls `verify_vote_counted()` via the receipt UI causes the host backend to (a) run the view simulation, (b) log the outcome with participant receipt ID (with T0 consent), and (c) serve the aggregate count. DV1 = 1 if the host log contains a successful verification event (outcome = true) for that participant's receipt ID within T+14. The binary DV is unchanged; only the logging mechanism differs from the original on-chain framing. Participant consent at T0 covers host server log analysis (see §7 consent section). | Jony Bursztyn]_
+
 **Measurement timing:** T0 to T+14 (14 calendar days after ballot submission).
 
 **Definition note:** Verification requires a successful on-chain call (call returned true); a call that returns false (receipt ID not found) is coded 0. Partial attempts (network error, aborted call) that do not produce an on-chain event are coded as missing and excluded from intent-to-treat analysis with sensitivity check.
+
+_[Amendment tick-4454 — §5 DV1 definition note architecture correction (companion to §3.2 amendment tick-4453, pre-data): "successful on-chain call" → successful view simulation logged to host server (outcome = true); "does not produce an on-chain event" → not recorded in the host verification log (e.g., call aborted before server logging completes). Measurement semantics unchanged: a verification attempt without a logged successful outcome is coded missing for ITT, with sensitivity check as specified. | Jony Bursztyn]_
 
 ### Secondary outcomes
 
@@ -111,7 +115,9 @@ _[Amendment: tick-4429 — §4 Population corrected to match §9 (tick-4427). Or
 
 ### Process measure (opt-in only)
 
-**DV5 — On-chain verification log (opt-in consent at T0):** Timestamped `verify_vote_counted()` calls, matched by receipt ID. Used for time-to-verify survival analysis (RQ3c). Participants who do not opt in are excluded from DV5 analysis only; primary analysis (DV1) uses participant-reported behavior to maintain full sample.
+**DV5 — Verification log (opt-in consent at T0):** Timestamped `verify_vote_counted()` calls, matched by receipt ID. Used for time-to-verify survival analysis (RQ3c). Participants who do not opt in are excluded from DV5 analysis only; primary analysis (DV1) uses participant-reported behavior to maintain full sample.
+
+_[Amendment tick-4454 — §5 DV5 label correction (companion to §3.2 amendment tick-4453, pre-data): DV5 header changed from "On-chain verification log" to "Verification log" to reflect the corrected architecture (host server log, not on-chain). The log content (timestamped verification events matched by receipt ID) and the opt-in consent requirement are unchanged. The host server log is privacy-preserving in the same way the original on-chain framing intended: no wallet address is stored; only receipt ID + timestamp + outcome. | Jony Bursztyn]_
 
 ### Moderator
 
@@ -164,7 +170,7 @@ If any participant made a `verify_vote_counted()` call that failed (receipt ID n
 
 ### 7.3 Sensitivity analysis 2 — Per-protocol (opt-in log subsample)
 
-Repeat primary analysis restricted to participants who opted into log monitoring (DV5). This subsample's DV1 is based on direct on-chain events rather than self-report; compare OR estimates for self-report vs. on-chain DV1 within this subsample.
+Repeat primary analysis restricted to participants who opted into log monitoring (DV5). This subsample's DV1 is based on direct host server log events rather than self-report; compare OR estimates for self-report vs. log-based DV1 within this subsample. _[Amendment tick-4454 — §7.3: "on-chain events" → "host server log events" (companion to §3.2 amendment tick-4453 and §5 DV5 amendment tick-4454). Measurement source corrected; analysis plan unchanged. | Jony Bursztyn]_
 
 ### 7.4 Exploratory: Moderation by self-efficacy (RQ3a)
 
@@ -204,7 +210,7 @@ _[Amendment tick-4453 — Privacy note correction (pre-data): "computed from pub
 
 **Coercion-surface note:** The counter does not display which voters verified, only how many. This is consistent with the privacy-preserving design documented in Nissen et al. (2025), who found that counter-strategies are more effective when coercer visibility is low. A count without individual identities does not increase the coercion surface relative to the control condition.
 
-**Log monitoring consent:** DV5 (on-chain log analysis) is opt-in at T0. Consent is separate from general study consent. Non-opt-in participants are excluded from DV5 analysis only; their primary DV1 is based on self-report at T+14.
+**Log monitoring consent:** DV5 (host server verification log analysis) is opt-in at T0. _[Amendment tick-4454 — consent section: "on-chain log analysis" → "host server verification log analysis" (companion to §3.2 amendment tick-4453 and §5 DV5 amendment tick-4454). Participant consent wording corrected; opt-in requirement unchanged; privacy protection maintained (no wallet address stored in host log). | Jony Bursztyn]_ Consent is separate from general study consent. Non-opt-in participants are excluded from DV5 analysis only; their primary DV1 is based on self-report at T+14.
 
 **Anticipated IRB category:** Exempt or expedited review (45 CFR 46.104(d)(2)). The manipulation (showing a publicly available aggregate count) carries minimal risk. IRB review will confirm: (a) debrief adequately explains the two-condition design; (b) the social proof counter is not misleading; (c) the log opt-in process is distinct from implied consent through participation.
 
@@ -214,7 +220,7 @@ _[Amendment tick-4453 — Privacy note correction (pre-data): "computed from pub
 
 Study 2 and Study 3 address different phases of the PIUP behavioral arc and use different paradigms. **Study 2** is a controlled single-session experiment: participants are recruited via Prolific, interact with the actual VoteReceipt.tsx component hosted on Vercel in study mode (download-button click is logged but no file is written; the vote is consequentially inert), and answer questionnaires immediately after receipt exposure (T0 only). Study 2's primary outcome is absent-content interpretation accuracy (Q-AC; H2.1), not verification return rate. Study 2 has no T+14 follow-up component.
 
-**Study 3** is a field experiment requiring a live DAO election with the Aztec Private Voting contract deployed on testnet (or mainnet). Participants are real voters who receive a real, downloadable receipt and can interact with the `verify_vote_counted()` function 14 days after casting their ballot. The social proof counter manipulation draws from actual on-chain verification counts, not simulated data.
+**Study 3** is a field experiment requiring a live DAO election with the Aztec Private Voting contract deployed on testnet (or mainnet). Participants are real voters who receive a real, downloadable receipt and can interact with the `verify_vote_counted()` function 14 days after casting their ballot. The social proof counter manipulation draws from actual verification counts logged by the host server (see §3.2 architecture amendment tick-4453), not simulated data.
 
 Because Study 2 uses a simulated Vercel prototype and Study 3 requires a live contract deployment, they cannot be embedded in the same election. The Study 3 pre-registration must be filed independently of Study 2's OSF upload. The timing dependency is: Study 1 H4 outcome is needed to confirm Study 2 N and to set the Study 3 pool estimate; Study 3 data collection requires a separate live election in parallel with or following Study 2 data collection.
 
