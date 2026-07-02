@@ -197,6 +197,24 @@
     .receipt__how-to[hidden] { display: none; }
 
     /* ── Study watermark (screen-reader hidden for participants) ── */
+    /* ── Study note (scope-limiting clarification — Amendment 19b, Option A) ── */
+    .study-note {
+      max-width: 420px;
+      width: 100%;
+      margin: .75rem auto 0;
+      padding: .6rem .875rem;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: .8rem;
+      color: #374151;
+      line-height: 1.45;
+    }
+    .study-note strong {
+      font-weight: 600;
+      color: #111827;
+    }
+
     .study-badge {
       position: fixed;
       bottom: .75rem;
@@ -287,6 +305,11 @@
   </div>
 
   <!-- Study condition watermark — hidden from screen readers -->
+  <!-- Scope-limiting clarification: pre-reg §5.2 Q3, Amendment 19b Option A -->
+  <p class="study-note" role="note">
+    <strong>Study note:</strong> Assume they can only see what is on this screen.
+  </p>
+
   <div class="study-badge" aria-hidden="true">Cond.&nbsp;A</div>
 
   <script>
