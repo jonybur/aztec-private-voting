@@ -5,6 +5,8 @@
 **Author:** @jonybur  
 **Connects to:** `piup-study3-social-verification-2026-06-29.md`, `piup-study2-design-note-2026-06-22.md`
 
+> ⚠️ **PARADIGM CORRECTION (tick-4427/4429/4445):** References in this document to Study 3 being "embedded in Study 2's field deployment" reflect the original design (2026-06-29). The paradigm changed: Study 2 was redesigned as a controlled Vercel prototype (simulated vote; Prolific participants), so Study 3 — which requires a live Aztec contract — cannot share Study 2's election. Study 3 now runs in a **separate live DAO election** with real voters. The power analysis conclusions still hold (severely underpowered at OR ≈ 2.0; treat as feasibility pilot; report 90% CI for OR). Only the "embedded in Study 2" framing is obsolete. Authoritative paradigm description: `docs/piup-study3-osf-prereg-2026-07-01.md` §9.
+
 ---
 
 ## Summary

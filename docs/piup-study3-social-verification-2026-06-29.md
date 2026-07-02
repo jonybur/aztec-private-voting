@@ -5,6 +5,8 @@
 **Author:** @jonybur  
 **Connects to:** Das et al. (2014), `piup-study-protocol-2026-06-22.md`, `piup-study2-design-note-2026-06-22.md`, `piup-study3-power-analysis-2026-06-29.md`
 
+> ⚠️ **PARADIGM CORRECTION (tick-4427/4429/4445):** This document was written when Study 3 was planned as an extension of Study 2’s field deployment. The paradigm changed: Study 2 was redesigned as a controlled Vercel prototype (Prolific participants; simulated vote), so Study 3 — which requires a live Aztec contract with real DAO voters — must run in a **separate live election**. References below to Study 3 being “embedded in Study 2” or sharing Study 2’s election are obsolete. The research questions, social-proof manipulation, power estimates, and pilot recommendations all remain valid. Authoritative design: `docs/piup-study3-osf-prereg-2026-07-01.md`.
+
 ---
 
 ## Positioning note
