@@ -16,17 +16,25 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #
 # DATA PIPELINE OVERVIEW (Study 3 is a live-election field study):
-#   - DV1 (verified at T+14): derived from on-chain logs + participant self-report
+#   - DV1 (verified at T+14): derived from host server log + participant self-report
+#     (verify_vote_counted() is a view function; the host server backend logs the
+#      outcome when a participant triggers verification via the receipt UI)
 #   - DV2, M1 (T0): post-vote survey administered immediately after receipt display
 #   - DV3, DV4, C1 (T+14): 14-day follow-up survey
-#   - DV5 (opt-in log): timestamped on-chain verify_vote_counted() calls
+#   - DV5 (opt-in log): timestamped host server log of verify_vote_counted() calls
+#     (serverless API + KV store; records timestamp + outcome; no wallet address)
 #   - condition: "control" | "treatment" (assigned at T0, server-side)
+# [Amendment tick-4457 — DATA PIPELINE OVERVIEW on-chain→host-server correction
+#  (companion to pre-reg §3.2 tick-4453, §5+§7 tick-4454, Qualtrics guide tick-4456):
+#  verify_vote_counted() is a #[view] function that leaves no on-chain record.
+#  The verification log is maintained by the host server (serverless API + KV).
+#  DV1 and DV5 sourced from host server log, not an on-chain event log. | Jony Bursztyn]
 #
 # Expected merged data columns (one row per participant):
 #   participant_id     : string (pseudonymous)
 #   condition          : "control" | "treatment"
-#   dv1_verified       : integer 0 | 1 (verified on-chain OR self-reported at T+14)
-#   dv1_onchain        : integer 0 | 1 | NA (verified per on-chain log; NA if DV5 not opted-in)
+#   dv1_verified       : integer 0 | 1 (verified per host server log OR self-reported at T+14)
+#   dv1_onchain        : integer 0 | 1 | NA (verified per host server log; NA if DV5 not opted-in)
 #   dv1_selfreport     : integer 0 | 1 | NA (self-reported at T+14 follow-up; NA if lost to FU)
 #   dv2_intent         : integer 1–7 (intent to verify, T0; may be post-treatment for late voters)
 #   dv3_comprehension  : integer 0 | 1 (comprehension composite correct; adapted Q1–Q4 rubric)
@@ -34,7 +42,7 @@
 #   dv4_trust2         : integer 1–7 ("I understand what the receipt is for")
 #   m1_efficacy1–4     : integer 1–5 each (adapted Compeau-Higgins; m1_eff1...m1_eff4)
 #   c1_reason          : character (open-ended; qualitative only)
-#   log_optin          : integer 0 | 1 (consented to on-chain log analysis at T0)
+#   log_optin          : integer 0 | 1 (consented to host server log analysis at T0)
 #   log_n_calls        : integer or NA (number of verify calls logged; NA if not opt-in)
 #   log_first_call_day : numeric or NA (days from T0 to first verify call; NA if 0 calls)
 #   partial_verify_fail: integer 0 | 1 (aborted call flagged by deployment system)
@@ -283,7 +291,7 @@ if (n_partial > 0) {
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. SENSITIVITY ANALYSIS 2 — §7.3
 #    Per-protocol analysis: opt-in log subsample (DV5)
-#    Compares OR estimates from self-report vs. on-chain DV1 within this subsample
+#    Compares OR estimates from self-report vs. log-based DV1 within this subsample
 # ─────────────────────────────────────────────────────────────────────────────
 cat("\n====== §7.3 SA-2: Per-protocol (opt-in log subsample) ======\n")
 
@@ -309,16 +317,16 @@ if (nrow(df_optin) >= 10 && !all(is.na(df_optin$dv1_onchain))) {
                       family = binomial(link = "logit"))
     or_sa2_oc <- exp(coef(glm_sa2_oc)["cond_bin"])
     ci_sa2_oc <- exp(confint(glm_sa2_oc, level = 0.90))["cond_bin", ]
-    cat("SA-2 (on-chain DV1, opt-in subsample):",
+    cat("SA-2 (log-based DV1, opt-in subsample):",
         "OR =", round(or_sa2_oc, 3),
         "90% CI [", round(ci_sa2_oc[1], 3), ",", round(ci_sa2_oc[2], 3), "]\n")
-    cat("SR vs. on-chain OR difference:",
+    cat("SR vs. log-based OR difference:",
         round(or_sa2_sr - or_sa2_oc, 3), "\n")
   } else {
-    cat("Insufficient on-chain records for on-chain comparison.\n")
+    cat("Insufficient host server log records for log-based comparison.\n")
   }
 } else {
-  cat("Opt-in subsample too small or no on-chain data — SA-2 not estimable.\n")
+  cat("Opt-in subsample too small or no host server log data — SA-2 not estimable.\n")
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -503,8 +511,8 @@ print(dv4_summary)
 # 10. MANIPULATION FAILURE CHECK (pre-reg §7.7)
 # ─────────────────────────────────────────────────────────────────────────────
 cat("\n====== §7.7 MANIPULATION FAILURE CHECK ======\n")
-cat("Confirm via deployment logs: did the social proof counter activate in the\n",
-    "treatment condition (i.e., were >= 5 unique receipt IDs verified on-chain\n",
+cat("Confirm via host server logs: did the social proof counter activate in the\n",
+    "treatment condition (i.e., were >= 5 unique receipt IDs verified per host server log\n",
     "before the end of the 14-day window in at least 1 voter's view of the receipt)?\n\n")
 cat("IF floor was NOT reached:\n",
     "  - The treatment was not delivered as designed.\n",

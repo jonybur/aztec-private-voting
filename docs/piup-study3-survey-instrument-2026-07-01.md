@@ -78,9 +78,11 @@ You have just submitted your vote. We are conducting research on how voters use 
 | ✅ I consent | Continue to T0 questions |
 | ❌ I do not consent | Do not record this participant; exit survey block |
 
-**Optional: On-chain log opt-in (for timing analysis)**
+**Optional: Host server log opt-in (for timing analysis)**
 
-*"I also consent to my on-chain verification timestamps being logged (if I verify). This adds time-of-verification data to the study."*
+*"I also consent to my verification timestamps being logged to the study's host server (if I verify). This adds time-of-verification data to the study."*
+
+_[Amendment tick-4457 — host server log opt-in wording correction (companion to pre-reg §3.2 tick-4453, §5+§7 tick-4454, Qualtrics guide tick-4456, analysis script tick-4457): "on-chain verification timestamps" corrected to "verification timestamps logged to the study's host server". verify_vote_counted() is a view function; no on-chain record is created. The host server (serverless API + KV store) logs timestamp + outcome + receipt ID (no wallet address). Consent semantics unchanged: participant is consenting to the host server log being used for the time-to-verify survival analysis (DV5/RQ3c). | Jony Bursztyn]_
 
 | Option | Code |
 |--------|------|
@@ -391,7 +393,7 @@ Note: No attention checks are included in this instrument. Study 3 participants 
 | `participant_id` | string | Pseudonymous receipt ID (not wallet-linked) | T0 (server-assigned) |
 | `condition` | string (A/B) | A = control, B = treatment | T0 (server-assigned) |
 | `consent_t0` | binary 0/1 | 1 = consented to behavioral tracking | T0 |
-| `log_optin` | binary 0/1 | 1 = consented to on-chain timestamp log | T0 |
+| `log_optin` | binary 0/1 | 1 = consented to host server verification log | T0 |
 | `dv2_intent` | integer 1–7 | Stated intent to verify ("How likely are you to come back...") | T0 |
 | `late_voter` | binary 0/1 | 1 = voted after counter floor reached (DV2 post-treatment) | T0 (derived) |
 | `m1_eff1` | integer 1–5 | Self-efficacy item 1 (no help available) | T0 |
@@ -400,7 +402,7 @@ Note: No attention checks are included in this instrument. Study 3 participants 
 | `m1_eff4` | integer 1–5 | Self-efficacy item 4 (figure out on own) | T0 |
 | `m1_composite` | numeric | Mean of m1_eff1–m1_eff4 (computed in R) | T0 (derived) |
 | `dv1_verified` | binary 0/1 | 1 = participant self-reported verifying receipt by T+14 | T+14 |
-| `dv1_onchain` | binary 0/1 or NA | 1 = on-chain verify_vote_counted() call confirmed; NA if no log opt-in | T+14 (log) |
+| `dv1_onchain` | binary 0/1 or NA | 1 = host server log verification confirmed (verify_vote_counted() view simulation logged by host); NA if no log opt-in | T+14 (log) |
 | `withdrawal` | binary 0/1 | 1 = participant withdrew data at T+14 debrief | T+14 |
 | `dv3_q1` | string | DV3 item 1 response (raw Qualtrics value) | T+14 |
 | `dv3_q2` | string | DV3 item 2 response | T+14 |
