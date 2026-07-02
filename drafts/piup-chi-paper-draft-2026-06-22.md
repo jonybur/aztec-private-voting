@@ -150,26 +150,36 @@ Separate deployments prevent cross-mode eligibility bypass: on TOKEN/ALLOWLIST c
 
 ### 3.3 Security properties
 
-Circuit analysis and trust-boundary audit across `main.nr` and `eligibility.nr` confirmed eight sound properties:
+Circuit analysis and trust-boundary audit across `main.nr`, `eligibility.nr`, `merkle.nr`, and the Babylon governance paths (`cast_vote_babylon`, `cast_vote_babylon_v2`) confirmed fourteen sound properties across both voting paths:
 
-| Property | Enforcement mechanism |
-|---|---|
-| Wallet-to-ballot unlinkability | `SingleUseClaim` nullifier in Aztec private kernel |
-| No vote after end\_time | `assert(now < config.end_time)` in `record_vote` |
-| No finalization before end\_time | `assert(now >= config.end_time)` in `finalize_vote` |
-| Tally only shown post-finalization | `assert(is_finalized)` in `get_final_tally` |
-| `record_vote` not callable externally | `#[only_self]` decorator |
-| Options count bounds | `> 1` and `<= 8` in constructor; `vote_choice < options_count` enforced at call-time in `record_vote` |
-| No `is_finalized` bypass | Separate check in `record_vote` prevents post-finalize votes |
-| Timing boundary correctness | At `t == end_time`: cast fails, finalize succeeds |
+| Property | Path | Enforcement mechanism |
+|---|---|---|
+| Wallet-to-ballot unlinkability | Generic | `SingleUseClaim` nullifier in Aztec private kernel |
+| No vote after end\_time | Generic | `assert(now < config.end_time)` in `record_vote` |
+| No finalization before end\_time | Generic | `assert(now >= config.end_time)` in `finalize_vote` |
+| Tally only shown post-finalization | Generic | `assert(is_finalized)` in `get_final_tally` |
+| `record_vote` not callable externally | Generic | `#[only_self]` decorator |
+| Options count bounds | Generic | `> 1` and `<= 8` in constructor; `vote_choice < options_count` enforced at call-time in `record_vote` |
+| No `is_finalized` bypass | Generic | Separate check in `record_vote` prevents post-finalize votes |
+| Timing boundary correctness | Generic | At `t == end_time`: cast fails, finalize succeeds |
+| Ownership proof closes snapshot-forwarding attack | Babylon M2 | Sig over vote-specific challenge; attacker without private key cannot produce valid witness |
+| Cross-vote replay prevention | Babylon M2 | Challenge = `sha256(title_hash \|\| root)`; unique per vote configuration |
+| Balance witness binding | Babylon M2 | Leaf = `sha256(hash160 \|\| balance_be)`; wrong balance → wrong leaf → Merkle failure |
+| Nullifier non-predictability | Babylon M2 | Derived from `sha256(sig)`, not from public snapshot data |
+| Double-vote prevention (M2 path) | Babylon M2 | Nullifier deterministic per (private key, challenge); `receipts` map enforces single-use |
+| EIP-191 encoding correctness | Babylon M2 | Prefix bytes verified byte-for-byte against MetaMask `personal_sign` specification |
 
-Three findings were resolved before the study — one HIGH severity and two LOW:
+Five findings were resolved before the study — one HIGH severity, one MEDIUM, and three LOW:
 
 *F1-RESIDUAL (HIGH - gated vote bypass).* On TOKEN/ALLOWLIST contracts, the generic `cast_vote` entrypoint could be called with `eligibility_proof = 1`, bypassing the Merkle gate. Resolved by asserting `eligibility_mode == OPEN` in `cast_vote`; gated entrypoints perform the in-circuit Merkle proof before enqueuing `record_vote`.
+
+*M2-F1 (MEDIUM - implicit snapshot version dispatch).* The contract exposed both M1 and M2 Babylon entrypoints without a runtime version guard, relying on the deployer to commit the correct Merkle root format. Resolved by adding `snapshot_version` to `VoteConfig` and a corresponding assertion in `useDeployVote`; mismatched deployments are rejected before the transaction is signed.
 
 *F2 (LOW - quorum bypass).* `quorum = 0` allows vacuous finalization; resolved by `assert(config.quorum > 0)` in the constructor.
 
 *F3 (LOW - receipt-ID collision).* `receipt_id = 0` would block subsequent voters; resolved by `assert(receipt_id != 0)` in all entrypoints and React hooks.
+
+*N-F8/N-F9/N-F10 (DESIGN - Babylon path consistency).* The Babylon entrypoints lacked an explicit `ELIGIBILITY_MODE_BABYLON` constant, mode guard assertions, and a bounds check in `get_final_tally`. All three resolved in code: constant added, `assert(eligibility_mode == ELIGIBILITY_MODE_BABYLON)` added to both Babylon entrypoints, and `assert(winning_option < config.options_count)` added to `get_final_tally`.
 
 Two design limitations are documented and not resolved at the prototype stage:
 
