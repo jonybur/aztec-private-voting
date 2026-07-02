@@ -35,6 +35,12 @@ export function useDeployVote(): UseDeployVoteResult {
           ? BigInt(draft.minTokenBalance)
           : 0n;
 
+        // M2-F1 (security-review-babylon-m2): snapshot_version gates the Babylon
+        // entrypoint dispatch at runtime. M2 contracts (babylon-v2) must set version=1
+        // so cast_vote_babylon_v2 asserts it; non-Babylon contracts set version=0.
+        // See contracts/src/main.nr VoteConfig.snapshot_version (tick-4482).
+        const snapshotVersion = draft.eligibilityMode === 'babylon-v2' ? 1 : 0;
+
         const config = {
           title_hash: new Fr(titleHash),
           options_count: draft.options.length,
@@ -44,6 +50,7 @@ export function useDeployVote(): UseDeployVoteResult {
           eligibility_mode: eligibilityModeToCode(draft.eligibilityMode),
           token_address: tokenAddress,
           min_token_balance: minTokenBalance,
+          snapshot_version: snapshotVersion,
         };
 
         const deployment = await Contract.deploy(
