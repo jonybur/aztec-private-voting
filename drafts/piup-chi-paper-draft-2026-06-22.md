@@ -2,7 +2,7 @@
 
 _Draft for CHI 2027 submission · Jony Bursztyn · 2026-06-22_
 _Status: All sections written. §4.6 Results pending Study 1 data collection (2026-Q3 pilot). Submission-clean pending OSF amendments O+T. Four-study arc: §7 updated tick-4397; abstract + §1.3 updated tick-4402. Study 4 DV1/DV2 dual-operationalisation propagated to abstract + §1.3 + §7 at tick-4418. §7 conclusion para 3 compressed –140w at tick-4467._
-_Word count: ~11,683 words (body incl. refs, excl. tables + annotations; tick-4467 –140w from §7 conclusion para 3 compression). §4.6 fill-in adds +245–405w → final ~11,928–12,088w: trim pass unlikely needed at lower end; light trim (~88w) needed only if §4.6 fills at upper bound. CHI cap 12,000 incl. refs, excl. tables. Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendment 14)._
+_Word count: ~11,683 words (body incl. refs, excl. tables + annotations; tick-4467 –140w from §7 conclusion para 3 compression). §4.6 fill-in adds +245–405w → final ~11,928–12,088w: trim pass unlikely needed at lower end; light trim (~88w) needed only if §4.6 fills at upper bound. CHI cap 12,000 incl. refs, excl. tables. Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendments 12+13+14). Also open: Amendments 19, 19b (pre-pilot). See docs/jony-action-brief-2026-07-02.md._
 
 ---
 
