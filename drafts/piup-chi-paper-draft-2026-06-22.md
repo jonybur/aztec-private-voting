@@ -353,7 +353,7 @@ Study 1 isolates the label effect while holding explanatory copy constant. Study
 
 2×2×2 between-subjects factorial experiment.
 
-**Factor L (Label; 2 levels):** L1 = "vote fingerprint"; L2 = "confirmation code." "Nullifier" and "Receipt ID" are excluded — Study 1 characterised both (§4.1-4.3).
+**Factor L (Label; 2 levels):** L1 = "vote fingerprint"; L2 = "confirmation code." "Nullifier" and "Receipt ID" are excluded — Study 1 characterized both (§4.1-4.3).
 
 **Factor E (Explanation; 2 levels):** E1 = explanation present: "Your vote choice is not shown on this receipt. This is intentional. Keeping your vote private means your receipt can be shared, checked, or subpoenaed without revealing how you voted. Your [label] is the only thing you need - matching it later proves your ballot was counted, nothing more." E2 = explanation absent: the receipt shows the identifier, "Your vote was cast," the download prompt, and verification instructions. A minimal privacy note ("Your vote is private and verifiable") is retained in E2 to avoid a privacy-awareness confound; only the absent-choice explanation is omitted (design note §6.1).
 
@@ -412,7 +412,7 @@ The design implication is that Invariants 1-3 are necessary but not sufficient f
 
 ### 6.2 The confirmation code paradox
 
-Familiarity produces confidence (McKnight et al., 2002): when a convention correctly describes system behaviour, it reduces friction without cost.
+Familiarity produces confidence (McKnight et al., 2002): when a convention correctly describes system behavior, it reduces friction without cost.
 
 In privacy-critical contexts, familiar conventions carry a hidden cost. In eCommerce, "confirmation code" activates a trust complex: the belief that the code is retrievable evidence of a specific transaction — correct in every prior context the user has encountered, wrong in private voting, where the correct schema is *confirmation = proof of counting, not proof of content*. A user applying the eCommerce schema will be confident while holding a wrong mental model on the privacy-specific questions — the over-reliance Lee and See (2004) describe in trust automation — and the mismatch is invisible until a coercion scenario forces the receipt's privacy properties to matter.
 
