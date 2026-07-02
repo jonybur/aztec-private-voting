@@ -78,7 +78,7 @@ STAR-Vote (Bell et al. 2013), Helios (Adida et al. 2009), Marky et al. (2018), K
 
 ### Volkamer et al. 2022 (SOUPS)
 ```
-- Volkamer, M., Kulyk, O., Ludwig, J., and Fuhrberg, N. (2022). "Increasing Security without Decreasing Usability: A Comparison of Various Verifiable Voting Systems." _Eighteenth Symposium on Usable Privacy and Security (SOUPS 2022)_. USENIX Association. [Jony: verify DOI and page numbers from USENIX proceedings]
+- Volkamer, M., Kulyk, O., Ludwig, J., and Fuhrberg, N. (2022). "Increasing Security without Decreasing Usability: A Comparison of Various Verifiable Voting Systems." _Eighteenth Symposium on Usable Privacy and Security (SOUPS 2022)_. USENIX Association. ISBN 978-1-939133-30-4. ✅ Venue + authors + title confirmed (tick-4464, USENIX.org open access). PDF: https://www.usenix.org/system/files/soups2022-volkamer.pdf (21 pages). USENIX SOUPS proceedings use per-paper pagination; no cross-paper page range in USENIX open-access format — omit pp. (consistent with Bell et al. 2013 and Adida et al. 2009 format in CHI paper). [Jony: only remaining action = decide whether to apply Option A to §1.2]
 ```
 
 ### Kulyk et al. 2021 (E-Vote-ID) — only if Option B or combined edit applied
@@ -93,8 +93,8 @@ STAR-Vote (Bell et al. 2013), Helios (Adida et al. 2009), Marky et al. (2018), K
 | Action | Status | Detail |
 |---|---|---|
 | retrieve-kulyk-secrecy-preserving-paper | **✅ RESOLVED** | Paper found, assessed LOW-MODERATE, safe to add to §1.2 list if desired |
-| Add Volkamer 2022 to §1.2 | **⏳ JONY DECISION** | Confirm venue/DOI; apply Option A text above |
-| Verify Volkamer 2022 DOI + page numbers | **⏳ JONY** | Check USENIX SOUPS 2022 proceedings |
+| Add Volkamer 2022 to §1.2 | **⏳ JONY DECISION** | Venue/title/authors confirmed (tick-4464); apply Option A text above |
+| Verify Volkamer 2022 DOI + page numbers | **✅ RESOLVED (tick-4464)** | USENIX SOUPS 2022 confirmed; ISBN 978-1-939133-30-4; open-access, no pp. needed |
 | Verify Kulyk 2021 LNCS volume + DOI | **⏳ JONY (if adding)** | Check Springer E-Vote-ID 2021 proceedings |
 
 ---
