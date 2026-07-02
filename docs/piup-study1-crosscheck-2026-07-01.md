@@ -12,7 +12,7 @@
 | # | Severity | Location | Description | Fixed |
 |---|----------|----------|-------------|-------|
 | 1 | **CRITICAL** | Instrument §6/Q3 | Q3 question wording has 4 material deviations from pre-reg §5.2 with no logged amendment — parallel to Amendment 12 (Q5), 6 (Q1), 7 (Q2), 8 (MQ1) | ✅ Amendment 19 text drafted; requires Jony OSF filing |
-| 2 | MODERATE | Instrument §6/Q3 + stimuli HTML | Pre-reg §5.2 states: "Clarification appended: 'Assume they can only see what is on this screen.' **This wording is in the stimuli.**" Stimuli HTML files (checked: condition-a-fingerprint.html) contain no such text — the clarification is absent from the stimuli | ⏳ Jony decision required: add to stimuli (Amendment 19b) or document as non-issue |
+| 2 | MODERATE | Instrument §6/Q3 + stimuli HTML | Pre-reg §5.2 states: "Clarification appended: 'Assume they can only see what is on this screen.' **This wording is in the stimuli.**" Stimuli HTML files (checked: condition-a-fingerprint.html) contain no such text — the clarification is absent from the stimuli | ⏳ PARTIAL — **Option A implemented** in all 4 stimuli (tick-4450, commit 5ac9bd6). Amendment 19b draft ready (`docs/piup-study1-decision-d-amendment-19b-draft-2026-07-02.md`). Jony must confirm Option A and file Amendment 19b on OSF before pilot. |
 | 3 | MODERATE | Instrument §13 + analysis script | `occupation_sw_eng` binary variable expected by `piup-study1-analysis.R` line 207 is not defined in the codebook §13 (which only defines `SC2_occupation` as a string). Derivation rule missing. | ✅ Codebook §13 note added in instrument |
 | 4 | MINOR | Instrument §6/Q4 | Q4 correct-answer wording changed: "proof that the receipt is yours" (pre-reg) → "this [LABEL] as personal proof" (instrument). Pronoun also changed: "You" → "I". No logged amendment. | ✅ Amendment 19 text includes Q4 note |
 | 5 | MINOR | CHI paper §4.4 Table 2 | Q3 abbreviated wording ("If you showed a third party your [LABEL], could they tell which voting option you chose?") omits the coercion scenario setup entirely; abbreviated wording understates ecological validity of Q3 in the paper | ✅ CHI paper Table 2 Q3 wording fixed in tick-4384 |
@@ -73,13 +73,17 @@ The scope-limiting instruction prevents participants from imagining non-receipt 
 
 This note is a hypothetical-deflation (to reduce distress) — different from a scope-limiting instruction. The pre-reg's scope-limiting text ("Assume they can only see what is on this screen") is not present in the implementation note.
 
-### Required action:
-**JONY-DECISION required.** Two options:
-- **Option A:** Add "Assume they can only see what is on this screen" as a stimulus-level clarification (a small text note below the receipt, inside the condition HTML files). This aligns with the pre-reg commitment and is recommended.
-- **Option B:** Add it as a Qualtrics question hint beneath Q3 (visible on the question page, not the stimulus). This is less ideal (breaks the "in the stimuli" commitment) but still correct.
-- **Option C:** Determine that the instrument's "your screen and your [LABEL]" phrasing adequately scopes the information available — if Jony judges this sufficient, document as Amendment 19c (no stimuli change required; scope handled by question wording).
+### Resolution (tick-4450, 2026-07-02):
+**Option A implemented** in all four stimulus HTML files (commit 5ac9bd6). Each file now includes:
+```html
+<!-- Scope-limiting clarification: pre-reg §5.2 Q3, Amendment 19b Option A -->
+<p class="study-note" role="note">
+  <strong>Study note:</strong> Assume they can only see what is on this screen.
+</p>
+```
+Placement: below receipt card, above condition watermark badge. Styled visually distinct from receipt UI (grey background, small font). Amendment 19b filing text ready in `docs/piup-study1-decision-d-amendment-19b-draft-2026-07-02.md`.
 
-If Option A or B: log as Amendment 19b (pre-data stimuli/instrument change).
+**Remaining Jony action:** Confirm Option A and file Amendment 19b on OSF before pilot launch. If rejected: `git checkout study-stimuli/` to revert.
 
 ---
 
@@ -144,14 +148,14 @@ CHI paper Table 2 Q3 abbreviated wording updated to preserve the coercion framin
 Status as of tick-4384:
 
 - [x] Amendment 19 text drafted (Q3 wording + Q4 note) — ⏳ **Jony must file on OSF before pilot**
-- [x] Gap 2 decision needed — ⏳ **Jony decision: add scope clarification to stimuli or justify via question wording**
+- [x] Gap 2 decision needed — ⏳ **Option A implemented (tick-4450, commit 5ac9bd6); Jony must confirm + file Amendment 19b on OSF**
 - [x] `occupation_sw_eng` codebook gap — ✅ **Fixed in instrument codebook §13**
 - [x] CHI paper §4.4 Q3 abbreviated wording — ✅ **Fixed in tick-4384**
 - [x] Pre-reg amendment log note for Q4 — ✅ **Included in Amendment 19 text**
 
 **Study 1 is pre-pilot-ready contingent on:**
 1. Jony filing Amendment 19 on OSF
-2. Jony deciding on Gap 2 (scope clarification in stimuli)
+2. Jony confirming Option A + filing Amendment 19b on OSF (stimuli updated tick-4450)
 3. OSF Amendments O+T (already open JA-O, JA-T)
 
 ---
@@ -162,4 +166,4 @@ Study 1 materials are structurally sound. The Q3 wording deviation (Gap 1) is th
 
 Estimated work before pilot launch: **~30 minutes** (Amendment 19 OSF filing; Gap 2 decision and optional stimuli edit; Amendments O+T).
 
-_Created: 2026-07-01 (tick-4384). Crosscheck scope: pre-reg §§1-14, instrument §§1-13, analysis R script lines 1-1060, CHI paper §4 (§§4.1-4.5 + Table 2)._
+_Created: 2026-07-01 (tick-4384). Updated: 2026-07-02 (tick-4458) — Gap 2 updated: Option A (scope-limiting note in stimuli HTML) implemented in tick-4450 commit 5ac9bd6; Amendment 19b draft written; Jony action is confirm + OSF file only. Crosscheck scope: pre-reg §§1-14, instrument §§1-13, analysis R script lines 1-1060, CHI paper §4 (§§4.1-4.5 + Table 2)._
