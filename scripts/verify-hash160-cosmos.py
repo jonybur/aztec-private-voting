@@ -19,6 +19,11 @@ Cross-check: privkey=1 produces hash160 751e76e8...f1433bd6 which encodes as
 Bitcoin P2PKH address 1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH — a widely-known
 test vector confirming the derivation is correct.
 
+Bech32 cross-check: the same hash160 encoded as Cosmos bech32 with HRP='bbn'
+yields bbn1w508d6qejxtdg4y5r3zarvary0c5xw7kdrxtsp. The 'w508d6q' segment
+corresponds to the 5-bit groups of the first bytes of the hash160 (0x75... → 14 =
+CHARSET['w']). This confirms the full pipeline: privkey → pubkey → hash160 → bbn1 address.
+
 Usage:
     python3 scripts/verify-hash160-cosmos.py
 
@@ -34,6 +39,65 @@ Connections:
 
 import hashlib
 import sys
+
+# ---------------------------------------------------------------------------
+# Bech32 encoding (BIP-173, used by Cosmos/Babylon for addresses)
+# ---------------------------------------------------------------------------
+
+_CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
+
+
+def _bech32_polymod(values: list) -> int:
+    GEN = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3]
+    chk = 1
+    for v in values:
+        b = chk >> 25
+        chk = (chk & 0x1FFFFFF) << 5 ^ v
+        for i in range(5):
+            chk ^= GEN[i] if ((b >> i) & 1) else 0
+    return chk
+
+
+def _bech32_hrp_expand(hrp: str) -> list:
+    return [ord(x) >> 5 for x in hrp] + [0] + [ord(x) & 31 for x in hrp]
+
+
+def _bech32_create_checksum(hrp: str, data: list) -> list:
+    values = _bech32_hrp_expand(hrp) + list(data)
+    polymod = _bech32_polymod(values + [0, 0, 0, 0, 0, 0]) ^ 1
+    return [(polymod >> 5 * (5 - i)) & 31 for i in range(6)]
+
+
+def _convertbits(data: bytes, frombits: int, tobits: int, pad: bool = True) -> list:
+    """Convert between bit-widths (e.g. 8-bit bytes → 5-bit groups)."""
+    acc, bits, ret = 0, 0, []
+    maxv = (1 << tobits) - 1
+    max_acc = (1 << (frombits + tobits - 1)) - 1
+    for value in data:
+        acc = ((acc << frombits) | value) & max_acc
+        bits += frombits
+        while bits >= tobits:
+            bits -= tobits
+            ret.append((acc >> bits) & maxv)
+    if pad and bits:
+        ret.append((acc << (tobits - bits)) & maxv)
+    return ret
+
+
+def hash160_to_cosmos_bech32(hash160_bytes: bytes, hrp: str) -> str:
+    """
+    Encode a 20-byte hash160 as a Cosmos bech32 address.
+
+    Used by Babylon: hrp='bbn'  → bbn1...
+    Standard Cosmos: hrp='cosmos' → cosmos1...
+
+    The encoding is identical to bech32; only the HRP differs.
+    This matches how Cosmos SDK derives addresses from secp256k1 public keys.
+    """
+    assert len(hash160_bytes) == 20, "hash160 must be 20 bytes"
+    data5 = _convertbits(hash160_bytes, 8, 5)
+    combined = list(data5) + _bech32_create_checksum(hrp, data5)
+    return hrp + "1" + "".join(_CHARSET[d] for d in combined)
 
 # ---------------------------------------------------------------------------
 # secp256k1 arithmetic (stdlib only, no external lib)
@@ -115,7 +179,7 @@ def privkey_to_pubkey(privkey_int: int) -> tuple[bytes, bytes]:
 
 
 # ---------------------------------------------------------------------------
-# Cross-check: Bitcoin P2PKH address encoding
+# Cross-check: Bitcoin P2PKH address encoding (base58check)
 # ---------------------------------------------------------------------------
 
 _BASE58_ALPHABET = b"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
@@ -153,6 +217,7 @@ def hash160_to_bitcoin_p2pkh(hash160_bytes: bytes) -> str:
 VECTORS = [
     # privkey=1: secp256k1 generator point G — even y (prefix 0x02)
     # Bitcoin P2PKH: 1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH (widely-known test vector)
+    # Babylon bbn1: bbn1w508d6qejxtdg4y5r3zarvary0c5xw7kdrxtsp
     {
         "privkey":           1,
         "pubkey_x":          "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
@@ -163,6 +228,7 @@ VECTORS = [
         "sha256_of_compressed": "0f715baf5d4c2ed329785cef29e562f73488c8a2bb9dbc5700b361d54b9b0554",
         "hash160":           "751e76e8199196d454941c45d1b3a323f1433bd6",
         "bitcoin_p2pkh":     "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "bbn1_addr":         "bbn1w508d6qejxtdg4y5r3zarvary0c5xw7kdrxtsp",
         "notes":             "Generator point G; y even; widely-used Bitcoin test vector",
     },
     # privkey=2: 2G — even y (prefix 0x02)
@@ -176,6 +242,7 @@ VECTORS = [
         "sha256_of_compressed": "b1c9938f01121e159887ac2c8d393a22e4476ff8212de13fe1939de2a236f0a7",
         "hash160":           "06afd46bcdfd22ef94ac122aa11f241244a37ecc",
         "bitcoin_p2pkh":     "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+        "bbn1_addr":         "bbn1q6hag67dl53wl99vzg42z8eyzfz2xlkv8ahdf4",
         "notes":             "2G; y even",
     },
     # privkey=3: 3G — even y (prefix 0x02)
@@ -189,6 +256,7 @@ VECTORS = [
         "sha256_of_compressed": "eae10cdd2f289bdad44615809cb422d2fabe9622ed706ad5d9d3ffd2cdd1c001",
         "hash160":           "7dd65592d0ab2fe0d0257d571abf032cd9db93dc",
         "bitcoin_p2pkh":     "1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb",
+        "bbn1_addr":         "bbn10ht9tyks4vh7p5p904t340cr9nvahy7us8kyeu",
         "notes":             "3G; y even",
     },
     # privkey=10: 10G — ODD y (prefix 0x03) — critical test for prefix branch
@@ -202,6 +270,7 @@ VECTORS = [
         "sha256_of_compressed": "7c5390f1a98ff45ba7568617d38ff43bf66c3fc5bb3891d751f7befb887e1537",
         "hash160":           "185140bb54704a9e735016faa7a8dbee4449bddc",
         "bitcoin_p2pkh":     "13DaZ9nfmJLfzU6oBnD2sdCiDmf3M5fmLx",
+        "bbn1_addr":         "bbn1rpg5pw65wp9fuu6szma202xmaezyn0wu6zc43c",
         "notes":             "10G; y ODD — exercises 0x03 prefix branch in derive_hash160_cosmos()",
     },
 ]
@@ -212,7 +281,16 @@ VECTORS = [
 # ---------------------------------------------------------------------------
 
 def verify_vector(v: dict, verbose: bool = False) -> bool:
-    """Recompute hash160 for a vector entry and verify against expected."""
+    """Recompute hash160 for a vector entry and verify against expected.
+
+    Verifies:
+      1. pubkey derivation from privkey
+      2. SEC1 compressed pubkey prefix (even/odd y)
+      3. sha256 intermediate
+      4. hash160 = ripemd160(sha256(compressed))
+      5. Bitcoin P2PKH address (base58check cross-check)
+      6. Babylon bbn1 address (bech32 cross-check)
+    """
     privkey = v["privkey"]
     x_bytes, y_bytes = privkey_to_pubkey(privkey)
 
@@ -255,11 +333,23 @@ def verify_vector(v: dict, verbose: bool = False) -> bool:
         f"Bitcoin P2PKH mismatch for privkey={privkey}: " \
         f"got {btc_addr}, expected {v['bitcoin_p2pkh']}"
 
+    # Babylon bech32 cross-check
+    bbn_addr = hash160_to_cosmos_bech32(computed_hash160, "bbn")
+    assert bbn_addr == v["bbn1_addr"], \
+        f"Babylon bbn1 mismatch for privkey={privkey}: " \
+        f"got {bbn_addr}, expected {v['bbn1_addr']}"
+
+    # Length check: bbn1 addresses should be 42 chars
+    # (3 HRP + 1 sep + 32 data5 + 6 checksum)
+    assert len(bbn_addr) == 42, \
+        f"bbn1 address length {len(bbn_addr)} != 42 for privkey={privkey}"
+
     if verbose:
         print(f"  prefix:    0x{prefix:02x} ({v['y_parity']})")
         print(f"  sha256:    {sha256_of_pk.hex()}")
         print(f"  hash160:   {computed_hash160.hex()}")
         print(f"  bitcoin:   {btc_addr} ✓")
+        print(f"  bbn1 addr: {bbn_addr} ✓")
         print(f"  notes:     {v['notes']}")
 
     return True
@@ -298,7 +388,8 @@ def main():
 
         if not verbose:
             y_tag = "(0x02 even)" if v["y_parity"] == "even" else "(0x03 ODD )"
-            print(f"privkey={v['privkey']:>3} {y_tag}  hash160={v['hash160']}  [{status}]")
+            bbn = v.get("bbn1_addr", "?")
+            print(f"privkey={v['privkey']:>3} {y_tag}  hash160={v['hash160']}  bbn1={bbn}  [{status}]")
 
     if noir_fmt:
         print("\n" + "=" * 60)
@@ -309,6 +400,11 @@ def main():
     print()
     if all_pass:
         print(f"ALL {len(VECTORS)} VECTORS PASSED")
+        print()
+        print("Verification chain for each vector:")
+        print("  privkey → pubkey → SEC1 compress → sha256 → ripemd160 → hash160")
+        print("  hash160 → Bitcoin P2PKH (base58check) ✓")
+        print("  hash160 → Babylon bbn1 (bech32, HRP='bbn') ✓")
         print()
         print("These vectors are canonical inputs for the Noir circuit test in")
         print("m2-sig-tests/src/main.nr. After applying ADR-038 (adding the")
