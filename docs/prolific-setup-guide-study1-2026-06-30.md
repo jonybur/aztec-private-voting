@@ -1,7 +1,7 @@
 # Prolific Study Setup Guide — PIUP Study 1
 
 **Author:** Jony Bursztyn  
-**Date:** 2026-06-30  
+**Date:** 2026-06-30 (updated 2026-07-02, tick-4451 — Amendment 19+19b prerequisites added)  
 **Instrument spec:** [`docs/piup-study1-survey-instrument-2026-06-22.md`](piup-study1-survey-instrument-2026-06-22.md)  
 **Pre-registration:** [`docs/piup-study1-preregistration-2026-06-22.md`](piup-study1-preregistration-2026-06-22.md)  
 **Qualtrics setup:** [`docs/qualtrics-setup-guide-2026-06-22.md`](qualtrics-setup-guide-2026-06-22.md)
@@ -12,8 +12,10 @@
 
 - [ ] **JONY-ACTION O:** File OSF Amendment 5 (SC2 extended to CS/SE students). OSF pre-registration must be live before any data collection.
 - [ ] **JONY-ACTION T:** File OSF Amendment 14 (correct attention check descriptions in pre-reg §3). OSF pre-registration must be live before any data collection.
+- [ ] **JONY-ACTION (Amendment 19):** File OSF Amendment 19 — Q3 wording deviations × 4 (+ Q4 note). Draft text in `docs/piup-study1-crosscheck-2026-07-01.md` Gap 1. Must be filed before any data collection.
+- [ ] **JONY-ACTION (Amendment 19b):** File OSF Amendment 19b — stimuli scope-limiting clarification added (Decision D Option A). Draft text in `docs/piup-study1-decision-d-amendment-19b-draft-2026-07-02.md`. Stimuli HTML files updated in commit 5ac9bd6 — confirm this matches what you deploy at the public URL.
 - [ ] Qualtrics survey fully built and tested (all 4 conditions working; screener, screen-out paths, completion redirect confirmed). Follow `qualtrics-setup-guide-2026-06-22.md` first.
-- [ ] Stimulus files deployed at a public URL (e.g. `https://your-host.vercel.app/condition-A.html`).
+- [ ] Stimulus files deployed at a public URL (e.g. `https://your-host.vercel.app/condition-A.html`). **Note:** stimuli now include the scope-limiting study note per Amendment 19b Option A — deploy from `study-stimuli/` in the current repo state (post-commit 5ac9bd6).
 - [ ] Prolific account with a funded balance. For the pilot (N=40): budget ≈ £80–100 (see §Payment below). For full study (N=280): budget ≈ £560–700.
 
 ---
@@ -273,7 +275,7 @@ This ensures no participant can take more than one condition. This is critical �
 
 ### Prolific (from this guide)
 
-- [ ] OSF pre-registration is **live** (Amendments O+T filed and OSF URL accessible)
+- [ ] OSF pre-registration is **live** — all 4 amendments filed before pilot launch: **O** (Amendment 5), **T** (Amendment 14), **Amendment 19** (Q3 wording), **Amendment 19b** (stimuli scope note). OSF URL accessible.
 - [ ] 4 studies created (A, B, C, D), each with correct condition URL
 - [ ] Estimated time: 12 minutes
 - [ ] Reward: ≥ £2.00 per participant
