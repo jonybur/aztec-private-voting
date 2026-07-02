@@ -221,3 +221,61 @@ for any future path that combines caller-supplied receipts with a public members
 _Next step: add trust-assumption language to the grant forum post draft
 (`drafts/aztec-grant-forum-post.md`). The testnet atomicity check can run alongside the contract
 deploy in the grant submission flow._
+
+---
+
+## Amendment — Atomicity confirmed from v5 source code (tick-4484, 2026-07-02)
+
+**Status: open testnet question CLOSED. F2 open path = LOW (confirmed).**
+
+The testnet atomicity question — "does a public-half revert consume the private nullifier?" —
+has been resolved by inspecting the Aztec v5.0.0-rc.1 simulator source directly.
+
+### Source evidence
+
+File: `yarn-project/simulator/src/public/public_tx_simulator/public_tx_simulator.ts`
+(commit tag: `v5.0.0-rc.1`)
+
+The simulator executes transactions in this order:
+
+```
+1. insertNonRevertiblesFromPrivate(context)   ← always committed
+2. SETUP phase                                ← always committed (or tx thrown out)
+   ⬇ fork state
+3. insertRevertiblesFromPrivate(context)      ← inside fork
+4. APP_LOGIC phase (record_vote)              ← inside fork
+   if APP_LOGIC reverts:
+     discardForkedState()                     ← rolls back steps 3 + 4
+   else:
+     mergeForkedState()                       ← commits steps 3 + 4
+5. TEARDOWN phase
+```
+
+The `SingleUseClaim` nullifier from `vote_claims.at(msg_sender()).claim()` is emitted in
+`cast_vote` — a private app-logic function. Private app-logic nullifiers go into
+`tx.revertibleAccumulatedDataFromPrivate.nullifiers` (as opposed to
+`nonRevertibleAccumulatedDataFromPrivate`, which holds fee-payment and setup nullifiers).
+
+Revertible private nullifiers are inserted at step 3, inside the fork. When `record_vote`
+reverts (step 4), `discardForkedState()` rolls back both steps 3 and 4. The
+`SingleUseClaim` nullifier is **not** inserted into the nullifier tree.
+
+### Conclusion
+
+**F2 open path: LOW (confirmed).** If `record_vote` reverts (e.g., "receipt already used"),
+the `cast_vote` transaction fails atomically: the `vote_claims` nullifier is rolled back,
+and the voter retains their single-use claim. They can resubmit with a fresh `receipt_id`.
+
+The griefing attack (attacker front-runs with the same `receipt_id`) remains possible but:
+- Has low impact: the victim can retry at a gas cost.
+- Requires the attacker to be eligible (or be a compromised sequencer).
+- Cannot permanently block a voter — they can always change their `receipt_id`.
+
+**Scope note:** This amendment covers `cast_vote` and `cast_vote_token` / `cast_vote_allowlist`
+(generic paths). The Babylon path (`cast_vote_babylon`) is unaffected — its F2+ HIGH finding
+stands on different grounds (deterministic `holder_nullifier` not under the voter's control).
+
+**No code change needed.** The F2 LOW rating was correct; this amendment provides the source
+evidence that was previously missing.
+
+See also: `docs/security-review-2026-06-22.md` §8 summary table.
