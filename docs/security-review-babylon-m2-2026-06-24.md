@@ -245,7 +245,7 @@ produce a signature that passes this circuit.
 
 Before `cast_vote_babylon_v2` is used in a production governance deployment:
 
-- [ ] **Implement `snapshot_version: u8` in `VoteConfig`** and add entrypoint guards (M2-F1).
+- [x] **Implement `snapshot_version: u8` in `VoteConfig`** and add entrypoint guards (M2-F1). ✅ Done tick-4482 (commit dbc0fea).
 - [ ] **Add Cosmos/Keplr signing path** or document that EVM wallet is required (M2-F2).
 - [ ] **Deploy `docs/deployment.md` warning** about "one vote per Cosmos address" semantics (M2-F3).
 - [ ] **Replace `derive_hash160_sha256d` with `ripemd160(sha256(compressed_pubkey))`** once
