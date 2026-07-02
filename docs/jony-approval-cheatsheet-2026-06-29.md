@@ -104,16 +104,17 @@ After both commits: paper is submission-clean. No further JAs remain.
 
 ## Also required before pilot (not paper edits)
 
-From Qualtrics guide cross-check (tick-4335):
+From Qualtrics guide cross-check (tick-4335) + Study 1 pre-reg crosscheck (tick-4384):
 
-| Decision | Action | When |
-|----------|--------|------|
-| **A** | File OSF Amendment 19 (Q3 wording — instrument vs. pre-reg) | Before pilot |
-| **B** | File OSF Amendment 20 (Q4 wording + foils — instrument vs. pre-reg) | Before pilot |
-| **C** | File OSF Amendment 21 (Q3 clarification removed — instrument vs. pre-reg) | Before pilot |
+| Decision | Action | When | Status |
+|----------|--------|------|--------|
+| **A** | File OSF Amendment 19 (Q3 wording — 4 deviations from pre-reg §5.2 + Q4 note) | Before pilot | ⚠️ DRAFT READY (tick-4384) — see docs/piup-study1-crosscheck-2026-07-01.md Gaps 1+4 |
+| **B** | ~~File OSF Amendment 20 (Q4 wording + foils)~~ | — | ✅ SUPERSEDED — Q4 wording deviation is now documented as a note within Amendment 19 (tick-4384 crosscheck Gap 4: "no separate amendment required; Q4 note included in Amendment 19") |
+| **C** | File OSF Amendment 21 (Q3 clarification removed from instrument baseline — Qualtrics guide compliance) | Before pilot | ⚠️ Text drafted in docs/osf-amendment-filing-2026-06-24.md Decision C |
+| **D** | **JONY DECISION: stimuli scope-limiting clarification** — pre-reg §5.2 says "Assume they can only see what is on this screen. **This wording is in the stimuli.**" but stimuli HTML does not contain it. Choose: Option A (add to stimulus HTML = recommended), Option B (add as Qualtrics Q3 hint), or Option C (judge instrument wording "your screen and your [LABEL]" sufficient + log as Amendment 19c) | Before pilot | ⚠️ NEW — see docs/piup-study1-crosscheck-2026-07-01.md Gap 2. This is distinct from Amendment 21 (C above): Amendment 21 amends the pre-reg to say the clarification was removed from the Q3 question stem; Gap 2 is about whether the clarification should appear in the stimuli HTML, as the pre-reg committed to. |
 
-These fix the Qualtrics guide's OSF compliance warnings (⚠️ headers). They do NOT require paper edits (paper text is already correct for A+B+C — applied during compression).
+Decisions A and D do NOT require paper edits. Decision B is superseded. Decision C does not require paper edits.
 
 ---
 
-*Updated tick-4337 (2026-06-30). Previous version (tick-4231) listed 24 JAs — now archived in Multica VON-767.*
+*Updated tick-4449 (2026-07-02): Decisions A+B updated to reflect Amendment 19 full text drafted at tick-4384 (Q3 deviations × 4 + Q4 note); Decision B superseded (Q4 merged into Amendment 19); Decision D added (stimuli scope-limiting clarification — Study 1 crosscheck Gap 2, tick-4384). Previous version: tick-4337 (2026-06-30). Version before that (tick-4231): 24 JAs — archived in Multica VON-767.*

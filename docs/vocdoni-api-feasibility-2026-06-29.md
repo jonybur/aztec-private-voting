@@ -6,6 +6,8 @@
 **Author:** @jonybur  
 **Connects to:** `piup-study3-power-analysis-2026-06-29.md` (Option C), `piup-study3-social-verification-2026-06-29.md`
 
+> ⚠️ **PARADIGM CORRECTION (tick-4427/4429/4445/4449):** References in this document to Study 3 being "concurrent with Study 2" (n ≈ 40/condition from a shared election) reflect the original design (2026-06-29). The paradigm changed: Study 2 was redesigned as a controlled Vercel prototype (simulated vote; Prolific participants), so Study 3 — which requires a live Aztec contract — must run in a **separate live DAO election**. Study 3's pilot still targets N = 80 (n = 40/condition); the underpowered-at-OR-2.0 conclusion and the Vocdoni platform assessment still hold. Only the "concurrent with Study 2" framing and the "same election" rationale for n ≈ 40/condition are obsolete. Authoritative Study 3 design: `docs/piup-study3-osf-prereg-2026-07-01.md`.
+
 ---
 
 ## 1. Purpose
