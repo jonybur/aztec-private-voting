@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-01 (tick-4430)  
 **Author:** Jony Bursztyn  
-**Status:** Pre-pilot draft — ⚠️ DV3 item wording and M1 wording require Jony's decision before OSF filing (see §5.2 and §3.2 respectively)  
+**Status:** Pre-pilot draft — ⚠️ DV3 item wording and M1 wording pending Jony's decision before OSF filing (decision memos written: DV3 tick-4437, M1 tick-4438; see §5.2 and §3.2 respectively)  
 **Companion documents:**
 - [`docs/piup-study3-osf-prereg-2026-07-01.md`](piup-study3-osf-prereg-2026-07-01.md) — pre-registration
 - [`docs/piup-study3-debrief-script-2026-06-30.md`](piup-study3-debrief-script-2026-06-30.md) — full T+14 debrief script (verbatim text for all four screens)
@@ -425,9 +425,9 @@ The R analysis script (`analysis/piup-study3-analysis.R`) uses these column name
 
 | # | Item | Status | Required action |
 |---|------|--------|-----------------|
-| DV3-A | DV3 item wording (4 adapted items) | **⏳ JONY DECISION** | Confirm or revise items in §5.2 |
-| DV3-B | DV3 scoring rule (strict vs majority) | **⏳ JONY DECISION** | Select Option A (all-correct) or Option B (≥3/4) |
-| M1-W | M1 item wording (4 Compeau-Higgins items) | **⏳ JONY DECISION** | Confirm recommended wording in §3.3 or revise |
+| DV3-A | DV3 item wording (4 adapted items) | **⏳ JONY DECISION** (memo written tick-4437) | Review `docs/piup-study3-dv3-specification-2026-07-02.md`; confirm DV3-3A or DV3-3B; paste amendment §4 |
+| DV3-B | DV3 scoring rule (strict vs majority) | **⏳ JONY DECISION** (memo written tick-4437) | Confirm Option A (all-correct, recommended) or select Option B; no script change needed for Option A |
+| M1-W | M1 item wording (4 Compeau-Higgins items) | **⏳ JONY DECISION** (memo written tick-4438) | Review `docs/piup-study3-m1-item-review-2026-07-02.md`; confirm M1-3 Option A or keep original; paste amendment §4 |
 | IRB | Debrief placeholder fields | **⏳ JONY** | Fill [PI name], [PI email], [Institution], [IRB protocol number] in debrief script §4 |
 | T14-LINK | T+14 survey link delivery mechanism | **⏳ JONY** | Confirm which DAO platform tool sends the T+14 link |
 
