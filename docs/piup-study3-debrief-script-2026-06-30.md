@@ -92,7 +92,9 @@ This study does not record or store your individual vote. The study cannot deter
 - Your survey responses about verification (this survey)
 - If you opted in to behavioral logging: whether and when the `verify_vote_counted()` function was called via your receipt link
 
-The social proof counter (shown to Group B participants) was derived from public smart contract logs. These logs contain pseudonymous receipt IDs only — no names, wallets, or individual votes are associated with the count.
+The social proof counter (shown to Group B participants) was maintained by the study platform (a lightweight serverless backend), not derived from blockchain logs. The platform recorded only the aggregate number of verification attempts — no receipt IDs, wallet addresses, or vote choices were retained.
+
+_[Architecture correction (tick-4456, companion to pre-reg §3.2 amendment tick-4453): "public smart contract logs" → host-side serverless backend aggregate count. View functions leave no on-chain record. Privacy guarantee unchanged: no individual voter is identifiable from the counter.]_
 
 **Questions or concerns:**
 
@@ -147,7 +149,9 @@ If a participant selects withdrawal:
 3. A confirmation email is sent to the participant's registered email.
 4. Hard deletion of response data occurs within 30 days per IRB data management protocol.
 5. Behavioral log data (if opt-in) is deleted from the log store in the same cycle.
-6. Withdrawal does not affect the verification count data drawn from public on-chain logs (this data is public by design and cannot be deleted).
+6. Withdrawal does not affect the aggregate verification count maintained by the study platform. The counter stores only a total number — no individual participant data is associated with it — so it cannot be attributed to you or deleted on a per-participant basis.
+
+_[Architecture correction (tick-4456, companion to pre-reg §3.2 amendment tick-4453): "drawn from public on-chain logs" → aggregate count in host-side KV store. The withdrawal implication is identical: the aggregate count cannot be attributed to any individual participant.]_
 
 ### Expected withdrawal rate
 

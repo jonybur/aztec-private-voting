@@ -470,7 +470,9 @@ Export as raw text (string). Do not score in Qualtrics. Qualitative coding is pe
 > - Your survey responses about verification (this survey)
 > - If you opted in to behavioral logging: whether and when the `verify_vote_counted()` function was called via your receipt link
 >
-> The social proof counter (shown to Group B participants) was derived from public smart contract logs. These logs contain pseudonymous receipt IDs only — no names, wallets, or individual votes are associated with the count.
+> The social proof counter (shown to Group B participants) was maintained by the study platform (a lightweight serverless backend), not derived from blockchain logs. The platform recorded only the aggregate number of verification attempts — no receipt IDs, wallet addresses, or vote choices were retained in the counter log.
+>
+> _[Architecture correction (tick-4456, companion to pre-reg §3.2 amendment tick-4453 and §5/§7 amendments tick-4454): The original text said the counter was derived from "public smart contract logs." This is architecturally incorrect. `verify_vote_counted()` is a view function; it leaves no on-chain record. The correct architecture — host-side serverless backend logging only the aggregate count — was established in the pre-reg amendments (ticks 4452–4455). This debrief text now matches. The participant-facing privacy guarantee is identical: no individual voter is identifiable from the counter.]_
 >
 > **Questions or concerns:**
 >
