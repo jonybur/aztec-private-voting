@@ -41,7 +41,7 @@ The most concrete way I can say this: when building the receipt, I kept asking "
 
 **Test suite** - 41 user stories, Playwright + Noir unit tests.
 
-**Live testnet deployment** - `[CONTRACT ADDRESS]` (v5.testnet.rpc.aztec-labs.com - rollupVersion `2787991301` stable, endpoint verified Jul 2 2026 (block 1977, ~04:43 UTC); artifact compiled and ready `contracts/target/`; deploy immediately before submitting and replace this placeholder)
+**Live testnet deployment** - `[CONTRACT ADDRESS]` (v5.testnet.rpc.aztec-labs.com - rollupVersion `2787991301` stable, endpoint verified Jul 2 2026 (block 2203, ~09:13 UTC); artifact compiled and ready `contracts/target/`; deploy immediately before submitting and replace this placeholder)
 
 ### The receipt - the actual research contribution
 
