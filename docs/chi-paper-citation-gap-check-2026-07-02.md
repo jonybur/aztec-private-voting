@@ -44,13 +44,23 @@ Three targeted searches for:
 ---
 
 ### C — Kulyk, Ludwig, Volkamer, Koenig, Locher — "Usable verifiable secrecy-preserving E-voting"
-**Status:** Title found in reference chain but no confirmed venue/year from search results. Likely a workshop/VoteID paper.
+**Full citation:** Kulyk, O., Ludwig, J., Volkamer, M., Koenig, R.E., Locher, P. (2021). "Usable Verifiable Secrecy-Preserving E-Voting." _6th International Joint Conference on Electronic Voting (E-Vote-ID 2021)_, Bregenz, Austria. University of Tartu Press.
 
-**Relevance to PIUP:** HIGH (title only — "secrecy-preserving" + "usable" directly overlaps with PIUP's contribution). Need to verify content before assessing whether this paper addresses receipt privacy mental models specifically or just ballot secrecy at the protocol layer.
+**Status:** ✅ ASSESSED (tick-4479) — verified via PDF abstract + snippet analysis. No Jony action required.
 
-**Recommendation:** Jony should retrieve and read this paper before the CHI submission. If it addresses receipt design or privacy mental models specifically, it is either a direct prior work to cite or a direct competitor to acknowledge in §6.5. If it addresses ballot secrecy at the protocol layer only (as the SECUSO group typically does), cite in §1.2 with the same framing as A.
+**Content (confirmed from PDF abstract + multiple source snippets):** Proposes using QR-codes to enable usable *code-voting* schemes (one voting code per voting option + one personal confirmation QR-code). Conducts user study evaluating usability/UX of the code-sheet-plus-QR approach for cast-as-intended verification. The "secrecy-preserving" claim refers to cryptographic secrecy at the *casting* layer: the voting device cannot learn the voter's choice because it only sees codes, not vote labels. Code sheets and the election webpage are designed following usability guidelines from the SECUSO group's prior work (Marky 2018, Kulyk 2015).
 
-**Action required:** JONY — retrieve full paper (check ACM DL, LNCS, E-Vote-ID proceedings). This is the highest-priority citation check from this search.
+**Relevance to PIUP:** LOW — NOT a competitor. Despite the title's "secrecy-preserving" wording, the paper operates in cast-as-intended verification UX space, not receipt design or receipt privacy mental models. Specifically:
+- "Secrecy-preserving" in Kulyk 2021 = the voting *device* cannot observe the vote choice (protocol-layer property enforced by code sheets)
+- "Privacy" in PIUP = the *receipt* (post-vote artifact) does not reveal the vote choice to a coercer (receipt design property and user mental model)
+- Kulyk 2021's user study DV: task completion and user experience of the code-sheet process
+- PIUP's user study DV: accuracy of voter belief about what the receipt reveals
+
+These are orthogonal contributions. The existing Marky 2018 citation in §1.2 already credits the SECUSO group's CHI-published usability work in this tradition. Adding Kulyk 2021 would add a third SECUSO citation (after Kulyk 2015 and Marky 2018) with no unique positioning value for PIUP.
+
+**Recommendation:** No action. Not a prior work competitor. Not required for §1.2 completeness (already covered by Marky 2018). No defensive revision to §6.5 needed.
+
+**Action required:** None — Jony does not need to read this paper before CHI submission.
 
 ---
 
@@ -80,7 +90,7 @@ Three targeted searches for:
 |---|---|---|
 | A: Volkamer et al. SOUPS 2022 | ✅ Yes — one sentence in §1.2 | Medium |
 | B: Kulyk et al. INTERACT 2019 | Optional — only if §1.2 needs breadth | Low |
-| C: "Usable verifiable secrecy-preserving E-voting" | ⚠️ Jony must read first | HIGH |
+| C: Kulyk et al. E-Vote-ID 2021 | ✅ No action — NOT a competitor (QR-code code-voting UX, not receipt privacy mental models). Assessed tick-4479. | CLOSED |
 | D: E-Vote-ID 2024/2025 cryptography papers | No action | — |
 | E: Votegral SOSP 2025 | No action | — |
 
@@ -103,4 +113,6 @@ Three targeted searches for:
 
 ---
 
-_Created: 2026-07-02 (tick-4462). Open action: Jony to (1) retrieve "Usable verifiable secrecy-preserving E-voting" (Kulyk et al.) and assess for citation/competitor status; (2) confirm addition of Volkamer et al. 2022 to §1.2._
+_Created: 2026-07-02 (tick-4462). Updated: 2026-07-02 (tick-4479) — Kulyk et al. 2021 (Paper C) assessed and closed. No competitor. Full citation and content verdict added.
+
+Remaining open action: Jony to (1) confirm addition of Volkamer et al. 2022 to §1.2 (optional, ~20 words + 1 reference)._
