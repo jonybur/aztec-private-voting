@@ -1,9 +1,9 @@
 # PIUP Study 3 — Pre-Registration Cross-Check Report
 
-**Date:** 2026-07-01 (tick-4429)  
+**Date:** 2026-07-01 (tick-4429); updated 2026-07-02 (tick-4442)  
 **Author:** OpenClaw Agent  
 **Purpose:** Systematic cross-check of `piup-study3-osf-prereg-2026-07-01.md` against `analysis/piup-study3-analysis.R`, `analysis/piup-study3-drycheck.R`, `docs/piup-study3-debrief-script-2026-06-30.md`, and `drafts/piup-chi-paper-draft-2026-06-22.md` §7. Parallel to `docs/piup-study1-crosscheck-2026-07-01.md` (5 gaps found) and `docs/piup-study2-crosscheck-2026-06-30.md` (5 gaps found).  
-**Result:** 4 gaps found. 1 critical (already fixed), 2 moderate, 1 minor.
+**Result:** 4 gaps found. 1 critical (fixed), 2 moderate (partially resolved — see updates below), 1 minor (not an issue).
 
 ---
 
@@ -12,8 +12,8 @@
 | # | Severity | Location | Description | Fixed |
 |---|----------|----------|-------------|-------|
 | 1 | **CRITICAL** | Pre-reg §4 | §4 says "Study 3 is embedded in the same election as Study 2" — directly contradicts §9 (corrected tick-4427), which accurately states Studies 2 and 3 use different paradigms and cannot share an election | ✅ Fixed in tick-4429 — §4 Population rewritten |
-| 2 | MODERATE | Pre-reg §5 / DV3 | DV3 (verification comprehension) item wording not specified; "abbreviated Q1–Q4 rubric adapted from Study 1" with no actual question text, no composite scoring rule | ⏳ Jony decision required — see Gap 2 |
-| 3 | MODERATE | Pre-reg §5 / DV3 | DV3 scoring rule not defined — analysis script treats `dv3_comprehension` as a single 0/1 binary column; pre-reg says "Q1–Q4 composite" but gives no composite specification | ⏳ Jony decision required — see Gap 3 |
+| 2 | MODERATE | Pre-reg §5 / DV3 | DV3 (verification comprehension) item wording not specified; "abbreviated Q1–Q4 rubric adapted from Study 1" with no actual question text, no composite scoring rule | ⏳ PARTIAL — items drafted in `piup-study3-dv3-specification-2026-07-02.md`; DV3-3A vs DV3-3B pending Jony choice — see Gap 2 |
+| 3 | MODERATE | Pre-reg §5 / DV3 | DV3 scoring rule not defined — analysis script treats `dv3_comprehension` as a single 0/1 binary column; pre-reg says "Q1–Q4 composite" but gives no composite specification | ⏳ PARTIAL — Option A (strict composite) documented in spec; pending Jony confirmation — see Gap 3 |
 | 4 | MINOR | Pre-reg §1 inline citation | "Das et al., 2014, CCS: password manager adoption via peer-count display" — paper title and topic may be imprecise; actual title is "Increasing security sensitivity with social proof: A large-scale experimental confirmation" (security behaviors broadly, not specifically password-manager adoption) | ✅ CONFIRMED NOT AN ISSUE — see Gap 4 |
 
 ---
@@ -66,26 +66,17 @@ This description gives the construct but not the items. Study 1 pre-reg §5.2 pr
 
 ### Required fix
 
-**JONY-DECISION: Specify DV3 adapted items before OSF filing.**
+**UPDATE (tick-4442): Items are now specified in `docs/piup-study3-dv3-specification-2026-07-02.md` (tick-4437).** Three items are clean (DV3-1, DV3-2, DV3-4). DV3-3 has two candidate wordings pending Jony's choice:
 
-Two options:
+| Item | DV3-3A (recommended) | DV3-3B (original draft) | Correct |
+|------|----------------------|-------------------------|---------|
+| DV3-3 | *"If you verified your vote in front of another person, could they learn which option you voted for?"* | *"If you showed your receipt link to another person, could they learn which option you chose?"* | No |
 
-**Option A — Add full item wording to pre-reg §5 (recommended)**  
-Specify each of the 4 adapted items with question text, foils, correct answer, and scoring rule (e.g., "1 if all 4 items correct; 0 otherwise" or "1 if ≥3 of 4 correct"). Reference Study 1 §5.2 for the original items and note which changes were made (e.g., "vote fingerprint" label omitted; "verify" meaning adapted). Log as pre-data amendment if OSF filing has already begun.
+DV3-3A recommended: tests the *verification action* (ecologically valid for Study 3's social-proof counter coercion scenario) rather than the *receipt artifact*. Scoring unchanged either way.
 
-Example adapted item set (for Jony's review — NOT the pre-specified items; Jony must confirm these):
+**T+14 instrument:** `docs/piup-study3-survey-instrument-2026-07-01.md` now exists (§5.2 contains both DV3-3A and DV3-3B, marked ⚠️ JONY DECISION REQUIRED). Qualtrics guide: `qualtrics-setup-guide-study3-t14-2026-07-01.md`.
 
-| Item | Adapted question (Study 3) | Study 1 original (Q1–Q4) | Correct |
-|------|---------------------------|--------------------------|---------|
-| DV3-1 | Does the verification function confirm that your vote was counted? | Q1 (inclusion recognition) | Yes |
-| DV3-2 | If you share your receipt ID with a third party, can they learn how you voted? | Q2 (choice-blindness inference) | No |
-| DV3-3 | If someone asked you to show them your receipt, could they learn which option you chose? | Q3 (coercion scenario) | No |
-| DV3-4 | What does successful verification prove? | Q4 (functional understanding) | Counting, not choice |
-
-**Option B — Reference a named instrument doc (if a separate DV3 instrument exists)**  
-If a T+14 survey instrument for Study 3 exists (analogous to `piup-study1-survey-instrument-2026-06-22.md`), create that document and reference it in §5 as the DV3 source. The pre-reg should either contain the items or point to a committed file.
-
-**Action:** Before OSF filing, add DV3 item wording to §5 or create a Study 3 T+14 instrument document. Without this, the DV3 measurement is underspecified.
+**Remaining Jony action:** (1) Choose DV3-3A or DV3-3B; (2) confirm Option A strict composite scoring; (3) file OSF amendment using spec doc §4 ready-to-paste text.
 
 ---
 
@@ -100,13 +91,9 @@ DV3 is described as "Q1–Q4 composite accuracy" but:
 
 ### Required fix
 
-**JONY-DECISION: Specify the DV3 composite scoring rule.**
+**UPDATE (tick-4442): Scoring rule documented in `docs/piup-study3-dv3-specification-2026-07-02.md` §3 (tick-4437).** Option A (strict composite) is recommended: "A participant is coded DV3 = 1 if all 4 adapted Q1–Q4 items are answered correctly; DV3 = 0 otherwise." This matches the analysis script's binary treatment of `dv3_comprehension` and parallels Study 1's composite accuracy definition.
 
-Recommended: "A participant is coded DV3 = 1 if all 4 adapted Q1–Q4 items are answered correctly; DV3 = 0 otherwise." This matches the analysis script's binary treatment of `dv3_comprehension` and parallels Study 1's composite accuracy definition.
-
-If a majority rule is preferred (≥3 of 4 correct = 1), update the analysis script accordingly.
-
-Add the scoring rule to §5 DV3 definition. This can be a one-sentence addition; log as part of the item-wording amendment (Gap 2 fix) if filing together.
+**Remaining Jony action:** Confirm Option A scoring rule (or specify majority rule if preferred, which would require analysis script update). Add to pre-reg §5 as part of the item-wording amendment (Gap 2). Spec doc §4 has ready-to-paste amendment text covering both item wording and scoring rule in one block.
 
 ---
 
@@ -154,17 +141,17 @@ The inline description "password manager adoption via peer-count display" is a s
 | §4 Population inconsistency | ✅ Fixed tick-4429 |
 | Counter floor alignment | ✅ RESOLVED (tick-4408) |
 | DV2 timing heterogeneity (SA-3) | ✅ Pre-specified (tick-4408) |
-| DV3 item wording | ⏳ PENDING — Jony must specify adapted items and scoring rule before OSF filing |
-| T+14 survey instrument (Study 3) | ⏳ PENDING — no instrument document exists yet; needed for DV3, DV4, C1 |
+| DV3 item wording | ⏳ PARTIAL — items drafted in `piup-study3-dv3-specification-2026-07-02.md` (tick-4437); DV3-3A vs DV3-3B pending Jony choice; scoring rule (Option A) documented; Jony must approve + file OSF amendment |
+| T+14 survey instrument (Study 3) | ✅ EXISTS — `piup-study3-survey-instrument-2026-07-01.md`; Qualtrics setup guide at `qualtrics-setup-guide-study3-t14-2026-07-01.md` (tick-4435) |
 | Study 2 pre-reg filed on OSF | ⏳ Jony-only prerequisite (per registration checklist) |
 | Study 1 H4 outcome | ⏳ Needed to calibrate Study 3 voter pool estimate |
 | OSF pre-registration upload | ⏳ Pending above fixes + study 2 sequencing |
 
-**Current state (tick-4429): Critical §4 gap fixed. Remaining blockers:**
-1. **Gap 2 + 3 (MODERATE):** DV3 item wording and scoring rule — Jony must specify before OSF filing
-2. **T+14 instrument:** No Study 3 survey instrument document exists (analogous to `piup-study1-survey-instrument-2026-06-22.md`)
-3. **Sequencing:** Study 1 pilot → Study 2 pre-reg filed → Study 3 pre-reg filed
+**Current state (tick-4442): §4 gap fixed. T+14 instrument exists. DV3 items specified. Remaining blockers:**
+1. **Gap 2 + 3 (PARTIAL):** DV3-3 wording (DV3-3A vs DV3-3B) and scoring rule — Jony must approve before OSF amendment filed (spec doc `piup-study3-dv3-specification-2026-07-02.md`)
+2. **M1 items:** Compeau-Higgins source mapping confirmed; M1-3 refinement recommended in `piup-study3-m1-item-review-2026-07-02.md` — Jony to review
+3. **Sequencing:** Study 1 pilot → Study 2 pre-reg filed on OSF → Study 3 pre-reg filed on OSF
 
 ---
 
-_Created: 2026-07-01 (tick-4429). Based on audit of: pre-reg §§1–12, analysis script (470 lines), drycheck script (586 lines), debrief script Screens 1–4, CHI paper §7 Study 3 description. Parallel to piup-study1-crosscheck (5 gaps) and piup-study2-crosscheck (5 gaps)._
+_Created: 2026-07-01 (tick-4429). Updated: 2026-07-02 (tick-4442) — pre-pilot gate refreshed: T+14 instrument (tick-4431), Qualtrics guide (tick-4435), DV3 spec (tick-4437), M1 review (tick-4438), analysis script DV3 comment (tick-4441). Based on audit of: pre-reg §§1–12, analysis script (470 lines), drycheck script (586 lines), debrief script Screens 1–4, CHI paper §7 Study 3 description. Parallel to piup-study1-crosscheck (5 gaps) and piup-study2-crosscheck (5 gaps)._
