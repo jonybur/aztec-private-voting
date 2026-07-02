@@ -55,6 +55,7 @@ Confirmed live 2026-06-22 at block 5620.
 **Re-confirmed 2026-07-01 (tick-4426, ~21:43 UTC):** `{"result":1624}` — +384 blocks since ~14:13 UTC (~55 blocks/hour). rollupVersion `2787991301` unchanged. ✅ Testnet healthy post-second-reset.
 **Re-confirmed 2026-07-02 (tick-4437, ~00:28 UTC):** `{"result":1768}` — +144 blocks since ~21:43 UTC (~55 blocks/hour). rollupVersion `2787991301` unchanged. ✅ Testnet healthy.
 **Re-confirmed 2026-07-02 (tick-4439, ~00:58 UTC):** `{"result":1793}` — +25 blocks since ~00:28 UTC (~50 blocks/hour). rollupVersion `2787991301` unchanged. ✅ Testnet healthy.
+**Re-confirmed 2026-07-02 (tick-4505, ~17:19 UTC):** `{"result":2619}` — +826 blocks since ~00:58 UTC (~49 blocks/hour). rollupVersion `2787991301` unchanged. ✅ Testnet healthy.
 
 ### 3b. Install v5 CLI
 
