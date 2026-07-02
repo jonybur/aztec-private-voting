@@ -148,3 +148,70 @@ Aztec Alpha Network deployment:
 - `PrivateVoting`: `0x...`
 - Deployed: YYYY-MM-DD
 ```
+
+---
+
+## 8. Babylon mode (M2) — deployment notes
+
+The `cast_vote_babylon_v2` entrypoint adds secp256k1 ownership proofs for Babylon/Cosmos
+snapshot holders. Two design-level constraints must be understood before deploying in
+any governance context.
+
+### M2-F2 — EVM wallet required; Keplr/Cosmos signing not yet supported
+
+The circuit uses **EIP-191 `personal_sign`** to verify ownership of a secp256k1 keypair.
+Wallets that support this include MetaMask, Ledger (via MetaMask or WalletConnect), and
+most EVM-compatible signers. **Keplr and Leap are not compatible out of the box** — those
+wallets use the Cosmos ADR-036 signing format (`sha256` prehash, not `keccak256`), which
+produces a different message digest and will fail circuit verification.
+
+**What this means for deployers:**
+- Babylon/Cosmos snapshot holders need to sign with an EVM-compatible wallet that holds
+  the same secp256k1 private key as their `bbn1…` address.
+- Provide clear in-UI guidance: e.g., “Export your Babylon private key from Keplr, then
+  import it into MetaMask to vote. Never share your private key with anyone else.”
+- A future Cosmos/Keplr signing path (ADR-036 format) would only require a different
+  message prehash (`sha256` instead of `keccak256`). The secp256k1 arithmetic and Merkle
+  proof are identical. This is a named extension in ADR-036 §Path A.
+
+> **⚠️ BABYLON MODE — EVM wallet required (M2-F2)**
+>
+> The Babylon voting circuit (`cast_vote_babylon_v2`) uses EIP-191 `personal_sign`.
+> Voters **must** sign with MetaMask (or any EIP-191-compatible EVM wallet) holding the
+> same secp256k1 key as their `bbn1…` Babylon address. Keplr and Leap use a different
+> message format and are **not currently supported**. Native Cosmos signing (ADR-036) is
+> a planned future extension.
+
+---
+
+### M2-F3 — Vote uniqueness is per Cosmos address, not per Aztec wallet
+
+The Babylon paths do **not** use Aztec’s `SingleUseClaim` mechanism. Instead, uniqueness
+is enforced by the `holder_nullifier` — a deterministic value derived from
+`sha256(secp256k1_signature)`. Because the signature is deterministic given a fixed
+`(privkey, challenge)` under RFC 6979, each distinct Cosmos private key can produce at
+most one valid nullifier per vote.
+
+**Consequence:** “one vote per entity” is **not** enforced. The guarantee is:
+
+> “one vote per Cosmos address present in the snapshot.”
+
+An entity controlling N different Cosmos addresses (N snapshot leaves) can cast N ballots,
+each from a different Aztec wallet. This is the intended semantics for token-weighted
+Babylon governance, where voting power is proportional to snapshot holdings.
+
+**What this means for deployers:**
+- Communicate clearly to participants that voting power derives from snapshot position,
+  not Aztec wallet identity.
+- If 1-person → 1-vote semantics are required (e.g. a committee vote), use `ALLOWLIST`
+  mode (which does use `SingleUseClaim`) with an identity-linked allowlist instead of a
+  Cosmos snapshot.
+- Publish the snapshot root and the number of eligible snapshot leaves so participants
+  can verify the voting population is correct before the vote opens.
+
+> **⚠️ BABYLON MODE — one vote per Cosmos address, not per person (M2-F3)**
+>
+> The `cast_vote_babylon_v2` circuit grants one vote to each eligible Cosmos address in
+> the snapshot. An entity holding multiple Babylon addresses can vote multiple times —
+> once per address. This is correct for token-weighted governance. For 1-person → 1-vote
+> semantics, use `ALLOWLIST` mode with an identity-verified allowlist.

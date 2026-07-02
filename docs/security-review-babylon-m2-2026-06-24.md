@@ -246,8 +246,8 @@ produce a signature that passes this circuit.
 Before `cast_vote_babylon_v2` is used in a production governance deployment:
 
 - [x] **Implement `snapshot_version: u8` in `VoteConfig`** and add entrypoint guards (M2-F1). ✅ Done tick-4482 (commit dbc0fea).
-- [ ] **Add Cosmos/Keplr signing path** or document that EVM wallet is required (M2-F2).
-- [ ] **Deploy `docs/deployment.md` warning** about "one vote per Cosmos address" semantics (M2-F3).
+- [x] **EVM wallet requirement documented** in `docs/deployment.md` §8 (M2-F2). Keplr/ADR-036 path is a named future extension (ADR-036 §Path A). (tick-4486)
+- [x] **"One vote per Cosmos address" warning deployed** in `docs/deployment.md` §8 (M2-F3). (tick-4486)
 - [ ] **Replace `derive_hash160_sha256d` with `ripemd160(sha256(compressed_pubkey))`** once
   `noir-ripemd160` compatibility is confirmed with `nargo >= 0.30`. Both snapshot generator
   and circuit must use the same scheme.
