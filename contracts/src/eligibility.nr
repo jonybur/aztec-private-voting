@@ -43,6 +43,7 @@ fn token_proof_rejects_zero() {
         eligibility_mode: ELIGIBILITY_MODE_TOKEN,
         token_address: AztecAddress::from_field(0xabc),
         min_token_balance: 1,
+        snapshot_version: 0, // non-Babylon; guard not triggered
     };
     verify_eligibility(0, config);
 }
@@ -59,6 +60,7 @@ fn allowlist_proof_rejects_zero() {
         eligibility_mode: ELIGIBILITY_MODE_ALLOWLIST,
         token_address: AztecAddress::from_field(0),
         min_token_balance: 0,
+        snapshot_version: 0, // non-Babylon; guard not triggered
     };
     verify_eligibility(0, config);
 }
@@ -76,6 +78,7 @@ fn open_eligibility_accepts_anything() {
         eligibility_mode: ELIGIBILITY_MODE_OPEN,
         token_address: AztecAddress::from_field(0),
         min_token_balance: 0,
+        snapshot_version: 0, // non-Babylon; guard not triggered
     };
     verify_eligibility(0, config);
     verify_eligibility(0xdeadbeef, config);

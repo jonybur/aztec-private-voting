@@ -46,6 +46,13 @@ pub contract PrivateVoting {
         pub eligibility_mode: u8,
         pub token_address: AztecAddress,
         pub min_token_balance: u64,
+        // M2-F1 (security-review-babylon-m2): snapshot_version gates the Babylon
+        // entrypoint dispatch at runtime, converting a silent deployment risk into
+        // an explicit contract-level assertion.
+        //   0 = v1 snapshot (bech32 leaves; cast_vote_babylon path)
+        //   1 = v2 snapshot (hash160 leaves; cast_vote_babylon_v2 / M2 path)
+        // Non-Babylon modes (open / token / allowlist) should set 0.
+        pub snapshot_version: u8,
     }
 
     #[storage]
@@ -281,6 +288,15 @@ pub contract PrivateVoting {
     ) {
         let config = self.storage.config.read();
 
+        // M2-F1 snapshot version guard: ensures this vote was deployed with a v1
+        // (bech32) snapshot. If the deployer committed a v2 (hash160) root and
+        // a voter calls this entrypoint, the assert fires before any Merkle
+        // verification — giving a clear error instead of a silent proof failure.
+        assert(
+            config.snapshot_version == 0,
+            "snapshot_version mismatch: vote uses M2 snapshot; call cast_vote_babylon_v2",
+        );
+
         // Reconstruct the committed Merkle root from the config.
         // The deployer encodes the root as: token_address = Field(root[1..32])
         // (first byte dropped to fit in a Field - matches encode_root_as_field
@@ -354,6 +370,16 @@ pub contract PrivateVoting {
         sig: [u8; 64],
     ) {
         let config = self.storage.config.read();
+
+        // M2-F1 snapshot version guard: ensures this vote was deployed with a v2
+        // (hash160 / M2) snapshot. If the deployer accidentally committed a v1
+        // (bech32) root, the assert fires before any Merkle verification —
+        // giving a clear error instead of a silent proof failure. Matches the
+        // guard in cast_vote_babylon (which asserts snapshot_version == 0).
+        assert(
+            config.snapshot_version == 1,
+            "snapshot_version mismatch: vote uses M1 snapshot; call cast_vote_babylon",
+        );
 
         // 1. Reconstruct committed Merkle root from config.
         //    Root is encoded in token_address field (lower 31 bytes of SHA-256).

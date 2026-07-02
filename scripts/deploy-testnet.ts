@@ -153,6 +153,11 @@ async function main(): Promise<void> {
     eligibility_mode: eligibilityModeToCode(config.eligibilityMode),
     token_address: tokenAddress,
     min_token_balance: minTokenBalance,
+    // M2-F1: snapshot_version gates the Babylon entrypoint dispatch at runtime.
+    //   0 = v1 snapshot (bech32 leaves; cast_vote_babylon)
+    //   1 = v2 snapshot (hash160/M2 leaves; cast_vote_babylon_v2)
+    // Non-Babylon modes use 0 (cast_vote_babylon is never called, so no conflict).
+    snapshot_version: config.eligibilityMode === 'babylon-v2' ? 1 : 0,
   };
 
   console.log('Deploying PrivateVoting contract with config:', {
