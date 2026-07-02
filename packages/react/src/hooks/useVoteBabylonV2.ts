@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { useAztecClient } from '../aztec/context';
 import { translateVoteError } from '../aztec/errors';
-import { fingerprintFromReceiptId, generateReceiptId } from '../aztec/receipt-id';
+import { fingerprintFromReceiptId, holderNullifierFromSig } from '../aztec/receipt-id';
 import { loadVotingContractV2 } from '../aztec/voting';
 import type { M2SigningOutput } from './useM2Signing';
 import type { VoteConfig, VoteReceipt } from '../types';
@@ -85,8 +85,6 @@ export function useVoteBabylonV2(config: VoteConfig): UseVoteBabylonV2Result {
       try {
         const contract = await loadVotingContractV2(client.wallet, config.contractAddress);
 
-        const receiptId = await generateReceiptId();
-
         // Combine sig_r (32 bytes) + sig_s (32 bytes) → sig[64] as the circuit expects.
         const sig: number[] = [...input.m2Signing.sig_r, ...input.m2Signing.sig_s];
         if (sig.length !== 64) {
@@ -107,6 +105,18 @@ export function useVoteBabylonV2(config: VoteConfig): UseVoteBabylonV2Result {
           );
         }
 
+        // Derive the holder nullifier — this is what the circuit stores in receipts[],
+        // so it is the correct value for verify_vote_counted. The circuit does NOT accept
+        // a client-generated receipt_id; the nullifier is derived from the ECDSA sig.
+        // See contracts/src/main.nr step 6 and receipt-id.ts::holderNullifierFromSig.
+        const holderNullifier = await holderNullifierFromSig(
+          input.m2Signing.sig_r,
+          input.m2Signing.sig_s,
+        );
+
+        // cast_vote_babylon_v2 takes exactly 7 parameters — no receipt_id.
+        // The circuit derives holder_nullifier = hash_bytes_as_field(sha256_var(sig, 64))
+        // internally (main.nr step 6) and stores it in receipts[].
         const tx = await contract.methods
           .cast_vote_babylon_v2(
             input.choice,
@@ -116,7 +126,6 @@ export function useVoteBabylonV2(config: VoteConfig): UseVoteBabylonV2Result {
             input.m2Signing.pubkey_x,
             input.m2Signing.pubkey_y,
             sig,
-            receiptId,
           )
           .send()
           .wait();
@@ -124,7 +133,10 @@ export function useVoteBabylonV2(config: VoteConfig): UseVoteBabylonV2Result {
         const next: VoteReceipt = {
           voteId: config.voteId,
           voteTitle: config.title,
-          receiptId: fingerprintFromReceiptId(receiptId),
+          // Use the sig-derived holder nullifier as the receipt fingerprint.
+          // This matches what the contract stored — verify_vote_counted(holderNullifier)
+          // will return true for this voter.
+          receiptId: fingerprintFromReceiptId(holderNullifier),
           txHash: tx.txHash.toString(),
           timestamp: Date.now(),
           contractAddress: config.contractAddress,

@@ -25,15 +25,20 @@ export interface VotingContract {
 /**
  * M2 contract interface — adds cast_vote_babylon_v2.
  *
- * cast_vote_babylon_v2 takes:
- *   vote_choice    : u8          — 0-based option index
- *   balance        : u64         — holder balance in ubbn
+ * cast_vote_babylon_v2 takes exactly 7 parameters (NO receipt_id):
+ *   vote_choice    : u8           — 0-based option index
+ *   balance        : u64          — holder balance in ubbn
  *   merkle_path    : [[u8;32];20] — sibling hashes leaf-to-root
- *   merkle_indices : [bool;20]   — direction bits
- *   pubkey_x       : [u8;32]     — secp256k1 public key x-coordinate
- *   pubkey_y       : [u8;32]     — secp256k1 public key y-coordinate
- *   sig            : [u8;64]     — ECDSA r||s (EIP-191, low-S normalised)
- *   receipt_id     : Field       — client-generated unique ballot ID
+ *   merkle_indices : [bool;20]    — direction bits
+ *   pubkey_x       : [u8;32]      — secp256k1 public key x-coordinate
+ *   pubkey_y       : [u8;32]      — secp256k1 public key y-coordinate
+ *   sig            : [u8;64]      — ECDSA r||s (EIP-191, low-S normalised)
+ *
+ * The circuit derives the holder nullifier internally (step 6 in main.nr):
+ *   holder_nullifier = hash_bytes_as_field( sha256_var(sig, 64) )
+ * and stores it in receipts[]. Front-end must compute the same value to
+ * give the voter a working verify_vote_counted fingerprint — use
+ * holderNullifierFromSig() from receipt-id.ts.
  *
  * See contracts/src/main.nr §cast_vote_babylon_v2 and
  * docs/m2-secp256k1-ownership-proof-design.md for the full circuit spec.
@@ -48,7 +53,6 @@ export interface VotingContractV2 extends VotingContract {
       pubkey_x: number[],
       pubkey_y: number[],
       sig: number[],
-      receiptId: bigint,
     ) => ContractMethod;
   };
 }
