@@ -1,8 +1,8 @@
 # Protective Absence: Designing Coercion-Resistant Receipts for Private Cryptographic Voting
 
 _Draft for CHI 2027 submission · Jony Bursztyn · 2026-06-22_
-_Status: All sections written. §4.6 Results pending Study 1 data collection (2026-Q3 pilot). Submission-clean pending OSF amendments O+T. Four-study arc: §7 updated tick-4397; abstract + §1.3 updated tick-4402. Study 4 DV1/DV2 dual-operationalisation propagated to abstract + §1.3 + §7 at tick-4418. §7 conclusion para 3 compressed –140w at tick-4467._
-_Word count: ~11,705 words (body incl. refs, excl. tables + annotations; tick-4490 +22w Volkamer 2022 citation added to §1.4 + ref). 18 references. §4.6 fill-in adds +245–405w → final ~11,950–12,110w: trim pass unlikely needed at lower end; light trim (~110w) needed only if §4.6 fills at upper bound. CHI cap 12,000 incl. refs, excl. tables. Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendments 12+13+14). Also open: Amendments 19, 19b (pre-pilot). See docs/jony-action-brief-2026-07-02.md._
+_Status: All sections written. §4.6 Results pending Study 1 data collection (2026-Q3 pilot). Submission-clean pending OSF amendments O+T. Four-study arc: §7 updated tick-4397; abstract + §1.3 updated tick-4402. Study 4 DV1/DV2 dual-operationalisation propagated to abstract + §1.3 + §7 at tick-4418. §7 conclusion para 3 compressed –140w at tick-4467. Volkamer 2022 §1.4 tick-4490. §7 invariants compliance tick-4491._
+_Word count: ~11,752 words (tick-4492: –42w §2.3 trim — removed redundant invariant restatement, preserves key claim; tick-4491 +89w §7; tick-4490 +22w Volkamer). 18 references. §4.6 fill-in adds +245–405w → final ~11,997–12,157w: ✅ lower bound fits cap (3w buffer); light trim (~160w) needed only if §4.6 fills at upper bound. CHI cap 12,000 incl. refs, excl. tables. Open actions: JONY-ACTION O (OSF Amendment 5) + JONY-ACTION T (OSF Amendments 12+13+14). Also open: Amendments 19, 19b (pre-pilot). See docs/jony-action-brief-2026-07-02.md._
 
 ---
 
@@ -112,7 +112,7 @@ PIUP applies to any submission system satisfying the three conditions in §2.1. 
 
 **Anonymous peer review.** Submission acknowledgement should not allow back-inference of reviewer identity through timing, acknowledgement sequence, or metadata correlation. Condition (3) is weaker here — authors do not strongly expect submission content in a confirmation — but conditions (1) and (2) apply, making PIUP a relevant template for double-blind review systems with active metadata-privacy guarantees.
 
-Across these domains, the three invariants translate directly: the token must not be derivable from submission content (Invariant 1), must remain private until the coercion window closes (Invariant 2), and the receipt must contain only token and verification endpoint (Invariant 3). The protective framing component is most load-bearing where absent content was most strongly expected by users based on prior experience — making the voting receipt the most demanding design target and the strongest test case for the pattern.
+Across these domains, the three invariants translate directly (§2.1). Protective framing is most load-bearing where absent content was most strongly expected — making the voting receipt the most demanding design target and the strongest test case for the pattern.
 
 ---
 
