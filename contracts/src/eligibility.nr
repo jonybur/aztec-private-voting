@@ -5,6 +5,10 @@ use aztec::protocol::traits::FromField;
 pub global ELIGIBILITY_MODE_OPEN: u8 = 0;
 pub global ELIGIBILITY_MODE_TOKEN: u8 = 1;
 pub global ELIGIBILITY_MODE_ALLOWLIST: u8 = 2;
+// N-F8 (security-review-2026-06-22): named constant for Babylon governance mode.
+// Babylon entrypoints (cast_vote_babylon, cast_vote_babylon_v2) assert this mode
+// at entry so a non-Babylon vote cannot be voted on via the Babylon path.
+pub global ELIGIBILITY_MODE_BABYLON: u8 = 3;
 
 // Verifies the proof shape for the configured eligibility mode. Open votes
 // accept anything; token-gated and allowlist votes require a non-zero proof
@@ -26,6 +30,12 @@ pub fn verify_eligibility(proof: Field, config: VoteConfig) {
         // enqueuing record_vote. cast_vote_allowlist passes proof=1 here.
         // (F1-HIGH resolved.)
         assert(proof != 0, "missing allowlist proof");
+    } else if config.eligibility_mode == ELIGIBILITY_MODE_BABYLON {
+        // N-F8/N-F9 (security-review-2026-06-22): Babylon governance mode.
+        // cast_vote_babylon and cast_vote_babylon_v2 pass proof=1 after performing
+        // a full in-circuit secp256k1 Merkle eligibility proof. The mode guard
+        // at each entrypoint ensures only Babylon-configured votes can use this path.
+        assert(proof != 0, "missing babylon eligibility proof");
     } else {
         assert(false, "unknown eligibility mode");
     }
@@ -82,4 +92,38 @@ fn open_eligibility_accepts_anything() {
     };
     verify_eligibility(0, config);
     verify_eligibility(0xdeadbeef, config);
+}
+
+// N-F8/N-F9: ELIGIBILITY_MODE_BABYLON rejects zero proof (mode guard path).
+#[test(should_fail_with = "missing babylon eligibility proof")]
+fn babylon_proof_rejects_zero() {
+    let config = VoteConfig {
+        title_hash: 0,
+        options_count: 2,
+        start_time: 0,
+        end_time: 1,
+        quorum: 1,
+        eligibility_mode: ELIGIBILITY_MODE_BABYLON,
+        token_address: AztecAddress::from_field(0),
+        min_token_balance: 0,
+        snapshot_version: 1,
+    };
+    verify_eligibility(0, config);
+}
+
+// N-F8/N-F9: ELIGIBILITY_MODE_BABYLON accepts a non-zero proof.
+#[test]
+fn babylon_proof_accepts_nonzero() {
+    let config = VoteConfig {
+        title_hash: 0,
+        options_count: 2,
+        start_time: 0,
+        end_time: 1,
+        quorum: 1,
+        eligibility_mode: ELIGIBILITY_MODE_BABYLON,
+        token_address: AztecAddress::from_field(0),
+        min_token_balance: 0,
+        snapshot_version: 1,
+    };
+    verify_eligibility(1, config);
 }

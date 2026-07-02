@@ -699,8 +699,10 @@ assert(
 Mirror the pattern from `cast_vote_token` (asserts `ELIGIBILITY_MODE_TOKEN`) and
 `cast_vote_allowlist` (asserts `ELIGIBILITY_MODE_ALLOWLIST`).
 
-**Status:** Open — DESIGN. No code changes in this amendment; recommendation noted for
-M1 redeploy or M2 upgrade planning.
+**Status:** RESOLVED — tick-4485 (2026-07-02). `pub global ELIGIBILITY_MODE_BABYLON: u8 = 3;`
+added to `eligibility.nr`. `verify_eligibility` updated to handle mode 3 with a
+non-zero proof. 2 new Noir tests added (`babylon_proof_rejects_zero`,
+`babylon_proof_accepts_nonzero`). All 22 tests pass.
 
 ---
 
@@ -750,7 +752,10 @@ assert(
 );
 ```
 
-**Status:** Open — DESIGN. Blocked on N-F8 (ELIGIBILITY_MODE_BABYLON constant).
+**Status:** RESOLVED — tick-4485 (2026-07-02). `ELIGIBILITY_MODE_BABYLON` imported in
+`main.nr`. Both `cast_vote_babylon` and `cast_vote_babylon_v2` now assert
+`config.eligibility_mode == ELIGIBILITY_MODE_BABYLON` as their first guard after
+reading config, before the snapshot_version guard. N-F8 unblocked this.
 
 ---
 
@@ -791,9 +796,9 @@ assert(
 This mirrors the bounds check in `record_vote`:
 `assert((vote_choice as u32) < (config.options_count as u32), "invalid choice");`
 
-**Status:** Open — DESIGN. Low priority (view-only; client-side iteration is the
-correct mitigation; off-chain indexers should use `config.options_count` not
-`MAX_OPTIONS`). Document expected client pattern in `docs/deployment.md`.
+**Status:** RESOLVED — tick-4485 (2026-07-02). `get_final_tally` now reads config and
+asserts `(option_index as u32) < (config.options_count as u32)` after the finalized
+check. Mirrors the identical guard in `record_vote`.
 
 ---
 
@@ -856,7 +861,10 @@ entrypoints. A future maintainer may not notice the missing assertion.
 after the nullifier derivation, for consistency and defence against any future
 `hash_bytes_as_field` implementation that might behave unexpectedly.
 
-**Status:** Open — LOW (negligible practical risk). Consistency fix recommended.
+**Status:** RESOLVED — tick-4485 (2026-07-02). `assert(holder_nullifier != 0,
+"nullifier must be non-zero")` added after nullifier derivation in
+`cast_vote_babylon_v2`. Consistent with the `assert(receipt_id != 0)` pattern in
+the three other voting entrypoints.
 
 ---
 
@@ -864,11 +872,11 @@ after the nullifier derivation, for consistency and defence against any future
 
 | Finding | Severity | Status |
 |---|---|---|
-| N-F8: No `ELIGIBILITY_MODE_BABYLON` constant | DESIGN | Open |
-| N-F9: Babylon entrypoints lack mode guards | DESIGN | Open (blocked on N-F8) |
-| N-F10: `get_final_tally` no bounds check | DESIGN | Open |
+| N-F8: No `ELIGIBILITY_MODE_BABYLON` constant | DESIGN | RESOLVED (tick-4485) |
+| N-F9: Babylon entrypoints lack mode guards | DESIGN | RESOLVED (tick-4485) |
+| N-F10: `get_final_tally` no bounds check | DESIGN | RESOLVED (tick-4485) |
 | Cross-path double-vote | — | NOT exploitable (confirmed) |
-| Zero-nullifier in v2 | LOW | Open (negligible; consistency fix) |
+| Zero-nullifier in v2 | LOW | RESOLVED (tick-4485) |
 
 No critical or high findings in this amendment. All prior findings (F1–F5, N-F1–N-F7)
 remain resolved as documented in §1–§10.

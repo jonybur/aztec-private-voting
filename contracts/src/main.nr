@@ -20,6 +20,7 @@ pub contract PrivateVoting {
         ELIGIBILITY_MODE_OPEN,
         ELIGIBILITY_MODE_TOKEN,
         ELIGIBILITY_MODE_ALLOWLIST,
+        ELIGIBILITY_MODE_BABYLON,
     };
     use sha256::sha256_var;
     use std::ecdsa_secp256k1;
@@ -288,6 +289,15 @@ pub contract PrivateVoting {
     ) {
         let config = self.storage.config.read();
 
+        // N-F9 (security-review-2026-06-22): mode guard — only Babylon-configured
+        // votes may use this entrypoint. Prevents a TOKEN/ALLOWLIST/OPEN vote from
+        // being voted on via the Babylon path (which uses a different Merkle leaf
+        // format and would otherwise fail with a cryptic Merkle proof error).
+        assert(
+            config.eligibility_mode == ELIGIBILITY_MODE_BABYLON,
+            "eligibility_mode mismatch: not a Babylon-mode vote",
+        );
+
         // M2-F1 snapshot version guard: ensures this vote was deployed with a v1
         // (bech32) snapshot. If the deployer committed a v2 (hash160) root and
         // a voter calls this entrypoint, the assert fires before any Merkle
@@ -370,6 +380,13 @@ pub contract PrivateVoting {
         sig: [u8; 64],
     ) {
         let config = self.storage.config.read();
+
+        // N-F9 (security-review-2026-06-22): mode guard — only Babylon-configured
+        // votes may use this entrypoint. Same defence as cast_vote_babylon above.
+        assert(
+            config.eligibility_mode == ELIGIBILITY_MODE_BABYLON,
+            "eligibility_mode mismatch: not a Babylon-mode vote",
+        );
 
         // M2-F1 snapshot version guard: ensures this vote was deployed with a v2
         // (hash160 / M2) snapshot. If the deployer accidentally committed a v1
@@ -469,6 +486,12 @@ pub contract PrivateVoting {
         //    Current risk is LOW (bounded: attacker must hold the private key; no external
         //    exploit; each extra vote costs Aztec gas; vote weight is not inflated).
         let holder_nullifier = hash_bytes_as_field(sha256_var(sig, 64));
+        // Zero-nullifier consistency (security-review-2026-06-22 §N-F10-follow-up):
+        // Other entrypoints (cast_vote, cast_vote_token, cast_vote_allowlist) all
+        // assert receipt_id != 0. The probability that sha256_var(sig,64) mod r = 0
+        // is ≈ 2^-254 — negligible — but the assertion makes the invariant explicit
+        // and defends against any future hash_bytes_as_field implementation quirks.
+        assert(holder_nullifier != 0, "nullifier must be non-zero");
 
         // 7. Enqueue the public vote record.
         self.enqueue_self.record_vote(vote_choice, 1, holder_nullifier);
@@ -526,6 +549,14 @@ pub contract PrivateVoting {
     #[view]
     fn get_final_tally(option_index: u8) -> pub u64 {
         assert(self.storage.is_finalized.read(), "not finalized");
+        // N-F10 (security-review-2026-06-22): bounds check mirrors the guard in
+        // record_vote. Prevents reading an out-of-range storage slot for queries
+        // with an invalid index (always returns 0 in practice, but make it explicit).
+        let config = self.storage.config.read();
+        assert(
+            (option_index as u32) < (config.options_count as u32),
+            "invalid option index",
+        );
         self.storage.tally.at(option_index).read()
     }
 
